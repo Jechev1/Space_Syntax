@@ -215,7 +215,7 @@
     return `<div class="screen hero-wrap"><section class="hero">
       <div><div class="kicker">NASA Space Apps 2026 · Space Mission Design</div>
         <h1>Is the Moon made of <span>cheese</span>?</h1>
-        <p class="sub">${esc(NAME)} is sure it is. Design a real Moon mission — with NASA data and real math — and find out.</p>
+        <p class="sub">${esc(NAME)} is sure it is. Design a real Moon mission, with NASA data and real math, and find out.</p>
         <div class="kicker" style="margin-bottom:8px">Difficulty</div>
         <div class="diff">${D.DIFFICULTIES.map(d => `<button class="card" data-act="diff" data-id="${d.id}" aria-pressed="${S.difficulty === d.id}"><h4>${esc(d.title)}</h4><p>${esc(d.blurb)}</p></button>`).join('')}</div>
         <div class="row"><button class="btn primary big" data-act="start">Start mission 🚀</button>
@@ -226,7 +226,7 @@
 
   const INTRO = [
     { mood: 'happy', text: `I've always believed the Moon is made of cheese.` },
-    { mood: 'thinking', text: `Nobody believes me. So I'm going to test it — with a real mission, starting right here on Earth.` },
+    { mood: 'thinking', text: `Nobody believes me. So I'm going to test it with a real mission, starting right here on Earth.` },
     { mood: 'wow', text: `First we plan and build at the launch site. Every choice costs mass, money or power. Scientists call that a trade-off. Let's go!` },
   ];
   function screenIntro() {
@@ -360,7 +360,7 @@
     return `<div class="screen">${hud()}${phasebar(1)}<main class="main"><div>
       <div class="phase-title"><span class="kicker">Phase 1 · Assembly building, Earth</span></div>
       <div class="phase-title"><h1>Build your spacecraft</h1></div>
-      ${bubble('f1a', `Heavier spacecraft need bigger rockets — and bigger rockets cost more. Watch the <b>Launch mass</b> meter!`, 'happy')}
+      ${bubble('f1a', `Heavier spacecraft need bigger rockets, and bigger rockets cost more. Watch the <b>Launch mass</b> meter!`, 'happy')}
       <div class="workshop"><div class="tabs" role="tablist">${D.SUBSYSTEMS.map(s => {
         const done = !missing.includes(s.id);
         return `<button class="tab" role="tab" data-act="tab" data-id="${s.id}" aria-selected="${s.id === sub.id}"><span aria-hidden="true">${s.icon}</span>${esc(s.title)}${done ? '<span class="ok">✓</span>' : '<span class="todo" aria-label="to do"></span>'}</button>`;
