@@ -17,10 +17,15 @@
  *    everyone else and the rest of the supplies ride the orbiter. Supplies are counted as carried the whole way
  *    (a conservative simplification).
  *  - Phase 3: a delta-v margin m scales every planned burn: dv_planned = dv × (1 + m).
+ *  - Phase 4: onboard link hardware adds mass/power/cost; data rate scales with (DSN dish diameter / 34 m)².
+ *    The spacecraft must be complete before launch, so launch readiness covers Phases 0 to 4.
+ *  - Phase 5: hovering to dodge hazards costs g_moon (1.62 m/s) of delta-v per second. The descent margin
+ *    from Phase 3 buys hover seconds: t = (descent dv × margin) / g + built-in reserve.
  *
  * State shape (all optional until the phase is played):
  *  { difficulty, question, measure, missionType, design:{structure,shield,thermal,power,science[]}, rocket,
- *    crew:{ size, days, reserve, suit, recycler }, flight:{ margin }, events:{ massGrowth, extraCost, risk, extraDays, log[] } }
+ *    crew:{ size, days, reserve, suit, recycler }, flight:{ margin }, comms:{ link, dish }, site, landing:{ seed, outcome },
+ *    events:{ massGrowth, extraCost, risk, extraDays, log[] } }
  */
 (function (root) {
   'use strict';
@@ -232,6 +237,14 @@
       add(rc.label, 'lander', rc.mass, rc.cost);
     }
 
+    // Phase 4: onboard link and ground antenna time
+    const link = commsLink(state), dish = commsDish(state);
+    if (link) {
+      const v = link[type];
+      add('Comms: ' + link.title, type === 'crewed' ? (v.where || 'orbiter') : 'lander', v.mass, v.cost, v.power, 0, link.src);
+    }
+    if (dish) add('Ground: ' + dish.title + ' time', 'ground', 0, dish.cost[type], 0, 0, dish.src);
+
     // Mass growth event: hardware only (not crew, supplies or samples)
     if (ev.massGrowth) lines.forEach(l => { if (l.kind === 'hw') l.mass *= 1 + ev.massGrowth; });
 
@@ -300,6 +313,96 @@
       risk: ev.risk || 0, extraCost: ev.extraCost || 0, massGrowth: ev.massGrowth || 0,
       fitsRocket: rocket ? tli <= rocket.capacity : null, overBudget: totalCost > budget,
     };
+  }
+
+  /* ======================= PHASE 4: communications ======================= */
+  function commsLink(state) { return state.comms ? D.COMMS.links.find(l => l.id === state.comms.link) || null : null; }
+  function commsDish(state) { return state.comms ? D.COMMS.dishes.find(d => d.id === state.comms.dish) || null : null; }
+  /** Light-time delay in seconds for a distance in km. */
+  function lightDelay(km) { return km / D.CONST.c; }
+  /** Antenna gain ratio between two dish diameters: G ∝ D². */
+  function dishGain(diameter) { return (diameter / D.COMMS.baseDiameter) ** 2; }
+  /** Data the science payload (and crew) want to send per day, in Gb. */
+  function dataNeedPerDay(state) {
+    const per = D.COMMS.dataPerDay;
+    const sci = ((state.design && state.design.science) || []).reduce((a, id) => a + (per[id] || 0), 0);
+    return sci + (state.missionType === 'crewed' ? per.crewVideo : 0);
+  }
+  /** Everything Phase 4 needs: delays, data rate, daily volume, bottleneck. */
+  function commsPlan(state) {
+    const C = D.COMMS, link = commsLink(state), dish = commsDish(state);
+    const gain = dish ? dishGain(dish.diameter) : 1;
+    const rateMbps = link ? link.rateMbps * gain : 0;
+    const gbPerDay = link ? rateMbps * link.contactHours * 3.6 : 0; // Mbps × h × 3600 s / 1000 Mb per Gb
+    const need = dataNeedPerDay(state);
+    return {
+      link, dish, gain, rateMbps, contactHours: link ? link.contactHours : 0, gbPerDay, needGbPerDay: need,
+      bottleneck: !!link && gbPerDay < need, daysToSendOneDay: link && gbPerDay > 0 ? need / gbPerDay : null,
+      delay: { min: lightDelay(C.perigeeKm), avg: lightDelay(D.MOON.distanceKm), max: lightDelay(C.apogeeKm) },
+      roundTrip: 2 * lightDelay(D.MOON.distanceKm), blackoutMin: C.blackoutMin, weatherRisk: !!(link && link.weatherRisk),
+    };
+  }
+  function commsMath(state) {
+    const c = commsPlan(state);
+    const steps = [
+      { eq: 't = d / c', num: `t = ${fmt(D.MOON.distanceKm)} km ÷ ${fmt(D.CONST.c)} km/s = ${c.delay.avg.toFixed(2)} s one way` },
+      { eq: 'range', num: `${c.delay.min.toFixed(2)} s at the closest point, ${c.delay.max.toFixed(2)} s at the farthest` },
+    ];
+    if (c.dish) steps.push({ eq: 'G ∝ D²', num: `(${c.dish.diameter} m ÷ ${D.COMMS.baseDiameter} m)² = ${c.gain.toFixed(2)}× signal` });
+    if (c.link) steps.push({ eq: 'data = rate × time', num: `${fmt(c.rateMbps, 1)} Mbps × ${c.contactHours} h × 3,600 s ÷ 1,000 = ${fmt(c.gbPerDay)} Gb per day` });
+    return { title: 'Talking to Earth: real math', steps, check: c.link ? (c.bottleneck ? `You need ${fmt(c.needGbPerDay)} Gb a day: data will pile up` : `Enough for your ${fmt(c.needGbPerDay)} Gb a day ✔`) : null, src: 'dsn' };
+  }
+
+  /* ======================= PHASE 5: landing ======================= */
+  function findSite(id) { return D.SITES.find(x => x.id === id) || null; }
+  /** How a site fits this mission: science match, darkness, cold, Earth visibility. */
+  function siteReport(state, siteId) {
+    const site = findSite(siteId || state.site); if (!site) return null;
+    const r = evaluate(state);
+    const robotic = state.missionType === 'robotic';
+    const nightHours = robotic && r ? (r.nightHours || 0) : null;
+    const survivesNight = robotic ? nightHours >= site.darkHours : true;
+    const life = state.missionType === 'crewed' ? lifeSupport(state) : null;
+    // Hours available for science on the surface (feeds Phase 6)
+    const opsHours = robotic ? (survivesNight ? site.lightHours + site.darkHours : site.lightHours) : D.LIFE.surfaceDays * 24;
+    const evaHours = life ? life.suit.evaHours * D.LIFE.surfaceDays * life.landingCrew : null;
+    return {
+      site, scienceMatch: site.bestFor.includes(state.question), survivesNight, nightHours, opsHours, evaHours,
+      coldRisk: !!site.coldShadow && !!life && !life.suit.shadowOk, earthView: site.earthView,
+      hoverAvailable: hoverAvailable(state), hoverTypical: site.hoverNeed * (D.LANDING.difficultyFactor[state.difficulty || 'engineer'] || 1),
+    };
+  }
+  /** Seconds the lander can hover: built-in reserve + descent margin ÷ lunar gravity. */
+  function hoverAvailable(state) {
+    const extraDv = D.DV.descent.value * marginOf(state);
+    return D.LANDING.baseHoverSec + extraDv / D.MOON.gravity;
+  }
+  /** Seeded descent: compares hover seconds available with what the terrain demands. Pure. */
+  function landingSim(state, seed) {
+    const site = findSite(state.site); if (!site) return null;
+    const L = D.LANDING, r = rng(((seed >>> 0) ^ 0x5eed) + site.id.length * 101);
+    const factor = L.difficultyFactor[state.difficulty || 'engineer'] || 1;
+    const need = site.hoverNeed * factor * (1 - L.needSpread / 2 + L.needSpread * r());
+    const avail = hoverAvailable(state);
+    const outcome = avail >= need ? 'clean' : avail >= need * L.roughFraction ? 'rough' : 'abort';
+    const used = Math.min(avail, need);
+    return {
+      site, seed: seed >>> 0, hoverNeeded: need, hoverAvailable: avail, hoverUsed: used,
+      dvUsedHovering: used * D.MOON.gravity, outcome,
+      message: outcome === 'clean' ? `Touchdown! You hovered ${fmt(used)} s to find a safe spot and had fuel to spare.`
+        : outcome === 'rough' ? `Rough landing: you ran low on fuel after ${fmt(used)} s and set down on uneven ground.`
+          : `Abort! The terrain needed about ${fmt(need)} s of hovering but you only had ${fmt(avail)} s of fuel. The lander climbs back to orbit.`,
+    };
+  }
+  function landingMath(state, sim) {
+    const m = marginOf(state), extra = D.DV.descent.value * m;
+    const steps = [
+      { eq: 'Δv = g · t', num: `hovering costs ${D.MOON.gravity} m/s of delta-v every second` },
+      { eq: 'extra Δv = Δv · margin', num: `${fmt(D.DV.descent.value)} m/s × ${Math.round(m * 100)}% = ${fmt(extra)} m/s` },
+      { eq: 't = extra Δv / g', num: `${fmt(extra)} ÷ ${D.MOON.gravity} = ${fmt(extra / D.MOON.gravity)} s + ${D.LANDING.baseHoverSec} s built in = ${fmt(hoverAvailable(state))} s` },
+    ];
+    if (sim) steps.push({ eq: 'needed here', num: `about ${fmt(sim.hoverNeeded)} s to dodge the hazards` });
+    return { title: 'Landing: why your Phase 3 margin matters', steps, src: 'nssdc' };
   }
 
   /* ======================= PHASE 2: crew & life support ======================= */
@@ -409,6 +512,28 @@
       if (l.recycler && l.days < l.recyclerBreakEvenDays) warn('recyclerHeavy', `The recycler only pays off after ~${fmt(l.recyclerBreakEvenDays)} days`);
       return result(issues);
     }
+    if (n === 4) {
+      const c = commsPlan(state);
+      if (!c.link) block('noLink', 'Pick how your spacecraft talks to Earth');
+      if (!c.dish) block('noDish', 'Pick a Deep Space Network antenna');
+      if (state.rocket && r.fitsRocket === false) block('tooHeavy', `The radio made you too heavy for ${r.rocket.title} by ${fmt(r.tli - r.rocket.capacity)} kg`);
+      if (r.powerGen < r.powerNeed) block('noPower', `Power short by ${fmt(r.powerNeed - r.powerGen)} W`);
+      if (r.overBudget) block('overBudget', `Over budget by $${fmt(r.totalCost - r.budget)}M`);
+      if (c.bottleneck) warn('dataBottleneck', `Your instruments make ${fmt(c.needGbPerDay)} Gb a day but you can send only ${fmt(c.gbPerDay)} Gb`);
+      if (c.weatherRisk) warn('laserWeather', 'Clouds over the ground station can block the laser');
+      return result(issues);
+    }
+    if (n === 5) {
+      const sr = siteReport(state);
+      if (!sr) { block('noSite', 'Pick a landing site'); return result(issues); }
+      if (!sr.scienceMatch) warn('siteMismatch', 'This site is not the best place to answer your question');
+      if (!sr.survivesNight) warn('nightDeath', `Your lander survives ${fmt(sr.nightHours || 0)} h of darkness; nights here last ${sr.site.darkHours} h`);
+      if (sr.coldRisk) warn('suitCold', 'Your suit cannot enter the freezing shadowed craters here');
+      if (sr.earthView === 'intermittent') warn('earthHidden', 'Earth is low on the horizon here: contact comes and goes');
+      if (sr.hoverAvailable < sr.hoverTypical) warn('lowHover', `This terrain usually needs ~${fmt(sr.hoverTypical)} s of hovering; you have ${fmt(sr.hoverAvailable)} s`);
+      if (state.landing && state.landing.outcome === 'abort') block('landingAbort', 'The landing was aborted: no surface science this time');
+      return result(issues);
+    }
     if (n === 3) {
       const m = marginOf(state), need = minMargin(state);
       if (m < need - 1e-9) block('lowDvMargin', `Flight rules require at least ${Math.round(need * 100)}% delta-v reserve`);
@@ -422,9 +547,9 @@
     return result(issues);
   }
   function result(issues) { return { ok: !issues.some(i => i.severity === 'block'), issues }; }
-  /** Everything from Phase 0 to 3 must be GO before launch. */
+  /** Everything from Phase 0 to 4 must be GO before launch (the radio flies with the spacecraft). */
   function launchReadiness(state) {
-    const all = [0, 1, 2, 3].map(n => ({ phase: n, ...validatePhase(state, n) }));
+    const all = [0, 1, 2, 3, 4].map(n => ({ phase: n, ...validatePhase(state, n) }));
     return { go: all.every(x => x.ok), phases: all, issues: all.flatMap(x => x.issues) };
   }
 
@@ -491,6 +616,13 @@
         recycler: bool(c.recycler),
       };
     }
+    if (raw.comms && typeof raw.comms === 'object') {
+      s.comms = { link: oneOf(raw.comms.link, D.COMMS.links.map(l => l.id)), dish: oneOf(raw.comms.dish, D.COMMS.dishes.map(d => d.id)) };
+    }
+    s.site = oneOf(raw.site, D.SITES.map(x => x.id));
+    if (s.site && raw.landing && typeof raw.landing === 'object' && Number.isInteger(raw.landing.seed)) {
+      s.landing = { seed: raw.landing.seed >>> 0, outcome: oneOf(raw.landing.outcome, ['clean', 'rough', 'abort']) };
+    }
     s.flight.margin = D.FLIGHT.marginOptions.includes(raw.flight && raw.flight.margin) ? raw.flight.margin : D.FLIGHT.defaultMargin;
     const e = raw.events && typeof raw.events === 'object' ? raw.events : {};
     s.events.massGrowth = num(e.massGrowth, 0, 0.5, 0);
@@ -504,7 +636,7 @@
   /** A fresh game state. */
   function newState() {
     return { difficulty: 'engineer', question: null, measure: null, missionType: null, design: { science: [] }, rocket: null,
-      crew: null, flight: { margin: D.FLIGHT.defaultMargin }, events: { massGrowth: 0, extraCost: 0, risk: 0, extraDays: 0, log: [] } };
+      crew: null, flight: { margin: D.FLIGHT.defaultMargin }, comms: null, site: null, landing: null, events: { massGrowth: 0, extraCost: 0, risk: 0, extraDays: 0, log: [] } };
   }
   /** Sensible starting crew plan for Phase 2. */
   function defaultCrew() { return { size: 4, days: minDays() + 1, reserve: 0.2, suit: null, recycler: false }; }
@@ -583,7 +715,7 @@
     return out.filter(x => x[key] > 0).sort((a, b) => b[key] - a[key]).slice(0, 4);
   }
 
-  const MODEL = { sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
+  const MODEL = { commsPlan, commsMath, lightDelay, dishGain, dataNeedPerDay, siteReport, hoverAvailable, landingSim, landingMath, findSite, sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
   if (typeof module !== 'undefined' && module.exports) module.exports = MODEL;
   else root.SS_MODEL = MODEL;
 })(typeof window !== 'undefined' ? window : globalThis);

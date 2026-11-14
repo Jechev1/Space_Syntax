@@ -14,6 +14,7 @@ function robotOneWay(over = {}) {
   const s = M.newState();
   Object.assign(s, { question: 'made', measure: 'chem', missionType: 'robotic', rocket: 'medium' });
   s.design = { structure: 'aluminum', shield: 'whipple', thermal: 'passive', power: 'solarBig', science: ['spectrometer'] };
+  s.comms = { link: 'sband', dish: 'dsn34' };
   return Object.assign(s, over);
 }
 function robotSample(over = {}) {
@@ -28,7 +29,7 @@ function crewed(over = {}) {
   return Object.assign(s, over);
 }
 function crewedFull(over = {}) {
-  const s = crewed({ crew: { size: 2, days: 10, reserve: 0.2, suit: 'lunar', recycler: false }, flight: { margin: 0.05 } });
+  const s = crewed({ crew: { size: 2, days: 10, reserve: 0.2, suit: 'lunar', recycler: false }, flight: { margin: 0.05 }, comms: { link: 'sband', dish: 'dsn34' } });
   return Object.assign(s, over);
 }
 const designs = () => ({
@@ -335,7 +336,7 @@ test('validation', async (t) => {
     for (const s of [robotOneWay({ flight: { margin: 0.05 } }), robotSample({ flight: { margin: 0.05 } }), crewedFull()]) {
       const g = M.launchReadiness(s);
       assert.equal(g.go, true, JSON.stringify(g.issues.filter(i => i.severity === 'block')));
-      assert.equal(g.phases.length, 4);
+      assert.equal(g.phases.length, 5);
     }
   });
   await t.test('NO GO when any phase blocks', () => {
@@ -344,7 +345,12 @@ test('validation', async (t) => {
     assert.equal(M.launchReadiness(M.newState()).go, false);
   });
   await t.test('launchReadiness issues carry phase', () => {
-    M.launchReadiness(crewedFull({ flight: { margin: 0 } })).issues.forEach(i => assert.ok([0, 1, 2, 3].includes(i.phase)));
+    M.launchReadiness(crewedFull({ flight: { margin: 0 } })).issues.forEach(i => assert.ok([0, 1, 2, 3, 4].includes(i.phase)));
+  });
+  await t.test('launchReadiness blocks without comms (phase 4)', () => {
+    const g = M.launchReadiness(robotOneWay({ flight: { margin: 0.05 }, comms: null }));
+    assert.equal(g.go, false);
+    assert.ok(g.issues.some(i => i.code === 'noLink' && i.phase === 4));
   });
 });
 
@@ -521,6 +527,9 @@ test('data integrity', async (t) => {
     chk(D.LIFE.perCrewDay.src, 'LIFE.perCrewDay'); chk(D.LIFE.recycler.src, 'LIFE.recycler');
     D.LIFE.suits.forEach(s => s.src && chk(s.src, 'suit.' + s.id));
     D.EVENTS.forEach(e => chk(e.src, 'EVENTS.' + e.id));
+    D.COMMS.links.forEach(l => chk(l.src, 'COMMS.link.' + l.id));
+    D.COMMS.dishes.forEach(d => chk(d.src, 'COMMS.dish.' + d.id));
+    D.SITES.forEach(x => chk(x.src, 'SITES.' + x.id));
     Object.values(D.ROCKETS).flat().forEach(r => { chk(r.capSrc, r.id + '.capSrc'); chk(r.costSrc, r.id + '.costSrc'); if (r.factSrc) chk(r.factSrc, r.id + '.factSrc'); });
   });
   await t.test('every SOURCES url starts with https:// and has a title', () => {
@@ -551,5 +560,205 @@ test('data integrity', async (t) => {
   await t.test('MEASURES unlock only existing instruments', () => {
     const ids = D.SUBSYSTEMS.find(s => s.id === 'science').options.map(o => o.id);
     D.MEASURES.forEach(m => m.unlocks.forEach(u => assert.ok(ids.includes(u))));
+  });
+});
+
+/* ================= 10. Phase 4: communications ================= */
+const withComms = (s, link, dish) => Object.assign(s, { comms: { link, dish } });
+test('commsPlan', async (t) => {
+  const C = D.COMMS;
+  await t.test('light delay: avg = d/c, min < avg < max', () => {
+    const p = M.commsPlan(withComms(robotOneWay(), 'ka', 'dsn34'));
+    close(p.delay.avg, 384400 / 299792.458, 1e-9); close(p.delay.avg, 1.282, 0.001);
+    assert.ok(p.delay.min < p.delay.avg && p.delay.avg < p.delay.max);
+    close(p.delay.min, C.perigeeKm / 299792.458, 1e-9); close(p.delay.max, C.apogeeKm / 299792.458, 1e-9);
+    close(p.roundTrip, 2 * p.delay.avg, 1e-9);
+  });
+  await t.test('dishGain(70) = (70/34)^2', () => {
+    close(M.dishGain(70), (70 / 34) ** 2, 1e-12); assert.equal(M.dishGain(34), 1);
+  });
+  await t.test('gbPerDay = rate x hours x 3.6; 70 m dish multiplies the rate', () => {
+    for (const l of C.links) {
+      const p = M.commsPlan(withComms(robotOneWay(), l.id, 'dsn34'));
+      close(p.gbPerDay, l.rateMbps * l.contactHours * 3.6, 1e-9, l.id);
+      const q = M.commsPlan(withComms(robotOneWay(), l.id, 'dsn70'));
+      close(q.rateMbps, p.rateMbps * (70 / 34) ** 2, 1e-9); close(q.gbPerDay, p.gbPerDay * (70 / 34) ** 2, 1e-6);
+    }
+  });
+  await t.test('bottleneck when need > capacity', () => {
+    const s = robotOneWay(); s.design.science = ['camera', 'spectrometer'];
+    const sb = M.commsPlan(withComms(s, 'sband', 'dsn34'));
+    assert.equal(sb.needGbPerDay, 340); assert.ok(sb.gbPerDay < 340); assert.equal(sb.bottleneck, true);
+    assert.equal(M.commsPlan(withComms(clone(s), 'ka', 'dsn34')).bottleneck, false);
+  });
+  await t.test('no link: zero rate, no bottleneck', () => {
+    const p = M.commsPlan(robotOneWay({ comms: null }));
+    assert.equal(p.gbPerDay, 0); assert.equal(p.bottleneck, false); assert.equal(p.link, null);
+  });
+  await t.test('weatherRisk only for laser', () => {
+    for (const l of C.links) assert.equal(M.commsPlan(withComms(robotOneWay(), l.id, 'dsn34')).weatherRisk, l.id === 'laser');
+  });
+  await t.test('comms hardware raises tli and cost; dish adds cost but no mass', () => {
+    for (const mk of [robotOneWay, crewedFull]) {
+      const none = M.evaluate(mk({ comms: null })), ka = M.evaluate(withComms(mk(), 'ka', 'dsn34'));
+      assert.ok(ka.tli > none.tli); assert.ok(ka.totalCost > none.totalCost);
+      const link = M.evaluate(withComms(mk(), 'ka', null)), d34 = M.evaluate(withComms(mk(), 'ka', 'dsn34')), d70 = M.evaluate(withComms(mk(), 'ka', 'dsn70'));
+      close(link.tli, d34.tli, 1e-9); close(d34.tli, d70.tli, 1e-9);
+      assert.ok(d34.totalCost > link.totalCost); assert.ok(d70.totalCost > d34.totalCost);
+    }
+  });
+  await t.test('commsMath includes t = d / c', () => {
+    const m = M.commsMath(withComms(robotOneWay(), 'ka', 'dsn70'));
+    assert.ok(m.steps.some(x => x.eq === 't = d / c'));
+    assert.ok(m.steps.some(x => x.eq.startsWith('G'))); assert.ok(m.steps.some(x => x.eq === 'data = rate × time'));
+  });
+});
+
+test('validatePhase(4)', async (t) => {
+  const codes = (s) => M.validatePhase(s, 4).issues.map(i => i.code);
+  const sev = (s, c) => (M.validatePhase(s, 4).issues.find(i => i.code === c) || {}).severity;
+  await t.test('noLink / noDish block', () => {
+    const a = robotOneWay({ comms: null }); assert.ok(codes(a).includes('noLink')); assert.ok(codes(a).includes('noDish'));
+    assert.equal(sev(a, 'noLink'), 'block'); assert.equal(M.validatePhase(a, 4).ok, false);
+    const b = withComms(robotOneWay(), 'ka', null); assert.deepEqual(codes(b).filter(c => c.startsWith('no')), ['noDish']);
+    const c = withComms(robotOneWay(), null, 'dsn34'); assert.deepEqual(codes(c).filter(x => x.startsWith('no')), ['noLink']);
+  });
+  await t.test('valid plan is ok', () => { assert.equal(M.validatePhase(robotOneWay(), 4).ok, true); });
+  await t.test('dataBottleneck warns', () => {
+    const s = robotOneWay(); s.design.science = ['camera', 'spectrometer']; withComms(s, 'sband', 'dsn34');
+    assert.equal(sev(s, 'dataBottleneck'), 'warn');
+  });
+  await t.test('laserWeather warns only for laser', () => {
+    assert.equal(sev(withComms(robotOneWay(), 'laser', 'dsn34'), 'laserWeather'), 'warn');
+    assert.ok(!codes(robotOneWay()).includes('laserWeather'));
+  });
+});
+
+/* ================= 11. Phase 5: landing ================= */
+const atSite = (s, site) => Object.assign(s, { site });
+test('siteReport', async (t) => {
+  await t.test('scienceMatch', () => {
+    const w = robotOneWay({ question: 'water' });
+    assert.equal(M.siteReport(atSite(w, 'southPole')).scienceMatch, true);
+    assert.equal(M.siteReport(atSite(clone(w), 'tranquility')).scienceMatch, false);
+  });
+  await t.test('survivesNight by power option vs darkHours', () => {
+    const exp = { solarBig: { southPole: true, tranquility: false, descartes: false }, rps: { southPole: true, tranquility: true, descartes: true }, solarSmall: { southPole: false, tranquility: false, descartes: false } };
+    for (const [pw, per] of Object.entries(exp)) for (const [site, ok] of Object.entries(per)) {
+      const s = robotOneWay(); s.design.power = pw;
+      assert.equal(M.siteReport(atSite(s, site)).survivesNight, ok, `${pw}@${site}`);
+    }
+  });
+  await t.test('opsHours', () => {
+    const s = robotOneWay(); s.design.power = 'solarBig';
+    assert.equal(M.siteReport(atSite(s, 'southPole')).opsHours, 700);
+    assert.equal(M.siteReport(atSite(clone(s), 'tranquility')).opsHours, 354);
+    s.design.power = 'rps'; assert.equal(M.siteReport(atSite(s, 'tranquility')).opsHours, 708);
+    const c = M.siteReport(atSite(crewedFull(), 'tranquility')); assert.equal(c.opsHours, D.LIFE.surfaceDays * 24);
+    assert.equal(c.survivesNight, true);
+  });
+  await t.test('coldRisk for crewed light suit at south pole only', () => {
+    const c = atSite(crewedFull(), 'southPole'); c.crew.suit = 'light';
+    assert.equal(M.siteReport(c).coldRisk, true);
+    c.crew.suit = 'lunar'; assert.equal(M.siteReport(c).coldRisk, false);
+    const l = atSite(crewedFull(), 'tranquility'); l.crew.suit = 'light'; assert.equal(M.siteReport(l).coldRisk, false);
+    assert.equal(M.siteReport(atSite(robotOneWay(), 'southPole')).coldRisk, false);
+  });
+  await t.test('earthView', () => {
+    assert.equal(M.siteReport(atSite(robotOneWay(), 'southPole')).earthView, 'intermittent');
+    assert.equal(M.siteReport(atSite(robotOneWay(), 'tranquility')).earthView, 'always');
+  });
+  await t.test('null without a site', () => { assert.equal(M.siteReport(robotOneWay()), null); });
+});
+
+test('hoverAvailable', async (t) => {
+  await t.test('= base + 2074 x margin / 1.62 and rises with margin', () => {
+    let prev = -1;
+    for (const m of D.FLIGHT.marginOptions) {
+      const h = M.hoverAvailable(robotOneWay({ flight: { margin: m } }));
+      close(h, D.LANDING.baseHoverSec + 2074 * m / 1.62, 1e-9, 'margin ' + m);
+      assert.ok(h > prev); prev = h;
+    }
+  });
+});
+
+test('landingSim', async (t) => {
+  const sim = (s, seed) => M.landingSim(s, seed);
+  await t.test('deterministic per seed', () => {
+    const s = atSite(robotOneWay({ flight: { margin: 0.05 } }), 'descartes');
+    for (let seed = 0; seed < 30; seed++) assert.deepEqual(sim(s, seed), sim(clone(s), seed));
+  });
+  await t.test('outcome thresholds', () => {
+    const seen = new Set();
+    for (const site of D.SITES.map(x => x.id)) for (const margin of D.FLIGHT.marginOptions) for (const diff of ['cadet', 'engineer', 'director']) {
+      const s = atSite(robotOneWay({ difficulty: diff, flight: { margin } }), site);
+      for (let seed = 0; seed < 40; seed++) {
+        const r = sim(s, seed), a = r.hoverAvailable, n = r.hoverNeeded;
+        const exp = a >= n ? 'clean' : a >= 0.6 * n ? 'rough' : 'abort';
+        assert.equal(r.outcome, exp); seen.add(r.outcome);
+        close(r.hoverUsed, Math.min(a, n), 1e-9); close(r.dvUsedHovering, r.hoverUsed * 1.62, 1e-9);
+        assert.equal(r.seed, seed); assert.equal(r.site.id, site);
+      }
+    }
+    assert.deepEqual([...seen].sort(), ['abort', 'clean', 'rough']);
+  });
+  await t.test('margin 0 at south pole on director: some seeds abort', () => {
+    const s = atSite(robotOneWay({ difficulty: 'director', flight: { margin: 0 } }), 'southPole');
+    let aborts = 0; for (let seed = 1; seed <= 50; seed++) if (sim(s, seed).outcome === 'abort') aborts++;
+    assert.ok(aborts > 0, 'aborts: ' + aborts);
+  });
+  await t.test('margin 0.20 at tranquility on cadet: seeds 1..50 all clean', () => {
+    const s = atSite(robotOneWay({ difficulty: 'cadet', flight: { margin: 0.2 } }), 'tranquility');
+    for (let seed = 1; seed <= 50; seed++) assert.equal(sim(s, seed).outcome, 'clean', 'seed ' + seed);
+  });
+  await t.test('null without a site', () => { assert.equal(sim(robotOneWay(), 1), null); });
+});
+
+test('validatePhase(5)', async (t) => {
+  const codes = (s) => M.validatePhase(s, 5).issues.map(i => i.code);
+  const sev = (s, c) => (M.validatePhase(s, 5).issues.find(i => i.code === c) || {}).severity;
+  await t.test('noSite blocks', () => {
+    assert.ok(codes(robotOneWay()).includes('noSite')); assert.equal(M.validatePhase(robotOneWay(), 5).ok, false);
+  });
+  await t.test('landingAbort blocks only on abort', () => {
+    const s = atSite(robotOneWay({ flight: { margin: 0.05 } }), 'tranquility');
+    s.landing = { seed: 1, outcome: 'abort' };
+    assert.equal(sev(s, 'landingAbort'), 'block'); assert.equal(M.validatePhase(s, 5).ok, false);
+    s.landing.outcome = 'clean'; assert.ok(!codes(s).includes('landingAbort')); assert.equal(M.validatePhase(s, 5).ok, true);
+  });
+  await t.test('siteMismatch / earthHidden / lowHover warnings', () => {
+    const s = atSite(robotOneWay({ question: 'made', flight: { margin: 0 } }), 'southPole'); s.design.power = 'rps';
+    for (const c of ['siteMismatch', 'earthHidden', 'lowHover']) assert.equal(sev(s, c), 'warn', c);
+    assert.ok(!codes(s).includes('nightDeath'));
+    assert.equal(M.validatePhase(s, 5).ok, true);
+    const g = atSite(robotOneWay({ question: 'made', flight: { margin: 0.2 } }), 'tranquility');
+    for (const c of ['siteMismatch', 'earthHidden', 'lowHover']) assert.ok(!codes(g).includes(c), c);
+  });
+  await t.test('nightDeath warning', () => {
+    const s = atSite(robotOneWay(), 'tranquility'); s.design.power = 'solarSmall';
+    assert.equal(sev(s, 'nightDeath'), 'warn');
+    s.design.power = 'rps'; assert.ok(!codes(s).includes('nightDeath'));
+  });
+  await t.test('suitCold warning', () => {
+    const s = atSite(crewedFull({ question: 'water' }), 'southPole'); s.crew.suit = 'light';
+    assert.equal(sev(s, 'suitCold'), 'warn');
+    s.crew.suit = 'lunar'; assert.ok(!codes(s).includes('suitCold'));
+  });
+});
+
+test('sanitizeState: phases 4 and 5', async (t) => {
+  await t.test('keeps valid comms/site/landing', () => {
+    const raw = robotOneWay({ site: 'southPole', landing: { seed: 42, outcome: 'rough' } });
+    const s = M.sanitizeState(raw);
+    assert.deepEqual(s.comms, { link: 'sband', dish: 'dsn34' }); assert.equal(s.site, 'southPole');
+    assert.deepEqual(s.landing, { seed: 42, outcome: 'rough' });
+  });
+  await t.test('drops invalid ids, non-integer seed, landing without site', () => {
+    const bad = M.sanitizeState(robotOneWay({ comms: { link: 'wifi', dish: 'dsn99' }, site: 'mars' }));
+    assert.deepEqual(bad.comms, { link: null, dish: null }); assert.equal(bad.site, null); assert.equal(bad.landing, null);
+    assert.equal(M.sanitizeState(robotOneWay({ site: 'descartes', landing: { seed: 1.5, outcome: 'clean' } })).landing, null);
+    assert.equal(M.sanitizeState(robotOneWay({ landing: { seed: 3, outcome: 'clean' } })).landing, null);
+    assert.equal(M.sanitizeState(robotOneWay({ site: 'descartes', landing: { seed: 3, outcome: 'explode' } })).landing.outcome, null);
+    assert.equal(M.sanitizeState(robotOneWay({ comms: 'ka' })).comms, null);
   });
 });

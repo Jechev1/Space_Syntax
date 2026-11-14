@@ -49,6 +49,12 @@
     apollo11: { title: 'NASA — Apollo 11 Mission Report (PDF)', url: 'https://www.nasa.gov/wp-content/uploads/static/apollo50th/pdf/A11_MissionReport.pdf' },
     apollo17: { title: 'NASA — Apollo 17 mission details', url: 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' },
     artemisFaq: { title: 'NASA — FAQ: Artemis campaign (crew transfer to the lander)', url: 'https://www.nasa.gov/missions/artemis/faq-nasas-artemis-campaign-and-recent-updates/' },
+    dsn: { title: 'NASA — Deep Space Network', url: 'https://www.nasa.gov/communicating-with-missions/dsn/' },
+    jplArtemisNet: { title: 'NASA JPL — Networks keeping Artemis II connected', url: 'https://www.jpl.nasa.gov/news/networks-keeping-nasas-artemis-ii-mission-connected/' },
+    o2o: { title: 'NASA — O2O laser communications (up to 260 Mbps)', url: 'https://www.nasa.gov/goddard/esc/exploration-and-space-communications-o2o' },
+    lunarComms: { title: 'NASA NTRS — Lunar Communications and Navigation Architecture (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20230016359/downloads/Lunar%20Communications%20and%20Navigation%20Architecture.pdf' },
+    alsj11: { title: 'Apollo Lunar Surface Journal — Apollo 11 landing', url: 'https://apollojournals.org/alsj/a11/a11.landing.html' },
+    diviner: { title: 'NASA — LRO Diviner: temperature variation on the Moon (PDF)', url: 'https://science.nasa.gov/wp-content/uploads/2024/01/lrolitho7temperaturevariation27may2014.pdf' },
     bvad: { title: 'NASA — Life Support Baseline Values and Assumptions (BVAD) Rev2, 2022 (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20210024855/downloads/BVAD_2.15.22-final.pdf' },
     issWater: { title: 'NASA — Space Station water recovery milestone (98%)', url: 'https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/' },
     axemu: { title: 'NASA — Commercial spacesuit providers (AxEMU)', url: 'https://www.nasa.gov/suits-and-rovers/commercial-spacesuit-providers/' },
@@ -83,6 +89,14 @@
     apolloTransit: { text: 'Apollo 11 took about 76 hours to reach lunar orbit — a little over 3 days.', src: 'apollo11' },
     apollo17Stay: { text: 'Apollo 17 astronauts spent 75 hours on the Moon, the longest Apollo surface stay.', src: 'apollo17' },
     dvReserve: { text: 'NASA\'s Orion-era plan budgeted 1,450 m/s to head home from the Moon, including a 15 m/s reserve for surprises.', src: 'cev' },
+    signalDelay: { text: 'Radio travels at the speed of light, about 300,000 km per second. A message to the Moon takes about 1.3 seconds, and the answer another 1.3.', src: 'moonfacts' },
+    dsnSites: { text: 'NASA\'s Deep Space Network has three sites spread around the world, in California, near Madrid and near Canberra. Each has a 70 m dish, a 26 m dish and several 34 m dishes.', src: 'dsn' },
+    blackout: { text: 'On Artemis II the crew lost contact for about 41 minutes while Orion was behind the Moon.', src: 'jplArtemisNet' },
+    hoverCost: { text: 'Hovering is expensive: every second you hover over the Moon costs 1.62 m/s of delta-v, just to fight gravity.', src: 'nssdc' },
+    apolloSites: { text: 'Apollo 11 found basalts rich in iron and titanium on the dark lava plains. Apollo 16 showed the bright highlands are anorthositic.', src: 'sampleScience' },
+    poleEarth: { text: 'From the lunar south pole, Earth is visible only about half of every month. NASA plans relay satellites to fill the gaps.', src: 'lunarComms' },
+    apollo11Fuel: { text: 'Armstrong flew past a boulder field near West Crater and landed with about 45 seconds of fuel left, including about 20 seconds kept for an abort.', src: 'alsj11' },
+    coldestCraters: { text: 'NASA\'s Diviner instrument measured about 25 K (−250 °C) inside shadowed lunar craters: the coldest temperature measured in the solar system.', src: 'diviner' },
     apolloStack: { text: 'Reality check: Apollo 17\'s Command/Service Module (30,320 kg) plus Lunar Module (16,456 kg) sent about 46.8 t toward the Moon.', src: 'nssdcLm' },
     rocketEq: { text: 'Every extra kilogram needs extra fuel — and that fuel needs fuel too. This is the rocket equation, and it is why mass is everything in spaceflight.', src: 'game' },
   };
@@ -227,8 +241,8 @@
 
   /* Budget ($M) by mission type and difficulty — game values. */
   const BUDGET = {
-    robotic: { cadet: 600, engineer: 450, director: 380 },
-    crewed: { cadet: 7500, engineer: 6200, director: 6150 },
+    robotic: { cadet: 650, engineer: 500, director: 420 },
+    crewed: { cadet: 7700, engineer: 6400, director: 6300 },
   };
   const DIFFICULTIES = [
     { id: 'cadet', title: 'Cadet', blurb: 'Bigger budget. Hints on.' },
@@ -263,6 +277,49 @@
     defaultMargin: 0,
   };
 
+  /* ---------------- PHASE 4: communications ---------------- */
+  const COMMS = {
+    // Data rates are with a 34 m DSN dish. A bigger dish scales the rate by (D / 34)², like antenna gain.
+    links: [
+      { id: 'sband', title: 'S-band radio', rateMbps: 2, contactHours: 8, src: 'game',
+        blurb: 'Simple and reliable. A trickle of data.',
+        robotic: { mass: 12, power: 40, cost: 10 }, crewed: { mass: 60, power: 150, cost: 30, where: 'orbiter' } },
+      { id: 'ka', title: 'Ka-band high-gain antenna', rateMbps: 100, contactHours: 2.5, src: 'lro',
+        blurb: 'Like NASA\'s LRO: 100 to 300 Mbps, up to about 900 Gb a day.',
+        robotic: { mass: 30, power: 110, cost: 40 }, crewed: { mass: 120, power: 300, cost: 90, where: 'orbiter' } },
+      { id: 'laser', title: 'Laser communications', rateMbps: 260, contactHours: 2.5, weatherRisk: true, src: 'o2o',
+        blurb: 'Light instead of radio, like NASA\'s O2O on Artemis II: up to 260 Mbps. Clouds over the ground station can block it.',
+        robotic: { mass: 28, power: 130, cost: 80 }, crewed: { mass: 90, power: 250, cost: 150, where: 'orbiter' } },
+    ], // masses, power, costs and contact hours are game values
+    dishes: [
+      { id: 'dsn34', title: '34 m DSN antenna', diameter: 34, cost: { robotic: 5, crewed: 20 }, src: 'dsn', blurb: 'The everyday workhorse of the Deep Space Network.' },
+      { id: 'dsn70', title: '70 m DSN antenna', diameter: 70, cost: { robotic: 15, crewed: 60 }, src: 'dsn', blurb: 'The biggest dish: about 4× the signal, but its time is precious.' },
+    ], // costs are game values
+    baseDiameter: 34,
+    blackoutMin: 41,               // minutes out of contact while Orion passed behind the Moon on Artemis II (src: jplArtemisNet)
+    perigeeKm: 363300, apogeeKm: 405500, // NSSDC Moon fact sheet (src: nssdc)
+    dataPerDay: { camera: 300, spectrometer: 40, neutron: 5, sampler: 0, crewVideo: 50 }, // Gb per day — game values
+  };
+
+  /* ---------------- PHASE 5: landing ---------------- */
+  const SITES = [
+    { id: 'tranquility', title: 'Sea of Tranquility (Apollo 11)', terrain: 'Mare (dark lava plain)', rock: 'Basalt rich in iron and titanium, about 3.7 billion years old',
+      darkHours: 354, lightHours: 354, hazard: 1, hoverNeed: 20, bestFor: ['made', 'age'], earthView: 'always', src: 'sampleScience',
+      lola: 'Flat, gentle slopes', lroc: 'Few boulders', diviner: 'About 127 °C at noon, −173 °C at night' },
+    { id: 'descartes', title: 'Descartes Highlands (Apollo 16)', terrain: 'Highlands (bright, old crust)', rock: 'Impact breccias of the bright anorthositic crust, about 3.8 to 4.2 billion years old',
+      darkHours: 354, lightHours: 354, hazard: 2, hoverNeed: 35, bestFor: ['made'], earthView: 'always', src: 'sampleScience',
+      lola: 'Rolling hills, steeper slopes', lroc: 'Many boulders and craters', diviner: 'About 127 °C at noon, −173 °C at night' },
+    { id: 'southPole', title: 'South Pole crater rim', terrain: 'Polar (near shadowed craters)', rock: 'Regolith, with water ice hidden in permanently shadowed craters nearby',
+      darkHours: 100, lightHours: 600, hazard: 3, hoverNeed: 50, bestFor: ['water'], earthView: 'intermittent', coldShadow: true, src: 'moonfacts',
+      lola: 'Steep crater rims, long shadows', lroc: 'Hard to see: the Sun is always low', diviner: 'Shadowed craters reach about 25 K (−250 °C), among the coldest places measured in the solar system' },
+  ]; // hazard, hoverNeed (seconds of hovering to dodge hazards) and lightHours at the pole are game values
+  const LANDING = {
+    baseHoverSec: 10,            // hover time already built into the descent budget — game value
+    needSpread: 0.6,             // needed hover time varies ±30% around the site value — game value
+    roughFraction: 0.6,          // with at least 60% of the needed hover time you land, but rough — game value
+    difficultyFactor: { cadet: 0.5, engineer: 1, director: 1.2 },
+  };
+
   /* ---------------- Random events (seeded, data-driven) ----------------
    * effect ops understood by the model: massGrowth (fraction of hardware), extraCost ($M), risk (+n), extraDays (+n)
    */
@@ -288,7 +345,7 @@
   ];
   const EVENT_CHANCE = { cadet: 0.3, engineer: 0.6, director: 0.9 }; // per phase — game values
 
-  const DATA = { LIFE, FLIGHT, EVENTS, EVENT_CHANCE, CHARACTERS, SCENES, SCENE_ART, MOON, CONST, WATER_DENSITY, BATTERY, CHARACTER, SOURCES, FACTS, QUESTIONS, MEASURES, MISSION_TYPES, DV, ENGINE, BASE, SUBSYSTEMS, ROCKETS, BUDGET, DIFFICULTIES };
+  const DATA = { COMMS, SITES, LANDING, LIFE, FLIGHT, EVENTS, EVENT_CHANCE, CHARACTERS, SCENES, SCENE_ART, MOON, CONST, WATER_DENSITY, BATTERY, CHARACTER, SOURCES, FACTS, QUESTIONS, MEASURES, MISSION_TYPES, DV, ENGINE, BASE, SUBSYSTEMS, ROCKETS, BUDGET, DIFFICULTIES };
   if (typeof module !== 'undefined' && module.exports) module.exports = DATA;
   else root.SS_DATA = DATA;
 })(typeof window !== 'undefined' ? window : globalThis);
