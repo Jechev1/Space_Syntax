@@ -1,0 +1,14 @@
+{
+  "name": "space-syntax",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Browser game for teens: design a real Moon mission with NASA data and real math (NASA Space Apps 2026).",
+  "scripts": {
+    "test": "node --test",
+    "check": "node tools/check.js",
+    "balance": "node tools/balance.js",
+    "serve": "python tools/serve.py 8080",
+    "shots": "bash tools/shots.sh"
+  },
+  "engines": { "node": ">=20" }
+}

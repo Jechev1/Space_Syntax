@@ -1,0 +1,294 @@
+/* Space Syntax — game data for Phase 0 and Phase 1.
+ * RULE: every number is either a NASA-sourced fact (src: key into SOURCES)
+ * or a game value (src: 'game'). Game values are tuned for balance and are
+ * shown to players with a "Game value" chip. Never present a game value as fact.
+ */
+(function (root) {
+  'use strict';
+
+  /* Cast. Add a character = add an entry + drop its image in assets/characters/<id>.png
+   * (the lead also accepts assets/cat.png). Names are placeholders until the team decides. */
+  const CHARACTERS = [
+    { id: 'cat', name: 'Milo', role: 'Mission lead', img: 'assets/cat.png', alt: 'assets/characters/cat.png', lead: true },
+    // { id: 'engineer', name: '???', role: 'Spacecraft engineer', img: 'assets/characters/engineer.png' },
+    // { id: 'flight', name: '???', role: 'Flight dynamics', img: 'assets/characters/flight.png' },
+    // { id: 'science', name: '???', role: 'Science & comms', img: 'assets/characters/science.png' },
+  ];
+  const CHARACTER = CHARACTERS.find(c => c.lead);
+  /* Which scene (background art) each screen uses. The story starts on Earth at the launch site. */
+  const SCENES = {
+    start: 'space', intro: 'launch', f0: 'launch', f1a: 'launch', f1b: 'launch', f1done: 'launch',
+    // f2: 'ship' — spacecraft interior with oxygen, food and water (Phase 2)
+    // f3: 'trajectory' — Earth-to-Moon path with maneuver nodes (Phase 3)
+  };
+  const SCENE_ART = { space: 'assets/bg-space.jpg', launch: 'assets/bg-launch.jpg', ship: 'assets/bg-ship.jpg', trajectory: 'assets/bg-trajectory.jpg' };
+
+  const SOURCES = {
+    nssdc: { title: 'NASA NSSDC — Moon Fact Sheet', url: 'https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html' },
+    moonfacts: { title: 'NASA Science — Moon Facts', url: 'https://science.nasa.gov/moon/facts/' },
+    samples: { title: 'NASA JSC Curation — Lunar Samples', url: 'https://curator.jsc.nasa.gov/lunar/' },
+    sampleScience: { title: 'NASA JSC — Lunar Sample Science Today', url: 'https://curator.jsc.nasa.gov/education/lpetss/sciencetoday.cfm' },
+    lro: { title: 'NASA Science — LRO Spacecraft and Instruments', url: 'https://science.nasa.gov/mission/lro/spacecraft-and-instruments/' },
+    webbGame: { title: 'NASA — Webb "Build It Yourself" game', url: 'https://science.nasa.gov/mission/webb/game-build-it-yourself/' },
+    sciMissions: { title: 'NASA — Design and Develop Science Missions (PDF)', url: 'https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf' },
+    seHandbook: { title: 'NASA Systems Engineering Handbook, 3.0 Life Cycle', url: 'https://www.nasa.gov/reference/3-0-nasa-program-project-life-cycle/' },
+    hvit: { title: 'NASA JSC HVIT — Shield Development', url: 'https://hvit.jsc.nasa.gov/shield-development/' },
+    finckenor: { title: 'NASA MSFC — Materials for Spacecraft (Finckenor, PDF)', url: 'https://ntrs.nasa.gov/api/citations/20160013391/downloads/20160013391.pdf' },
+    rps: { title: 'NASA NTRS — Radioisotope Power Systems for Extended Lunar Science (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20180004489/downloads/20180004489.pdf' },
+    lunarPower: { title: 'NASA NTRS — Power and Energy for the Lunar Surface (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20220005893/downloads/Power%20and%20Energy%20for%20the%20Lunar%20Surface.pdf' },
+    mmrtg: { title: 'NASA RPS — Radioisotope Power Systems FAQ', url: 'https://science.nasa.gov/planetary-science/programs/radioisotope-power-systems/faq/' },
+    mmrtgSheet: { title: 'NASA — MMRTG Fact Sheet (PDF)', url: 'https://mars.nasa.gov/files/mep/MMRTG_FactSheet_update_10-2-13.pdf' },
+    esaEsm: { title: 'ESA — European Service Module power', url: 'https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Orion/European_Service_Module_Power' },
+    nssdcCsm: { title: 'NASA NSSDC — Apollo 17 Command and Service Module', url: 'https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-096A' },
+    nssdcLm: { title: 'NASA NSSDC — Apollo 17 Lunar Module', url: 'https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-096C' },
+    apolloWater: { title: 'NASA NTRS — Apollo experience report: potable water system', url: 'https://ntrs.nasa.gov/citations/19730016147' },
+    spsIsp: { title: 'NASA NTRS — Apollo Service Propulsion System (Isp 314.5 s)', url: 'https://ntrs.nasa.gov/citations/20100027319' },
+    techport: { title: 'NASA TechPort — High-energy Li-ion cells', url: 'https://techport.nasa.gov/projects/16723' },
+    nightPower: { title: 'NASA NTRS — Power beaming for small lunar landers (50 W night survival)', url: 'https://ntrs.nasa.gov/api/citations/20230018143/downloads/PowerBeamingFromLunarOrbitForSmallScienceLanders.pdf' },
+    nist: { title: 'NIST — Newtonian constant of gravitation', url: 'https://physics.nist.gov/cgi-bin/cuu/Value?bg' },
+    apollo11: { title: 'NASA — Apollo 11 Mission Report (PDF)', url: 'https://www.nasa.gov/wp-content/uploads/static/apollo50th/pdf/A11_MissionReport.pdf' },
+    apollo17: { title: 'NASA — Apollo 17 mission details', url: 'https://www.nasa.gov/missions/apollo/apollo-17-mission-details/' },
+    artemisFaq: { title: 'NASA — FAQ: Artemis campaign (crew transfer to the lander)', url: 'https://www.nasa.gov/missions/artemis/faq-nasas-artemis-campaign-and-recent-updates/' },
+    bvad: { title: 'NASA — Life Support Baseline Values and Assumptions (BVAD) Rev2, 2022 (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20210024855/downloads/BVAD_2.15.22-final.pdf' },
+    issWater: { title: 'NASA — Space Station water recovery milestone (98%)', url: 'https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/' },
+    axemu: { title: 'NASA — Commercial spacesuit providers (AxEMU)', url: 'https://www.nasa.gov/suits-and-rovers/commercial-spacesuit-providers/' },
+    radiation: { title: 'NASA Science — Protecting astronauts from radiation at the Moon', url: 'https://science.nasa.gov/science-research/heliophysics/how-nasa-will-protect-astronauts-from-space-radiation-at-the-moon/' },
+    artemis2: { title: 'NASA — Artemis II crew returns (Apr 10, 2026)', url: 'https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/' },
+    sls: { title: 'NASA — Space Launch System', url: 'https://www.nasa.gov/reference/space-launch-system/' },
+    oig: { title: 'NASA OIG — Artemis program cost report IG-22-003 (PDF)', url: 'https://oig.nasa.gov/docs/IG-22-003.pdf' },
+    esm: { title: 'NASA — European Service Module', url: 'https://www.nasa.gov/reference/european-service-module/' },
+    cev: { title: 'NASA JSC — CEV Trajectory Design for Lunar Missions (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20080015975/downloads/20080015975.pdf' },
+    altair: { title: 'NASA MSFC — Altair Descent and Ascent Trajectory Design (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20100035768/downloads/20100035768.pdf' },
+    ascent: { title: 'NASA — Lunar Ascent and Rendezvous Trajectory Design (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20080009584/downloads/20080009584.pdf' },
+    mdl: { title: 'NASA Goddard — Mission Design Lab', url: 'https://etd.gsfc.nasa.gov/capabilities/integrated-design-center/mission-design-lab/' },
+  };
+
+  /* Short facts shown in "Did you know?" chips. */
+  const FACTS = {
+    density: { text: 'The Moon\'s average density is 3,344 kg/m³ — more than 3 times denser than water (1,000 kg/m³). That is rock-and-metal territory.', src: 'nssdc' },
+    crust: { text: 'NASA says the lunar crust is mostly oxygen, silicon, magnesium, iron, calcium and aluminum, plus small amounts of titanium, uranium, thorium, potassium and hydrogen.', src: 'moonfacts' },
+    distance: { text: 'The Moon is on average 384,400 km away. Do the math: 384,400 km ÷ 299,792 km/s ≈ 1.3 seconds for light to get there.', src: 'moonfacts' },
+    temps: { text: 'The lunar surface hits about 127 °C in sunlight and drops to about −173 °C in the dark.', src: 'moonfacts' },
+    apolloSamples: { text: 'Apollo astronauts brought back 382 kg of Moon rocks and soil — about 2,200 samples from six sites (1969–1972).', src: 'samples' },
+    lunaSamples: { text: 'Three robotic Soviet Luna probes returned about 300 g of lunar soil in total, from three more sites.', src: 'samples' },
+    lro: { text: 'NASA\'s Lunar Reconnaissance Orbiter weighs about 1,000 kg and uses about 400 W. Its science payload capacity is only about 100 kg and 100 W — every gram counts.', src: 'lro' },
+    lifecycle: { text: 'NASA projects start in "Pre-Phase A": define what you want to learn before you design any hardware.', src: 'seHandbook' },
+    requirements: { text: 'At NASA, science goals decide the design. Your question picks the instruments — not the other way around.', src: 'sciMissions' },
+    whipple: { text: 'A Whipple shield puts a thin "sacrificial" bumper in front of the wall. A tiny impactor shatters on it, so the shield protects with less mass than a thick solid plate.', src: 'hvit' },
+    composite: { text: 'Plot twist: the Space Station chose graphite-epoxy racks to save weight, but NASA reports the savings "evaporated" once all the requirements were added. Lighter on paper is not always lighter in real life.', src: 'finckenor' },
+    night: { text: 'A night at the lunar equator lasts about 354 hours (around 14 Earth days). Near the south pole some sites have at most about 100 hours of darkness (NASA lunar power study).', src: 'rps' },
+    slsCap: { text: 'NASA\'s SLS rocket can send more than 27 t to the Moon (Block 1), 38 t (Block 1B) and up to 46 t to deep space (Block 2).', src: 'sls' },
+    bvadDaily: { text: 'NASA plans for each astronaut to use 0.895 kg of oxygen, 0.800 kg of dry food and 3.217 kg of drinking water every day.', src: 'bvad' },
+    waterRecovery: { text: 'In 2023 the Space Station reached 98% water recovery: crews drink recycled sweat and urine — after serious cleaning.', src: 'issWater' },
+    apolloTransit: { text: 'Apollo 11 took about 76 hours to reach lunar orbit — a little over 3 days.', src: 'apollo11' },
+    apollo17Stay: { text: 'Apollo 17 astronauts spent 75 hours on the Moon, the longest Apollo surface stay.', src: 'apollo17' },
+    dvReserve: { text: 'NASA\'s Orion-era plan budgeted 1,450 m/s to head home from the Moon, including a 15 m/s reserve for surprises.', src: 'cev' },
+    apolloStack: { text: 'Reality check: Apollo 17\'s Command/Service Module (30,320 kg) plus Lunar Module (16,456 kg) sent about 46.8 t toward the Moon.', src: 'nssdcLm' },
+    rocketEq: { text: 'Every extra kilogram needs extra fuel — and that fuel needs fuel too. This is the rocket equation, and it is why mass is everything in spaceflight.', src: 'game' },
+  };
+
+  /* ---------------- PHASE 0 ---------------- */
+  const QUESTIONS = [
+    { id: 'made', icon: '🪨', title: 'What is the surface made of?', blurb: 'Cheese is made of fats and proteins (carbon-based). Rock is made of minerals. Chemistry can tell them apart.', bestMeasure: 'chem' },
+    { id: 'water', icon: '💧', title: 'Is there water ice?', blurb: 'NASA has found signs of water ice in permanently shadowed craters near the poles.', bestMeasure: 'chem', src: 'moonfacts' },
+    { id: 'age', icon: '⏳', title: 'How old is the surface?', blurb: 'Labs on Earth can date rocks. Apollo 11 basalts are about 3.7 billion years old.', bestMeasure: 'sample', src: 'sampleScience' },
+  ];
+
+  const MEASURES = [
+    { id: 'image', icon: '📷', title: 'Take pictures', strength: 1, strengthLabel: 'Clue', blurb: 'Color and texture are a hint, but cheese and rock can look alike from far away.', unlocks: ['camera'] },
+    { id: 'chem', icon: '🧪', title: 'Measure the chemistry', strength: 2, strengthLabel: 'Good proof', blurb: 'An instrument reads which elements are there. Cheese is full of carbon; lunar rock is full of oxygen and silicon.', unlocks: ['camera', 'spectrometer', 'neutron'] },
+    { id: 'sample', icon: '📦', title: 'Bring samples home', strength: 3, strengthLabel: 'Strongest proof', blurb: 'Labs on Earth can run every test. But you must carry the samples back — and that costs a lot of fuel.', unlocks: ['camera', 'spectrometer', 'neutron', 'sampler'] },
+  ];
+
+  const MISSION_TYPES = [
+    { id: 'robotic', icon: '🤖', title: 'Robotic mission', blurb: 'Cheaper and no risk to people. Robots carry fewer tools and bring back much smaller samples.', fact: 'lunaSamples' },
+    { id: 'crewed', icon: '👩‍🚀', title: 'Crewed mission', blurb: 'Astronauts can explore and collect far more, but you must keep them alive and bring them home.', fact: 'apolloSamples' },
+  ];
+
+  /* ---------------- REAL MATH CONSTANTS ---------------- */
+  const MOON = { mass: 7.346e22, radiusKm: 1737.4, density: 3344, gravity: 1.62, distanceKm: 384400, src: 'nssdc' };
+  const CONST = { G: 6.674e-11, c: 299792.458 /* km/s, exact by definition */ };
+  const WATER_DENSITY = 1000; // kg/m³ — by definition of the kilogram/litre, common knowledge
+  /* Battery sizing: energy E = P × t, battery mass = E / specific energy */
+  const BATTERY = {
+    specificEnergy: 150, // Wh/kg pack level; NASA cites ~245 Wh/kg best cells (techport), packs ~150-196
+    survivalPower: 50,   // W night survival for a small lander, NASA design study (nightPower)
+    src: 'nightPower',
+  };
+
+  /* ---------------- PHYSICS (simplified) ----------------
+   * Delta-v per maneuver (m/s). Values from NASA Constellation-era studies.
+   * TLI is performed by the rocket's upper stage, so rocket capacity is quoted as "mass to TLI".
+   */
+  const DV = {
+    tli: { value: 3150, src: 'cev', label: 'Trans-lunar injection (rocket upper stage)' },
+    loi: { value: 950, src: 'altair', label: 'Lunar orbit insertion (NASA range 890–950)' },
+    descent: { value: 2074, src: 'altair', label: 'Powered descent to the surface' },
+    ascent: { value: 1833, src: 'ascent', label: 'Ascent from the surface to lunar orbit' },
+    tei: { value: 1450, src: 'cev', label: 'Trans-Earth injection (head home)' },
+    direct: { value: 2600, src: 'nssdc', label: 'Straight home from the surface: lunar escape speed 2,380 m/s (NSSDC) + ~220 m/s losses (game value)' },
+  };
+  const ENGINE = {
+    isp: 314,          // s — Apollo Service Propulsion System, 314.5 s (src: spsIsp)
+    g0: 9.80665,       // m/s² standard gravity (definition)
+    tankFraction: 0.08 // tanks + plumbing as a fraction of propellant mass — game value
+  };
+
+  /* Base hardware that always flies (kg, $M). Game values, scaled so an
+   * Apollo-style stack lands near the real Apollo 17 mass (46.8 t toward the Moon). */
+  const BASE = {
+    robotic: {
+      lander: { label: 'Lander core (computer, radio, engines)', mass: 250, cost: 150, power: 100 },
+      returnCapsule: { label: 'Sample return capsule + 0.5 kg samples', mass: 40.5, cost: 60 },
+    },
+    crewed: {
+      capsule: { label: 'Crew capsule with heat shield', mass: 3800, cost: 1000, costSrc: 'oig', power: 0 },
+      serviceModule: { label: 'Service module (engines, structure)', mass: 3150, cost: 300, power: 0 },
+      ascentCabin: { label: 'Lander ascent cabin', mass: 1500, cost: 700 },
+      descentStage: { label: 'Lander descent stage', mass: 1300, cost: 800 },
+      crewAllowance: { label: 'Crew & supplies (sized in Phase 2)', mass: 600, cost: 0 },
+      samples: { label: 'Sample allowance (Apollo 17 brought ~110 kg)', mass: 100, cost: 0 },
+      power: 900, // W baseline for avionics + life support (game value)
+    },
+  };
+
+  /* Phase 1 subsystems. Each option has values per mission type.
+   * mass in kg, power in W (+ = consumes, gen = generates), cost in $M.
+   * For crewed missions "where" says which vehicle carries it:
+   *   orbiter = capsule + service module (stays in lunar orbit, goes home)
+   *   ascent  = lander cabin (goes down AND back up)
+   *   descent = lander base (stays on the Moon)
+   *   split   = half orbiter, half ascent
+   * structure options use "frac": structure mass as a fraction of base hardware.
+   */
+  const SUBSYSTEMS = [
+    {
+      id: 'structure', icon: '🏗️', title: 'Structure', why: 'The skeleton of your spacecraft. Lighter materials cost more.',
+      fact: 'composite',
+      options: [
+        { id: 'aluminum', title: 'Aluminum alloy', blurb: 'Proven, cheap, a bit heavy.', robotic: { mass: 120, cost: 10 }, crewed: { frac: 0.18, cost: 150 }, src: 'finckenor' },
+        { id: 'composite', title: 'Graphite-epoxy composite', blurb: 'Lighter and stiff on paper, pricey to build. Savings can shrink in real designs.', robotic: { mass: 85, cost: 30 }, crewed: { frac: 0.13, cost: 450 }, src: 'game' },
+      ],
+    },
+    {
+      id: 'shield', icon: '🛡️', title: 'Micrometeoroid shield', why: 'Tiny rocks hit at several km/s. A good shield keeps holes out of your hull.',
+      fact: 'whipple',
+      options: [
+        { id: 'solid', title: 'Solid aluminum plate', blurb: 'The "brute force" approach: thick and heavy.', protection: 2, robotic: { mass: 60, cost: 3 }, crewed: { mass: 700, cost: 30, where: 'orbiter' }, src: 'hvit' },
+        { id: 'whipple', title: 'Whipple shield', blurb: 'A thin bumper in front of the wall. Same protection, less mass.', protection: 3, robotic: { mass: 30, cost: 10 }, crewed: { mass: 350, cost: 90, where: 'orbiter' }, src: 'hvit' },
+        { id: 'stuffed', title: 'Stuffed Whipple (Nextel + Kevlar)', blurb: 'Extra fabric layers inside. Best protection per kg, highest cost.', protection: 4, robotic: { mass: 22, cost: 20 }, crewed: { mass: 250, cost: 180, where: 'orbiter' }, src: 'hvit' },
+      ],
+    },
+    {
+      id: 'thermal', icon: '🌡️', title: 'Thermal control', why: 'From about 127 °C in sunlight to about −173 °C in the dark. Your electronics must survive both.',
+      fact: 'temps',
+      options: [
+        { id: 'passive', title: 'Passive (blankets + coatings)', blurb: 'Multi-layer blankets and reflective paint. Light, no power.', robotic: { mass: 25, cost: 5, power: 0 }, crewed: { mass: 300, cost: 40, power: 0, where: 'split' }, src: 'moonfacts' },
+        { id: 'active', title: 'Active (heaters + radiators)', blurb: 'Pumps heat around. Handles extremes better, but uses power.', robotic: { mass: 45, cost: 20, power: 40 }, crewed: { mass: 450, cost: 120, power: 600, where: 'split' }, nightBonus: true, src: 'moonfacts' },
+      ],
+    },
+    {
+      id: 'power', icon: '⚡', title: 'Power', why: 'Everything needs electricity. The Sun disappears during the long lunar night.',
+      fact: 'night',
+      options: [
+        { id: 'solarSmall', only: 'robotic', title: 'Solar panels + small battery', blurb: 'Light and cheap. The battery covers only a few hours — your lander sleeps at night and may not wake up.', robotic: { arrayMass: 50, batteryHours: 8, cost: 15, gen: 450, nightHours: 0 }, src: 'lunarPower' },
+        { id: 'solarBig', only: 'robotic', title: 'Solar panels + big battery', blurb: 'Can ride out about 100 hours of dark — enough for some polar sites.', robotic: { arrayMass: 50, batteryHours: 100, cost: 30, gen: 450, nightHours: 100 }, src: 'lunarPower' },
+        { id: 'rps', only: 'robotic', title: 'Solar + radioisotope generator', blurb: 'A nuclear battery like NASA\'s MMRTG (about 110 W, about 45 kg) keeps you powered all night. Very expensive.', robotic: { arrayMass: 50, batteryHours: 8, rpsMass: 45, cost: 110, gen: 450, nightGen: 110, nightHours: 9999 }, src: 'mmrtgSheet' },
+        { id: 'crewSolar', only: 'crewed', title: 'Solar arrays', blurb: 'Wings like Orion\'s service module (4 wings, 11.2 kW). Light, but no Sun = no power.', crewed: { mass: 500, cost: 80, gen: 2500, where: 'orbiter' }, src: 'esaEsm' },
+        { id: 'crewSolarBat', only: 'crewed', title: 'Solar arrays + big batteries', blurb: 'Batteries keep the orbiter powered when it passes through the Moon\'s shadow.', crewed: { mass: 900, cost: 150, gen: 2500, where: 'orbiter' }, src: 'esaEsm' },
+        { id: 'fuelCells', only: 'crewed', title: 'Fuel cells (Apollo-style)', blurb: 'Hydrogen + oxygen make power — and drinking water as a bonus. Heavy.', crewed: { mass: 1100, cost: 200, gen: 3000, where: 'orbiter' }, src: 'nssdcCsm' },
+      ],
+    },
+    {
+      id: 'science', icon: '🔬', title: 'Science payload', why: 'Your instruments answer your question. Pick at least one that matches your Phase 0 measurement.',
+      fact: 'lro', multi: true,
+      options: [
+        { id: 'camera', title: 'High-res camera', blurb: 'Shape, color and texture. Inspired by LRO\'s LROC.', strength: 1, robotic: { mass: 12, power: 15, cost: 25 }, crewed: { mass: 15, power: 15, cost: 25, where: 'descent' }, src: 'lro' },
+        { id: 'spectrometer', title: 'Composition spectrometer', blurb: 'Reads which elements are in the soil. Cheese vs. rock, settled.', strength: 2, robotic: { mass: 18, power: 25, cost: 40 }, crewed: { mass: 20, power: 25, cost: 40, where: 'descent' }, src: 'moonfacts' },
+        { id: 'neutron', title: 'Neutron detector', blurb: 'Finds hydrogen, a sign of water ice. Inspired by LRO\'s LEND.', strength: 2, forWater: true, robotic: { mass: 22, power: 15, cost: 30 }, crewed: { mass: 25, power: 15, cost: 30, where: 'descent' }, src: 'lro' },
+        { id: 'sampler', title: 'Sample collector', blurb: 'Scoop + sealed box to bring soil home. The strongest proof.', strength: 3, robotic: { mass: 30, power: 40, cost: 35 }, crewed: { mass: 40, power: 0, cost: 20, where: 'ascent' }, src: 'samples' },
+      ],
+    },
+  ];
+
+  /* Rockets. Capacity = mass the rocket can send toward the Moon (to TLI). */
+  const ROCKETS = {
+    robotic: [
+      { id: 'small', title: 'Small launcher', capacity: 1500, cost: 60, capSrc: 'game', costSrc: 'game', blurb: 'Commercial-class rocket. Cheap, but tiny capacity.' },
+      { id: 'medium', title: 'Medium launcher', capacity: 4000, cost: 120, capSrc: 'game', costSrc: 'game', blurb: 'Commercial-class workhorse.' },
+      { id: 'heavy', title: 'Heavy launcher', capacity: 12000, cost: 250, capSrc: 'game', costSrc: 'game', blurb: 'Commercial heavy-lift class. Lots of room.' },
+    ],
+    crewed: [
+      { id: 'sls1', title: 'SLS Block 1', capacity: 27000, cost: 2200, capSrc: 'sls', costSrc: 'oig', blurb: 'Flew Artemis I and Artemis II. More than 27 t to the Moon.', factSrc: 'artemis2' },
+      { id: 'sls1b', title: 'SLS Block 1B', capacity: 38000, cost: 2500, capSrc: 'sls', costSrc: 'game', blurb: 'Upgraded upper stage. 38 t to the Moon.' },
+      { id: 'sls2', title: 'SLS Block 2', capacity: 46000, cost: 2800, capSrc: 'sls', costSrc: 'game', blurb: 'Most powerful version. Up to 46 t to deep space.' },
+    ],
+  };
+
+  /* Budget ($M) by mission type and difficulty — game values. */
+  const BUDGET = {
+    robotic: { cadet: 600, engineer: 450, director: 380 },
+    crewed: { cadet: 7500, engineer: 6200, director: 6150 },
+  };
+  const DIFFICULTIES = [
+    { id: 'cadet', title: 'Cadet', blurb: 'Bigger budget. Hints on.' },
+    { id: 'engineer', title: 'Engineer', blurb: 'Tight budget. The real challenge.' },
+    { id: 'director', title: 'Flight Director', blurb: 'Every dollar counts.' },
+  ];
+
+  /* ---------------- PHASE 2: crew & life support ---------------- */
+  const LIFE = {
+    // Daily need per crew member (crew-day), NASA BVAD Rev2, Table 3-31 (nominal values)
+    perCrewDay: { o2: 0.895, food: 0.800, water: 3.217, src: 'bvad' },
+    crewMass: 82,        // kg, NASA BVAD Table 3-31 "standard 82 kg crewmember" (src: bvad)
+    transitDays: 3,      // days each way Earth→Moon: Apollo 11 entered lunar orbit ~76 h after launch (src: apollo11)
+    surfaceDays: 3,      // days on the surface: Apollo 17 stayed 75 h (src: apollo17); Phase 5 may change it
+    crewMin: 1, crewMax: 4,
+    daysMax: 30,
+    landingCrewMax: 2,   // NASA's planned split: 2 crew descend, the rest wait in Orion in lunar orbit (src: artemisFaq)
+    reserveOptions: [0, 0.2],
+    recycler: { title: 'Water recycler', mass: 300, power: 300, cost: 120, recovery: 0.98, src: 'issWater',
+      blurb: 'Cleans used water so the crew can drink it again. The Space Station recovers about 98% of its water.' }, // mass/power/cost: game values
+    suits: [
+      { id: 'light', title: 'Light EVA suit', mass: 90, evaHours: 4, cost: 20, shadowOk: false, blurb: 'Light and cheap. Short moonwalks, no deep-cold craters.' },
+      { id: 'lunar', title: 'Lunar suit (AxEMU-style)', mass: 125, evaHours: 8, cost: 50, shadowOk: true, src: 'axemu', blurb: 'Built for lunar dust and at least 2 h in shadowed craters as cold as 48 K.' },
+      { id: 'heavy', title: 'Heavy-duty suit', mass: 150, evaHours: 10, cost: 70, shadowOk: true, blurb: 'Extra protection and longest moonwalks. The heaviest.' },
+    ], // suit masses are game values: NASA has not published an official lunar-suit mass
+  };
+
+  /* ---------------- PHASE 3: flight plan ---------------- */
+  const FLIGHT = {
+    marginOptions: [0, 0.05, 0.10, 0.15, 0.20],         // extra delta-v carried as reserve
+    minMargin: { cadet: 0, engineer: 0.05, director: 0.10 }, // game rule; NASA's CEV TEI budget held a 15 m/s (~1%) propulsive reserve (src: cev)
+    defaultMargin: 0,
+  };
+
+  /* ---------------- Random events (seeded, data-driven) ----------------
+   * effect ops understood by the model: massGrowth (fraction of hardware), extraCost ($M), risk (+n), extraDays (+n)
+   */
+  const EVENTS = [
+    { id: 'massGrowth', phases: [1, 3], title: 'Mass growth!', src: 'seHandbook',
+      text: 'Engineers finished the detailed design and the hardware came out 5% heavier. NASA tracks this "mass growth" in every project.',
+      choices: [
+        { id: 'absorb', label: 'Accept it (+5% hardware mass)', effect: { massGrowth: 0.05 } },
+        { id: 'redesign', label: 'Pay engineers to slim it down', effectByType: { robotic: { extraCost: 25 }, crewed: { extraCost: 250 } } },
+      ] },
+    { id: 'solarStorm', phases: [3], crewedOnly: true, title: 'Solar storm warning', src: 'radiation',
+      text: 'The Sun is throwing out energetic particles. NASA plans for crews to build a shelter with the supplies they carry.',
+      choices: [
+        { id: 'shelter', label: 'Shelter behind food and water (lose 1 day)', effect: { extraDays: 1 } },
+        { id: 'continue', label: 'Keep working (higher risk)', effect: { risk: 1 } },
+      ] },
+    { id: 'launchSlip', phases: [3], title: 'Launch delay', src: 'game',
+      text: 'Bad weather at the launch site. The rocket waits on the pad and the team works overtime.',
+      choices: [
+        { id: 'wait', label: 'Wait for good weather (extra cost)', effectByType: { robotic: { extraCost: 10 }, crewed: { extraCost: 60 } } },
+        { id: 'go', label: 'Launch in marginal weather (higher risk)', effect: { risk: 1 } },
+      ] },
+  ];
+  const EVENT_CHANCE = { cadet: 0.3, engineer: 0.6, director: 0.9 }; // per phase — game values
+
+  const DATA = { LIFE, FLIGHT, EVENTS, EVENT_CHANCE, CHARACTERS, SCENES, SCENE_ART, MOON, CONST, WATER_DENSITY, BATTERY, CHARACTER, SOURCES, FACTS, QUESTIONS, MEASURES, MISSION_TYPES, DV, ENGINE, BASE, SUBSYSTEMS, ROCKETS, BUDGET, DIFFICULTIES };
+  if (typeof module !== 'undefined' && module.exports) module.exports = DATA;
+  else root.SS_DATA = DATA;
+})(typeof window !== 'undefined' ? window : globalThis);

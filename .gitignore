@@ -1,0 +1,6 @@
+# Team research docs contain private info — never commit
+*.docx
+~$*
+node_modules/
+.DS_Store
+Thumbs.db
