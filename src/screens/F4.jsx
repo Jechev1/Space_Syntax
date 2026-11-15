@@ -61,6 +61,11 @@ function F4Body() {
   const [editing, setEditing] = useState(false)
   useEffect(() => { if (!play.run) setEditing(false) }, [play.run])
   const compact = Boolean(play.run) && !editing
+  /*
+   * Two steps in the same panel, like the crew then suit choices of Phase 2: first the link that flies on
+   * board, then the dish on Earth that listens to it. Only one list shows at a time, so nothing scrolls.
+   */
+  const [pick, setPick] = useState(() => (state.comms && state.comms.link ? 'dish' : 'link'))
   const speech = f4Speech(state.difficulty, {
     need: model.fmt(plan.needGbPerDay),
     gb: model.fmt(plan.gbPerDay),
@@ -87,8 +92,12 @@ function F4Body() {
       <div className={styles.side}>
         <GlassPanel>
           <p className={scene.kicker}>Phase 4: Communications</p>
-          <h2 className={scene.title}>{compact ? 'Your link' : 'Choose a link'}</h2>
-          {compact ? <LinkSummary plan={plan} /> : (
+          <h2 className={scene.title}>
+            {compact ? 'Your link' : pick === 'dish' ? 'Step 2 · Dish on Earth' : 'Step 1 · Link on board'}
+          </h2>
+          {compact ? <LinkSummary plan={plan} /> : pick === 'dish' ? (
+            <DishChoices game={game} plan={plan} onChangeLink={() => setPick('link')} />
+          ) : (
             <>
               {/* Once a link is picked, the verdict line under the list repeats this need next to what it sends. */}
               {plan.link ? null : (
@@ -96,8 +105,7 @@ function F4Body() {
                   Your science makes <b>{model.fmt(model.dataNeedPerDay(state))} Gb a day</b>. Pick a link that sends at least that much.
                 </p>
               )}
-              <LinkChoices game={game} />
-              <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
+              <LinkChoices game={game} onPicked={() => setPick('dish')} />
             </>
           )}
           <LinkVerdict plan={plan} model={model} />
@@ -110,7 +118,7 @@ function F4Body() {
           </div>
         </GlassPanel>
         {editing ? null : (
-          <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" unitName="Hour" play={play} showMath={false} onMath={() => setMathOpen('run')} />
+          <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" unitName="Hour" noReplay play={play} showMath={false} onMath={() => setMathOpen('run')} />
         )}
       </div>
       {runRes && runRes.ready ? (
@@ -141,7 +149,7 @@ function F4Body() {
         </div>
       </div>
       <Modal open={help} variant="info" title="Phase 4: Communications" onClose={() => setHelp(false)}>
-        <p>Phase 4 picks how your spacecraft talks to Earth: a radio link on board and an antenna of NASA's Deep Space Network on the ground.</p>
+        <p>Phase 4 picks how your spacecraft talks to Earth. Two parts make the call: the link flies on board and sends the signal, and a dish of NASA's Deep Space Network listens for it on Earth.</p>
         <p>Your science makes data every day. The link has to send at least that much, or data piles up in the onboard buffer and is lost when it fills.</p>
         <p>A faster link or a bigger dish sends more, but adds power, mass and cost. Run the mission timeline to test it, then confirm the link before the launch.</p>
       </Modal>
@@ -209,7 +217,7 @@ function Globe({ frame }) {
   )
 }
 
-function LinkChoices({ game }) {
+function LinkChoices({ game, onPicked }) {
   const { state, data, model, setComms } = game
   const type = state.missionType
   const current = state.comms || {}
@@ -226,7 +234,7 @@ function LinkChoices({ game }) {
             className={styles.option}
             aria-pressed={current.link === link.id}
             title={link.blurb}
-            onClick={() => setComms({ link: link.id })}
+            onClick={() => { setComms({ link: link.id }); onPicked() }}
           >
             <span className={styles.num}>{index + 1}</span>
             <span className={styles.optionText}>
@@ -245,26 +253,46 @@ function LinkChoices({ game }) {
   )
 }
 
-function DishChoices({ game, laser }) {
+/*
+ * Step 2: the dish on Earth that listens to the spacecraft. The link from step 1 flies on board; this one
+ * stays home at a Deep Space Network site. A bigger dish catches more of the faint signal. Cards like the
+ * Phase 2 suits: a name, then what it gives.
+ */
+function DishChoices({ game, plan, onChangeLink }) {
   const { state, data, model, setComms } = game
   const current = state.comms || {}
+  const laser = Boolean(plan.link && plan.link.optical)
+  const name = plan.link ? (LINK_NAMES[plan.link.id] || plan.link.title) : ''
   return (
-    <div className={styles.dishes}>
-      <span className={styles.label}>Antenna</span>
-      {data.COMMS.dishes.map((dish) => (
-        <button
-          key={dish.id}
-          type="button"
-          className={styles.dish}
-          aria-pressed={current.dish === dish.id}
-          title={dish.blurb}
-          onClick={() => setComms({ dish: dish.id })}
-        >
-          {dish.diameter} m · ${model.fmt(dish.cost[state.missionType])}M
-        </button>
-      ))}
-      {laser ? <span className={styles.label}>A laser does not need the dish size</span> : null}
-    </div>
+    <>
+      <p className={styles.picked}>
+        <span>On board: <b>{name}</b></span>
+        <button type="button" className={styles.pill} onClick={onChangeLink}><span>Change link</span></button>
+      </p>
+      <p className={scene.note}>
+        {laser
+          ? 'A laser is caught by a telescope on Earth, so the dish size does not change it. Pick any dish.'
+          : 'A NASA Deep Space Network dish on Earth catches your signal. A bigger dish hears more data.'}
+      </p>
+      <div className={styles.dishCards}>
+        {data.COMMS.dishes.map((dish) => {
+          const gain = laser ? 1 : model.dishGain(dish.diameter)
+          return (
+            <button
+              key={dish.id}
+              type="button"
+              className={styles.dishCard}
+              aria-pressed={current.dish === dish.id}
+              title={dish.blurb}
+              onClick={() => setComms({ dish: dish.id })}
+            >
+              <b>{dish.diameter} m dish</b>
+              <span>{model.fmt(gain, 1)}× data · ${model.fmt(dish.cost[state.missionType])}M</span>
+            </button>
+          )
+        })}
+      </div>
+    </>
   )
 }
 
@@ -277,7 +305,7 @@ function LinkSummary({ plan }) {
   const name = LINK_NAMES[link.id] || link.title
   return (
     <p className={styles.summary}>
-      <span className={styles.summaryName}>{name}{plan.dish ? ` · ${plan.dish.diameter} m antenna` : ''}</span>
+      <span className={styles.summaryName}>{name}{plan.dish ? ` · ${plan.dish.diameter} m dish on Earth` : ''}</span>
       <span className={styles.optionMeta}>
         +{model.fmt(link[type].power)} W · +{model.fmt(link[type].mass)} kg · ${model.fmt(link[type].cost + (plan.dish ? plan.dish.cost[type] : 0))}M
       </span>

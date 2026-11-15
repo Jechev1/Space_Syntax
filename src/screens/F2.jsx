@@ -340,8 +340,9 @@ export function RunVerdict({ res, showMath, onMath }) {
 }
 
 /* Compact Play card: button, the latest event, then the verdict. The clock and live meters (children) sit in the panel,
-   or in a strip over the scene when strip is set. Shared with F4. */
-export function RunPanel({ title, eyebrow = 'Play', label, play, showMath, onMath, children, left = false, strip = false, unitName = 'Day' }) {
+   or in a strip over the scene when strip is set. Shared with F4. With noReplay the button hides once a run has finished
+   (it stays while running or blocked): to run again the player changes the design, which clears the run. */
+export function RunPanel({ title, eyebrow = 'Play', label, play, showMath, onMath, children, left = false, strip = false, unitName = 'Day', noReplay = false }) {
   const { run, events } = play
   const res = run && run.res
   const running = run && run.status === 'running'
@@ -357,9 +358,11 @@ export function RunPanel({ title, eyebrow = 'Play', label, play, showMath, onMat
       {strip && ready ? <div className={f2.shelf}>{eyebrow ? <p className={f2.clock}>{eyebrow}</p> : null}{clock}{children}</div> : null}
       <div className={`${f2.runPanel} ${left ? f2.runLeft : f2.runRight}`}>
         <GlassPanel eyebrow={strip && ready ? '' : eyebrow} title={title}>
-          <Button variant="outline" disabledReason={running ? 'Running...' : ''} onClick={() => play.play()}>
-            {run && run.status !== 'blocked' ? 'Play again' : label}
-          </Button>
+          {noReplay && run && (run.status === 'done' || run.status === 'decision') ? null : (
+            <Button variant="outline" disabledReason={running ? 'Running...' : ''} onClick={() => play.play()}>
+              {run && run.status !== 'blocked' ? 'Play again' : label}
+            </Button>
+          )}
           {run && run.status === 'blocked' ? (
             <ul className={f2.blockers}>{res.blockers.map((b) => <li key={b.code}>{b.message}</li>)}</ul>
           ) : null}

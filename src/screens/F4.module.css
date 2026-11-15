@@ -154,12 +154,6 @@ div.hud {
 
 /* Selected, per the visual rules: brighter border and a light filled number, no green. */
 .option[aria-pressed='true'],
-.dish[aria-pressed='true'] {
-  border-color: var(--line-bright);
-  box-shadow: 0 0 0 1px var(--line-bright);
-  background: var(--panel-solid);
-}
-
 .option[aria-pressed='true'] .num {
   border-color: var(--text);
   background: var(--text);
@@ -238,27 +232,60 @@ div.hud {
   font-size: var(--fs-chip);
 }
 
-.dishes {
+/* Step 2: the link already picked, with a way back to step 1. */
+.picked {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.picked b {
+  color: var(--text);
+  font-weight: var(--fw-title);
+}
+
+/* Dish cards, like the Phase 2 suit cards: a name, then what it gives. */
+.dishCards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.4em;
+}
+
+.dishCard {
+  display: grid;
+  gap: 0.15em;
+  padding: 0.5em 0.4em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dishCard span {
+  color: var(--text-dim);
+}
+
+.dishCard:hover {
+  border-color: var(--line-bright);
+}
+
+.dishCard[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
 .label {
   color: var(--text-dim);
   font-size: var(--fs-chip);
-}
-
-.dish {
-  padding: 0.25em 0.7em;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-chip);
-  background: transparent;
-  color: var(--text);
-  font-family: var(--font-ui);
-  font-size: var(--fs-chip);
-  cursor: pointer;
 }
 
 .warn {
