@@ -33,7 +33,7 @@ div.hud {
   text-align: left;
 }
 
-/* Left column: globe and ping */
+/* Left column: the globe */
 .left {
   position: absolute;
   top: 11%;
@@ -129,68 +129,6 @@ div.hud {
 
 .liveDot {
   display: inline-block;
-}
-
-.ping {
-  justify-items: center;
-  text-align: center;
-}
-
-.pingButton {
-  min-width: 70%;
-  padding: 0.35em 1em;
-  border: 1px solid var(--line-bright);
-  border-radius: var(--radius-btn);
-  background: transparent;
-  color: var(--text);
-  font-family: var(--font-ui);
-  font-size: var(--fs-body);
-  cursor: pointer;
-}
-
-.pingButton:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-.track {
-  position: relative;
-  width: 100%;
-  height: 4px;
-  overflow: hidden;
-  border-radius: var(--radius-chip);
-  background: var(--line);
-}
-
-.track i {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 18%;
-  border-radius: inherit;
-  background: var(--accent);
-  opacity: 0;
-}
-
-/* The pulse goes to the Moon and back in the real round-trip time. */
-.flying {
-  animation-name: roundTrip;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-  opacity: 1;
-}
-
-@keyframes roundTrip {
-  0% { left: 0; opacity: 1; }
-  50% { left: 82%; }
-  100% { left: 0; opacity: 1; }
-}
-
-.pingNote {
-  min-height: 1.3em;
-  color: var(--text-dim);
-  font-size: var(--fs-chip);
 }
 
 /* Right panel */
