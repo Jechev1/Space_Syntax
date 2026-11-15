@@ -1,0 +1,27 @@
+name: Deploy check
+
+# Vercel reports each deployment back to GitHub. When production is live,
+# open the real site and make sure the game loads. A red run means the live site needs a look.
+on: deployment_status
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    env:
+      SITE: https://spacesyntax.laubuilds.work
+    steps:
+      - name: Key pages respond
+        run: |
+          for path in / /inicio /f0 /f4 /f5b /f7 /lab /classic /js/model.js /js/sim.js; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 5 "$SITE$path")
+            echo "$code $path"
+            [ "$code" = "200" ] || { echo "::error::$SITE$path returned $code"; exit 1; }
+          done
+      - name: The game page is the React build
+        run: curl -s "$SITE/" | grep -q 'How far is up' || { echo "::error::Home page does not look like the game"; exit 1; }
