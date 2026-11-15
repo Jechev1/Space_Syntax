@@ -362,6 +362,7 @@
    */
   const SURFACE = {
     roboticHours: 6,          // h of surface operations for a robot in this game — game value
+    tailHoursRobotic: 24,     // h after the science ends for a robot to send what is left, one extra day — game value
     roughLandingPenalty: 1,   // h lost after a rough landing (checking the lander) — game value
     // crewed hours = one moonwalk with the Phase 2 suit (suit.evaHours) — game value
     bufferGb: 5,              // onboard data buffer before it must be sent to Earth — game value

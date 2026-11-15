@@ -152,3 +152,14 @@ test('p3: a careful margin scores better than a bloated one', () => {
   assert.ok(careful.score.value > bloated.score.value);
   assert.ok(careful.stars >= bloated.stars);
 });
+
+test('summary.marginLeft matches the margin event text', () => {
+  const M = require('../js/model.js'), SIM = require('../js/sim.js');
+  const f = require('../fixtures/f5a.robotic.json');
+  const r = SIM.simulate(f.state, 3, { seed: 7 });
+  assert.ok(r.ready && r.summary);
+  for (const k of ['pool', 'dvUsed', 'tcmUsed', 'marginLeft', 'marginLeftFrac']) assert.ok(Number.isFinite(r.summary[k]), k);
+  const ev = r.events.find(e => /of margin left/.test(e.text));
+  assert.ok(ev, 'margin event');
+  assert.ok(ev.text.includes(M.fmt(r.summary.marginLeft)), ev.text);
+});

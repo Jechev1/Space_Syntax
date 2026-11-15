@@ -91,6 +91,86 @@
     }
    ]
   },
+  "launchRows": {
+   "go": true,
+   "rows": [
+    {
+     "key": "goal",
+     "label": "Mission goal",
+     "ok": true,
+     "value": "What is the surface made of?",
+     "unit": null
+    },
+    {
+     "key": "spacecraft",
+     "label": "Spacecraft",
+     "ok": true,
+     "value": "SLS Block 2",
+     "unit": null
+    },
+    {
+     "key": "totalMass",
+     "label": "Total mass",
+     "ok": true,
+     "value": 44330.715575618575,
+     "unit": "kg"
+    },
+    {
+     "key": "deltaV",
+     "label": "Delta-v",
+     "ok": true,
+     "value": 6622.35,
+     "unit": "m/s"
+    },
+    {
+     "key": "crew",
+     "label": "Crew",
+     "ok": true,
+     "value": 4,
+     "unit": "people"
+    },
+    {
+     "key": "missionDays",
+     "label": "Mission days",
+     "ok": true,
+     "value": 10,
+     "unit": "days"
+    },
+    {
+     "key": "lifeSupport",
+     "label": "Life support",
+     "ok": true,
+     "value": "ok",
+     "unit": null
+    },
+    {
+     "key": "comms",
+     "label": "Comms",
+     "ok": true,
+     "value": "Ka-band high-gain antenna",
+     "unit": null
+    }
+   ]
+  },
+  "hud": {
+   "launchMass": 44330.715575618575,
+   "capacity": 46000,
+   "hardware": 13723.776000000002,
+   "fuel": 30606.939575618573,
+   "cost": 6235,
+   "budget": 7700,
+   "overBudget": false,
+   "powerNeed": 1240,
+   "powerGen": 2500,
+   "dvPlanned": 6622.35,
+   "dvRemaining": {
+    "planned": 6622.35,
+    "required": 6307
+   },
+   "dataNeedGbPerDay": 390,
+   "dataSentGb": 0,
+   "days": 10
+  },
   "evaluate": {
    "lines": [
     {

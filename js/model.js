@@ -899,6 +899,64 @@
     return { go: all.every(x => x.ok), phases: all, issues: all.flatMap(x => x.issues) };
   }
 
+  /** Delta-v still to fly. flown = burn keys already done (loi, descent, ascent, tei, direct). Null without a mission type. */
+  function dvRemaining(state, flown) {
+    if (!state.missionType) return null;
+    const done = new Set(flown || []);
+    const plan = flightPlanFor(state);
+    let planned = plan.dvPlanned, required = plan.dvRequired;
+    for (const b of plan.burns) if (done.has(b.key)) { planned -= b.dvPlanned; required -= b.dv; }
+    return { planned, required };
+  }
+  /** Mission length in hours. Crewed: the Phase 2 crew days. Robotic: transit, site science hours, then a downlink day. Null without a mission. */
+  function missionHours(state) {
+    if (state.missionType === 'crewed') { const l = lifeSupport(state); return l ? l.days * 24 : null; }
+    if (state.missionType !== 'robotic') return null;
+    const sr = siteReport(state);
+    return D.LIFE.transitDays * 24 + (sr ? sr.opsHours : D.SURFACE.roboticHours) + D.SURFACE.tailHoursRobotic;
+  }
+  /** Mission length in days, rounded the way the HUD shows it. */
+  function missionDays(state) {
+    const h = missionHours(state);
+    return h == null ? null : state.missionType === 'crewed' ? h / 24 : Math.round(h / 24);
+  }
+  /** Rows for the launch pad summary, raw values. Row ok is true when no block is left for that row. */
+  function launchRows(state) {
+    const G = launchReadiness(state), r = evaluate(state), crewed = state.missionType === 'crewed';
+    const bl = (ns, skip) => G.phases.filter(p => ns.includes(p.phase)).every(p => !p.issues.some(i => i.severity === 'block' && !(skip || []).includes(i.code)));
+    const heavy = G.phases.every(p => !p.issues.some(i => i.code === 'tooHeavy'));
+    const days = missionDays(state);
+    const q = D.QUESTIONS.find(x => x.id === state.question);
+    const link = state.comms && D.COMMS.links.find(x => x.id === state.comms.link);
+    const row = (key, label, ok, value, unit) => ({ key, label, ok, value, unit });
+    const rows = [
+      row('goal', 'Mission goal', bl([0]), q ? q.title : null, null),
+      row('spacecraft', 'Spacecraft', bl([1], ['tooHeavy']), r && r.rocket ? r.rocket.title : null, null),
+      row('totalMass', 'Total mass', heavy, r ? r.tli : null, 'kg'),
+      row('deltaV', 'Delta-v', bl([3], ['tooHeavy']), r ? r.dvPlanned : null, 'm/s'),
+      row('crew', 'Crew', bl([2], ['tooShort', 'tooHeavy']), crewed && state.crew ? state.crew.size : null, 'people'),
+      row('missionDays', 'Mission days', bl([2], ['noCrew', 'noSuit', 'tooHeavy']) && (!crewed || !G.phases[2].issues.some(i => i.code === 'tooShort')), days, 'days'),
+      row('lifeSupport', 'Life support', bl([2]), crewed ? 'ok' : 'notNeeded', null),
+      row('comms', 'Comms', bl([4]), link ? link.title : null, null),
+    ];
+    return { go: G.go, rows, G };
+  }
+  /** Everything the HUD bar shows, in one call. opts = { flown, dataSentGb }. Zeros or null before a mission type is set. */
+  function hud(state, opts) {
+    const o = opts || {}, r = evaluate(state);
+    const onSurface = !!(r && state.landing && state.site);
+    const dataSent = Number.isFinite(o.dataSentGb) ? o.dataSentGb : onSurface ? surfaceStatus(state).dataSentGb : 0;
+    return {
+      launchMass: r ? r.tli : 0, capacity: r && r.rocket ? r.rocket.capacity : null,
+      hardware: r ? r.dry : 0, fuel: r ? r.propellant : 0,
+      cost: r ? r.totalCost : 0, budget: r ? r.budget : 0, overBudget: r ? r.overBudget : false,
+      powerNeed: r ? r.powerNeed : 0, powerGen: r ? r.powerGen : 0,
+      dvPlanned: r ? r.dvPlanned : 0, dvRemaining: r ? dvRemaining(state, o.flown) : null,
+      dataNeedGbPerDay: r ? dataNeedPerDay(state) : 0, dataSentGb: dataSent,
+      days: missionDays(state),
+    };
+  }
+
   /* ======================= Seeded random events ======================= */
   function rng(seed) { // mulberry32
     let a = seed >>> 0;
@@ -1089,7 +1147,7 @@
     canMeasure, measure, canSendData, sendData, rollSurfaceEvent, applySurfaceEventChoice, finishSurface, surfaceOutcome,
     // Phase 7
     returnApplies, findEntry, findShield, returnBurns, thermalCheck, splashdown, returnSim, returnMath,
-    commsPlan, commsMath, lightDelay, dishGain, dataNeedPerDay, siteReport, hoverAvailable, landingSim, landingMath, findSite, sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
+    commsPlan, commsMath, lightDelay, dishGain, dataNeedPerDay, siteReport, hoverAvailable, landingSim, landingMath, findSite, sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, dvRemaining, missionHours, missionDays, launchRows, hud, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
   if (typeof module !== 'undefined' && module.exports) module.exports = MODEL;
   else root.SS_MODEL = MODEL;
 })(typeof window !== 'undefined' ? window : globalThis);

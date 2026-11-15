@@ -866,22 +866,10 @@
 
   /* ---------------- Phase 3B: launch pad ---------------- */
   function launchRows() {
-    const G = M.launchReadiness(S), r = M.evaluate(S), crewed = S.missionType === 'crewed';
-    const bl = (ns, skip) => G.phases.filter(p => ns.includes(p.phase)).every(p => !p.issues.some(i => i.severity === 'block' && !(skip || []).includes(i.code)));
-    const heavy = G.phases.every(p => !p.issues.some(i => i.code === 'tooHeavy'));
-    const run4 = commsRun(), days = crewed ? (S.crew ? S.crew.days : null) : (run4 ? Math.round(run4.time.total / 24) : null);
-    const link = S.comms && D.COMMS.links.find(x => x.id === S.comms.link);
-    const rows = [
-      ['Mission goal', bl([0]), S.question ? D.QUESTIONS.find(x => x.id === S.question).title : '—'],
-      ['Spacecraft', bl([1], ['tooHeavy']), r && r.rocket ? r.rocket.title : 'No rocket'],
-      ['Total mass', heavy, r ? kg(r.tli) : '—'],
-      ['Delta-v', bl([3], ['tooHeavy']), r ? fmt(r.dvPlanned) + ' m/s' : '—'],
-      ['Crew', bl([2], ['tooShort', 'tooHeavy']), crewed && S.crew ? String(S.crew.size) : 'Robots only'],
-      ['Mission days', bl([2], ['noCrew', 'noSuit', 'tooHeavy']) && (!crewed || !G.phases[2].issues.some(i => i.code === 'tooShort')), days != null ? String(days) : '—'],
-      ['Life support', bl([2]), crewed ? 'OK' : 'Not needed'],
-      ['Comms', bl([4]), link ? link.title : 'Not chosen'],
-    ];
-    return { G, rows };
+    const L = M.launchRows(S);
+    const show = { goal: v => v || '—', spacecraft: v => v || 'No rocket', totalMass: v => v == null ? '—' : kg(v), deltaV: v => v == null ? '—' : fmt(v) + ' m/s',
+      crew: v => v == null ? 'Robots only' : String(v), missionDays: v => v == null ? '—' : String(v), lifeSupport: v => v === 'ok' ? 'OK' : 'Not needed', comms: v => v || 'Not chosen' };
+    return { G: L.G, rows: L.rows.map(x => [x.label, x.ok, show[x.key](x.value)]) };
   }
   function screenF3b() {
     const { G, rows } = launchRows(), warns = G.issues.filter(i => i.severity === 'warn');

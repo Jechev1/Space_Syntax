@@ -15,6 +15,7 @@
  *   score: { label, value, unit, thresholds: [one, two, three], higherIsBetter },
  *   math: null | { title, steps: [{ eq, num }], src },
  *   decision?: { t, code, prompt, marginLeft, options: [{ id, label, dvCost }] }, // optional, only on a paused ('pending') run
+ *   summary?: { [name]: number },        // optional, a flat object of named numbers, phase specific (Phase 3: pool, dvUsed, tcmUsed, marginLeft, marginLeftFrac)
  * }
  * When the phase cannot run yet: { phase, title, ready: false, blockers: [{ code, message, phase }] }.
  */
@@ -64,6 +65,7 @@
       time: r.time, fields: r.fields || [], frames, events,
       failure: ok ? null : (r.failure || null), score, math: r.math || null,
       ...(r.decision ? { decision: r.decision } : {}),
+      ...(r.summary ? { summary: r.summary } : {}),
     };
   }
 

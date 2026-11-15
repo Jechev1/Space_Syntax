@@ -56,10 +56,13 @@ The radio flies on the spacecraft, so comms is chosen before launch. `M.launchRe
   events: [{ t, kind: 'info'|'warn'|'fail'|'success', text }],
   failure: null | { t, code, cause, fix },
   score:  { label, value, unit, thresholds, higherIsBetter },
-  math:   null | { title, steps: [{ eq, num }], src } }
+  math:   null | { title, steps: [{ eq, num }], src },
+  summary?: { [name]: number } }         // optional, flat named numbers, phase specific
 ```
 
 If the phase cannot run yet you get `{ phase, title, ready: false, blockers: [{ code, message, phase }] }`. Check `ready` first and show the blockers.
+
+`summary` is optional. Phase 3 returns `{ pool, dvUsed, tcmUsed, marginLeft, marginLeftFrac }`, all in m/s except the last, which is a fraction of the needed delta-v. `marginLeft` is the number in the "Landed with X m/s of margin left" event. Phases 5 and 7 can read it from the Phase 3 run.
 
 Playback: pick `t` from 0 to `time.total` at any speed, find the frame with the largest `frame.t <= t`, or interpolate between two frames. Show each event when `t >= event.t`. At the end show `failure.cause` and `failure.fix` when `ok` is false.
 
@@ -73,24 +76,27 @@ Same state and same seed give the same run, frame for frame. Pass `{ seed: <inte
 
 ## HUD bar
 
-`r = M.evaluate(s)` once per render. It returns `null` when `s.missionType` is not set, so show zeros on screen 0.
+`h = M.hud(s, { flown, dataSentGb })` once per render. It never throws. With no mission type it returns zeros, `null` for `capacity`, `dvRemaining` and `days`, so screen 0 can render. `flown` is an array of burn keys already flown (`loi`, `descent`, `ascent`, `tei`, `direct`). `dataSentGb` is optional.
 
-| HUD item | Expression | Notes |
+| HUD item | Field | Notes |
 |---|---|---|
 | Location | none | Fixed text per screen: Earth for 0 to 4, "Earth to Ship" on 3B, "Moon orbit" on 5A, "Ship" on 5B. |
-| Launch mass | `r.tli` kg | Mass the rocket must send to the Moon, fuel included. |
-| Capacity | `r.rocket ? r.rocket.capacity : null` | Null until a rocket is picked. |
-| Mass fits | `r.fitsRocket` | `null` without a rocket. |
-| Hardware | `r.dry` kg | |
-| Fuel | `r.propellant` kg | |
-| Cost | `r.totalCost` $M | Spacecraft plus rocket plus ground time. |
-| Budget | `r.budget` $M | Depends on mission type and difficulty. |
-| Power | `r.powerNeed` / `r.powerGen` W | Energy in kW is `r.powerGen / 1000`. |
-| Delta-v | `r.dvPlanned` m/s | Needed delta-v times (1 + margin). Without margin use `r.dvRequired`. |
-| Delta-v remaining | `r.dvPlanned - (sum of dvPlanned for burns already flown)` | Burns from `M.flightPlan(s).burns`. After LOI subtract the `loi` entry. No helper exists. |
-| Data | `0` before launch | After Phase 4 play use the last frame's `delivered`. On the surface use `M.surfaceStatus(s).dataSentGb`. |
-| Days | Crewed: `M.lifeSupport(s).days` | Robotic has no day count. Use `Math.round(sim4.time.total / 24)` from the Phase 4 run. |
-| Over budget | `r.overBudget` | |
+| Launch mass | `h.launchMass` kg | Mass the rocket must send to the Moon, fuel included. |
+| Capacity | `h.capacity` | Null until a rocket is picked. |
+| Mass fits | `M.evaluate(s).fitsRocket` | `null` without a rocket. |
+| Hardware | `h.hardware` kg | |
+| Fuel | `h.fuel` kg | |
+| Cost | `h.cost` $M | Spacecraft plus rocket plus ground time. |
+| Budget | `h.budget` $M | Depends on mission type and difficulty. |
+| Over budget | `h.overBudget` | |
+| Power | `h.powerNeed` / `h.powerGen` W | Energy in kW is `h.powerGen / 1000`. |
+| Delta-v | `h.dvPlanned` m/s | Needed delta-v times (1 + margin). Without margin use `M.evaluate(s).dvRequired`. |
+| Delta-v remaining | `h.dvRemaining.planned` and `.required` m/s | Planned and needed delta-v minus the burns in `flown`. Crewed with `['loi']` gives 5,357 required. Same as `M.dvRemaining(s, flown)`. |
+| Data need | `h.dataNeedGbPerDay` Gb | Known from the instruments before Phase 4. |
+| Data sent | `h.dataSentGb` Gb | The `dataSentGb` you pass, else `M.surfaceStatus(s).dataSentGb` once landed, else 0. |
+| Days | `h.days` | `M.missionDays(s)`. Crewed: the Phase 2 crew days. Robotic: `Math.round(M.missionHours(s) / 24)`, the same length Phase 4 runs. |
+
+Helpers behind it: `M.dvRemaining(s, flown)`, `M.missionHours(s)`, `M.missionDays(s)`. The robot day count counts the outbound transit, the site science hours (`D.SURFACE.roboticHours` with no site) and one downlink day (`D.SURFACE.tailHoursRobotic`).
 
 `r.lines` is the itemised list: `{ label, where, mass, cost, power, gen, src, kind }`. Use it for a "Why so heavy" panel.
 
@@ -200,7 +206,7 @@ Sim `simulate(s, 3)`, `time.unit` is `'h'`. The trip ends at touchdown. Frame fi
 | `dvUsed` | m/s used |
 | `leg` | Index of the current leg: 0 TLI burn, 1 coast, 2 correction, 3 coast, 4 correction, 5 LOI, 6 descent, 7 touchdown |
 
-Failure code `outOfFuel` stops the dot at `failure.t`. Others: `lowDvMargin`, `tooHeavy`, `overBudget`. The leftover margin for phases 5 and 7 appears only in `math` text and the last event.
+Failure code `outOfFuel` stops the dot at `failure.t`. Others: `lowDvMargin`, `tooHeavy`, `overBudget`. The leftover margin for phases 5 and 7 is in `result.summary.marginLeft`.
 
 ## Screen 4: Communications
 
@@ -246,18 +252,20 @@ Outcomes: `success`, `partial` (some data lost or still onboard), `fail` (under 
 
 No choice, one button. `G = M.launchReadiness(s)` returns `{ go, phases: [{ phase, ok, issues }], issues }` for phases 0 to 4. Launch enabled when `G.go`. The mockup says phases 0 to 3 are locked; the real rule is 0 to 4.
 
-Summary rows have no direct helper. Map them like this:
+`L = M.launchRows(s)` returns `{ go, rows, G }`. `go` equals `G.go`. Each row is `{ key, label, ok, value, unit }` with raw values, no formatting. `ok` is true when no block is left for that row.
 
-| Row | Status from | Value |
+| Row key | Value | Unit |
 |---|---|---|
-| Total mass | phase 1 and 2 `tooHeavy` | `r.tli` |
-| Delta-v | phase 3 | `r.dvPlanned` |
-| Crew | phase 2 | `s.crew.size` |
-| Mission days | phase 2 `tooShort` | `s.crew.days` |
-| Life support | phase 2 | text "OK" when phase 2 has no block |
-| Comms | phase 4 | `s.comms.link` |
+| `goal` | Question title, `null` if none | none |
+| `spacecraft` | Rocket title, `null` if none | none |
+| `totalMass` | `r.tli` | kg |
+| `deltaV` | `r.dvPlanned` | m/s |
+| `crew` | `s.crew.size`, `null` for robots | people |
+| `missionDays` | `M.missionDays(s)` | days |
+| `lifeSupport` | `'ok'` crewed, `'notNeeded'` robotic | none |
+| `comms` | Link title, `null` if none | none |
 
-A row is GO when no issue with `severity === 'block'` exists in that phase. Warnings are in `G.issues` with `severity: 'warn'`.
+Warnings are in `G.issues` with `severity: 'warn'`.
 
 Launch animation: `simulate(s, 1)`, same fields as screen 1B.
 
@@ -348,7 +356,7 @@ The backend wins. Real values:
 | Crewed mass 18,400 kg, cost $412M, energy 2.1 kW | Real crewed fixture: launch mass 44,035 kg, cost $6,125M with SLS Block 2, power 940 W needed of 2,500 W. The crewed design only fits SLS Block 2. |
 | Crew supplies 36, 32, 129 kg | Matches at 4 crew, 10 days, no reserve. With the 20 percent reserve: oxygen 43, food 38, water 154 kg. |
 | Delta-v 6,620 m/s | Crewed `dvRequired` is 6,307; 6,620 is 6,307 times 1.05, which is `dvPlanned` at 5 percent margin (6,622). |
-| Delta-v 5,357 m/s on screens 5A and 5B | No backend value. 6,307 minus 950 is 5,357, so it is the delta-v left after the lunar orbit burn without margin. Compute it as in the HUD table. |
+| Delta-v 5,357 m/s on screens 5A and 5B | No backend value. 6,307 minus 950 is 5,357, so it is the delta-v left after the lunar orbit burn without margin. Get it from `M.dvRemaining(s, ['loi']).required`. |
 | Basic radio +10 W, 1 Gb | S-band: 40 W robotic, 150 W crewed. 57.6 Gb a day with the 34 m dish, 244.2 with the 70 m dish. |
 | Ka band +25 W, 4 Gb | Ka: 110 W robotic, 300 W crewed. 900 Gb a day with 34 m, 3,814.9 with 70 m. |
 | Laser +40 W, 8 Gb | Laser: 130 W robotic, 250 W crewed. 2,340 Gb a day, the dish is ignored. |
@@ -361,13 +369,9 @@ The backend wins. Real values:
 
 ## Gaps
 
-Needs that the backend does not cover:
+Needs that are still open:
 
-1. No `dvRemaining` helper for the HUD on screens 5A and 5B.
-2. No robotic mission day count. Derive it from the Phase 4 run.
-3. No per-row GO status for the 3B summary. Derive it from `launchReadiness`.
-4. Phase 3 does not return the leftover margin as a field, only in text.
-5. No `data` HUD value before the Phase 4 run.
+1. The comms dish choice is not in the mockup. The screen needs a 34 m or 70 m toggle (see the table above).
 
 ## Fixtures
 
