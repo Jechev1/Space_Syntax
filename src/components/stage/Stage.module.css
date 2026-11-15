@@ -1,5 +1,4 @@
 .viewport {
-  --girl: clamp(18dvh, 45dvh, calc(100dvh - 8rem));
   position: relative;
   width: 100%;
   height: 100dvh;
@@ -7,6 +6,14 @@
   place-items: center;
   overflow: hidden;
   background: var(--bg);
+}
+
+.frame {
+  position: relative;
+  width: min(100%, calc(100dvh * 1.68));
+  max-height: 100dvh;
+  aspect-ratio: 1.68 / 1;
+  overflow: hidden;
 }
 
 .fit {
@@ -59,7 +66,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 60%;
+  object-position: center;
   pointer-events: none;
 }
 
@@ -87,9 +94,9 @@
 
 .portrait {
   position: absolute;
-  left: clamp(12px, 3vw, 48px);
-  bottom: 0;
-  height: var(--girl, 45dvh);
+  left: 2.4%;
+  bottom: 7%;
+  height: 46%;
   width: auto;
   max-width: none;
   object-fit: contain;

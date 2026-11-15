@@ -1,8 +1,4 @@
 .screen {
-  --fs-title: clamp(18px, 3.4dvh, 28px);
-  --fs-sub: clamp(15px, 2.7dvh, 20px);
-  --fs-body: clamp(12px, 2.15dvh, 16px);
-  --fs-chip: clamp(11px, 1.75dvh, 13px);
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -38,15 +34,19 @@
 
 .speech {
   position: absolute;
-  left: clamp(16px, 8vw, 120px);
-  bottom: calc(var(--girl, 45dvh) + 10px);
+  left: 15%;
+  bottom: 44%;
+}
+
+.speech p {
+  max-width: 148px;
 }
 
 .panel {
   position: absolute;
-  top: clamp(3.25rem, 10dvh, 82px);
-  right: 24px;
-  width: clamp(240px, 28vw, 400px);
+  top: 11%;
+  right: 2.4%;
+  width: 30%;
   pointer-events: auto;
 }
 
@@ -87,8 +87,8 @@ button.kicker {
 
 .lock {
   position: absolute;
-  right: 24px;
-  bottom: 24px;
+  right: 2.4%;
+  bottom: 3.2%;
   pointer-events: auto;
 }
 

@@ -43,11 +43,13 @@ export function Stage({ background = '', objects = null, character = null, child
   if (photo) {
     return (
       <div className={`${styles.viewport} ${styles.photoStage}`} ref={frameRef}>
-        <img className={styles.photo} src={background} alt="" />
-        {grain}
-        <div className={styles.objects}>{objects}</div>
-        <div className={styles.character}>{portrait}</div>
-        <div className={styles.ui}>{children}</div>
+        <div className={styles.frame}>
+          <img className={styles.photo} src={background} alt="" />
+          {grain}
+          <div className={styles.objects}>{objects}</div>
+          <div className={styles.character}>{portrait}</div>
+          <div className={styles.ui}>{children}</div>
+        </div>
       </div>
     )
   }
