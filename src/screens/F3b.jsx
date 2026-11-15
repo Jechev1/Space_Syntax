@@ -1,10 +1,12 @@
+import { useEffect } from 'react'
 import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { useGame } from '../engine/useGame.jsx'
-import { rocketArt } from './F1b.jsx'
+import { usePlayRun } from '../engine/usePlayRun.jsx'
+import { RunVerdict, rocketArt } from './F1b.jsx'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F3b.module.css'
@@ -20,20 +22,31 @@ const LINK_NAMES = { 'S-band radio': 'Basic radio', 'Ka-band high-gain antenna':
 export function F3b() {
   const ready = usePhaseGuard('/f3b')
   const { state } = useGame()
+  const play = usePlayRun(1, state)
   if (!ready) return null
+  const { run, frame } = play
+  const burning = Boolean(run && run.status === 'running')
+  // The rocket rises with the speed gained and leaves the scene; once launched the pad is empty.
+  const k = frame ? Math.min(1, frame.dv / 3150) : 0
+  const rocket = state.rocket && !state.launched ? (
+    <div className={styles.rocket} style={{ '--k': k }} aria-hidden="true">
+      <img className={styles.rocketImg} src={rocketArt(state.rocket)} alt="" />
+      {burning ? <span className={styles.flame} /> : null}
+    </div>
+  ) : null
   return (
     <StageScene
       background={BACKGROUND}
       character={<img className={scene.girl} src={CHARACTER} alt="" />}
-      objects={state.rocket ? <img className={styles.rocket} src={rocketArt(state.rocket)} alt="" /> : null}
+      objects={rocket}
       title="How far is up? — Launch pad"
     >
-      <F3bBody />
+      <F3bBody play={play} />
     </StageScene>
   )
 }
 
-function F3bBody() {
+function F3bBody({ play }) {
   const navigate = useNavigate()
   const { setModal } = usePlay()
   const game = useGame()
@@ -64,6 +77,14 @@ function F3bBody() {
           <p className={`${styles.verdict} ${summary.go ? '' : styles.notReady}`}>
             {summary.go ? 'All systems GO' : `Not ready: ${blocker ? blocker.message : 'fix the NO GO items'}`}
           </p>
+          {play.run && play.run.status === 'running' && play.frame ? (
+            <div className={styles.telemetry} role="img" aria-label={`Speed ${Math.round(play.frame.dv)} metres per second`}>
+              <span>Speed</span><span>{Math.round(play.frame.dv).toLocaleString('en-US')} m/s</span>
+              <span>Fuel left</span><span>{Math.round(play.frame.prop).toLocaleString('en-US')} kg</span>
+              <span>Flight time</span><span>{Math.round(play.run.t)} s</span>
+            </div>
+          ) : null}
+          {state.launched ? null : <RunVerdict run={play.run && play.run.res.ok ? null : play.run} />}
         </GlassPanel>
       </div>
       <p className={styles.warning}>After launch you cannot change Phases 0 to 4.</p>
@@ -75,16 +96,27 @@ function F3bBody() {
           <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
         <div className={scene.lock}>
-          <LaunchButton game={game} ready={summary.go} />
+          <LaunchButton game={game} ready={summary.go} play={play} />
         </div>
       </div>
     </div>
   )
 }
 
-function LaunchButton({ game, ready }) {
+function LaunchButton({ game, ready, play }) {
   const navigate = useNavigate()
   const { state, launch, setNotice } = game
+  const { run } = play
+  const running = Boolean(run && run.status === 'running')
+  // The run passed: the real launch happens once, when the animation ends.
+  const done = run && run.status === 'done' && run.res.ok
+  useEffect(() => {
+    if (!done || state.launched) return
+    flushSync(() => {
+      launch()
+      setNotice('Liftoff!')
+    })
+  }, [done]) // eslint-disable-line react-hooks/exhaustive-deps
   if (state.launched) {
     return <Button variant="outline" onClick={() => navigate('/f5a')}>Fly to the Moon →</Button>
   }
@@ -92,15 +124,10 @@ function LaunchButton({ game, ready }) {
     <Button
       variant="outline"
       disabled={!ready}
-      disabledReason={ready ? '' : 'Every item must be GO'}
-      onClick={() => {
-        flushSync(() => {
-          launch()
-          setNotice('Liftoff! 🚀')
-        })
-      }}
+      disabledReason={running ? 'Lifting off…' : (ready ? '' : 'Every item must be GO')}
+      onClick={() => play.play()}
     >
-      Launch
+      {run && run.status === 'done' ? 'Launch again' : 'Launch'}
     </Button>
   )
 }

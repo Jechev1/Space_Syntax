@@ -5,17 +5,36 @@
   bottom: 44%;
 }
 
-/* The chosen rocket stands on the pad, same spot as in the F1 review. */
+/* The chosen rocket stands on the pad, same spot as in the F1 review. It rises with the speed gained. */
 .rocket {
   position: absolute;
   left: 42%;
   bottom: 12%;
   height: 68%;
+  transform: translateY(calc(var(--k, 0) * -110cqh));
+  pointer-events: none;
+}
+
+.rocketImg {
+  height: 100%;
   width: auto;
+  display: block;
   object-fit: contain;
   object-position: center bottom;
   filter: drop-shadow(0 10px 18px rgba(10, 12, 28, .5));
-  pointer-events: none;
+}
+
+/* Flame under the rocket while the engine burns. */
+.flame {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 14px;
+  height: 9cqh;
+  margin: -2px 0 0 -7px;
+  border-radius: 0 0 var(--radius-chip) var(--radius-chip);
+  background: linear-gradient(180deg, var(--text), var(--accent-soft) 40%, transparent);
+  opacity: .85;
 }
 
 .rows {
@@ -80,4 +99,26 @@
   margin: 0;
   color: var(--text-dim);
   font-size: clamp(8px, 1.7cqh, 13px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flame {
+    animation: flicker 140ms steps(2, end) infinite alternate;
+  }
+}
+
+@keyframes flicker {
+  from { opacity: .65; }
+  to { opacity: .95; }
+}
+
+.telemetry {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-variant-numeric: tabular-nums;
 }

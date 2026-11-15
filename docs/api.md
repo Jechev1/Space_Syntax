@@ -376,3 +376,42 @@ Needs that are still open:
 ## Fixtures
 
 `npm run fixtures` writes `fixtures/<screen>.<type>.json`. Each file: `{ screen, title, missionType, note, state, engine, sim }`. `engine` has the model outputs for the screen. `sim` holds `success`, `partial` and `fail` as `{ label, seed, state, result }`, `null` when the phase has no such outcome. Each sim entry carries the state it was run with, which can differ from `state` when a failure needed a worse design. Seed for the base runs is 7. Files are deterministic, so a diff means the backend changed.
+
+## Engine reference
+
+- `evaluate(state)`: launch mass, fuel, cost, power
+- `rocketMath(state)`: rocket equation, burn by burn
+- `lifeSupport(state)`: crew supplies for phase 2
+- `flightPlan(state)`: maneuvers and delta-v margin for phase 3
+- `commsPlan(state)`: signal delay, data rate and daily volume for phase 4
+- `siteReport(state)` and `landingSim(state, seed)`: landing site and descent for phase 5
+- `surfaceStatus(state)`, `canMeasure`, `measure`, `sendData`, `finishSurface`, `surfaceOutcome`: surface science for phase 6 (hours, power, data buffer, sample box, evidence meter, field journal)
+- `rollSurfaceEvent` and `applySurfaceEventChoice`: solar storm and blackout on the surface
+- `returnBurns(state, seed)`, `thermalCheck`, `splashdown`, `returnSim(state)`, `returnMath`: return to Earth for phase 7, with a cause chain when the mission fails
+- `validatePhase(state, n)` for phases 0 to 7 and `launchReadiness(state)`: GO / NO GO
+- `rollEvent` and `applyEventChoice`: seeded random events
+- `sanitizeState(raw)`: safe restore of a saved game. Phase 6 actions are replayed through the real rules, so a tampered save cannot skip them
+
+### Phases 6 and 7 rules
+
+- Surface: only the instruments loaded in phase 1 can be used. Each measurement costs hours, spare power and data, and lights the evidence meter: camera = clue, spectrometer or hydrogen (water question) = composition, sample = strongest.
+- Return: liftoff (1,833 m/s) and Earth return burn (1,450 m/s) come out of the fuel reserved in phase 3. The rocket equation gives the delta-v actually available, and each burn can need a few percent more, so the phase 3 margin matters.
+- Reentry: direct entry runs cooler but lands less precisely; skip entry is precise but heats the shield more. Shield capacity against heat load gives the thermal margin, then a seeded splashdown has to land inside the recovery zone.
+- Hours, power, data, sample masses, heat load, shield capacity and the recovery zone are game values.
+
+### Play runs
+
+Each phase plays like Poly Bridge. You build, press Play, and watch it hold or break.
+
+`SS_SIM.simulate(state, phase, { seed })` returns frames to animate, the outcome, stars, the cause of a failure with a fix, and the real math. The result shape is in `js/sim/kit.js`.
+
+| Phase | Run | Fails when |
+|---|---|---|
+| 0 | Hypothesis card | No goal picked |
+| 1 | Upper stage TLI burn, rocket equation | Ship too heavy to reach 3,150 m/s, no power, over budget |
+| 2 | Mission days, BVAD oxygen, food and water | A supply runs out or a solar storm finds no shelter |
+| 3 | Burn by burn trip with navigation errors | The delta-v reserve runs dry |
+| 4 | DSN passes, 41 min blackout, data buffer | Too much science data is lost |
+| 5 | Powered descent at 1.62 m/s² | Hover fuel runs out before a safe spot |
+
+Runs are deterministic for a given seed. Tuning values live in a `TUNING` block at the top of each `js/sim/p*.js` and are marked as game values.

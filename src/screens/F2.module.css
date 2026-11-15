@@ -123,3 +123,179 @@
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent);
 }
+
+/* Play run */
+.runPanel,
+.shelf,
+.runMath {
+  --fs-body: clamp(10px, 2.15cqh, 17px);
+  --fs-chip: clamp(8px, 1.7cqh, 13px);
+  --fs-sub: clamp(13px, 2.8cqh, 21px);
+}
+
+.runPanel {
+  position: absolute;
+  width: 26%;
+  pointer-events: auto;
+}
+
+.runLeft {
+  top: max(11%, 72px);
+  left: 1.7%;
+}
+
+.runRight {
+  bottom: 11.5%;
+  right: 2.4%;
+  width: 26%;
+}
+
+.runPanel > * {
+  display: grid;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.clock,
+.event,
+.cause,
+.fix,
+.verdictLine {
+  margin: 0;
+  font-size: var(--fs-chip);
+  line-height: 1.35;
+}
+
+.clock {
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.event {
+  min-height: 2.7em;
+  color: var(--text);
+}
+
+.warn { color: var(--warn); }
+.fail { color: var(--danger); }
+.success { color: var(--accent); }
+
+.blockers {
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--warn);
+  font-size: var(--fs-chip);
+}
+
+.verdict {
+  display: grid;
+  gap: calc(var(--fs-chip) / 3);
+  padding: calc(var(--fs-chip) * 0.6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+}
+
+.okBox { border-color: var(--line-bright); }
+.failBox { border-color: var(--danger); }
+
+.verdictLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+}
+
+.starOn { color: var(--math); letter-spacing: 2px; }
+.starOff { color: var(--line-strong); letter-spacing: 2px; }
+.cause { color: var(--danger); }
+.fix { color: var(--text); }
+
+.mathLink {
+  justify-self: start;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.runMath {
+  position: absolute;
+  top: max(11%, 72px);
+  left: 27%;
+  width: 34%;
+  pointer-events: auto;
+}
+
+/* Supplies drawn over the shelf in the scene */
+.shelf {
+  position: absolute;
+  left: 31%;
+  bottom: 13.5%;
+  min-width: 26em;
+  display: grid;
+  gap: 0.3em;
+  padding: 0.5em 0.8em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+}
+
+.tubes {
+  display: grid;
+  grid-template-columns: repeat(3, 8.5em);
+  gap: 0.9em;
+}
+
+.tube {
+  display: grid;
+  justify-items: stretch;
+  gap: 0.2em;
+}
+
+.tubeBody {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 0.9em;
+  overflow: hidden;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-chip);
+  background: var(--bg-deep);
+}
+
+.tubeFill {
+  display: block;
+  height: 100%;
+  background: var(--accent-soft);
+  transition: width 0.12s linear;
+}
+
+.tubeFill.low { background: var(--danger); }
+
+.tubeLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tubeUnit,
+.ashore {
+  margin: 0;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tubeFill { transition: none; }
+}

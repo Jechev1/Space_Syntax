@@ -22,13 +22,6 @@ const SCENES = {
   shield: { bg: '/bg/bg-cabina.png', girl: 'seat', place: 'Earth return' },
   reentry: { bg: '/bg/bg-oceano.png', girl: 'dish', place: 'Reentry' },
   splash: { bg: '/bg/bg-oceano.png', girl: 'dish', place: 'Pacific Ocean' },
-  end: { bg: '/bg/bg-oceano.png', girl: 'dish', place: 'Pacific Ocean' },
-}
-
-const EVIDENCE_LINE = {
-  sample: 'Real lunar rock came home. The lab finds minerals, not milk fats. The cheese hypothesis is disproved.',
-  composition: 'Your instrument read oxygen and silicon, the chemistry of rock, not the carbon of cheese. The hypothesis is disproved.',
-  clue: 'Your pictures showed rock, not cheese. A sample would be stronger proof, but the answer is clear. The hypothesis is disproved.',
 }
 
 function girlImage(kind) {
@@ -156,7 +149,7 @@ function Objects({ step, running, sim, glow }) {
       </div>
     )
   }
-  if (step === 'splash' || step === 'end') {
+  if (step === 'splash') {
     return <Splash splash={sim.splash} />
   }
   return null
@@ -190,9 +183,9 @@ function ReturnHud({ place, sim, step }) {
   const { model } = useGame()
   const fuel = sim.fuel
   let left = fuel.pool
-  if (['burn1', 'entry', 'shield', 'reentry', 'splash', 'end'].includes(step)) left = fuel.burns[0].after
-  if (['entry', 'shield', 'reentry', 'splash', 'end'].includes(step) && fuel.burns[1]) left = fuel.burns[1].after
-  if (['entry', 'shield', 'reentry', 'splash', 'end'].includes(step) && !fuel.burns[1]) left = fuel.burns[0].after
+  if (['burn1', 'entry', 'shield', 'reentry', 'splash'].includes(step)) left = fuel.burns[0].after
+  if (['entry', 'shield', 'reentry', 'splash'].includes(step) && fuel.burns[1]) left = fuel.burns[1].after
+  if (['entry', 'shield', 'reentry', 'splash'].includes(step) && !fuel.burns[1]) left = fuel.burns[0].after
   const t = sim.thermal
   return (
     <div className={styles.hud} aria-label="Mission status">
@@ -520,38 +513,8 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
         {dock(
           <>{helpBtn}</>,
           ok
-            ? <Button variant="outline" onClick={() => goto('end')}>Finish the mission →</Button>
+            ? <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
             : <Button variant="outline" onClick={fail}>See what happened →</Button>,
-        )}
-      </div>
-    )
-  }
-
-  if (step === 'end') {
-    const surface = model.surfaceOutcome(state)
-    return (
-      <div className={styles.screen}>
-        {hud}
-        {speech('We did it. We are home.')}
-        <div className={styles.panel}>
-          <GlassPanel>
-            <Kicker>Phase 7 · Mission complete</Kicker>
-            <h2 className={styles.title}>Welcome home</h2>
-            <p className={styles.line}>
-              The capsule is in the water and the crew is safe. The hypothesis that the Moon is made of cheese has been tested.
-            </p>
-            <p className={styles.line}>{EVIDENCE_LINE[surface ? surface.evidence : 'clue'] || EVIDENCE_LINE.clue}</p>
-            <p className={styles.line}>That is how science works: ask a question, build a way to test it, and let the evidence answer.</p>
-          </GlassPanel>
-        </div>
-        {dock(
-          <>
-            <Button variant="secondary" onClick={() => setModal('sources')}>See all NASA sources</Button>
-          </>,
-          <>
-            <Button variant="ghost" onClick={() => navigate('/')}>Home</Button>
-            <Button variant="outline" onClick={() => setModal('reset')}>Start a new mission</Button>
-          </>,
         )}
       </div>
     )

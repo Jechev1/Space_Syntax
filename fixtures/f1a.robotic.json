@@ -109,13 +109,13 @@
      {
       "id": "solarSmall",
       "title": "Solar panels + small battery",
-      "blurb": "Light and cheap. The battery covers only a few hours — your lander sleeps at night and may not wake up.",
+      "blurb": "Light and cheap. The battery covers only a few hours, so your lander sleeps at night and may not wake up.",
       "src": "lunarPower"
      },
      {
       "id": "solarBig",
       "title": "Solar panels + big battery",
-      "blurb": "Can ride out about 100 hours of dark — enough for some polar sites.",
+      "blurb": "Can ride out about 100 hours of dark, enough for some polar sites.",
       "src": "lunarPower"
      },
      {

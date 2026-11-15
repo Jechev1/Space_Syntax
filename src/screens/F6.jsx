@@ -440,6 +440,7 @@ function Verdict({ st }) {
                   : 'Your robotic one-way mission is complete. The lander stays on the Moon, and its data is on its way to Earth.'}
               </p>
               <div className={shell.actions}>
+                <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
                 <Button variant="ghost" onClick={() => setModal('sources')}>See all NASA sources</Button>
                 <Button variant="ghost" onClick={() => setModal('reset')}>Start a new mission</Button>
               </div>

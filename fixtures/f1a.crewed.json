@@ -121,7 +121,7 @@
      {
       "id": "fuelCells",
       "title": "Fuel cells (Apollo-style)",
-      "blurb": "Hydrogen + oxygen make power — and drinking water as a bonus. Heavy.",
+      "blurb": "Hydrogen + oxygen make power, and drinking water as a bonus. Heavy.",
       "src": "nssdcCsm"
      }
     ]
