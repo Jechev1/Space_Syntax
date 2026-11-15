@@ -7,12 +7,12 @@ import { MathBlock } from '../components/ui/MathBlock.jsx'
 import { sampleMission } from '../engine/sampleMission.mjs'
 import { useGame } from '../engine/useGame.jsx'
 import { StageScene } from './frame.jsx'
+import { useGoBack } from './goBack.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F7.module.css'
 
 const TITLE = 'How far is up? — Phase 7'
 // Phase 3 (flight plan) has no React screen yet. Point this at its route when it exists.
-const PHASE_ROUTES = { 1: '/f1a', 2: '/f2', 3: '/f3a', 4: '/f4', 5: '/f5a', 6: '/f6' }
 
 const SCENES = {
   intro: { bg: '/bg/bg-orbita-lunar.png', girl: 'dish', place: 'Moon surface' },
@@ -216,6 +216,7 @@ function Kicker({ children }) {
 
 function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, thermal, glow }) {
   const navigate = useNavigate()
+  const goBack = useGoBack()
   const game = useGame()
   const { state, model, data, update } = game
   const { setModal } = usePlay()
@@ -563,7 +564,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
     if (backTo === 7) {
       goto(f && f.code === 'thermalTooLow' ? 'shield' : 'entry')
     } else {
-      navigate(PHASE_ROUTES[backTo] || '/f1a')
+      goBack(backTo)
     }
   }
   return (
@@ -598,7 +599,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
         </div>
         <div className={styles.main}>
           <Button variant="outline" onClick={toPhase}>
-            {backTo === 7 ? 'Back to Phase 7' : `Back to Phase ${backTo}`}
+            {backTo === 7 ? 'Back to Phase 7' : `Go back to Phase ${backTo}`}
           </Button>
         </div>
       </div>

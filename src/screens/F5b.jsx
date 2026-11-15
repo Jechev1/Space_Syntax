@@ -7,6 +7,7 @@ import { PlayPanel } from '../components/ui/PlayPanel.jsx'
 import { usePlayRun } from '../engine/usePlayRun.jsx'
 import { useGame } from '../engine/useGame.jsx'
 import { StageScene } from './frame.jsx'
+import { fixPhase, useGoBack } from './goBack.jsx'
 import { F5Hud, NeedsEarlier, earlierGaps } from './F5a.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F5.module.css'
@@ -64,6 +65,7 @@ function F5bBody() {
   const navigate = useNavigate()
   const { state, data, model, update } = useGame()
   const { setModal } = usePlay()
+  const goBack = useGoBack()
   const gaps = earlierGaps(state, model)
   const play = usePlayRun(5, state, { interactive: true, ignore: ['landing'] })
   const { run, frame } = play
@@ -119,6 +121,9 @@ function F5bBody() {
         <div className={styles.nav}>
           <Button variant="secondary" onClick={() => navigate('/f5a')}>← Landing site</Button>
           <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+          {done && !landed && fixPhase(res.failure) != null ? (
+            <Button variant="secondary" onClick={() => goBack(fixPhase(res.failure))}>Go back to Phase {fixPhase(res.failure)}</Button>
+          ) : null}
         </div>
         <Button variant="outline" disabledReason={landed ? '' : stepReason} onClick={() => navigate('/f6')}>
           Step outside →
