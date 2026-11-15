@@ -5,10 +5,21 @@ import scene from './scene.module.css'
  * Shared pieces for the illustrated phase screens (F2 onward): the top mission bar
  * and the line icons. Layout classes live in scene.module.css.
  */
-export function SceneHud({ where = 'Earth' }) {
+export function SceneHud({ where = 'Earth', limits = false }) {
   const { state, model } = useGame()
   const hud = model.hud(state)
   const fmt = model.fmt
+  if (limits) {
+    return (
+      <div className={`${scene.hud} ${scene.hudLimits}`} aria-label="Mission status">
+        <span>{where}</span>
+        <span>Launch mass {fmt(hud.launchMass)} / {hud.capacity == null ? '—' : fmt(hud.capacity)} kg</span>
+        <span>Budget ${fmt(hud.cost)}M / ${fmt(hud.budget)}M</span>
+        <span>Power {fmt(hud.powerNeed)} / {fmt(hud.powerGen)} W</span>
+        <span>Data {fmt(hud.dataSentGb)} Gb</span>
+      </div>
+    )
+  }
   return (
     <div className={scene.hud} aria-label="Mission status">
       <span>{where}</span>

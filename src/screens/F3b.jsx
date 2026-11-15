@@ -47,8 +47,8 @@ function F3bScreen() {
             {state.launched ? (
               <p className={scene.kicker}>Launch pad</p>
             ) : (
-              <button type="button" className={scene.kicker} onClick={() => navigate('/f3a')}>
-                Launch pad · Back to the flight plan
+              <button type="button" className={scene.kicker} onClick={() => navigate('/f4')}>
+                Launch pad · Back to comms
               </button>
             )}
             <h2 className={scene.title}>Mission summary</h2>
@@ -66,7 +66,7 @@ function F3bScreen() {
             </p>
           </GlassPanel>
         </div>
-        <p className={styles.warning}>After launch you cannot change Phases 0 to 3.</p>
+        <p className={styles.warning}>After launch you cannot change Phases 0 to 4.</p>
         <div className={scene.lock}>
           <LaunchButton game={game} ready={summary.go} />
         </div>
@@ -103,7 +103,7 @@ function valueText(row, fmt) {
   if (row.key === 'crew') return row.value == null ? 'Robots only' : String(row.value)
   if (row.key === 'missionDays') return row.value == null ? '—' : fmt(row.value)
   if (row.key === 'lifeSupport') return row.value === 'ok' ? 'OK' : 'Not needed'
-  if (row.key === 'comms') return row.value || 'Phase 4'
+  if (row.key === 'comms') return row.value || 'Not chosen'
   return row.value == null ? '—' : String(row.value)
 }
 

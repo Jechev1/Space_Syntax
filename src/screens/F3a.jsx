@@ -159,10 +159,10 @@ function GoButton({ game }) {
           lockFlight()
           setNotice('Flight plan locked ✓')
         })
-        navigate('/f3b')
+        navigate('/f4')
       }}
     >
-      Go to the pad
+      Choose a radio →
     </Button>
   )
 }
