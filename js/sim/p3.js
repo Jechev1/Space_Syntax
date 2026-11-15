@@ -199,6 +199,7 @@
       fields: FIELDS, frames, events, failure,
       score: { label: 'Reserve left, not too much', value, unit: 'of needed dv', thresholds: TUNING.thresholds, higherIsBetter: true },
       math,
+      summary: { pool, dvUsed: finalUsed, tcmUsed: tcmTotal, marginLeft, marginLeftFrac: leftFrac },
     });
   }
 

@@ -1,14 +1,14 @@
 # Space Syntax
 
-Is the Moon made of cheese? A green alien cat thinks so. You design a real lunar mission to find out.
+Is the Moon made of cheese? A kid thinks so, and he is going to the Moon to test his hypothesis. You help him by completing mini-missions, each one built and tested like in Poly Bridge, until he finds out the truth.
 
 Browser game for teens, built for NASA Space Apps 2026, Space Mission Design Game challenge.
 
 ## Status
 
-- Phases 0 and 1 are playable.
-- The engine covers phases 0 to 7. Screens for phases 2 to 7 are next.
-- Screen guides: [phases 0 and 1](docs/pantallas-fase-0-1.md), [phases 6 and 7](pantallas_fase_6_y_7.md).
+- Phases 0 to 5B are playable in the browser, with Play runs.
+- Phases 6 and 7 have the engine but no screens yet.
+- Screen guide: [docs/pantallas.md](docs/pantallas.md). Data each screen shows: [docs/api.md](docs/api.md).
 
 ## Run
 
@@ -27,7 +27,11 @@ Open http://127.0.0.1:8080. No build step and no dependencies.
 | `js/data.js` | Game data and sources |
 | `js/model.js` | Game engine, no DOM |
 | `js/app.js` | Screens and HUD |
-| `assets/` | Team artwork |
+| `js/sim/` | Play run simulations for phases 1 to 5 (`kit.js` has the result shape) |
+| `assets/` | Team artwork and screen mockups |
+| `demo/` | Animated demo of phase 5B |
+| `fixtures/` | Example JSON of what each screen receives, robotic and crewed |
+| `docs/` | Screen guide (`pantallas.md`) and frontend contract (`api.md`) |
 | `tests/` | Engine tests (`model.test.js` for phases 0 to 5, `phases67.test.js` for phases 6 and 7) |
 | `tools/` | Dev server, checks, screenshots |
 

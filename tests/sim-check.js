@@ -29,6 +29,10 @@ function checkResult(r, phase) {
     assert.ok(e.t >= 0 && e.t <= r.time.total + 1e-9, 'event inside the run');
     assert.ok(!EM_DASH.test(e.text), 'no em dashes in game copy');
   }
+  if (r.summary !== undefined) {
+    assert.ok(r.summary && typeof r.summary === 'object' && !Array.isArray(r.summary), 'summary is an object');
+    for (const k in r.summary) assert.ok(Number.isFinite(r.summary[k]), `summary.${k} must be a finite number`);
+  }
   if (r.ok || r.outcome === 'pending') assert.equal(r.failure, null);
   else {
     assert.ok(r.failure && typeof r.failure.cause === 'string' && typeof r.failure.fix === 'string', 'a failed run explains why and how to fix it');
