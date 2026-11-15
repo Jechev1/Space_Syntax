@@ -1,15 +1,18 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
+import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
-import { PlayPanel } from '../components/ui/PlayPanel.jsx'
+import { MathBlock } from '../components/ui/MathBlock.jsx'
+import pp from '../components/ui/PlayPanel.module.css'
+import { HELP_F5B } from '../data/help.mjs'
 import { usePlayRun } from '../engine/usePlayRun.jsx'
 import { useGame } from '../engine/useGame.jsx'
+import { f5bSpeech } from './f5Speech.mjs'
 import { StageScene } from './frame.jsx'
 import { fixPhase, useGoBack } from './goBack.jsx'
-import { F5Hud, NeedsEarlier, earlierGaps } from './F5a.jsx'
-import { usePlay } from './playContext.jsx'
+import { F5Hud, HelpWindow, NeedsEarlier, earlierGaps } from './F5a.jsx'
 import styles from './F5.module.css'
 
 const START_ALT = 300
@@ -22,7 +25,7 @@ export function F5b() {
     <StageScene
       background="/bg/bg-superficie.png"
       character={<img className={styles.girl} src="/char/nina-traje-sentada.png" alt="" />}
-      title="How far is up? · Phase 5"
+      title="How far is up? · Phase 5: Powered Descent"
     >
       <F5bBody />
     </StageScene>
@@ -61,10 +64,116 @@ function AltGauge({ frame }) {
   )
 }
 
+/* Words for f5bSpeech: where the run is, and the paid choice when the computer asks. */
+function speechView(run, landed, model) {
+  const status = !run ? '' : run.status === 'running' ? 'running' : run.status === 'decision' ? 'decision' : run.status === 'done' ? (landed ? 'landed' : 'failed') : ''
+  if (status !== 'decision') return { status }
+  const margin = run.res.decision.marginLeft
+  const paid = run.res.decision.options.find((option) => option.dvCost)
+  return {
+    status,
+    choice: paid ? { label: paid.label, cost: model.fmt(paid.dvCost), margin: model.fmt(margin), fits: paid.dvCost <= margin } : null,
+  }
+}
+
+/* The scene already shows altitude and vertical speed (gauge), throttle (flame) and the sideways drift (the lander moves), so the panel skips them. */
+const SCENE_FIELDS = ['alt', 'vz', 'throttle', 'x']
+const VERDICT = { success: 'Landed', partial: 'Landed, barely', fail: 'Failed' }
+const fmtN = (n, d = 0) => Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d })
+const digits = (v) => (Math.abs(v) < 10 && v !== 0 ? 1 : 0)
+
+/*
+ * The descent run in the right panel: start button, live bars, the last events, the computer's question,
+ * and the verdict. It reads the same SimResult as the shared PlayPanel, but keeps to what fits the panel
+ * and opens the math in a popup like Phase 1.
+ */
+function DescentPanel({ title, intro, play }) {
+  const [math, setMath] = useState(false)
+  const { run, frame, events, choose } = play
+  const res = run && run.res
+  const running = run && run.status === 'running'
+  const done = run && run.status === 'done'
+  const deciding = run && run.status === 'decision'
+  useEffect(() => { setMath(false) }, [res])
+  const fields = res && res.ready ? res.fields.filter((field) => !SCENE_FIELDS.includes(field.key)) : []
+  return (
+    <GlassPanel eyebrow="Phase 5: Powered Descent · NASA Phase E" title={title}>
+      {run ? null : <p className={pp.note}>{intro}</p>}
+      <Button variant="outline" disabledReason={running ? 'Running…' : ''} onClick={() => play.play()}>
+        {run && run.status !== 'blocked' ? 'Start descent again' : 'Start descent'}
+      </Button>
+      {run && run.status === 'blocked' ? (
+        <ul className={pp.blockers}>{res.blockers.map((b) => <li key={b.code}>{b.message}</li>)}</ul>
+      ) : null}
+      {/* While the computer asks, the panel shows only the question; once the run ends, the verdict replaces the log. */}
+      {res && res.ready ? <p className={pp.clock}>t = {fmtN(run.t, run.t < 10 ? 1 : 0)} s</p> : null}
+      {res && res.ready && !deciding ? (
+        <>
+          <div className={pp.bars}>
+            {fields.map((f) => {
+              const v = frame ? frame[f.key] : 0
+              const w = f.max ? Math.max(0, Math.min(1, v / f.max)) : 0
+              return (
+                <div className={pp.bar} key={f.key}>
+                  <span className={pp.barLabel}>{f.label}</span>
+                  <span className={pp.barValue}>{fmtN(v, digits(v))} {f.unit}</span>
+                  <span className={pp.track} aria-hidden="true"><span className={pp.fill} style={{ width: `${w * 100}%` }} /></span>
+                </div>
+              )
+            })}
+          </div>
+          {done ? null : (
+            <ol className={pp.log} aria-live="polite">
+              {events.slice(-2).map((e, i) => <li key={`${e.t}-${i}`} className={pp[e.kind]}>{e.text}</li>)}
+            </ol>
+          )}
+        </>
+      ) : null}
+      {deciding ? (
+        <div className={pp.decision} role="group" aria-label="Your call">
+          <p className={pp.prompt}>{res.decision.prompt}</p>
+          <div className={pp.actions}>
+            {res.decision.options.map((o) => (
+              <Button key={o.id} variant="secondary" onClick={() => choose(o.id)}>
+                {o.label}{o.dvCost ? ` (${fmtN(o.dvCost)} m/s)` : ''}
+              </Button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+      {done ? (
+        <div className={`${pp.verdict} ${res.ok ? pp.okBox : pp.failBox}`}>
+          <p className={pp.verdictLine}>
+            <b>{VERDICT[res.outcome] || res.outcome}</b>
+            {res.ok ? (
+              <span className={pp.stars} aria-label={`${res.stars} of 3 stars`}>
+                {[0, 1, 2].map((i) => <span key={i} className={i < res.stars ? pp.starOn : pp.starOff} aria-hidden="true">★</span>)}
+              </span>
+            ) : null}
+          </p>
+          {res.ok && res.score ? <p className={pp.note}>{res.score.label}: {fmtN(res.score.value, 1)}{res.score.unit === '%' ? '%' : ` ${res.score.unit}`}</p> : null}
+          {res.failure ? (
+            <>
+              <p className={pp.cause}>{res.failure.cause}</p>
+              <p className={pp.fix}>Try this: {res.failure.fix}</p>
+            </>
+          ) : null}
+          {res.math ? <Button variant="outline" onClick={() => setMath(true)}>Show the math</Button> : null}
+        </div>
+      ) : null}
+      {math && res && res.math ? (
+        <Dialog title={res.math.title || 'The math'} onClose={() => setMath(false)}>
+          <MathBlock math={{ ...res.math, title: null }} />
+        </Dialog>
+      ) : null}
+    </GlassPanel>
+  )
+}
+
 function F5bBody() {
   const navigate = useNavigate()
   const { state, data, model, update } = useGame()
-  const { setModal } = usePlay()
+  const [help, setHelp] = useState(false)
   const goBack = useGoBack()
   const gaps = earlierGaps(state, model)
   const play = usePlayRun(5, state, { interactive: true, ignore: ['landing'] })
@@ -90,29 +199,34 @@ function F5bBody() {
     : !run && Boolean(state.landing && state.landing.outcome !== 'abort')
   let stepReason = 'Land the lander first'
   if (done && !landed) stepReason = 'The landing failed. Fly it again or pick another site.'
+  const deciding = Boolean(run && run.status === 'decision')
+  const view = speechView(run, landed, model)
+  const speech = f5bSpeech(state.difficulty, { ...view, safeMax: data.LANDING.contact.safeMax })
 
   return (
     <div className={styles.screen}>
       <F5Hud where="Lander" />
       <AltGauge frame={frame} />
       <Lander frame={frame} />
-      <div className={styles.speech}>
-        <Bubble tone="speech">Watch the fuel margin!</Bubble>
-      </div>
-      {run && run.status === 'decision' ? (
+      {/* During the computer's question the bubble moves into the banner, where the player is looking. */}
+      {speech && !deciding ? (
+        <div className={styles.speech}>
+          <Bubble tone="speech">{speech}</Bubble>
+        </div>
+      ) : null}
+      {deciding ? (
         <div className={styles.banner} role="alert">
           <GlassPanel tone="warn" title={res.decision.prompt}>
             <p className={styles.line}>Margin left: {model.fmt(res.decision.marginLeft)} m/s. Choose in the panel.</p>
+            {speech ? <p className={styles.line}>{speech}</p> : null}
           </GlassPanel>
         </div>
       ) : null}
       <div className={`${styles.panel} ${styles.panelTall}`}>
         {gaps.length ? <NeedsEarlier stage="f5b" gaps={gaps} /> : (
-          <PlayPanel
-            eyebrow="Phase 5 · Powered descent"
+          <DescentPanel
             title={site ? site.title.split(' (')[0] : 'Powered descent'}
             intro={`The descent burn is ${model.fmt(data.DV.descent.value)} m/s. Gravity on the Moon is ${data.MOON.gravity} m/s². Hover to find safe ground, then touch down below ${data.LANDING.contact.safeMax} m/s.`}
-            label="Start descent"
             play={play}
           />
         )}
@@ -120,7 +234,7 @@ function F5bBody() {
       <div className={styles.dock}>
         <div className={styles.nav}>
           <Button variant="secondary" onClick={() => navigate('/f5a')}>← Landing site</Button>
-          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+          <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
           {done && !landed && fixPhase(res.failure) != null ? (
             <Button variant="secondary" onClick={() => goBack(fixPhase(res.failure))}>Go back to Phase {fixPhase(res.failure)}</Button>
           ) : null}
@@ -129,6 +243,7 @@ function F5bBody() {
           Step outside →
         </Button>
       </div>
+      <HelpWindow help={HELP_F5B} open={help} onClose={() => setHelp(false)} />
     </div>
   )
 }

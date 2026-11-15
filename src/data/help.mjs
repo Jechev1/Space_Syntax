@@ -113,3 +113,53 @@ export const HELP_F1DONE = {
     },
   ],
 }
+
+export const HELP_F5A = {
+  title: 'Phase 5: Landing Site',
+  blocks: [
+    {
+      heading: 'Pick the place, then the proof',
+      text: 'Each site fits some science questions better than others. A site marked "Good for your question" has the rock or the ice your instruments need to test the hypothesis.',
+      source: 'sampleScience',
+    },
+    {
+      heading: 'Three instruments from orbit',
+      text: 'NASA\'s Lunar Reconnaissance Orbiter scouts every site before a landing: LOLA measures the slopes with a laser, LROC photographs boulders and craters, and Diviner reads the temperature.',
+      source: 'lro',
+    },
+    {
+      heading: 'Hover time',
+      text: 'Rough ground makes the lander hang in the air while it looks for a flat spot, and hovering burns fuel. Compare "Hover needed" with "Hover you have": the fuel margin you set in Phase 3 pays for it.',
+    },
+    {
+      heading: 'Cold and dark at the pole',
+      text: 'Near the south pole the Sun stays low and some craters never see it. Diviner measured about 25 K (−250 °C) inside them, the coldest temperature measured in the solar system.',
+      source: 'diviner',
+    },
+  ],
+}
+
+export const HELP_F5B = {
+  title: 'Phase 5: Powered Descent',
+  blocks: [
+    {
+      heading: 'The last braking burn',
+      text: 'The descent burn spends about 2,074 m/s of delta-v to slow the lander from lunar orbit down to the surface. On the Moon there is no air to help, so the engine does all the braking.',
+      source: 'altair',
+    },
+    {
+      heading: 'Hovering costs fuel',
+      text: 'Lunar gravity pulls at 1.62 m/s², so every second spent hovering burns about 1.62 m/s of delta-v. If rocks show up, a detour spends some of your margin; aborting is safe but you do not land.',
+    },
+    {
+      heading: 'A gentle touchdown',
+      text: 'NASA lander studies keep the touchdown speed below about 2 m/s for a clean landing. A little faster is a rough landing; much faster is a crash.',
+      source: 'landingContact',
+    },
+    {
+      heading: 'Apollo 11 did it too',
+      text: 'Armstrong flew past a boulder field near West Crater and landed with about 45 seconds of fuel left, including about 20 seconds kept for an abort.',
+      source: 'alsj11',
+    },
+  ],
+}
