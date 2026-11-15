@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
@@ -79,7 +79,6 @@ function F4Body() {
       <F4Hud />
       <div className={styles.left}>
         <Globe frame={play.frame} />
-        <Ping seconds={plan.roundTrip} />
       </div>
       <Beam frame={play.frame} />
       <div className={`${scene.speech} ${styles.speech}`}>
@@ -206,31 +205,6 @@ function Globe({ frame }) {
         ))}
       </div>
       <span className={styles.legend}><i className={`${styles.liveDot} ${driven && !up ? styles.dim : ''}`} /> {driven && !up ? 'No link' : 'In contact'}</span>
-    </div>
-  )
-}
-
-function Ping({ seconds }) {
-  const [phase, setPhase] = useState('idle')
-  const timer = useRef(null)
-  useEffect(() => () => clearTimeout(timer.current), [])
-  const send = () => {
-    clearTimeout(timer.current)
-    setPhase('flying')
-    timer.current = setTimeout(() => setPhase('back'), seconds * 1000)
-  }
-  return (
-    <div className={`${styles.card} ${styles.ping}`}>
-      <span>Ping · {seconds.toFixed(2)} s round trip</span>
-      <button type="button" className={styles.pingButton} disabled={phase === 'flying'} onClick={send}>
-        {phase === 'flying' ? 'Waiting for the echo…' : 'Send ping'}
-      </button>
-      <span className={styles.track} aria-hidden="true">
-        <i key={phase} className={phase === 'flying' ? styles.flying : ''} style={{ animationDuration: `${seconds}s` }} />
-      </span>
-      <span className={styles.pingNote} aria-live="polite">
-        {phase === 'back' ? `Echo back after ${seconds.toFixed(2)} s: light needs time to reach the Moon.` : ' '}
-      </span>
     </div>
   )
 }
