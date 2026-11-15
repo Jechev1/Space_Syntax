@@ -548,4 +548,13 @@ El radio dibujado de 9 000 km y la panza de 70 000 km están en la fase 3, marca
 
 ## Pantalla F0
 
-La pantalla enseña tres topes en el HUD, todos leídos de `mission.config.mjs`: la capacidad del lanzador medio (`fase1.cohetes.medio.capacidad`), el presupuesto de las guías (`maquetas.presupuestoDePantalla`) y la generación de los paneles robóticos (`fase1.potencia.solarPequena.generacion`). Los valores actuales de esa barra se muestran en 0 porque en esta fase todavía no hay nave. No enseña la edad citada, la fuerza de las mediciones, la densidad de la Luna ni su gravedad. Esas cifras siguen en `fase0.edadCitada`, `fase0.fuerzaDeLaMedicion`, `compartido.luna.densidad`, `compartido.luna.gravedad`, `compartido.constantes.densidadAgua` y `compartido.constantes.gTierraTexto`.
+La pantalla enseña tres topes en el HUD, todos leídos de `mission.config.mjs`: la capacidad del lanzador medio (`fase1.cohetes.medio.capacidad`), el presupuesto de las guías (`maquetas.presupuestoDePantalla`) y la generación de los paneles robóticos (`fase1.potencia.solarPequena.generacion`). Los valores actuales de esa barra se muestran en 0 porque en esta fase todavía no hay nave.
+
+Después de cada respuesta, el panel de aprendizaje muestra como máximo cuatro líneas. Cada cifra sale de `src/data/mission.config.mjs` con la fuente guardada en esa entrada. Si la fuente es `pendiente`, la pantalla cita archivo y línea. Si es `valor de juego`, dice "game value". Si es una URL, enlaza NASA, NASA OIG o LPI.
+
+No se muestran, porque no están en el config:
+
+- Cantidad, concentración o porcentaje de hielo de agua. La pregunta del agua solo enseña la masa, la potencia y la fuerza del detector de neutrones, y la noche de 100 h del polo sur.
+- Un rango de masa del aterrizador publicado por la NASA. El config tiene el núcleo robótico (250 kg), el módulo lunar del Apolo 17 (16 456 kg) y las bandas de aviso de la masa de descenso (1 000–2 500 kg robótico y 15 000–17 000 kg tripulado), estas últimas como valor de juego. La pantalla enseña esas bandas y el módulo del Apolo 17. No fabrica otro rango.
+- Un total de horas de superficie tripuladas o de horas de EVA. Están por separado la estancia de 72 h, las 4 caminatas por persona y las duraciones de traje de 4, 6 y 8 h. La pantalla no las multiplica. En la misión tripulada enseña las 4 caminatas; en la robótica, las 354 h de luz.
+- La gravedad de la Luna (1.62 m/s²) sigue en `compartido.luna.gravedad` y no entra en el panel.

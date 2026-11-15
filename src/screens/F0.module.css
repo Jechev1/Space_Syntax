@@ -32,75 +32,168 @@
   border-left: 0;
 }
 
+.girl {
+  position: absolute;
+  left: 2.4%;
+  bottom: 12%;
+  height: 40%;
+  width: auto;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
+}
+
 .speech {
   position: absolute;
-  left: 15%;
-  bottom: 44%;
+  left: 16%;
+  bottom: 48%;
+  pointer-events: none;
 }
 
 .speech p {
-  max-width: 148px;
+  max-width: 220px;
 }
 
-.panel {
+.column {
   position: absolute;
-  top: 11%;
+  top: 76px;
   right: 2.4%;
+  bottom: 15%;
   width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.panel,
+.learn {
   pointer-events: auto;
+}
+
+.kickerRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .kicker,
 .question,
-.hypothesis {
+.hypothesis,
+.facts p,
+.why {
   margin: 0;
   font-weight: var(--fw);
 }
 
 .kicker {
-  padding: 0;
-  border: 0;
-  background: transparent;
   color: var(--text-dim);
   font-family: var(--font-ui);
   font-size: var(--fs-chip);
-  text-align: left;
-  cursor: default;
 }
 
-button.kicker {
+.stepNav {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.stepNav button {
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
   cursor: pointer;
+}
+
+.stepNav button:hover {
+  color: var(--text);
 }
 
 .question {
   font-family: var(--font-display);
   font-size: var(--fs-sub);
   font-weight: var(--fw-title);
-  line-height: 1.2;
+  line-height: 1.15;
   color: var(--text);
 }
 
-.hypothesis {
-  color: var(--math);
+.hypothesis,
+.facts,
+.why,
+.src {
+  color: var(--text-dim);
   font-size: var(--fs-chip);
+  line-height: 1.25;
 }
 
-.home,
-.lock {
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.factLabel {
+  color: var(--text);
+}
+
+.src {
+  margin-left: 4px;
+}
+
+.src a {
+  color: var(--chip-nasa);
+}
+
+.why {
+  color: var(--text);
+}
+
+.learn {
+  animation: fade-in var(--dur-bar) var(--ease);
+}
+
+.dock {
   position: absolute;
+  left: 18%;
+  right: 2.4%;
   bottom: 3.2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
   pointer-events: auto;
 }
 
-.home {
-  left: 2.4%;
+.nav {
+  display: flex;
+  gap: 8px;
 }
 
 .lock {
-  right: 2.4%;
+  margin-left: auto;
 }
 
-.lock button {
-  min-width: 196px;
-  padding-inline: var(--fs-title);
+.lock button,
+.nav button {
+  min-width: 132px;
+}
+
+.help {
+  pointer-events: auto;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learn {
+    animation: none;
+  }
 }
