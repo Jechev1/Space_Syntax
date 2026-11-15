@@ -27,7 +27,7 @@ ok('JS syntax');
 
 // 2. private/team files must never be published
 const banned = files.filter(f => /\.(docx?|pdf|env|pem|key)$/i.test(f) || /(^|[\/])\.env/.test(f));
-const tracked = (() => { try { return require('node:child_process').execSync('git ls-files', { cwd: root }).toString().split('\n'); } catch { return null; } })();
+const tracked = (() => { try { return require('child_process').execSync('git ls-files', { cwd: root }).toString().split('\n'); } catch { return null; } })();
 const bannedTracked = tracked ? banned.filter(f => tracked.includes(path.relative(root, f).split(path.sep).join('/'))) : banned;
 if (bannedTracked.length) fail('private files would be published: ' + bannedTracked.map(f => path.relative(root, f)).join(', '));
 else ok('no private files tracked');
