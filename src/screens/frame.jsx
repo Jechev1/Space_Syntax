@@ -24,11 +24,17 @@ export function usePhaseGuard(path) {
   return target === path
 }
 
+/** After liftoff the design phases cannot change any more. */
+const LOCKED_AFTER_LAUNCH = ['/f0', '/f1a', '/f1b', '/f1done', '/f2', '/f3a']
+
 function screenTarget(path, state, model) {
   if ((path === '/f1a' || path === '/f1b') && !state.phase0Done) return '/f0'
   if (path === '/f1b' && (model.missingSubsystems(state).length || !model.payloadAnswers(state))) return '/f1a'
   if (path === '/f1done' && !state.phase1Done) return state.phase0Done ? '/f1a' : '/f0'
   if (path === '/f2' && !state.phase1Done) return state.phase0Done ? '/f1a' : '/f0'
+  if (path === '/f3a' && !state.phase2Done) return state.phase1Done ? '/f2' : '/f1a'
+  if (path === '/f3b' && !state.phase3Done && !state.launched) return state.phase2Done ? '/f3a' : '/f2'
+  if (state.launched && LOCKED_AFTER_LAUNCH.includes(path)) return '/f3b'
   return path
 }
 

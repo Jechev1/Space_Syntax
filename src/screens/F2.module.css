@@ -1,101 +1,4 @@
-.screen {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  container-type: size;
-}
-
-/* Text and spacing follow the stage height, so the whole panel always fits without scrolling. */
-.hud,
-.speech,
-.panel,
-.dock {
-  --fs-body: clamp(10px, 2.15cqh, 17px);
-  --fs-chip: clamp(8px, 1.7cqh, 13px);
-  --fs-sub: clamp(13px, 2.8cqh, 21px);
-}
-
-.hud {
-  position: absolute;
-  top: 2.5cqh;
-  left: 1.7cqw;
-  right: calc(1.7cqw + var(--tools-reserve));
-  display: grid;
-  grid-template-columns: 0.8fr repeat(4, minmax(0, 1.2fr)) repeat(2, minmax(0, 0.9fr));
-  align-items: center;
-  min-height: 6.4cqh;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-panel);
-  background: var(--panel);
-  backdrop-filter: blur(var(--panel-blur));
-  color: var(--text);
-  font-size: var(--fs-body);
-  font-weight: var(--fw);
-}
-
-.hud span {
-  padding: calc(var(--fs-chip) / 2) calc(var(--fs-body) / 2);
-  text-align: center;
-  white-space: nowrap;
-  border-left: 1px solid var(--line);
-}
-
-.hud span:first-child {
-  border-left: 0;
-}
-
-.speech {
-  position: absolute;
-  left: 15%;
-  bottom: 44%;
-}
-
-.speech p {
-  max-width: 160px;
-}
-
-.panel {
-  position: absolute;
-  top: 11%;
-  right: 2.4%;
-  width: 26%;
-  pointer-events: auto;
-}
-
-.kicker,
-.title,
-.text,
-.note,
-.label,
-.source {
-  margin: 0;
-  font-weight: var(--fw);
-}
-
-.kicker {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--text-dim);
-  font-family: var(--font-ui);
-  font-size: var(--fs-chip);
-  text-align: left;
-  cursor: pointer;
-}
-
-.title {
-  font-family: var(--font-display);
-  font-size: var(--fs-sub);
-  font-weight: var(--fw-title);
-  line-height: 1.2;
-  color: var(--text);
-}
-
-.text {
-  color: var(--text);
-  font-size: var(--fs-body);
-  line-height: 1.4;
-}
+/* F2-only pieces. Shared layout (HUD, bubble, panel, button) lives in scene.module.css. */
 
 .row,
 .toggle,
@@ -134,21 +37,6 @@
 .stepper button:disabled {
   opacity: 0.35;
   cursor: not-allowed;
-}
-
-.note,
-.source {
-  color: var(--text-dim);
-  font-size: var(--fs-chip);
-  line-height: 1.35;
-}
-
-.note {
-  font-style: italic;
-}
-
-.source {
-  text-align: center;
 }
 
 .slider {
@@ -199,21 +87,11 @@
   gap: 0.5em;
 }
 
-.icon {
-  width: 1.1em;
-  height: 1.1em;
-  flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.85;
-}
-
 .label {
+  margin: 0;
   color: var(--text-dim);
   font-size: var(--fs-chip);
+  font-weight: var(--fw);
 }
 
 .suits {
@@ -244,48 +122,4 @@
 .suit[aria-pressed='true'] {
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent);
-}
-
-/* Same place and size as the girl in F1. */
-.girl {
-  position: absolute;
-  left: 2.4%;
-  bottom: 9%;
-  height: 38%;
-  width: auto;
-  object-fit: contain;
-  object-position: left bottom;
-  pointer-events: none;
-}
-
-/* Bottom bar like F1: back and help on the left, the main action on the right. */
-.dock {
-  position: absolute;
-  left: 2.4%;
-  right: 2.4%;
-  bottom: 3.2%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 8px;
-  pointer-events: auto;
-}
-
-.nav {
-  display: flex;
-  gap: 8px;
-}
-
-.lock {
-  margin-left: auto;
-}
-
-.lock button,
-.nav button {
-  min-width: 132px;
-}
-
-.lock button {
-  min-width: 15cqw;
-  padding-inline: var(--fs-title);
 }
