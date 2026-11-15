@@ -1,8 +1,9 @@
 name: Deploy check
 
-# Vercel reports each deployment back to GitHub. When production is live,
-# open the real site and make sure the game loads. A red run means the live site needs a look.
-on: deployment_status
+# Vercel reports each deploy back to GitHub as a commit status named "Vercel". When the status
+# for a commit on main turns green, production is live: open the real site and make sure the game loads.
+# A red run means the live site needs a look.
+on: status
 
 permissions:
   contents: read
@@ -10,8 +11,9 @@ permissions:
 jobs:
   smoke:
     if: >-
-      github.event.deployment_status.state == 'success' &&
-      github.event.deployment.environment == 'Production'
+      github.event.context == 'Vercel' &&
+      github.event.state == 'success' &&
+      contains(github.event.branches.*.name, 'main')
     runs-on: ubuntu-latest
     env:
       SITE: https://spacesyntax.laubuilds.work
