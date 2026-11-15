@@ -107,18 +107,6 @@ function SurfaceHud({ st }) {
   )
 }
 
-/** "NASA source" that opens the source window of the stage instead of leaving the game. */
-function SourceLink({ srcKey }) {
-  const { data } = useGame()
-  const { openSource } = usePlay()
-  if (!srcKey || !data.SOURCES[srcKey]) return null
-  return (
-    <button type="button" className={`${shell.link} ${styles.sourceLink}`} onClick={() => openSource(srcKey)}>
-      NASA source
-    </button>
-  )
-}
-
 function Speech({ text }) {
   if (!text) return null
   return (
@@ -379,13 +367,11 @@ function ResultCard({ entry, pois }) {
     <div className={styles.result} role="status">
       <p className={styles.resultHead}>{ins.title} · {poiTitle(pois, entry.poi)}</p>
       <p className={styles.resultText}>
-        {entry.result ? entry.result.text : 'No reading.'}{' '}
-        {entry.result ? <SourceLink srcKey={entry.result.src} /> : null}
+        {entry.result ? entry.result.text : 'No reading.'}
       </p>
       {entry.note ? (
         <p className={styles.note}>
-          {entry.note.text}{' '}
-          <SourceLink srcKey={entry.note.src} />
+          {entry.note.text}
         </p>
       ) : null}
     </div>
@@ -408,7 +394,7 @@ function EventDialog({ event, onChoose }) {
     <Modal open={Boolean(event)} variant="warn" title={event ? event.title : ''} onClose={() => {}} hideClose>
       {event ? (
         <>
-          <p>{event.text} <SourceLink srcKey={event.src} /></p>
+          <p>{event.text}</p>
           <div className={styles.options}>
             {event.choices.map((choice, i) => (
               <OptionRow
@@ -435,7 +421,6 @@ function Verdict({ st, helpButton, helpWindow }) {
   const outcome = model.surfaceOutcome(state)
   const home = model.returnApplies(state)
   const strong = outcome && outcome.evidence !== 'clue'
-  const best = [...st.journal].filter((entry) => entry.evidence === (outcome && outcome.evidence) && entry.result)[0]
   const regolith = data.SURFACE.regolith
   const crewed = state.missionType === 'crewed'
 
@@ -458,10 +443,9 @@ function Verdict({ st, helpButton, helpWindow }) {
               {strong
                 ? 'The ground is rock and dust, not cheese.'
                 : 'A picture alone cannot tell what the ground is made of. Composition or a sample would settle it.'}
-              {' '}{best ? <SourceLink srcKey={best.result.src} /> : null}
             </p>
           </div>
-          <p className={styles.line}><b>Regolith:</b> {regolith.text} <SourceLink srcKey={regolith.src} /></p>
+          <p className={styles.line}><b>Regolith:</b> {regolith.text}</p>
           <p className={styles.line}>
             {model.fmt(st.measurements)} measurements, {model.fmt(st.dataSentGb, 1)} GB sent to Earth
             {st.sampleKg > 0 ? `, ${model.fmt(st.sampleKg, 2)} kg of samples on board` : ''}.
@@ -483,7 +467,6 @@ function Verdict({ st, helpButton, helpWindow }) {
           {helpButton}
           {home ? null : (
             <>
-              <Button variant="secondary" onClick={() => setModal('sources')}>See all NASA sources</Button>
               <Button variant="secondary" onClick={() => setModal('reset')}>Start a new mission</Button>
             </>
           )}

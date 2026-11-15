@@ -243,13 +243,6 @@ div.hud {
   color: var(--warn);
 }
 
-/* "NASA source" opens the source window of the stage; it reads like a link. */
-.sourceLink {
-  font-size: var(--fs-chip);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 @keyframes rise {
   from {
     opacity: 0;
