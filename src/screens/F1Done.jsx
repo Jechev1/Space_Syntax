@@ -66,7 +66,7 @@ function F1DoneBody() {
               ? 'Next: crew and life support. Each astronaut needs about 0.9 kg of oxygen, 0.8 kg of food and 3.2 kg of water per day.'
               : 'Next: the flight plan. Spend your delta-v budget maneuver by maneuver.'}
           </p>
-          <Button variant="primary" disabledReason="Our team is building it right now.">Next phase: coming soon</Button>
+          <Button variant="primary" onClick={() => navigate('/f2')}>Next phase →</Button>
           <div className={shell.actions}>
             <Button variant="ghost" onClick={() => setModal('sources')}>See all NASA sources</Button>
             <Button variant="ghost" onClick={() => setModal('reset')}>Start a new mission</Button>

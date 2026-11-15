@@ -1,0 +1,125 @@
+/* F2-only pieces. Shared layout (HUD, bubble, panel, button) lives in scene.module.css. */
+
+.row,
+.toggle,
+.supply {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fs-chip);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.row b {
+  font-weight: var(--fw-title);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--fs-chip) / 1.5);
+}
+
+.stepper button {
+  width: 1.65em;
+  height: 1.65em;
+  padding: 0;
+  line-height: 1;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.slider {
+  display: grid;
+  gap: 0.25em;
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+}
+
+.slider input {
+  width: 100%;
+  accent-color: var(--text);
+}
+
+.toggle {
+  width: 100%;
+  padding: calc(var(--fs-chip) / 2) 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+}
+
+.toggle i {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  font-style: normal;
+}
+
+.toggle[aria-pressed='true'] span:last-child {
+  color: var(--accent);
+}
+
+.supplies {
+  display: grid;
+}
+
+.supply {
+  padding: calc(var(--fs-chip) / 2) 0;
+  border-top: 1px solid var(--line);
+}
+
+.supply > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.label {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+}
+
+.suits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4em;
+}
+
+.suit {
+  display: grid;
+  gap: 0.15em;
+  padding: 0.4em 0.3em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+}
+
+.suit span {
+  color: var(--text-dim);
+}
+
+.suit[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}

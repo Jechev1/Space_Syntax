@@ -7,6 +7,10 @@ const UI_DEFAULTS = {
   closed: {},
   phase0Done: false,
   phase1Done: false,
+  phase2Done: false,
+  phase3Done: false,
+  phase4Done: false,
+  launched: false,
   showMath: {},
   showMel: false,
 }
@@ -35,9 +39,13 @@ function sanitizeUi(raw) {
   ui.introStep = Number.isInteger(raw.introStep) ? Math.max(0, Math.min(2, raw.introStep)) : 0
   ui.phase0Done = raw.phase0Done === true
   ui.phase1Done = raw.phase1Done === true
+  ui.phase2Done = raw.phase2Done === true
+  ui.phase3Done = raw.phase3Done === true
+  ui.phase4Done = raw.phase4Done === true
+  ui.launched = raw.launched === true
   ui.showMel = raw.showMel === true
-  ui.closed = flags(raw.closed, ['f0', 'f1a', 'f1b', 'f1done'])
-  ui.showMath = flags(raw.showMath, ['density', 'rocket', 'battery'])
+  ui.closed = flags(raw.closed, ['f0', 'f1a', 'f1b', 'f1done', 'f2', 'f3a', 'f4', 'f3b'])
+  ui.showMath = flags(raw.showMath, ['density', 'rocket', 'battery', 'life', 'comms'])
   return ui
 }
 
@@ -69,6 +77,9 @@ function revalidate(state) {
   if (!report) {
     state.rocket = null
     state.phase1Done = false
+    state.phase2Done = false
+    state.phase3Done = false
+    state.phase4Done = false
     return null
   }
   if (state.rocket) {
@@ -85,6 +96,23 @@ function revalidate(state) {
       state.phase1Done = false
       return 'Design changed: your spacecraft needs a new check.'
     }
+  }
+  if (!state.phase1Done) state.phase2Done = false
+  if (state.phase2Done && !M.validatePhase(state, 2).ok) {
+    state.phase2Done = false
+    state.phase3Done = false
+    return 'Crew plan changed: confirm it again.'
+  }
+  if (!state.phase2Done) state.phase3Done = false
+  if (state.phase3Done && !M.validatePhase(state, 3).ok) {
+    state.phase3Done = false
+    state.phase4Done = false
+    return 'Flight plan changed: check it again.'
+  }
+  if (!state.phase3Done) state.phase4Done = false
+  if (state.phase4Done && !M.validatePhase(state, 4).ok) {
+    state.phase4Done = false
+    return 'Radio plan changed: check it again.'
   }
   return null
 }
@@ -135,6 +163,7 @@ function useGameState() {
         next.design.power = null
         next.rocket = null
         next.phase1Done = false
+        next.crew = null
       }
       next.missionType = id
     }),
@@ -166,6 +195,31 @@ function useGameState() {
     }),
     toggleMel: () => update((next) => { next.showMel = !next.showMel }),
     lockDesign: () => update((next) => { next.phase1Done = true }),
+    ensureCrew: () => update((next) => {
+      if (next.missionType === 'crewed' && !next.crew) next.crew = M.defaultCrew()
+    }),
+    setCrew: (patch) => update((next) => {
+      if (next.missionType !== 'crewed') return
+      next.crew = Object.assign(next.crew || M.defaultCrew(), patch)
+      next.phase2Done = false
+    }),
+    lockCrew: () => update((next) => { next.phase2Done = true }),
+    setMargin: (margin) => update((next) => {
+      if (!D.FLIGHT.marginOptions.includes(margin) || margin < M.minMargin(next)) return
+      next.flight = Object.assign({}, next.flight, { margin })
+      next.phase3Done = false
+    }),
+    lockFlight: () => update((next) => { next.phase3Done = true }),
+    setComms: (patch) => update((next) => {
+      next.comms = Object.assign({ link: null, dish: null }, next.comms, patch)
+      next.phase4Done = false
+    }),
+    lockComms: () => update((next) => { next.phase4Done = true }),
+    launch: () => update((next) => {
+      if (!M.launchReadiness(next).go) return 'Every item must be GO first.'
+      next.launched = true
+      return 'Liftoff! 🚀'
+    }),
   }
 }
 
@@ -310,13 +364,22 @@ const PHASES = ['Goal', 'Spacecraft', 'Crew', 'Flight', 'Comms', 'Landing', 'Sci
 
 export function phaseItems(state, current) {
   return PHASES.map((label, index) => {
-    const done = (index === 0 && state.phase0Done) || (index === 1 && state.phase1Done)
+    const done = (index === 0 && state.phase0Done) || (index === 1 && state.phase1Done) || (index === 2 && state.phase2Done) || (index === 3 && state.phase3Done) || (index === 4 && state.phase4Done)
     let status = 'locked'
     if (index === current) status = 'current'
     else if (done) status = 'done'
     else if (index === 1 && state.phase0Done) status = 'open'
+    else if (index === 2 && state.phase1Done) status = 'open'
+    else if (index === 3 && state.phase2Done) status = 'open'
+    else if (index === 4 && state.phase3Done) status = 'open'
     let reason = ''
-    if (status === 'locked') reason = index === 1 && !state.phase0Done ? 'Finish the goal first' : 'Coming soon'
+    if (status === 'locked') {
+      if (index === 1 && !state.phase0Done) reason = 'Finish the goal first'
+      else if (index === 2 && !state.phase1Done) reason = 'Finish the spacecraft first'
+      else if (index === 3 && !state.phase2Done) reason = 'Finish the crew first'
+      else if (index === 4 && !state.phase3Done) reason = 'Finish the flight plan first'
+      else reason = 'Coming soon'
+    }
     return { id: String(index), index, label, status, reason }
   })
 }
