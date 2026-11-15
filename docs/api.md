@@ -341,7 +341,7 @@ The backend wins. Real values:
 
 | Mockup | Backend |
 |---|---|
-| Robotic budget $450M | `D.BUDGET.robotic`: cadet 650, engineer 500, director 420 ($M). Crewed: cadet 7,700, engineer 6,400, director 6,300. |
+| Robotic budget $450M | `D.BUDGET.robotic`: cadet 650, engineer 500, director 420 ($M). Crewed: cadet 7,700, engineer 7,000, director 6,300. |
 | Capacity 4,000 kg on screen 0 | Capacity exists only after `s.rocket` is set. Show 0 or hide it. |
 | Launch mass 1,603 kg, hardware 540, fuel 1,063 | Same robotic design gives hardware 538 kg, fuel 1,065 kg, launch mass 1,603 kg at 0 percent margin. At 15 percent margin it is 1,902 kg. |
 | Spacecraft $270M, total $390M | Matches the robotic fixture design. |

@@ -56,18 +56,33 @@ test('same verdict as M.landingSim across seeds, sites and margins', () => {
   assert.equal(seen.size, 3, 'all three outcomes are covered');
 });
 
-test('clean runs touch down at or under 2.1 m/s with fuel left; rough runs are harder', () => {
+test('clean runs touch down at or under 2.0 m/s with fuel left; rough runs are harder', () => {
   for (const site of SITES) for (const mg of [0.1, 0.2]) for (let seed = 1; seed <= 50; seed++) {
     const s = build(site, mg);
     const r = P.simulate(s, { seed }), last = r.frames[r.frames.length - 1];
-    if (r.outcome === 'success') { assert.ok(Math.abs(last.vz) <= 2.1, `${site} ${mg} ${seed}`); assert.ok(last.fuel > 0); assert.equal(last.alt, 0); }
+    if (r.outcome === 'success') { assert.ok(Math.abs(last.vz) <= P.TUNING.touchLimit, `${site} ${mg} ${seed} vz ${last.vz}`); assert.ok(last.fuel > 0); assert.equal(last.alt, 0); }
   }
   const { s, seed } = find('tranquility', 0, 'rough');
   const rr = P.simulate(s, { seed });
   assert.ok(rr.landing.touchSpeed > P.TUNING.touchLimit);
+  assert.ok(rr.landing.touchSpeed <= P.TUNING.crashAbove);
   assert.ok(rr.events.some(e => /over the safe limit.*damaged/.test(e.text)));
   assert.equal(rr.math.src, 'nssdc');
-  assert.equal(rr.math.steps.find(x => /safe landing/.test(x.eq)).src, 'altair');
+  assert.equal(rr.math.steps.find(x => /safe landing/.test(x.eq)).src, 'landingContact');
+});
+
+test('designed lander mass changes the touchdown speed', () => {
+  const { seed } = find('tranquility', 0.1, 'clean');
+  const light = build('tranquility', 0.1);
+  light.design = { structure: 'composite', shield: 'stuffed', thermal: 'passive', power: 'solarSmall', science: ['camera', 'spectrometer'] };
+  const heavy = build('tranquility', 0.1);
+  heavy.design = { structure: 'aluminum', shield: 'solid', thermal: 'active', power: 'rps', science: ['camera', 'spectrometer', 'neutron'] };
+  assert.ok(M.approachMass(heavy) > M.approachMass(light));
+  const a = P.simulate(light, { seed }), b = P.simulate(heavy, { seed });
+  assert.equal(a.outcome, 'success');
+  assert.equal(b.outcome, 'success');
+  assert.ok(b.landing.touchSpeed > a.landing.touchSpeed, `${b.landing.touchSpeed} vs ${a.landing.touchSpeed}`);
+  assert.ok(b.landing.mass > a.landing.mass);
 });
 
 test('more margin leaves more fuel at touchdown', () => {

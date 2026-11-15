@@ -65,6 +65,11 @@ test('phase 6/7 data integrity', async (t) => {
     const ev = D.SURFACE.evidence.map(e => e.id);
     for (const ins of Object.values(D.SURFACE.instruments)) { assert.ok(ev.includes(ins.evidence)); if (ins.evidenceOtherwise) assert.ok(ev.includes(ins.evidenceOtherwise)); }
     for (const id of ev) assert.ok(D.SURFACE.outcomes[id], 'outcome ' + id);
+    for (const id of ['camera', 'spectrometer', 'neutron']) {
+      const opt = D.SUBSYSTEMS.find(s => s.id === 'science').options.find(o => o.id === id);
+      assert.equal(opt.robotic.power, D.SURFACE.instruments[id].power, id);
+      assert.equal(opt.crewed.power, D.SURFACE.instruments[id].power, id + ' crewed');
+    }
   });
   await t.test('events, entries, shields, difficulty tables', () => {
     assert.equal(new Set(D.SURFACE_EVENTS.map(e => e.id)).size, D.SURFACE_EVENTS.length);
@@ -117,7 +122,7 @@ test('surface: measurements', async (t) => {
     const s = play(robot(), [['plain', 'camera'], ['plain', 'spectrometer'], ['crater', 'camera']]);
     const st = M.surfaceStatus(s), I = D.SURFACE.instruments;
     close(st.hoursUsed, I.camera.hours * 2 + I.spectrometer.hours, 1e-9);
-    close(st.hoursLeft, D.SURFACE.roboticHours - st.hoursUsed, 1e-9);
+    close(st.hoursLeft, M.surfaceHours(robot()) - st.hoursUsed, 1e-9);
     close(st.bufferGb, I.camera.dataGb * 2 + I.spectrometer.dataGb, 1e-9);
     assert.deepEqual(st.journal.map(j => j.missionHour), [0, I.camera.hours, I.camera.hours + I.spectrometer.hours]);
     assert.ok(st.power.available > 0 && st.power.capacity >= st.power.available);
@@ -131,12 +136,20 @@ test('surface: measurements', async (t) => {
     assert.equal(st.pois[0].status, 'Done');
   });
   await t.test('rough landing costs an hour; running out of time blocks', () => {
-    assert.equal(M.surfaceHours(robot({ landing: { seed: 1, outcome: 'rough' } })), D.SURFACE.roboticHours - D.SURFACE.roughLandingPenalty);
-    assert.equal(M.surfaceHours(crew()), D.LIFE.suits.find(x => x.id === 'lunar').evaHours);
-    const s = robot(); s.surface = { actions: [{ type: 'event', id: 'noSignal', choice: 'wait' }], finished: false };
-    for (let i = 0; i < 5; i++) s.surface.actions.push({ type: 'event', id: 'noSignal', choice: 'wait' });
-    assert.equal(M.surfaceStatus(s).hoursLeft, 0);
-    assert.equal(M.canMeasure(s, 'plain', 'camera').code, 'noTime');
+    const day = D.SITES.find(x => x.id === 'tranquility').lightHours;
+    assert.equal(M.surfaceHours(robot()), day);
+    assert.equal(M.surfaceHours(robot({ site: 'southPole' })), D.SITES.find(x => x.id === 'southPole').lightHours);
+    assert.equal(M.surfaceHours(robot({ landing: { seed: 1, outcome: 'rough' } })), day - D.SURFACE.roughLandingPenalty);
+    const life = M.lifeSupport(crew());
+    assert.equal(M.surfaceHours(crew()), D.LIFE.evaPlan.count * life.suit.evaHours * life.landingCrew);
+    assert.equal(M.siteReport(crew()).evaHours, M.surfaceHours(crew()));
+    const site = D.SITES.find(x => x.id === 'tranquility'), saved = site.lightHours;
+    try {
+      site.lightHours = 0.5;
+      const s = robot();
+      s.surface = { actions: [{ type: 'event', id: 'noSignal', choice: 'wait' }], finished: false };
+      assert.equal(M.canMeasure(s, 'plain', 'camera').code, 'noTime');
+    } finally { site.lightHours = saved; }
   });
   await t.test('not enough spare power blocks', () => {
     const s = robot();
@@ -145,16 +158,23 @@ test('surface: measurements', async (t) => {
     try { D.SURFACE.instruments.spectrometer.power = need + 1; assert.equal(M.canMeasure(s, 'plain', 'spectrometer').code, 'noPower'); }
     finally { D.SURFACE.instruments.spectrometer.power = orig; }
   });
-  await t.test('data buffer fills; sending clears it', () => {
-    // 4 pictures × 1.2 Gb = 4.8 Gb, the 5th would pass 5 Gb
+  await t.test('data buffer is 150 Gb robotic and 300 Gb crewed; filling it blocks', () => {
+    assert.equal(M.surfaceStatus(robot()).bufferMax, 150);
+    assert.equal(M.surfaceStatus(crew()).bufferMax, 300);
     const s = robot({ site: 'descartes' });
-    let x = play(s, [['ridge', 'camera'], ['craterRim', 'camera'], ['boulder', 'camera'], ['valley', 'camera']]);
-    assert.equal(M.canMeasure(x, 'ridge', 'spectrometer').code, 'bufferFull');
-    assert.equal(M.canMeasure(x, 'ridge', 'spectrometer').reason, 'Data buffer full. Send data before measuring again.');
-    const sent = M.sendData(x); assert.ok(sent.ok); x = sent.state;
-    const st = M.surfaceStatus(x); assert.equal(st.bufferGb, 0); close(st.dataSentGb, 4.8, 1e-9);
-    assert.ok(M.canMeasure(x, 'ridge', 'spectrometer').ok);
-    assert.equal(M.canSendData(x).code, 'empty');
+    let open = play(s, [['ridge', 'camera'], ['craterRim', 'camera'], ['boulder', 'camera'], ['valley', 'camera']]);
+    assert.ok(M.canMeasure(open, 'ridge', 'spectrometer').ok, '150 Gb is not filled by four pictures');
+    const cap = D.SURFACE.bufferGb, saved = cap.robotic;
+    try {
+      cap.robotic = 5; // temporary, so four pictures fit and the next one does not
+      let x = play(s, [['ridge', 'camera'], ['craterRim', 'camera'], ['boulder', 'camera'], ['valley', 'camera']]);
+      assert.equal(M.canMeasure(x, 'ridge', 'spectrometer').code, 'bufferFull');
+      assert.equal(M.canMeasure(x, 'ridge', 'spectrometer').reason, 'Data buffer full. Send data before measuring again.');
+      const sent = M.sendData(x); assert.ok(sent.ok); x = sent.state;
+      const st = M.surfaceStatus(x); assert.equal(st.bufferGb, 0); close(st.dataSentGb, 4.8, 1e-9);
+      assert.ok(M.canMeasure(x, 'ridge', 'spectrometer').ok);
+      assert.equal(M.canSendData(x).code, 'empty');
+    } finally { cap.robotic = saved; }
   });
   await t.test('sample box capacity (robot: 2 × 0.25 kg)', () => {
     const s = play(robotSample(), [['plain', 'sampler'], ['crater', 'sampler']]);
@@ -205,7 +225,7 @@ test('surface: finish and validation', async (t) => {
     assert.deepEqual(codes(robot(), 6), ['noMeasurement']);
     const s = play(robot(), [['plain', 'camera']]);
     const f = M.finishSurface(s);
-    assert.equal(f.ok, true); assert.equal(f.confirm, 'You still have 5.5 hours. Finish anyway?');
+    assert.equal(f.ok, true); assert.equal(f.confirm, 'You still have 353.5 hours. Finish anyway?');
     assert.equal(M.canMeasure(f.state, 'crater', 'camera').code, 'finished');
     assert.ok(!codes(f.state, 6).includes('hoursLeft'));
   });
@@ -236,10 +256,10 @@ test('surface: events', async (t) => {
     assert.equal(M.applySurfaceEventChoice(once, 'noSignal', 'store'), once);
     for (let seed = 0; seed < 200; seed++) { const e = M.rollSurfaceEvent(once, seed); assert.ok(!e || e.id !== 'noSignal'); }
   });
-  await t.test('shelter / wait cost 1 hour; keep working adds risk', () => {
+  await t.test('shelter costs 1 hour; the blackout wait costs 41 minutes; keep working adds risk', () => {
     const s = play(crew(), [['rim', 'camera']]), h = M.surfaceStatus(s).hoursLeft;
     assert.equal(M.surfaceStatus(M.applySurfaceEventChoice(s, 'surfaceStorm', 'shelter')).hoursLeft, h - 1);
-    assert.equal(M.surfaceStatus(M.applySurfaceEventChoice(s, 'noSignal', 'wait')).hoursLeft, h - 1);
+    close(M.surfaceStatus(M.applySurfaceEventChoice(s, 'noSignal', 'wait')).hoursLeft, h - D.COMMS.blackoutMin / 60, 1e-9);
     const k = M.applySurfaceEventChoice(s, 'surfaceStorm', 'keepWorking');
     assert.equal(M.surfaceStatus(k).risk, 1); assert.equal(sev(k, 6, 'surfaceRisk'), 'warn');
   });

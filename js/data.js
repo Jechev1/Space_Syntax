@@ -61,7 +61,11 @@
     radiation: { title: 'NASA Science — Protecting astronauts from radiation at the Moon', url: 'https://science.nasa.gov/science-research/heliophysics/how-nasa-will-protect-astronauts-from-space-radiation-at-the-moon/' },
     artemis2: { title: 'NASA — Artemis II crew returns (Apr 10, 2026)', url: 'https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/' },
     sls: { title: 'NASA — Space Launch System', url: 'https://www.nasa.gov/reference/space-launch-system/' },
-    oig: { title: 'NASA OIG — Artemis program cost report IG-22-003 (PDF)', url: 'https://oig.nasa.gov/docs/IG-22-003.pdf' },
+    oig: { title: 'NASA OIG — Artemis program cost report IG-22-003 (PDF)', url: 'https://oig.nasa.gov/wp-content/uploads/2024/02/ig-22-003.pdf' },
+    eva: { title: 'NASA NTRS — EVA timeline and duration (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20200001071/downloads/20200001071.pdf' },
+    viperSpectrometer: { title: 'NASA NTRS — VIPER Mission Overview (Andrews, PDF)', url: 'https://ntrs.nasa.gov/api/citations/20205000864/downloads/2020-04-14%2C%20VIPER%20Mission%20Overview%20(Andrews).pdf' },
+    viperNeutron: { title: 'NASA NTRS — VIPER neutron spectrometer (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20210012662/downloads/viper-2021-03-29.pdf' },
+    landingContact: { title: 'NASA SP-2013-605 — lunar lander contact conditions (PDF)', url: 'https://www.lpi.usra.edu/lunar/documents/SP-2013-605.pdf' },
     esm: { title: 'NASA — European Service Module', url: 'https://www.nasa.gov/reference/european-service-module/' },
     cev: { title: 'NASA JSC — CEV Trajectory Design for Lunar Missions (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20080015975/downloads/20080015975.pdf' },
     altair: { title: 'NASA MSFC — Altair Descent and Ascent Trajectory Design (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20100035768/downloads/20100035768.pdf' },
@@ -94,8 +98,8 @@
     slsCap: { text: 'NASA\'s SLS rocket can send more than 27 t to the Moon (Block 1), 38 t (Block 1B) and up to 46 t to deep space (Block 2).', src: 'sls' },
     bvadDaily: { text: 'NASA plans for each astronaut to use 0.895 kg of oxygen, 0.800 kg of dry food and 3.217 kg of drinking water every day.', src: 'bvad' },
     waterRecovery: { text: 'In 2023 the Space Station reached 98% water recovery: crews drink recycled sweat and urine — after serious cleaning.', src: 'issWater' },
-    apolloTransit: { text: 'Apollo 11 took about 76 hours to reach lunar orbit — a little over 3 days.', src: 'apollo11' },
-    apollo17Stay: { text: 'Apollo 17 astronauts spent 75 hours on the Moon, the longest Apollo surface stay.', src: 'apollo17' },
+    apolloTransit: { text: 'This mission takes 3 days (72 hours) to reach the Moon.', src: 'game' },
+    apollo17Stay: { text: 'This mission stays 3 days (72 hours) on the Moon.', src: 'game' },
     dvReserve: { text: 'NASA\'s Orion-era plan budgeted 1,450 m/s to head home from the Moon, including a 15 m/s reserve for surprises.', src: 'cev' },
     signalDelay: { text: 'Radio travels at the speed of light, about 300,000 km per second. A message to the Moon takes about 1.3 seconds, and the answer another 1.3.', src: 'moonfacts' },
     dsnSites: { text: 'NASA\'s Deep Space Network has three sites spread around the world, in California, near Madrid and near Canberra. Each has a 70 m dish, a 26 m dish and several 34 m dishes.', src: 'dsn' },
@@ -133,7 +137,7 @@
   const WATER_DENSITY = 1000; // kg/m³ — by definition of the kilogram/litre, common knowledge
   /* Battery sizing: energy E = P × t, battery mass = E / specific energy */
   const BATTERY = {
-    specificEnergy: 150, // Wh/kg pack level; NASA cites ~245 Wh/kg best cells (techport), packs ~150-196
+    specificEnergy: 150, // Wh/kg, the battery-pack value this mission uses
     survivalPower: 50,   // W night survival for a small lander, NASA design study (nightPower)
     src: 'nightPower',
   };
@@ -169,7 +173,7 @@
       ascentCabin: { label: 'Lander ascent cabin', mass: 1500, cost: 700 },
       descentStage: { label: 'Lander descent stage', mass: 1300, cost: 800 },
       crewAllowance: { label: 'Crew & supplies (sized in Phase 2)', mass: 600, cost: 0 },
-      samples: { label: 'Sample allowance (Apollo 17 brought ~110 kg)', mass: 100, cost: 0 },
+      samples: { label: 'Sample allowance (100 kg)', mass: 100, cost: 0 },
       power: 900, // W baseline for avionics + life support (game value)
     },
   };
@@ -225,9 +229,9 @@
       id: 'science', icon: '🔬', title: 'Science payload', why: 'Your instruments answer your question. Pick at least one that matches your Phase 0 measurement.',
       fact: 'lro', multi: true,
       options: [
-        { id: 'camera', title: 'High-res camera', blurb: 'Shape, color and texture. Inspired by LRO\'s LROC.', strength: 1, robotic: { mass: 12, power: 15, cost: 25 }, crewed: { mass: 15, power: 15, cost: 25, where: 'descent' }, src: 'lro' },
-        { id: 'spectrometer', title: 'Composition spectrometer', blurb: 'Reads which elements are in the soil. Cheese vs. rock, settled.', strength: 2, robotic: { mass: 18, power: 25, cost: 40 }, crewed: { mass: 20, power: 25, cost: 40, where: 'descent' }, src: 'moonfacts' },
-        { id: 'neutron', title: 'Neutron detector', blurb: 'Finds hydrogen, a sign of water ice. Inspired by LRO\'s LEND.', strength: 2, forWater: true, robotic: { mass: 22, power: 15, cost: 30 }, crewed: { mass: 25, power: 15, cost: 30, where: 'descent' }, src: 'lro' },
+        { id: 'camera', title: 'High-res camera', blurb: 'Shape, color and texture. Inspired by LRO\'s LROC.', strength: 1, robotic: { mass: 12, power: 10, cost: 25 }, crewed: { mass: 15, power: 10, cost: 25, where: 'descent' }, src: 'game' },
+        { id: 'spectrometer', title: 'Composition spectrometer', blurb: 'Reads which elements are in the soil. Cheese vs. rock, settled.', strength: 2, robotic: { mass: 18, power: 30, cost: 40 }, crewed: { mass: 20, power: 30, cost: 40, where: 'descent' }, src: 'viperSpectrometer' },
+        { id: 'neutron', title: 'Neutron detector', blurb: 'Finds hydrogen, a sign of water ice. Inspired by LRO\'s LEND.', strength: 2, forWater: true, robotic: { mass: 22, power: 2, cost: 30 }, crewed: { mass: 25, power: 2, cost: 30, where: 'descent' }, src: 'viperNeutron' },
         { id: 'sampler', title: 'Sample collector', blurb: 'Scoop + sealed box to bring soil home. The strongest proof.', strength: 3, robotic: { mass: 30, power: 40, cost: 35 }, crewed: { mass: 40, power: 0, cost: 20, where: 'ascent' }, src: 'samples' },
       ],
     },
@@ -247,10 +251,11 @@
     ],
   };
 
-  /* Budget ($M) by mission type and difficulty — game values. */
+  /* Budget ($M) by mission type and difficulty. Robotic figures are game values.
+   * Crewed figures follow the NASA OIG Artemis cost report (src: oig). */
   const BUDGET = {
     robotic: { cadet: 650, engineer: 500, director: 420 },
-    crewed: { cadet: 7700, engineer: 6400, director: 6300 },
+    crewed: { cadet: 7700, engineer: 7000, director: 6300, src: 'oig' },
   };
   const DIFFICULTIES = [
     { id: 'cadet', title: 'Cadet', blurb: 'Bigger budget. Hints on.' },
@@ -263,18 +268,19 @@
     // Daily need per crew member (crew-day), NASA BVAD Rev2, Table 3-31 (nominal values)
     perCrewDay: { o2: 0.895, food: 0.800, water: 3.217, src: 'bvad' },
     crewMass: 82,        // kg, NASA BVAD Table 3-31 "standard 82 kg crewmember" (src: bvad)
-    transitDays: 3,      // days each way Earth→Moon: Apollo 11 entered lunar orbit ~76 h after launch (src: apollo11)
-    surfaceDays: 3,      // days on the surface: Apollo 17 stayed 75 h (src: apollo17); Phase 5 may change it
+    transitDays: 3,      // days each way: 72 hours. The mission card states this same duration.
+    surfaceDays: 3,      // days on the surface: 72 hours. The mission card states this same duration.
     crewMin: 1, crewMax: 4,
     daysMax: 30,
     landingCrewMax: 2,   // NASA's planned split: 2 crew descend, the rest wait in Orion in lunar orbit (src: artemisFaq)
+    evaPlan: { count: 4, src: 'eva' }, // moonwalks per landing crew member; total hours = count × suit duration × landing crew
     reserveOptions: [0, 0.2],
     recycler: { title: 'Water recycler', mass: 300, power: 300, cost: 120, recovery: 0.98, src: 'issWater',
       blurb: 'Cleans used water so the crew can drink it again. The Space Station recovers about 98% of its water.' }, // mass/power/cost: game values
     suits: [
       { id: 'light', title: 'Light EVA suit', mass: 90, evaHours: 4, cost: 20, shadowOk: false, blurb: 'Light and cheap. Short moonwalks, no deep-cold craters.' },
       { id: 'lunar', title: 'Lunar suit (AxEMU-style)', mass: 125, evaHours: 8, cost: 50, shadowOk: true, src: 'axemu', blurb: 'Built for lunar dust and at least 2 h in shadowed craters as cold as 48 K.' },
-      { id: 'heavy', title: 'Heavy-duty suit', mass: 150, evaHours: 10, cost: 70, shadowOk: true, blurb: 'Extra protection and longest moonwalks. The heaviest.' },
+      { id: 'heavy', title: 'Heavy-duty suit', mass: 150, evaHours: 6, cost: 70, shadowOk: true, blurb: 'Extra protection. Six-hour moonwalks. The heaviest.' },
     ], // suit masses are game values: NASA has not published an official lunar-suit mass
   };
 
@@ -293,7 +299,7 @@
         blurb: 'Simple and reliable. A trickle of data.',
         robotic: { mass: 12, power: 40, cost: 10 }, crewed: { mass: 60, power: 150, cost: 30, where: 'orbiter' } },
       { id: 'ka', title: 'Ka-band high-gain antenna', rateMbps: 100, contactHours: 2.5, src: 'lro',
-        blurb: 'Like NASA\'s LRO: 100 to 300 Mbps, up to about 900 Gb a day.',
+        blurb: 'Like NASA\'s LRO: 100 Mbps, 900 Gb a day with a 34 m dish.',
         robotic: { mass: 30, power: 110, cost: 40 }, crewed: { mass: 120, power: 300, cost: 90, where: 'orbiter' } },
       { id: 'laser', title: 'Laser communications', rateMbps: 260, contactHours: 2.5, weatherRisk: true, optical: true, src: 'o2o', // optical: no radio dish, so no DSN dish gain
         blurb: 'Light instead of radio, like NASA\'s O2O on Artemis II: up to 260 Mbps. Clouds over the ground station can block it.',
@@ -320,8 +326,14 @@
     { id: 'southPole', title: 'South Pole crater rim', terrain: 'Polar (near shadowed craters)', rock: 'Regolith, with water ice hidden in permanently shadowed craters nearby',
       darkHours: 100, lightHours: 600, hazard: 3, hoverNeed: 50, bestFor: ['water'], earthView: 'intermittent', coldShadow: true, src: 'moonfacts',
       lola: 'Steep crater rims, long shadows', lroc: 'Hard to see: the Sun is always low', diviner: 'Shadowed craters reach about 25 K (−250 °C), among the coldest places measured in the solar system' },
-  ]; // hazard, hoverNeed (seconds of hovering to dodge hazards) and lightHours at the pole are game values
+  ]; // hazard and hoverNeed are game values. Polar lightHours (600) is a game value. Equatorial lightHours follow the lunar day.
   const LANDING = {
+    massRange: {
+      robotic: { min: 1000, max: 2500 },
+      crewed: { min: 15000, max: 17000 },
+      src: 'game', // outside this range the landing warns and still flies
+    },
+    contact: { safeMax: 2.0, roughMax: 3.0, src: 'landingContact' }, // m/s: safe ≤ safeMax, rough up to roughMax, crash above
     baseHoverSec: 10,            // hover time already built into the descent budget — game value
     hoverShare: 0.3,             // share of the extra descent margin that can be spent hovering; the rest covers dispersion and landing errors — game value
     needSpread: 0.6,             // needed hover time varies ±30% around the site value — game value
@@ -360,18 +372,17 @@
    * Evidence levels: clue (camera) < composition (spectrometer, or hydrogen for the water question) < sample.
    */
   const SURFACE = {
-    roboticHours: 6,          // h of surface operations for a robot in this game — game value
     roughLandingPenalty: 1,   // h lost after a rough landing (checking the lander) — game value
-    // crewed hours = one moonwalk with the Phase 2 suit (suit.evaHours) — game value
-    bufferGb: 5,              // onboard data buffer before it must be sent to Earth — game value
+    // robotic hours = the chosen site's daylight (site.lightHours). Crewed hours = evaPlan.count × suit duration × landing crew.
+    bufferGb: { robotic: 150, crewed: 300, src: 'lro' }, // same onboard storage the Phase 4 timeline uses
     sampleKg: { robotic: 0.25, crewed: 25 }, // kg per sample — game values
     // return capacity: robotic = sample allowance in the return capsule (0.5 kg), crewed = BASE.crewed.samples (100 kg)
     returnCapacityKg: { robotic: 0.5, crewed: 100 },
     maxActions: 60,           // safety cap on the saved action list
     instruments: {
       camera: { title: 'Take a picture', short: 'camera', icon: '📷', power: 10, hours: 0.5, dataGb: 1.2, evidence: 'clue', src: 'game' },
-      spectrometer: { title: 'Read the elements', short: 'spectrometer', icon: '🧪', power: 40, hours: 1, dataGb: 0.4, evidence: 'composition', src: 'game' },
-      neutron: { title: 'Look for hydrogen', short: 'hydrogen', icon: '💧', power: 30, hours: 1, dataGb: 0.2, evidence: 'composition', evidenceOtherwise: 'clue', onlyFor: 'water', src: 'game' },
+      spectrometer: { title: 'Read the elements', short: 'spectrometer', icon: '🧪', power: 30, hours: 1, dataGb: 0.4, evidence: 'composition', src: 'viperSpectrometer' },
+      neutron: { title: 'Look for hydrogen', short: 'hydrogen', icon: '💧', power: 2, hours: 1, dataGb: 0.2, evidence: 'composition', evidenceOtherwise: 'clue', onlyFor: 'water', src: 'viperNeutron' },
       sampler: { title: 'Collect a sample', short: 'sample', icon: '📦', power: 0, hours: 1.5, dataGb: 0, evidence: 'sample', src: 'game' },
     },
     evidence: [
@@ -436,9 +447,9 @@
         { id: 'keepWorking', label: 'Keep working', effect: { risk: 1 } },
       ] },
     { id: 'noSignal', title: 'Behind the Moon: no signal', src: 'jplArtemisNet',
-      text: 'The spacecraft will be out of contact for about 41 minutes, as during Artemis II.',
+      text: 'The spacecraft will be out of contact for about ' + COMMS.blackoutMin + ' minutes, as during Artemis II.',
       choices: [
-        { id: 'wait', label: 'Wait for signal', effect: { hours: -1 } },
+        { id: 'wait', label: 'Wait for signal', effect: { hours: -COMMS.blackoutMin / 60 } },
         { id: 'store', label: 'Keep measuring, store data', effect: { noSignal: 2 } },
       ] },
   ];
@@ -481,6 +492,15 @@
     artemis2Landing: { text: 'Artemis II splashed down about 0.59 miles from its predicted point, off San Diego.', src: 'artemis2Shield' },
     surfaceBlackout: { text: 'On Artemis II the crew lost contact for about 41 minutes while Orion was behind the Moon.', src: 'jplArtemisNet' },
   });
+
+  /* Cards repeat the number the model actually uses. */
+  FACTS.apolloTransit.text = `This mission takes ${LIFE.transitDays} days (${LIFE.transitDays * 24} hours) to reach the Moon.`;
+  FACTS.apollo17Stay.text = `This mission stays ${LIFE.surfaceDays} days (${LIFE.surfaceDays * 24} hours) on the Moon.`;
+  FACTS.blackout.text = `On Artemis II the crew lost contact for about ${COMMS.blackoutMin} minutes while Orion was behind the Moon.`;
+  FACTS.surfaceBlackout.text = FACTS.blackout.text;
+  BASE.crewed.samples.label = `Sample allowance (${BASE.crewed.samples.mass} kg)`;
+  const kaLink = COMMS.links.find(l => l.id === 'ka');
+  kaLink.blurb = `Like NASA's LRO: ${kaLink.rateMbps} Mbps, ${kaLink.rateMbps * kaLink.contactHours * 3.6} Gb a day with a 34 m dish.`;
 
   const DATA = { SURFACE, SURFACE_EVENTS, SURFACE_EVENT_CHANCE, RETURN, COMMS, SITES, LANDING, LIFE, FLIGHT, EVENTS, EVENT_CHANCE, CHARACTERS, SCENES, SCENE_ART, MOON, CONST, WATER_DENSITY, BATTERY, CHARACTER, SOURCES, FACTS, QUESTIONS, MEASURES, MISSION_TYPES, DV, ENGINE, BASE, SUBSYSTEMS, ROCKETS, BUDGET, DIFFICULTIES };
   if (typeof module !== 'undefined' && module.exports) module.exports = DATA;

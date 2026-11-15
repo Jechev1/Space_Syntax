@@ -656,13 +656,28 @@ test('siteReport', async (t) => {
       assert.equal(M.siteReport(atSite(s, site)).survivesNight, ok, `${pw}@${site}`);
     }
   });
-  await t.test('opsHours', () => {
+  await t.test('opsHours follow daylight, and moonwalks match Phase 6', () => {
     const s = robotOneWay(); s.design.power = 'solarBig';
-    assert.equal(M.siteReport(atSite(s, 'southPole')).opsHours, 700);
+    assert.equal(M.siteReport(atSite(s, 'southPole')).opsHours, 600);
     assert.equal(M.siteReport(atSite(clone(s), 'tranquility')).opsHours, 354);
-    s.design.power = 'rps'; assert.equal(M.siteReport(atSite(s, 'tranquility')).opsHours, 708);
-    const c = M.siteReport(atSite(crewedFull(), 'tranquility')); assert.equal(c.opsHours, D.LIFE.surfaceDays * 24);
+    s.design.power = 'rps'; assert.equal(M.siteReport(atSite(s, 'tranquility')).opsHours, 354);
+    const crew = atSite(crewedFull(), 'tranquility');
+    const c = M.siteReport(crew);
+    assert.equal(c.opsHours, D.LIFE.surfaceDays * 24);
     assert.equal(c.survivesNight, true);
+    const life = M.lifeSupport(crew);
+    assert.equal(c.evaHours, D.LIFE.evaPlan.count * life.suit.evaHours * life.landingCrew);
+    assert.equal(c.evaHours, M.surfaceHours(crew));
+  });
+  await t.test('lander mass outside the sized range warns and does not block', () => {
+    const s = atSite(robotOneWay(), 'tranquility');
+    const band = D.LANDING.massRange.robotic, saved = { min: band.min, max: band.max };
+    try {
+      band.min = 1; band.max = 2;
+      const v = M.validatePhase(s, 5);
+      assert.equal((v.issues.find(i => i.code === 'landerMass') || {}).severity, 'warn');
+      assert.equal(v.ok, true);
+    } finally { band.min = saved.min; band.max = saved.max; }
   });
   await t.test('coldRisk for crewed light suit at south pole only', () => {
     const c = atSite(crewedFull(), 'southPole'); c.crew.suit = 'light';

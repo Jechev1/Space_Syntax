@@ -8,7 +8,7 @@
  * seeded cloud that blocks a pass. When the buffer is full, new data is lost.
  *
  * Mission length: crewed uses the Phase 2 crew days (M.lifeSupport). Robotic uses transit days plus the
- * site's science hours (M.siteReport opsHours; D.SURFACE.roboticHours when no site is picked) plus a final
+ * site's daylight (M.daylightHours) plus a final
  * downlink day. Science data is made only while at the Moon: after the outbound transit, and for crew until
  * the return transit starts. Day is 24 h, a simplification of the real 24 h 50 min Moon day.
  *
@@ -22,7 +22,7 @@
   const K = isNode ? require('./kit.js') : root.SS_SIMKIT;
 
   const TUNING = {
-    bufferGb: { robotic: 150, crewed: 300 }, // game values: onboard storage
+    bufferGb: D.SURFACE.bufferGb, // same 150 / 300 Gb store as Phase 6
     failBelow: 0.6,                          // game value: under 60% delivered the mission fails
     successLostFrac: 0.001,                  // game value: loses less than 0.1% counts as no loss
     cloudChance: 0.3,                        // game value: chance a laser pass is blocked
@@ -81,8 +81,7 @@
       winEnd = Math.max(winStart + 24, total - transitH);
       total = Math.max(total, winEnd);
     } else {
-      const sr = M.siteReport(state);
-      winEnd = winStart + (sr ? sr.opsHours : D.SURFACE.roboticHours);
+      winEnd = winStart + M.daylightHours(state);
       total = winEnd + TUNING.tailHoursRobotic;
     }
     const genPerH = plan.needGbPerDay / 24;
