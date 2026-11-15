@@ -558,3 +558,13 @@ No se muestran, porque no están en el config:
 - Un rango de masa del aterrizador publicado por la NASA. El config tiene el núcleo robótico (250 kg), el módulo lunar del Apolo 17 (16 456 kg) y las bandas de aviso de la masa de descenso (1 000–2 500 kg robótico y 15 000–17 000 kg tripulado), estas últimas como valor de juego. La pantalla enseña esas bandas y el módulo del Apolo 17. No fabrica otro rango.
 - Un total de horas de superficie tripuladas o de horas de EVA. Están por separado la estancia de 72 h, las 4 caminatas por persona y las duraciones de traje de 4, 6 y 8 h. La pantalla no las multiplica. En la misión tripulada enseña las 4 caminatas; en la robótica, las 354 h de luz.
 - La gravedad de la Luna (1.62 m/s²) sigue en `compartido.luna.gravedad` y no entra en el panel.
+
+## Pantallas de la fase 1 (F1a, F1b, F1done)
+
+La especificación pide ayuda sacada de `docs/Space_Syntax_Fases_Mision_Lunar` y `docs/Space_Syntax_Investigacion`, pero esos archivos no existen en el repo. La ayuda de `src/data/help.mjs` se apoyó en `js/data.js` (SOURCES y FACTS) y en `src/data/mission.config.mjs`.
+
+Datos que la fase 1 querría y no están en el config:
+
+- Un cohete real comparable para los tres lanzadores genéricos de la misión robótica (pequeño, medio y pesado). Solo los SLS tripulados tienen equivalente documentado (Artemis I/II), así que las tarjetas robóticas muestran solo su línea de uso.
+- Horas de noche que aguanta cada opción de potencia tripulada. El motor solo guarda `nightHours` en la rama robótica; en tripulada la pantalla dice "power sized in later phases" y no inventa una cifra.
+- Costo real de los lanzadores robóticos (60/120/250 millones USD son `src: 'game'`). Las tarjetas los muestran como precio de juego.

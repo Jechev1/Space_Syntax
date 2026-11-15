@@ -3,14 +3,17 @@ import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
+import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
+import { Modal } from '../components/ui/Modal.jsx'
+import { HELP_F1B } from '../data/help.mjs'
 import { descopeMode, useGame } from '../engine/useGame.jsx'
 import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
 import { kgText, usdText } from './bits.jsx'
+import { f1bSpeech } from './f1Speech.mjs'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { MissionHud } from './f1Hud.jsx'
-import { usePlay } from './playContext.jsx'
 import styles from './F1.module.css'
 import shell from './shell.module.css'
 
@@ -66,11 +69,13 @@ export function RunVerdict({ run }) {
         </>
       ) : null}
       {res.math ? (
-        <button type="button" className={styles.mathToggle} aria-expanded={math} onClick={() => setMath((v) => !v)}>
-          {math ? 'Hide the math' : 'Show the math'}
-        </button>
+        <Button variant="outline" onClick={() => setMath(true)}>Show the math</Button>
       ) : null}
-      {math ? <MathBlock math={res.math} /> : null}
+      {math ? (
+        <Dialog title={res.math.title || 'The math'} onClose={() => setMath(false)}>
+          <MathBlock math={res.math} />
+        </Dialog>
+      ) : null}
     </div>
   )
 }
@@ -87,7 +92,7 @@ function confirmReason(state, report, data, model, passed) {
 function F1bBody() {
   const navigate = useNavigate()
   const { state, data, model, pickRocket, applyDescope, lockDesign, setNotice } = useGame()
-  const { setModal } = usePlay()
+  const [help, setHelp] = useState(false)
   const play = usePlayRun(1, state)
   const passed = usePassed(1, state)
   const { run, frame } = play
@@ -98,15 +103,21 @@ function F1bBody() {
   const fitsAny = rockets.some((item) => item.capacity >= report.tli)
   const mode = descopeMode(state)
   const needDescope = !fitsAny || (state.rocket && report.totalCost > report.budget)
-  const suggestions = needDescope ? model.descopeSuggestions(state, mode) : []
+  const suggestions = needDescope ? model.descopeSuggestions(state, mode).slice(0, 2) : []
   const reason = confirmReason(state, report, data, model, passed)
+  const speech = f1bSpeech(state.difficulty, state.rocket, run, fitsAny)
+  const helpSources = [...new Set(HELP_F1B.blocks.map((b) => b.source).filter(Boolean))]
+    .map((key) => data.SOURCES[key])
+    .filter(Boolean)
 
   return (
     <div className={`${styles.screen} ${styles.pad}`}>
       <MissionHud />
-      <div className={styles.speech}>
-        <Bubble tone="speech">Which one can lift us?</Bubble>
-      </div>
+      {speech ? (
+        <div className={styles.speech}>
+          <Bubble tone="speech">{speech}</Bubble>
+        </div>
+      ) : null}
       <div className={styles.pads} role="group" aria-label="Rockets">
         {rockets.map((rocket) => (
           <RocketStation
@@ -123,9 +134,14 @@ function F1bBody() {
       </div>
       <div className={styles.panel}>
         <GlassPanel>
-          <p className={styles.kicker}>Phase 1 · Launch pad</p>
+          <p className={styles.kicker}>Phase 1: Build the Spacecraft · NASA Phase D · Launch pad</p>
           <h2 className={styles.question}>Pick your rocket</h2>
-          <p className={styles.line}>Hardware + Fuel = Rocket must lift</p>
+          <p className={styles.line}>Your rocket must lift the lander and its fuel. Bigger rockets lift more but cost more.</p>
+          {report.rocket ? (
+            <p className={styles.line}>
+              Your lander + fuel weigh {kgText(model, report.tli)}; this rocket lifts {kgText(model, report.rocket.capacity)}.
+            </p>
+          ) : null}
           <dl className={styles.stats}>
             <div><dt>Spacecraft</dt><dd>{usdText(model, report.cost)}</dd></div>
             <div><dt>Rocket</dt><dd>{report.rocket ? usdText(model, report.rocket.cost) : '—'}</dd></div>
@@ -171,7 +187,7 @@ function F1bBody() {
       <div className={styles.dock}>
         <div className={styles.nav}>
           <Button variant="secondary" onClick={() => navigate('/f1a')}>← Workshop</Button>
-          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+          <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
         </div>
         <div className={styles.lock}>
           <Button
@@ -188,6 +204,20 @@ function F1bBody() {
             Confirm spacecraft
           </Button>
         </div>
+      </div>
+      <div className={styles.help}>
+        <Modal open={help} variant="info" title={HELP_F1B.title} onClose={() => setHelp(false)}>
+          {HELP_F1B.blocks.map((block) => (
+            <p key={block.heading}><b>{block.heading}:</b> {block.text}</p>
+          ))}
+          {helpSources.length ? (
+            <p>
+              {helpSources.map((source) => (
+                <a key={source.url} className={shell.link} href={source.url} target="_blank" rel="noopener noreferrer">Source: {source.title} ↗</a>
+              ))}
+            </p>
+          ) : null}
+        </Modal>
       </div>
     </div>
   )
@@ -231,6 +261,7 @@ function RocketStation({ rocket, report, selected, onPick, onLocked, frame, burn
       <span className={styles.tag}>
         <span>{rocket.title} · {tons} t</span>
         <span>{usdText(model, rocket.cost)} · <b>{verdict}</b></span>
+        <span className={styles.tagNote}>{rocket.blurb}</span>
       </span>
     </button>
   )
