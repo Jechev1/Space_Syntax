@@ -28,8 +28,9 @@ export function F1a() {
   if (!ready) return null
   return (
     <StageScene
-      background="/bg/bg-preparacion.png"
-      character="/char/nina-chaqueta-portapapeles.png"
+      background="/bg/bg-hangar.png"
+      character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
+      objects={<img className={styles.lander} src="/obj/lander.png" alt="" />}
       title="How far is upy — Phase 1"
     >
       <F1aBody />
@@ -70,7 +71,7 @@ function F1aBody() {
   }
 
   return (
-    <div className={styles.screen}>
+    <div className={`${styles.screen} ${styles.workshop}`}>
       <MissionHud />
       <div className={styles.tabs} role="group" aria-label="Spacecraft parts">
         {data.SUBSYSTEMS.map((item) => {
