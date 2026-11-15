@@ -1,5 +1,7 @@
 # How changes go live
 
+`main` is protected: nobody can push to it directly, not even admins. Every change goes through a pull request that passes CI.
+
 1. Make a branch and open a pull request into `main`.
 2. CI runs the checks, the tests and the build.
 3. If everything passes, the PR merges by itself.
