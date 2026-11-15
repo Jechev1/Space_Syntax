@@ -6,7 +6,6 @@ import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
 import { HELP_F7 } from '../data/help.mjs'
-import { sampleMission } from '../engine/sampleMission.mjs'
 import { useGame } from '../engine/useGame.jsx'
 import { HelpWindow } from './F5a.jsx'
 import { StageScene } from './frame.jsx'
@@ -95,7 +94,7 @@ export function F7() {
               </p>
               <p className={styles.line}>
                 To fly the trip home (launch from the Moon, reentry and splashdown), a mission must carry a crew or
-                bring back a sample. You can try it now with a sample crewed mission.
+                bring back a sample.
               </p>
             </GlassPanel>
           </div>
@@ -103,9 +102,6 @@ export function F7() {
           <div className={styles.dock}>
             <div className={styles.nav}>
               <Button variant="secondary" onClick={() => navigate('/f6')}>← Moon surface</Button>
-              <Button variant="secondary" onClick={() => update((next) => { const level = next.difficulty; Object.assign(next, sampleMission('crewed', 'f7')); next.difficulty = level })}>
-                Fly home with a sample mission
-              </Button>
             </div>
             <div className={styles.main}>
               <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
@@ -133,9 +129,6 @@ export function F7() {
               </p>
               <div className={styles.actions}>
                 <Button variant="outline" onClick={() => navigate('/f6')}>Back to the Moon surface</Button>
-                <Button variant="secondary" onClick={() => update((next) => { const level = next.difficulty; Object.assign(next, sampleMission('crewed', 'f7')); next.difficulty = level })}>
-                  Load a sample mission
-                </Button>
               </div>
             </GlassPanel>
           </div>
@@ -569,7 +562,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             {helpBtn}
           </>,
           ok
-            ? <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
+            ? <Button variant="outline" onClick={() => navigate('/f8')}>Finish the mission →</Button>
             : <Button variant="outline" onClick={fail}>See what happened →</Button>,
         )}
       </div>
