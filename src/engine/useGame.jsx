@@ -8,6 +8,8 @@ const UI_DEFAULTS = {
   phase0Done: false,
   phase1Done: false,
   phase2Done: false,
+  phase3Done: false,
+  launched: false,
   showMath: {},
   showMel: false,
 }
@@ -37,8 +39,10 @@ function sanitizeUi(raw) {
   ui.phase0Done = raw.phase0Done === true
   ui.phase1Done = raw.phase1Done === true
   ui.phase2Done = raw.phase2Done === true
+  ui.phase3Done = raw.phase3Done === true
+  ui.launched = raw.launched === true
   ui.showMel = raw.showMel === true
-  ui.closed = flags(raw.closed, ['f0', 'f1a', 'f1b', 'f1done', 'f2'])
+  ui.closed = flags(raw.closed, ['f0', 'f1a', 'f1b', 'f1done', 'f2', 'f3a', 'f3b'])
   ui.showMath = flags(raw.showMath, ['density', 'rocket', 'battery', 'life'])
   return ui
 }
@@ -72,6 +76,7 @@ function revalidate(state) {
     state.rocket = null
     state.phase1Done = false
     state.phase2Done = false
+    state.phase3Done = false
     return null
   }
   if (state.rocket) {
@@ -92,7 +97,13 @@ function revalidate(state) {
   if (!state.phase1Done) state.phase2Done = false
   if (state.phase2Done && !M.validatePhase(state, 2).ok) {
     state.phase2Done = false
+    state.phase3Done = false
     return 'Crew plan changed: confirm it again.'
+  }
+  if (!state.phase2Done) state.phase3Done = false
+  if (state.phase3Done && !M.validatePhase(state, 3).ok) {
+    state.phase3Done = false
+    return 'Flight plan changed: check it again.'
   }
   return null
 }
@@ -184,6 +195,17 @@ function useGameState() {
       next.phase2Done = false
     }),
     lockCrew: () => update((next) => { next.phase2Done = true }),
+    setMargin: (margin) => update((next) => {
+      if (!D.FLIGHT.marginOptions.includes(margin) || margin < M.minMargin(next)) return
+      next.flight = Object.assign({}, next.flight, { margin })
+      next.phase3Done = false
+    }),
+    lockFlight: () => update((next) => { next.phase3Done = true }),
+    launch: () => update((next) => {
+      if (!M.launchReadiness(next).go) return 'Every item must be GO first.'
+      next.launched = true
+      return 'Liftoff! 🚀'
+    }),
   }
 }
 
@@ -328,16 +350,18 @@ const PHASES = ['Goal', 'Spacecraft', 'Crew', 'Flight', 'Comms', 'Landing', 'Sci
 
 export function phaseItems(state, current) {
   return PHASES.map((label, index) => {
-    const done = (index === 0 && state.phase0Done) || (index === 1 && state.phase1Done) || (index === 2 && state.phase2Done)
+    const done = (index === 0 && state.phase0Done) || (index === 1 && state.phase1Done) || (index === 2 && state.phase2Done) || (index === 3 && state.phase3Done)
     let status = 'locked'
     if (index === current) status = 'current'
     else if (done) status = 'done'
     else if (index === 1 && state.phase0Done) status = 'open'
     else if (index === 2 && state.phase1Done) status = 'open'
+    else if (index === 3 && state.phase2Done) status = 'open'
     let reason = ''
     if (status === 'locked') {
       if (index === 1 && !state.phase0Done) reason = 'Finish the goal first'
       else if (index === 2 && !state.phase1Done) reason = 'Finish the spacecraft first'
+      else if (index === 3 && !state.phase2Done) reason = 'Finish the crew first'
       else reason = 'Coming soon'
     }
     return { id: String(index), index, label, status, reason }

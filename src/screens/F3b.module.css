@@ -1,0 +1,70 @@
+/* F3b-only pieces. Shared layout lives in scene.module.css. */
+
+.speech {
+  left: 9%;
+  bottom: 47%;
+}
+
+.rows {
+  display: grid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.7em;
+  padding: calc(var(--fs-chip) / 2) 0;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.value {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.go {
+  min-width: 3.4em;
+  padding: 0.1em 0.5em;
+  border-radius: var(--radius-btn);
+  font-size: var(--fs-chip);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ok {
+  background: var(--accent);
+  color: var(--bg-deep);
+}
+
+.no {
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.verdict {
+  margin: 0;
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  text-align: center;
+}
+
+.notReady {
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+}
+
+.warning {
+  position: absolute;
+  right: 2.4%;
+  bottom: 12.5%;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: clamp(8px, 1.7cqh, 13px);
+}

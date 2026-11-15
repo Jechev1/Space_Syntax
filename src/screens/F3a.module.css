@@ -1,0 +1,250 @@
+/* F3a-only pieces. Shared layout lives in scene.module.css. */
+
+/* The girl stands on top of the delta-v bar instead of behind it. */
+.portrait {
+  position: absolute;
+  left: 2.4%;
+  bottom: 14%;
+  height: 40%;
+  width: auto;
+  max-width: none;
+}
+
+.speech {
+  bottom: 47%;
+}
+
+/* Earth to Moon path drawn on the empty wall screen of bg-control. */
+.wall {
+  position: absolute;
+  left: 17%;
+  top: 12%;
+  width: 52%;
+  height: 26%;
+  color: var(--text);
+  --fs-chip: clamp(8px, 1.7cqh, 13px);
+}
+
+.wall svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.arc {
+  fill: none;
+  stroke: var(--text-dim);
+  stroke-width: 1.5px;
+  stroke-dasharray: 6 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.body {
+  position: absolute;
+  top: 75%;
+  border: 1.5px solid var(--text-dim);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.earth {
+  left: 9%;
+  width: 11cqh;
+  height: 11cqh;
+  background: radial-gradient(circle at 35% 35%, var(--line-bright), var(--panel-solid) 70%);
+}
+
+.moon {
+  left: 91%;
+  width: 6cqh;
+  height: 6cqh;
+  background: radial-gradient(circle at 35% 35%, var(--text), var(--text-dim) 75%);
+  opacity: 0.85;
+}
+
+.node {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 3.2cqh;
+  height: 3.2cqh;
+  border: 1.5px solid var(--text);
+  border-radius: 50%;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-size: var(--fs-chip);
+  transform: translate(-50%, -50%);
+}
+
+.distance {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translateX(-50%);
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  white-space: nowrap;
+}
+
+/* Flight plan list */
+.burns {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.burn {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.6em;
+  padding: calc(var(--fs-chip) / 2) 0;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.num {
+  display: grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px solid var(--line-bright);
+  border-radius: 50%;
+  font-size: var(--fs-chip);
+}
+
+.burnName {
+  display: grid;
+  justify-items: start;
+  gap: 0.25em;
+  line-height: 1.2;
+}
+
+.chip,
+.tag {
+  padding: 0.15em 0.6em;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-chip);
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  white-space: nowrap;
+}
+
+.dv {
+  white-space: nowrap;
+}
+
+.total {
+  margin: 0;
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: var(--fs-body);
+  font-weight: var(--fw);
+}
+
+/* Bottom delta-v bar */
+.dock {
+  position: absolute;
+  left: 2.4%;
+  right: 27%;
+  bottom: 3.2%;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.7em 1.1em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-body);
+  pointer-events: auto;
+}
+
+.dockLabel {
+  white-space: nowrap;
+}
+
+.meter {
+  flex: 1;
+  display: grid;
+  gap: 0.3em;
+  min-width: 0;
+}
+
+.track {
+  position: relative;
+  height: 0.7em;
+  border-radius: var(--radius-chip);
+  background: var(--line);
+}
+
+.track i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width var(--dur-bar) var(--ease);
+}
+
+.track u {
+  position: absolute;
+  top: -0.3em;
+  bottom: -0.3em;
+  width: 2px;
+  background: var(--text);
+}
+
+.meterText {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  text-align: center;
+}
+
+.margins {
+  display: flex;
+  gap: 0.3em;
+}
+
+.margin {
+  padding: 0.25em 0.55em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  cursor: pointer;
+}
+
+.margin[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.margin:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.status {
+  padding: 0.25em 0.8em;
+  border-radius: var(--radius-btn);
+  font-size: var(--fs-chip);
+  white-space: nowrap;
+}
+
+.ok {
+  background: var(--accent);
+  color: var(--bg-deep);
+}
+
+.bad {
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
