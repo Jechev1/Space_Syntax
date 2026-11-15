@@ -96,7 +96,7 @@ Same state and same seed give the same run, frame for frame. Pass `{ seed: <inte
 | Data sent | `h.dataSentGb` Gb | The `dataSentGb` you pass, else `M.surfaceStatus(s).dataSentGb` once landed, else 0. |
 | Days | `h.days` | `M.missionDays(s)`. Crewed: the Phase 2 crew days. Robotic: `Math.round(M.missionHours(s) / 24)`, the same length Phase 4 runs. |
 
-Helpers behind it: `M.dvRemaining(s, flown)`, `M.missionHours(s)`, `M.missionDays(s)`. The robot day count counts the outbound transit, the site science hours (`D.SURFACE.roboticHours` with no site) and one downlink day (`D.SURFACE.tailHoursRobotic`).
+Helpers behind it: `M.dvRemaining(s, flown)`, `M.missionHours(s)`, `M.missionDays(s)`. The robot day count counts the outbound transit, the site's daylight (`M.daylightHours`; the equatorial day when no site is picked) and one 24 h downlink day.
 
 `r.lines` is the itemised list: `{ label, where, mass, cost, power, gen, src, kind }`. Use it for a "Why so heavy" panel.
 
@@ -349,7 +349,7 @@ The backend wins. Real values:
 
 | Mockup | Backend |
 |---|---|
-| Robotic budget $450M | `D.BUDGET.robotic`: cadet 650, engineer 500, director 420 ($M). Crewed: cadet 7,700, engineer 6,400, director 6,300. |
+| Robotic budget $450M | `D.BUDGET.robotic`: cadet 650, engineer 500, director 420 ($M). Crewed: cadet 7,700, engineer 7,000, director 6,300. |
 | Capacity 4,000 kg on screen 0 | Capacity exists only after `s.rocket` is set. Show 0 or hide it. |
 | Launch mass 1,603 kg, hardware 540, fuel 1,063 | Same robotic design gives hardware 538 kg, fuel 1,065 kg, launch mass 1,603 kg at 0 percent margin. At 15 percent margin it is 1,902 kg. |
 | Spacecraft $270M, total $390M | Matches the robotic fixture design. |

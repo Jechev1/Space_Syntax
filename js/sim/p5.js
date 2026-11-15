@@ -18,11 +18,13 @@
     hoverAlt: 100,           // m, where the lander hovers to pick a spot: game value
     brakeDecel: 2.0,         // m/s2 of braking beyond gravity: game value
     maxAccel: 3 * D.MOON.gravity, // m/s2 the engine can deliver at throttle 1: game value
-    lander0: 15000,          // kg at the start of the approach: game value
-    touchLimit: 2.1,         // m/s, NASA Altair worst-case contact speed: src altair
-    cleanTouch: 1.2,         // m/s, target contact speed of a careful landing: game value
-    roughTouchMin: 2.4,      // m/s, hard landing when almost enough fuel: game value
-    roughTouchSpan: 1.2,     // m/s, extra speed when hover time was only 60% of need: game value
+    touchLimit: D.LANDING.contact.safeMax, // m/s, safe at or under this (src: landingContact)
+    crashAbove: D.LANDING.contact.roughMax, // m/s, a landing faster than this is a crash
+    cleanAtLight: 0.4,       // m/s at the light end of the allowed mass range
+    cleanAtHeavy: 2.0,       // m/s at the heavy end of the allowed mass range
+    roughFloor: 2.15,        // m/s, a rough landing stays over the safe limit after integration error
+    roughSpanShort: 0.60,    // m/s added when hover time was only 60% of what the terrain needed
+    roughSpanMass: 0.25,     // m/s added from the light end of the mass range to the heavy end
     terminalDecel: 0.25,     // m/s2, how fast the final fall speeds up: game value
     abortMaxSec: 14,         // s of climbing shown after an abort: game value
     lowFuelPct: 20,          // % fuel that triggers the low fuel warning: game value
@@ -92,21 +94,30 @@
     const sim = M.landingSim(state, seed), site = sim.site;
     const choice = opts && opts.choice, interactive = !!(opts && opts.interactive) && choice !== 'detour' && choice !== 'abort';
     const pAbort = choice === 'abort';
-    const outcome = pAbort ? 'abort' : sim.outcome;
+    const hoverOutcome = pAbort ? 'abort' : sim.outcome;
     const need = sim.hoverNeeded, avail = sim.hoverAvailable;
     const r = M.rng((seed ^ 0xd35c) >>> 0);
     const dir0 = r() < 0.5 ? -1 : 1, sideSpeed = 0.8 + 0.4 * site.hazard;
     const flip = 4 + Math.floor(r() * 3);
     const lateral = (ht) => dir0 * sideSpeed * (Math.floor(ht / flip) % 2 === 0 ? 1 : -1);
 
+    const range = L.massRange[state.missionType];
+    const mass = M.approachMass(state);
+    const tMass = (mass - range.min) / (range.max - range.min);
     const frac = clamp((avail / need - L.roughFraction) / (1 - L.roughFraction), 0, 1);
-    const touchSpeed = outcome === 'clean' ? T.cleanTouch : T.roughTouchMin + T.roughTouchSpan * (1 - frac);
-    const hoverSec = pAbort ? 0 : outcome === 'clean' ? need : avail;
+    const cleanSpeed = T.cleanAtLight + (T.cleanAtHeavy - T.cleanAtLight) * tMass;
+    let touchSpeed = hoverOutcome === 'rough'
+      ? Math.max(T.roughFloor, T.roughFloor + T.roughSpanShort * (1 - frac) + T.roughSpanMass * tMass)
+      : cleanSpeed;
+    let outcome = hoverOutcome;
+    if (outcome !== 'abort' && touchSpeed > T.crashAbove) outcome = 'crash';
+    else if (outcome === 'clean' && touchSpeed > T.touchLimit) outcome = 'rough';
+    const hoverSec = pAbort ? 0 : hoverOutcome === 'clean' ? need : avail;
 
     // Fuel budget: a reference run that hovers for every second the margin pays for, sideways thrust included.
-    const budget = fly('clean', avail, T.cleanTouch, lateral).dv;
-    const run = fly(outcome, hoverSec, touchSpeed, lateral, interactive);
-    const ve = M.ve, m0 = T.lander0;
+    const budget = fly('clean', avail, Math.min(cleanSpeed, T.touchLimit), lateral).dv;
+    const run = fly(outcome === 'abort' ? 'abort' : 'land', hoverSec, touchSpeed, lateral, interactive);
+    const ve = M.ve, m0 = mass;
     const mDry = m0 * Math.exp(-budget / ve), fuelMass = m0 - mDry;
     const fuelPct = (dv) => clamp((m0 * Math.exp(-dv / ve) - mDry) / fuelMass * 100, 0, 100);
 
@@ -166,6 +177,14 @@
       out = 'partial';
       events.push({ t: he, kind: 'warn', text: 'Hover fuel is gone. Settling for the nearest ground.' });
       events.push({ t: total, kind: 'warn', text: `Contact light! Hard landing at ${K.round(touchTxt, 1)} m/s, over the safe limit of ${T.touchLimit} m/s. The lander is damaged.` });
+    } else if (outcome === 'crash') {
+      ok = false; out = 'fail';
+      events.push({ t: he, kind: 'fail', text: `Contact light! Impact at ${K.round(touchTxt, 1)} m/s, above ${T.crashAbove} m/s. The lander is wrecked.` });
+      failure = {
+        t: total, code: 'hardImpact',
+        cause: `The lander hit at ${K.round(touchTxt, 1)} m/s. Anything above ${T.crashAbove} m/s wrecks it.`,
+        fix: `Lighten the lander into the ${K.round(range.min, 0)}–${K.round(range.max, 0)} kg range, or keep more hover fuel.`,
+      };
     } else if (pAbort) {
       ok = false; out = 'fail';
       events.push({ t: he, kind: 'fail', text: 'You aborted the descent. Climbing back to orbit.' });
@@ -189,8 +208,8 @@
     math.steps.push(
       { eq: 'v = v0 + (a - g) · dt', num: `a = engine acceleration, g = ${G} m/s², dt = ${T.dt} s each step` },
       { eq: 'Δv = ∫ a dt', num: `${K.round(end.dv, 0)} m/s spent in this run` },
-      { eq: 'm = m0 · e^(−Δv / ve)', num: `ve = ${K.round(ve, 0)} m/s, so ${K.round(finalFuel, 0)}% of the final approach fuel is left (sideways thrust included)` },
-      { eq: `safe landing: v ≤ ${T.touchLimit} m/s`, src: 'altair', num: `NASA Altair study, worst-case contact speed. ` + (!ok ? 'You never reached the ground.' : touchTxt <= T.touchLimit ? `You touched down at ${K.round(touchTxt, 1)} m/s: safe.` : `You touched down at ${K.round(touchTxt, 1)} m/s: over the limit, the lander is damaged.`) },
+      { eq: 'm = m0 · e^(−Δv / ve)', num: `m0 = ${K.round(m0, 0)} kg, the lander you designed. ve = ${K.round(ve, 0)} m/s, so ${K.round(finalFuel, 0)}% of the final approach fuel is left (sideways thrust included)` },
+      { eq: `safe landing: v ≤ ${T.touchLimit} m/s`, src: 'landingContact', num: `Safe at ${T.touchLimit} m/s or under, rough up to ${T.crashAbove} m/s, and a crash above that. ` + (!ok && outcome !== 'crash' ? 'You never reached the ground.' : touchTxt <= T.touchLimit ? `You touched down at ${K.round(touchTxt, 1)} m/s: safe.` : touchTxt <= T.crashAbove ? `You touched down at ${K.round(touchTxt, 1)} m/s: over the safe limit, the lander is damaged.` : `You touched down at ${K.round(touchTxt, 1)} m/s: above ${T.crashAbove} m/s, the lander is wrecked.`) },
     );
     const res = K.result({
       phase: 5, title, seed, ok, outcome: out, time: { unit: 's', total },
@@ -198,7 +217,7 @@
       frames, events, failure, score, math,
     });
     if (out === 'partial') res.stars = Math.min(res.stars, 1);
-    res.landing = { outcome, touchSpeed: K.round(touchTxt, 3), hoverNeeded: sim.hoverNeeded, hoverAvailable: sim.hoverAvailable };
+    res.landing = { outcome, touchSpeed: K.round(touchTxt, 3), mass: K.round(m0, 1), hoverNeeded: sim.hoverNeeded, hoverAvailable: sim.hoverAvailable };
     return res;
   }
 

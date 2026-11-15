@@ -1,0 +1,70 @@
+.screen {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+  padding: var(--fs-body);
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-body) / 2);
+  overflow: auto;
+  padding-right: calc(var(--fs-chip) / 2);
+}
+
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.note {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: var(--fs-body);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.moon {
+  position: absolute;
+  top: 7%;
+  right: 8%;
+  width: 92px;
+  height: 92px;
+  border-radius: var(--radius-chip);
+  background:
+    radial-gradient(circle at 35% 35%, transparent 0 18%, var(--panel-solid) 19% 28%, transparent 29%),
+    var(--accent-soft);
+  box-shadow: var(--accent-glow);
+  animation: drift calc(var(--dur-bar) * 16) var(--ease) infinite alternate;
+}
+
+.cat {
+  position: absolute;
+  left: 5%;
+  bottom: 16%;
+  width: 78px;
+  height: 64px;
+  border-radius: var(--radius-panel);
+  background:
+    radial-gradient(circle at 22% 0, var(--chip-game) 0 12px, transparent 13px),
+    radial-gradient(circle at 78% 0, var(--chip-game) 0 12px, transparent 13px),
+    var(--chip-game);
+}
+
+@keyframes drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(12px); }
+}

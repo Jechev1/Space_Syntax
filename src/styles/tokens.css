@@ -1,0 +1,37 @@
+:root {
+  --bg: #1B1931;
+  --bg-deep: #141A30;
+  --panel: rgba(24, 20, 48, .62);
+  --panel-solid: #2E2948;
+  --panel-blur: 16px;
+  --line: rgba(237, 233, 246, .42);
+  --line-bright: rgba(237, 233, 246, .78);
+  --line-strong: #463F69;
+  --bubble: rgba(237, 233, 246, .82);
+  --bubble-text: var(--bg);
+  --text: #EDE9F6;
+  --text-dim: #B3ABCB;
+  --accent: #A6E05F;
+  --accent-soft: #C5DC97;
+  --accent-glow: 0 0 12px rgba(166, 224, 95, .45);
+  --math: #F5E960;
+  --warn: #F0B45E;
+  --danger: #EF7B7B;
+  --heat: #EB927D;
+  --chip-game: #CFE29A;
+  --chip-nasa: #8FA0C9;
+  --radius-panel: 16px;
+  --radius-btn: 14px;
+  --radius-chip: 999px;
+  --font-display: 'Fredoka', sans-serif;
+  --font-ui: 'Nunito', sans-serif;
+  --fw: 400;
+  --fw-title: 500;
+  --fs-title: 28px;
+  --fs-sub: 20px;
+  --fs-body: 16px;
+  --fs-chip: 13px;
+  --dur-fast: 150ms;
+  --dur-bar: 300ms;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}

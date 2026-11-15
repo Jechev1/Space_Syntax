@@ -1,0 +1,147 @@
+.viewport {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.fit {
+  position: relative;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 720px;
+  transform-origin: top left;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.sky,
+.photo,
+.stars,
+.fog,
+.glow,
+.grain,
+.objects,
+.character,
+.ui {
+  position: absolute;
+}
+
+.sky,
+.photo,
+.stars,
+.glow,
+.grain,
+.objects,
+.character,
+.ui {
+  inset: 0;
+}
+
+.sky {
+  z-index: 0;
+  background:
+    radial-gradient(120% 80% at 50% 100%, var(--panel-solid), transparent 55%),
+    linear-gradient(180deg, var(--bg), var(--bg-deep));
+}
+
+.photo {
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+.stars {
+  z-index: 1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  animation: twinkle calc(var(--dur-bar) * 14) var(--ease) infinite;
+}
+
+.starsFar {
+  z-index: 1;
+  animation-delay: calc(var(--dur-bar) * 7);
+}
+
+.fog {
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 28%;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--bg-deep), transparent);
+}
+
+.portrait {
+  position: absolute;
+  left: 3%;
+  bottom: 6%;
+  height: 45%;
+  width: auto;
+  max-width: 22%;
+  object-fit: contain;
+  object-position: left bottom;
+}
+
+.grainSvg {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.grain {
+  z-index: 3;
+  opacity: 0.05;
+  pointer-events: none;
+  background: var(--text);
+}
+
+.objects {
+  z-index: 4;
+  pointer-events: none;
+}
+
+.character {
+  z-index: 5;
+  pointer-events: none;
+}
+
+.ui {
+  z-index: 6;
+  pointer-events: none;
+}
+
+.ui > * {
+  pointer-events: auto;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes twinkleSoft {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}

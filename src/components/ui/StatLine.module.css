@@ -1,0 +1,32 @@
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fs-body);
+}
+
+.item {
+  flex: 1 1 30%;
+  min-width: 0;
+}
+
+.value,
+.label {
+  margin: 0;
+}
+
+.value {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  font-variant-numeric: tabular-nums;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.label {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  font-weight: 800;
+}

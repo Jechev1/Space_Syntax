@@ -318,6 +318,14 @@
       fitsRocket: rocket ? tli <= rocket.capacity : null, overBudget: totalCost > budget,
     };
   }
+  /** Lander mass at the start of powered descent, including the fuel this design carries. */
+  function approachMass(state) {
+    const r = evaluate(state);
+    if (!r) return null;
+    const f = factorsFor(state);
+    if (state.missionType === 'robotic') return (r.breakdown.lander + (r.breakdown.returnFuel || 0)) * f.descent;
+    return r.breakdown.landerWet || null;
+  }
 
   /* ======================= PHASE 4: communications ======================= */
   function commsLink(state) { return state.comms ? D.COMMS.links.find(l => l.id === state.comms.link) || null : null; }
@@ -367,9 +375,9 @@
     const nightHours = robotic && r ? (r.nightHours || 0) : null;
     const survivesNight = robotic ? nightHours >= site.darkHours : true;
     const life = state.missionType === 'crewed' ? lifeSupport(state) : null;
-    // Hours available for science on the surface (feeds Phase 6)
-    const opsHours = robotic ? (survivesNight ? site.lightHours + site.darkHours : site.lightHours) : D.LIFE.surfaceDays * 24;
-    const evaHours = life ? life.suit.evaHours * D.LIFE.surfaceDays * life.landingCrew : null;
+    // Daylight is the robotic science window. Crewed moonwalks use the same product as Phase 6.
+    const opsHours = robotic ? site.lightHours : D.LIFE.surfaceDays * 24;
+    const evaHours = life ? crewEvaHours(life) : null;
     return {
       site, scienceMatch: site.bestFor.includes(state.question), survivesNight, nightHours, opsHours, evaHours,
       coldRisk: !!site.coldShadow && !!life && !life.suit.shadowOk, earthView: site.earthView,
@@ -491,11 +499,20 @@
   function canExplore(state) {
     return !!findSite(state.site) && !!state.landing && state.landing.outcome !== 'abort' && !!evaluate(state);
   }
-  /** Hours for surface work: one moonwalk with the Phase 2 suit, or the robot's shift. A rough landing costs time. */
+  /** Moonwalk hours: walks × duration × crew who go down. The site report uses this same product. */
+  function crewEvaHours(life) {
+    return D.LIFE.evaPlan.count * life.suit.evaHours * life.landingCrew;
+  }
+  /** Daylight at the chosen site. With no site yet, the equatorial day. */
+  function daylightHours(state) {
+    const site = findSite(state && state.site);
+    return site ? site.lightHours : D.SITES[0].lightHours;
+  }
+  /** Hours for surface work. A rough landing costs time. */
   function surfaceHours(state) {
     let h = 0;
-    if (state.missionType === 'crewed') { const l = lifeSupport(state); h = l ? l.suit.evaHours : 0; }
-    else if (state.missionType === 'robotic') h = D.SURFACE.roboticHours;
+    if (state.missionType === 'crewed') { const l = lifeSupport(state); h = l ? crewEvaHours(l) : 0; }
+    else if (state.missionType === 'robotic') h = daylightHours(state);
     if (state.landing && state.landing.outcome === 'rough') h -= D.SURFACE.roughLandingPenalty;
     return Math.max(0, h);
   }
@@ -527,7 +544,7 @@
     const usable = loaded.filter(id => unlockedInstruments(state).includes(id) && S.instruments[id]);
     const st = {
       hoursTotal: surfaceHours(state), hoursUsed: 0, hoursLeft: 0, power: surfacePower(state),
-      bufferGb: 0, bufferMax: S.bufferGb, dataSentGb: 0,
+      bufferGb: 0, bufferMax: (S.bufferGb[type] || S.bufferGb.robotic), dataSentGb: 0,
       sampleKg: 0, sampleCapacityKg: needsReturn(state) ? (S.returnCapacityKg[type] || 0) : 0,
       noSignal: 0, risk: 0, measurements: 0, journal: [], events: [],
       segments: { clue: false, composition: false, sample: false }, evidence: null,
@@ -847,6 +864,8 @@
       if (sr.coldRisk) warn('suitCold', 'Your suit cannot enter the freezing shadowed craters here');
       if (sr.earthView === 'intermittent') warn('earthHidden', 'Earth is low on the horizon here: contact comes and goes');
       if (sr.hoverAvailable < sr.hoverTypical) warn('lowHover', `This terrain usually needs ~${fmt(sr.hoverTypical)} s of hovering; you have ${fmt(sr.hoverAvailable)} s`);
+      const landerKg = approachMass(state), band = D.LANDING.massRange[state.missionType];
+      if (landerKg && band && (landerKg < band.min || landerKg > band.max)) warn('landerMass', `Lander mass is ${fmt(landerKg)} kg. A ${state.missionType} landing is sized for ${fmt(band.min)}–${fmt(band.max)} kg. You can still fly.`);
       if (state.landing && state.landing.outcome === 'abort') block('landingAbort', 'The landing was aborted: no surface science this time');
       return result(issues);
     }
@@ -908,12 +927,11 @@
     for (const b of plan.burns) if (done.has(b.key)) { planned -= b.dvPlanned; required -= b.dv; }
     return { planned, required };
   }
-  /** Mission length in hours. Crewed: the Phase 2 crew days. Robotic: transit, site science hours, then a downlink day. Null without a mission. */
+  /** Mission length in hours. Crewed: the Phase 2 crew days. Robotic: transit, site daylight, then one downlink day. Null without a mission. */
   function missionHours(state) {
     if (state.missionType === 'crewed') { const l = lifeSupport(state); return l ? l.days * 24 : null; }
     if (state.missionType !== 'robotic') return null;
-    const sr = siteReport(state);
-    return D.LIFE.transitDays * 24 + (sr ? sr.opsHours : D.SURFACE.roboticHours) + D.SURFACE.tailHoursRobotic;
+    return D.LIFE.transitDays * 24 + daylightHours(state) + 24;
   }
   /** Mission length in days, rounded the way the HUD shows it. */
   function missionDays(state) {
@@ -1147,7 +1165,7 @@
     canMeasure, measure, canSendData, sendData, rollSurfaceEvent, applySurfaceEventChoice, finishSurface, surfaceOutcome,
     // Phase 7
     returnApplies, findEntry, findShield, returnBurns, thermalCheck, splashdown, returnSim, returnMath,
-    commsPlan, commsMath, lightDelay, dishGain, dataNeedPerDay, siteReport, hoverAvailable, landingSim, landingMath, findSite, sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, dvRemaining, missionHours, missionDays, launchRows, hud, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
+    commsPlan, commsMath, lightDelay, dishGain, dataNeedPerDay, siteReport, hoverAvailable, landingSim, landingMath, approachMass, daylightHours, findSite, sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, dvRemaining, missionHours, missionDays, launchRows, hud, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
   if (typeof module !== 'undefined' && module.exports) module.exports = MODEL;
   else root.SS_MODEL = MODEL;
 })(typeof window !== 'undefined' ? window : globalThis);

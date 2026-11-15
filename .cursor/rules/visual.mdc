@@ -1,0 +1,46 @@
+---
+description: Base visual compartida de Space Syntax. Tokens, componentes UI y reglas de estilo.
+alwaysApply: true
+---
+
+# Sistema visual
+
+Estilo: ilustración espacial 2D, índigo y violeta del fondo, vidrio oscuro translúcido con contorno fino claro, tipografía de peso normal. El verde de acento queda solo para detalles pequeños. Las imágenes de `Visual/` son la referencia de composición, no assets. Nada de emojis en la interfaz.
+
+- Usa siempre las variables de `src/styles/tokens.css`. Prohibido poner colores, fuentes o radios sueltos.
+- Usa siempre los componentes de `src/components/ui` antes de crear estilos nuevos. Si falta uno, créalo ahí. Impórtalos desde su `.jsx`: un `index.js` con `export` rompe `node tools/check.js`.
+- CSS Modules por componente.
+- No cambies `index.html`, `js/`, `css/style.css` ni el motor al trabajar en esta base.
+
+## Composición
+
+- El escenario 16:9 ocupa toda la ventana. Si la ventana no es 16:9, el fondo se recorta (`cover`); no se encaja con barras.
+- La niña mide cerca del 45% de la altura del escenario, abajo a la izquierda, con los pies sobre el piso de la escena.
+- El HUD es una barra delgada arriba, de lado a lado: vidrio oscuro, bordes redondeados y campos separados por líneas finas.
+- El panel de la fase es vidrio oscuro translúcido, compacto, con borde fino claro.
+- El botón principal tiene contorno fino claro y fondo translúcido. No lleva relleno verde.
+
+## Estados
+
+- Seleccionado: el círculo del número se rellena con un color claro y el borde queda un poco más brillante. Sin relleno verde y sin la palabra "Selected".
+- Aviso: `var(--warn)`.
+- Error: `var(--danger)`.
+- Bloqueado: opacidad `.45`, candado y texto del motivo.
+
+```css
+/* ❌ color, fuente o radio sueltos */
+.btn { background: #A6E05F; font-family: Nunito, sans-serif; border-radius: 14px; }
+
+/* ✅ tokens */
+.btn { background: var(--accent); font-family: var(--font-ui); border-radius: var(--radius-btn); }
+```
+
+## Animación
+
+Las animaciones solo leen el estado que ya les llega. Ninguna regla ni cálculo del juego vive en una animación ni en un componente visual.
+
+## Accesibilidad
+
+- Respeta `prefers-reduced-motion`.
+- Foco visible, navegación con teclado, área táctil mínima de 44px en controles.
+- El color nunca es la única señal: acompáñalo con texto o un icono.

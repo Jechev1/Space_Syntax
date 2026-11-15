@@ -8,8 +8,8 @@
  * seeded cloud that blocks a pass. When the buffer is full, new data is lost.
  *
  * Mission length: crewed uses the Phase 2 crew days (M.lifeSupport). Robotic uses transit days plus the
- * site's science hours (M.siteReport opsHours; D.SURFACE.roboticHours when no site is picked) plus a final
- * downlink day (D.SURFACE.tailHoursRobotic). M.missionHours holds this sum so the HUD and the run agree. Science data is made only while at the Moon: after the outbound transit, and for crew until
+ * site's daylight (M.daylightHours) plus a final
+ * downlink day. Science data is made only while at the Moon: after the outbound transit, and for crew until
  * the return transit starts. Day is 24 h, a simplification of the real 24 h 50 min Moon day.
  *
  * Score: percent of generated data that reached Earth.
@@ -22,10 +22,11 @@
   const K = isNode ? require('./kit.js') : root.SS_SIMKIT;
 
   const TUNING = {
-    bufferGb: { robotic: 150, crewed: 300 }, // game values: onboard storage
+    bufferGb: D.SURFACE.bufferGb, // same 150 / 300 Gb store as Phase 6
     failBelow: 0.6,                          // game value: under 60% delivered the mission fails
     successLostFrac: 0.001,                  // game value: loses less than 0.1% counts as no loss
     cloudChance: 0.3,                        // game value: chance a laser pass is blocked
+    tailHoursRobotic: 24,                    // game value: one extra day to send what is left
     stepHours: 1 / 12,                       // game value: simulation step, 5 minutes
     warnFill: 0.8,                           // game value: buffer warning level
     thresholds: [60, 90, 99],                // game values: percent delivered for 1, 2, 3 stars
@@ -75,12 +76,13 @@
     // mission length and the window when science makes data
     let winStart = transitH, winEnd, total;
     if (crewed) {
-      total = M.missionHours(state);
+      const life = M.lifeSupport(state);
+      total = life.days * 24;
       winEnd = Math.max(winStart + 24, total - transitH);
       total = Math.max(total, winEnd);
     } else {
-      total = M.missionHours(state); // transit + site hours + tail, the same number the HUD shows
-      winEnd = total - D.SURFACE.tailHoursRobotic;
+      winEnd = winStart + M.daylightHours(state);
+      total = winEnd + TUNING.tailHoursRobotic;
     }
     const genPerH = plan.needGbPerDay / 24;
     const gbPerH = plan.rateMbps * 3.6;

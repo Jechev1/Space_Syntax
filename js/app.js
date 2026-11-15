@@ -422,7 +422,7 @@
     else if (!M.payloadAnswers(S)) reason = 'Add an instrument that answers your Phase 0 question';
     let extra = '';
     if (sub.id === 'power' && type === 'robotic') {
-      extra = `<div class="panel" style="margin-top:14px"><h3>🔋 Batteries: real math</h3><p class="sub-why" style="margin:0">To survive darkness your lander needs about ${D.BATTERY.survivalPower} W ${srcChip('nightPower')}. NASA's best cells reach about 245 Wh per kg ${srcChip('techport')}; full packs are heavier, so we use ${D.BATTERY.specificEnergy} Wh/kg ${srcChip('game')}.</p>
+      extra = `<div class="panel" style="margin-top:14px"><h3>🔋 Batteries: real math</h3><p class="sub-why" style="margin:0">To survive darkness your lander needs about ${D.BATTERY.survivalPower} W ${srcChip('nightPower')}. Battery packs in this mission store ${D.BATTERY.specificEnergy} Wh per kg ${srcChip('game')}.</p>
         ${mathToggle('battery', 'Show the math: how big a battery?')}${S.showMath.battery ? mathBlock(M.batteryMath(100)) + '<div style="height:8px"></div>' + mathBlock(M.batteryMath(354)) + `<p class="gear">354 h is one night at the equator ${srcChip('rps')}. Real batteries can't be drained to 0% and need margins, so NASA studies suggest a lot more mass than this ideal number.</p>` : ''}</div>`;
     }
     if (sub.id === 'science' && type === 'crewed') {

@@ -1,0 +1,103 @@
+.btn {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--fs-chip) / 4);
+  padding: calc(var(--fs-chip) / 2) var(--fs-body);
+  border-radius: var(--radius-btn);
+  border: 1px solid transparent;
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+.face {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+.btn[aria-disabled='true']:not(:has(.reason)) {
+  opacity: 0.45;
+}
+
+.btn[aria-disabled='true'] .face {
+  opacity: 0.45;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  box-shadow: var(--accent-glow);
+}
+
+.secondary {
+  background: var(--panel-solid);
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: transparent;
+}
+
+.outline {
+  background: color-mix(in srgb, var(--panel) 75%, transparent);
+  color: var(--text);
+  border-color: var(--line);
+  font-weight: var(--fw);
+  backdrop-filter: blur(var(--panel-blur));
+}
+
+.danger {
+  background: var(--danger);
+  color: var(--bg);
+  border-color: var(--danger);
+}
+
+.btn:hover:not([aria-disabled='true']) {
+  transform: translateY(-1px);
+}
+
+.ghost:hover:not([aria-disabled='true']) {
+  border-color: var(--line);
+}
+
+.outline:hover:not([aria-disabled='true']) {
+  border-color: var(--line-bright);
+}
+
+.reason {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--fs-chip) / 3);
+  max-width: 220px;
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: 700;
+  text-align: center;
+}
+
+.primary .reason,
+.danger .reason {
+  color: var(--bg);
+}
+
+.reason svg {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
