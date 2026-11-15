@@ -141,6 +141,60 @@ export function MissionFrame({ phase, title, footer = null, children }) {
   )
 }
 
+export function StageScene({ background = '', character, objects = null, title, children }) {
+  const navigate = useNavigate()
+  const game = useGame()
+  const { data } = game
+  const [modal, setModal] = useState(null)
+  const [source, setSource] = useState(null)
+  const [previewKey, setPreviewKey] = useState(null)
+
+  useEffect(() => {
+    document.title = title
+  }, [title])
+
+  const openSource = (key) => {
+    if (!key || key === 'game') {
+      setSource(null)
+      setModal('game')
+      return
+    }
+    setSource(data.SOURCES[key] || null)
+    setModal('source')
+  }
+
+  const play = { openSource, setPreview: setPreviewKey, setModal, setNotice: game.setNotice }
+  void previewKey
+
+  return (
+    <PlayProvider value={play}>
+      <Stage background={background} framed character={character} objects={objects}>
+        {children}
+        <Modal open={modal === 'howto'} variant="info" title="How to play" onClose={() => setModal(null)}><HowTo /></Modal>
+        <Modal open={modal === 'sources'} variant="info" title="Sources" onClose={() => setModal(null)}>
+          <SourceList sources={Object.values(data.SOURCES)} />
+        </Modal>
+        <Modal open={modal === 'game'} variant="info" title="Game value" onClose={() => setModal(null)}>
+          This number is tuned for gameplay and scaled from real missions. It is not a measured fact. Numbers marked with a NASA chip come straight from NASA sources.
+        </Modal>
+        <Modal open={modal === 'source' && Boolean(source)} variant="info" title="Source" onClose={() => setModal(null)}>
+          {source ? (
+            <>
+              <p><b>{source.title}</b></p>
+              <p><a className={shell.link} href={source.url} target="_blank" rel="noopener noreferrer">{source.url}</a></p>
+              <p className={shell.note}>Opened and checked by the Space Syntax team on Nov 14, 2026.</p>
+            </>
+          ) : null}
+        </Modal>
+        <Modal open={modal === 'reset'} variant="danger" title="Start a new mission?" onClose={() => setModal(null)}>
+          <p>Your current design will be erased.</p>
+          <Button variant="danger" onClick={() => { game.reset(); navigate('/') }}>Yes, start over</Button>
+        </Modal>
+      </Stage>
+    </PlayProvider>
+  )
+}
+
 function MeterAccount({ meterId, report, state }) {
   const { model } = useGame()
   if (meterId === 'mass') {
