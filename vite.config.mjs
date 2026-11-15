@@ -1,3 +1,5 @@
+import { cpSync, existsSync, renameSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -20,8 +22,30 @@ function devUiRoute() {
   }
 }
 
+/**
+ * Production build for Vercel. The React page becomes index.html. The engine scripts in js/ are classic
+ * (non-module) scripts that Vite does not bundle, so they are copied as they are. The classic game stays
+ * available at /classic as a backup.
+ */
+function sitePages() {
+  let outDir = 'dist-ui'
+  return {
+    name: 'site-pages',
+    apply: 'build',
+    configResolved(config) { outDir = resolve(config.root, config.build.outDir) },
+    closeBundle() {
+      const out = (p) => resolve(outDir, p)
+      if (existsSync(out('dev.html'))) renameSync(out('dev.html'), out('index.html'))
+      cpSync('js', out('js'), { recursive: true })
+      cpSync('index.html', out('classic.html'))
+      cpSync('css', out('css'), { recursive: true })
+      cpSync('assets', out('assets'), { recursive: true, force: false })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [devUiRoute(), react()],
+  plugins: [devUiRoute(), react(), sitePages()],
   server: { port: 5173 },
   build: {
     outDir: 'dist-ui',
