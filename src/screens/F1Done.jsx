@@ -1,20 +1,27 @@
 import { useNavigate } from 'react-router-dom'
+import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { ReviewList } from '../components/ui/ReviewList.jsx'
 import { missionProfile, useGame } from '../engine/useGame.jsx'
 import { EquipmentList, kgText, usdText } from './bits.jsx'
-import { MissionBubble, MissionFrame, usePhaseGuard } from './frame.jsx'
+import { StageScene, usePhaseGuard } from './frame.jsx'
+import { MissionHud } from './f1Hud.jsx'
 import { usePlay } from './playContext.jsx'
+import styles from './F1.module.css'
 import shell from './shell.module.css'
 
 export function F1Done() {
   const ready = usePhaseGuard('/f1done')
   if (!ready) return null
   return (
-    <MissionFrame phase={1} title="Space Syntax — Phase 1 complete">
+    <StageScene
+      background="/bg/bg-preparacion.png"
+      character="/char/nina-chaqueta-portapapeles.png"
+      title="How far is upy — Phase 1"
+    >
       <F1DoneBody />
-    </MissionFrame>
+    </StageScene>
   )
 }
 
@@ -39,38 +46,36 @@ function F1DoneBody() {
   }
 
   return (
-    <div className={shell.split}>
-      <div className={shell.stack}>
-        <p className={shell.kicker}>Phase 1 complete · Launch site, Earth</p>
-        <h1 className={shell.h1}>Ready on the launch pad! 🚀</h1>
-        <p className={shell.lead}>{missionProfile(state)} on {report.rocket ? report.rocket.title : ''}.</p>
-        <MissionBubble id="f1done">
-          Our spacecraft passed the design review. Next stop: {crewed ? 'feeding the crew' : 'the flight plan'}. The cheese truth is getting closer…
-        </MissionBubble>
-        <GlassPanel eyebrow="Design review: GO / NO GO" title="Checks">
-          <ReviewList items={items.map(([label, ok, detail]) => ({ label, ok, detail }))} />
-          <p className={shell.note}>🌙 {night}</p>
-        </GlassPanel>
-        <GlassPanel eyebrow="Master Equipment List" title="Parts">
-          <EquipmentList report={report} />
-        </GlassPanel>
+    <div className={styles.screen}>
+      <MissionHud />
+      <div className={styles.speech}>
+        <Bubble tone="speech">Does it all fit?</Bubble>
       </div>
-      <div className={shell.stack}>
-        <GlassPanel eyebrow="Coming next" title={crewed ? 'Phase 2 · Crew & life support' : 'Phase 3 · Flight plan & delta-v'}>
-          <p className={shell.note}>
+      <div className={styles.panel}>
+        <GlassPanel>
+          <p className={styles.kicker}>Phase 1 · Design review</p>
+          <h2 className={styles.question}>Ready on the launch pad</h2>
+          <p className={styles.line}>{missionProfile(state)} on {report.rocket ? report.rocket.title : ''}.</p>
+          <ReviewList items={items.map(([label, ok, detail]) => ({ label, ok, detail }))} />
+          <p className={styles.line}>{night}</p>
+          <EquipmentList report={report} />
+          <p className={styles.line}>
             {crewed
-              ? 'Each astronaut needs about 0.9 kg of oxygen, 0.8 kg of food and 3.2 kg of water per day (NASA BVAD).'
-              : 'Spend your delta-v budget maneuver by maneuver.'}
+              ? 'Next: crew and life support. Each astronaut needs about 0.9 kg of oxygen, 0.8 kg of food and 3.2 kg of water per day.'
+              : 'Next: the flight plan. Spend your delta-v budget maneuver by maneuver.'}
           </p>
           <Button variant="primary" disabledReason="Our team is building it right now.">Next phase: coming soon</Button>
-        </GlassPanel>
-        <GlassPanel eyebrow="Mission" title="Keep going">
-          <div className={shell.stack}>
-            <Button variant="secondary" onClick={() => navigate('/f1a')}>← Back to workshop</Button>
+          <div className={shell.actions}>
             <Button variant="ghost" onClick={() => setModal('sources')}>See all NASA sources</Button>
             <Button variant="ghost" onClick={() => setModal('reset')}>Start a new mission</Button>
           </div>
         </GlassPanel>
+      </div>
+      <div className={styles.dock}>
+        <div className={styles.nav}>
+          <Button variant="secondary" onClick={() => navigate('/f1a')}>← Workshop</Button>
+          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+        </div>
       </div>
     </div>
   )

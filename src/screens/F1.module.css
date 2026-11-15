@@ -1,0 +1,147 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  right: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-body);
+  font-weight: var(--fw);
+}
+
+.hud span {
+  padding: calc(var(--fs-chip) / 2) var(--fs-body);
+  text-align: center;
+  border-left: 1px solid var(--line);
+}
+
+.hud span:first-child {
+  border-left: 0;
+}
+
+.tabs {
+  position: absolute;
+  top: 22%;
+  bottom: 55%;
+  left: 2.4%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 16%;
+  overflow: auto;
+  pointer-events: auto;
+}
+
+.tab {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 6px 8px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+  text-align: left;
+  cursor: pointer;
+}
+
+.tabOn {
+  border-color: var(--math);
+  box-shadow: inset 0 0 0 1px var(--math);
+}
+
+.speech {
+  position: absolute;
+  left: 22%;
+  bottom: 50%;
+  pointer-events: auto;
+}
+
+.speech p {
+  max-width: 160px;
+}
+
+.panel {
+  position: absolute;
+  top: 22%;
+  right: 2.4%;
+  bottom: 12%;
+  width: 34%;
+  overflow: auto;
+  pointer-events: auto;
+}
+
+.kicker,
+.question,
+.line {
+  margin: 0;
+  font-weight: var(--fw);
+}
+
+.kicker {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.question {
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  font-weight: var(--fw-title);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.line {
+  color: var(--text);
+  font-size: var(--fs-chip);
+}
+
+.line b {
+  color: var(--math);
+  font-weight: var(--fw-title);
+}
+
+.dock {
+  position: absolute;
+  left: 22%;
+  right: 2.4%;
+  bottom: 3.2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.lock {
+  margin-left: auto;
+}
+
+.lock button,
+.nav button {
+  min-width: 132px;
+}
