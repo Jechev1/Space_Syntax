@@ -4,34 +4,28 @@
   pointer-events: none;
 }
 
-.hud {
-  position: absolute;
-  top: 18px;
-  left: 22px;
-  right: calc(22px + var(--tools-reserve));
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  align-items: center;
-  min-height: 46px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-panel);
-  background: var(--panel);
-  backdrop-filter: blur(var(--panel-blur));
-  color: var(--text);
-  font-size: var(--fs-chip);
-  font-weight: var(--fw);
+/* Type scales with the stage height, like Phases 2 to 5, so the panels fit short windows too.
+   The bottom bar keeps the fixed type of Phase 1, so its buttons look the same on every screen. */
+.hud,
+.speech,
+.evidence,
+.panel,
+.panelGuard {
+  --fs-body: clamp(10px, 2.15cqh, 17px);
+  --fs-chip: clamp(8px, 1.7cqh, 13px);
+  --fs-sub: clamp(13px, 2.8cqh, 21px);
+  --fs-title: clamp(17px, 3.4cqh, 28px);
+}
+
+/* The top bar is the shared scene bar (scene.module.css); Phase 6 only sets its four columns.
+   div. beats the shared .hud grid whatever order the CSS loads in. */
+div.hud {
+  grid-template-columns: 0.9fr 1.3fr 1fr 1.3fr;
   overflow: hidden;
 }
 
-.hud span {
+.meterCell {
   position: relative;
-  padding: calc(var(--fs-chip) / 2) var(--fs-chip);
-  text-align: center;
-  border-left: 1px solid var(--line);
-}
-
-.hud span:first-child {
-  border-left: 0;
 }
 
 .meterCell::after {
@@ -77,25 +71,19 @@
   max-width: 190px;
 }
 
+/* Right below the top bar (never under the music and settings buttons) and above the bottom bar. The
+   content is sized to fit; the overflow rule is only a safety net for very short windows. */
 .panel,
 .panelGuard {
   position: absolute;
-  top: 14%;
+  top: max(12%, 72px);
   right: 2.4%;
   width: 30%;
-  max-height: 64%;
+  max-height: calc(88% - max(12%, 72px) - 8px);
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   pointer-events: auto;
-}
-
-.tall {
-  max-height: 70%;
-}
-
-.tallEnd {
-  max-height: 80%;
 }
 
 .panelGuard {
@@ -262,8 +250,9 @@
   }
 }
 
-.dock,
-.dockB {
+/* Bottom bar, same structure as Phase 1 (F1.module.css): back, help and the tools start right of the girl,
+   the main action sits alone on the right. */
+.dock {
   position: absolute;
   left: 18%;
   right: 2.4%;
@@ -273,10 +262,6 @@
   align-items: flex-end;
   gap: 8px;
   pointer-events: auto;
-}
-
-.dockB {
-  left: 2.4%;
 }
 
 .nav {
@@ -290,11 +275,15 @@
 
 .lock button,
 .nav button {
-  min-width: 120px;
+  min-width: 132px;
 }
 
+/* Evidence meter in the free top-left corner, under the top bar. */
 .evidence {
-  width: 30%;
+  position: absolute;
+  top: max(12%, 72px);
+  left: 2.4%;
+  width: 26%;
   padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
@@ -309,9 +298,11 @@
 }
 
 .segment {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 3px;
+  overflow-wrap: anywhere;
   color: var(--text-dim);
   font-size: var(--fs-chip);
 }
