@@ -14,6 +14,8 @@ import scene from './scene.module.css'
 const BACKGROUND = '/bg/bg-plataforma.png'
 const CHARACTER = '/char/nina-traje-pie.png'
 const ROWS = ['totalMass', 'deltaV', 'crew', 'missionDays', 'lifeSupport', 'comms']
+/* Short link names, same as F4. launchRows gives the full title. */
+const LINK_NAMES = { 'S-band radio': 'Basic radio', 'Ka-band high-gain antenna': 'Ka-band', 'Laser communications': 'Laser link' }
 
 export function F3b() {
   const ready = usePhaseGuard('/f3b')
@@ -64,11 +66,11 @@ function F3bBody() {
           </p>
         </GlassPanel>
       </div>
-      <p className={styles.warning}>After launch you cannot change Phases 0 to 3.</p>
+      <p className={styles.warning}>After launch you cannot change Phases 0 to 4.</p>
       <div className={scene.dock}>
         <div className={scene.nav}>
           {state.launched ? null : (
-            <Button variant="secondary" onClick={() => navigate('/f3a')}>← Flight plan</Button>
+            <Button variant="secondary" onClick={() => navigate('/f4')}>← Comms</Button>
           )}
           <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
@@ -108,6 +110,6 @@ function valueText(row, fmt) {
   if (row.key === 'crew') return row.value == null ? 'Robots only' : String(row.value)
   if (row.key === 'missionDays') return row.value == null ? '—' : fmt(row.value)
   if (row.key === 'lifeSupport') return row.value === 'ok' ? 'OK' : 'Not needed'
-  if (row.key === 'comms') return row.value || 'Phase 4'
+  if (row.key === 'comms') return row.value ? (LINK_NAMES[row.value] || row.value) : 'Not chosen'
   return row.value == null ? '—' : String(row.value)
 }
