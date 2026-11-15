@@ -1,10 +1,16 @@
 /* F4-only pieces. Shared layout lives in scene.module.css. */
 
 .left,
-.help {
+.side,
+.strip {
   --fs-body: clamp(10px, 2.15cqh, 17px);
   --fs-chip: clamp(8px, 1.7cqh, 13px);
   --fs-sub: clamp(13px, 2.8cqh, 21px);
+}
+
+/* Four cells in the top bar (no Data cell in Phase 4). div. beats the shared .hud grid whatever the CSS order. */
+div.hud {
+  grid-template-columns: 0.8fr 1.6fr 1.4fr 1.2fr;
 }
 
 .portrait {
@@ -19,6 +25,12 @@
 .speech {
   left: 14%;
   bottom: 38%;
+}
+
+/* The bubble carries the hints, so it gets the same width as the Phase 0 one. */
+.speech p {
+  max-width: 220px;
+  text-align: left;
 }
 
 /* Left column: globe and ping */
@@ -78,6 +90,10 @@
   font-size: var(--fs-chip);
   white-space: nowrap;
   transform: translate(-0.4em, -50%);
+  /* Small backing so the names stay readable over the globe lines. */
+  padding: 0.05em 0.35em 0.05em 0.2em;
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
 }
 
 .station i,
@@ -89,11 +105,18 @@
   border-radius: 50%;
 }
 
+/* Green dot of the station in contact: a soft glow that breathes. */
 .live i,
 .liveDot {
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 0 0.6em var(--accent-glow);
+  box-shadow: var(--accent-glow);
+  animation: liveGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes liveGlow {
+  0%, 100% { box-shadow: 0 0 0.25em var(--accent); }
+  50% { box-shadow: 0 0 0.9em var(--accent), var(--accent-glow); }
 }
 
 .legend {
@@ -191,10 +214,79 @@
   cursor: pointer;
 }
 
+/* Selected, per the visual rules: brighter border and a light filled number, no green. */
 .option[aria-pressed='true'],
 .dish[aria-pressed='true'] {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent);
+  border-color: var(--line-bright);
+  box-shadow: 0 0 0 1px var(--line-bright);
+  background: var(--panel-solid);
+}
+
+.option[aria-pressed='true'] .num {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg-deep);
+}
+
+/* "Change link" / "Keep this link": a compact pill in the spot of the source chip, 44 px touch area. */
+.pill {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  cursor: pointer;
+}
+
+.pill > span {
+  padding: 0.25em 0.9em;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.pill:hover > span {
+  border-color: var(--text);
+}
+
+.summary {
+  display: grid;
+  gap: 0.1em;
+  margin: 0;
+  padding: 0.45em 0.7em;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-btn);
+  background: var(--panel-solid);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.summaryName {
+  font-weight: var(--fw-title);
+}
+
+.optionText {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.1em;
+}
+
+/* Second line of a link: its costs on the left, "Enough" or "Too slow" on the right. */
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.optionMeta {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
 }
 
 .num {
@@ -235,47 +327,82 @@
   color: var(--warn);
 }
 
+.broken {
+  display: grid;
+  gap: 0.4em;
+}
+
 .panelFoot {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.mathLink {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--text-dim);
-  font-family: var(--font-ui);
+/* Compact "Show the math" button, the same size Phase 1 uses inside its panels. */
+.panelFoot > button:first-child {
+  min-width: 0;
+  min-height: 36px;
+  padding: 4px 12px;
   font-size: var(--fs-chip);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.tag {
-  padding: 0.15em 0.7em;
-  border-radius: var(--radius-btn);
-  background: var(--accent);
-  color: var(--bg-deep);
-  font-size: var(--fs-chip);
-}
-
-.help {
-  position: absolute;
-  left: 1.7%;
-  bottom: 13%;
-  width: 34%;
-  pointer-events: auto;
 }
 
 .dim {
   border-color: var(--warn);
   background: transparent;
   box-shadow: none;
+  animation: none;
 }
 
-.runMathLeft {
-  left: 27%;
+/* Right column: the link panel on top, the Play panel under it. They share one box, so they can never
+   cover each other or the Confirm button; when both are tall the column scrolls. */
+.side {
+  position: absolute;
+  top: max(11%, 72px);
+  right: 2.4%;
+  bottom: max(13%, 84px);
+  width: 26%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.2cqh;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  pointer-events: auto;
+}
+
+.side > * {
+  flex: none;
+}
+
+/* RunPanel places itself on the stage; inside the column it just stacks. */
+.side > div:last-child {
+  position: static;
+  width: auto;
+}
+
+/* Buffer strip over the scene while the timeline plays, clear of the girl and her speech bubble. */
+.strip {
+  position: absolute;
+  left: 37%;
+  bottom: 13.5%;
+  width: 26em;
+  max-width: 33%;
+  display: grid;
+  gap: 0.3em;
+  padding: 0.5em 0.8em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+  pointer-events: auto;
+}
+
+.stripTitle {
+  margin: 0;
+  color: var(--text-dim);
 }
 
 /* Dish beam over the scene */
@@ -346,6 +473,7 @@
 @media (prefers-reduced-motion: reduce) {
   .beamOn { animation: none; }
   .meterFill { transition: none; }
+  .live i, .liveDot { animation: none; }
 }
 
 /* Does this link carry the science data? Text plus colour, never colour alone. */
