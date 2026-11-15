@@ -7,6 +7,7 @@ import { F0 } from './screens/F0.jsx'
 import { F1a } from './screens/F1a.jsx'
 import { F1b } from './screens/F1b.jsx'
 import { F1Done } from './screens/F1Done.jsx'
+import { F2 } from './screens/F2.jsx'
 import { Intro } from './screens/Intro.jsx'
 import { Start } from './screens/Start.jsx'
 import './styles/global.css'
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/f1a" element={<F1a />} />
           <Route path="/f1b" element={<F1b />} />
           <Route path="/f1done" element={<F1Done />} />
+          <Route path="/f2" element={<F2 />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
