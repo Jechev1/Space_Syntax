@@ -1,58 +1,71 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Stage } from '../components/stage/Stage.jsx'
-import { Button } from '../components/ui/Button.jsx'
-import { GlassPanel } from '../components/ui/GlassPanel.jsx'
-import { Modal } from '../components/ui/Modal.jsx'
-import { OptionRow } from '../components/ui/OptionRow.jsx'
-import { continuePath, useGame } from '../engine/useGame.jsx'
-import { HowTo, SourceList } from './dialogs.jsx'
-import shell from './shell.module.css'
+import { Dialog } from '../components/ui/Dialog.jsx'
+import { useGame } from '../engine/useGame.jsx'
+import { DifficultyPicker, GameTools } from './GameTools.jsx'
+import styles from './Start.module.css'
+
+const NAMES = ['Laura Angel', 'Jorge Flores', 'Kevin Luna', 'Violeta Jacobo']
+
+const TITLES = {
+  credits: 'Credits',
+  difficulty: 'Difficulty',
+}
 
 export function Start() {
   const navigate = useNavigate()
-  const { state, data, setDifficulty, startIntro } = useGame()
-  const [modal, setModal] = useState(null)
-  const name = data.CHARACTER.name
+  const { state, data } = useGame()
+  const [open, setOpen] = useState(null)
+  const level = data.DIFFICULTIES.find((item) => item.id === state.difficulty)
 
   useEffect(() => {
-    document.title = 'How far is upy'
+    document.title = 'How far is up?'
   }, [])
 
   return (
-    <Stage>
-      <div className={shell.screen}>
-        <div className={shell.scroll}>
-          <GlassPanel eyebrow="NASA Space Apps 2026 · Space Mission Design" title="How far is upy">
-            <p className={shell.lead}>Is the Moon made of cheese? {name} is sure it is. Design a real Moon mission, with NASA data and real math, and find out.</p>
-            <p className={shell.kicker}>Difficulty</p>
-            {data.DIFFICULTIES.map((item, index) => (
-              <OptionRow
-                key={item.id}
-                number={index + 1}
-                text={item.title}
-                detail={item.blurb}
-                selected={state.difficulty === item.id}
-                onSelect={() => setDifficulty(item.id)}
-              />
-            ))}
-            <div className={shell.actions}>
-              <Button variant="primary" onClick={() => { startIntro(); navigate('/intro') }}>Start mission 🚀</Button>
-              {state.phase0Done ? (
-                <Button variant="secondary" onClick={() => navigate(continuePath(state))}>Continue</Button>
-              ) : null}
-              <Button variant="ghost" onClick={() => setModal('howto')}>How to play</Button>
-              <Button variant="ghost" onClick={() => setModal('sources')}>Sources</Button>
-            </div>
-          </GlassPanel>
-        </div>
-        <Modal open={modal === 'howto'} variant="info" title="How to play" onClose={() => setModal(null)}>
-          <HowTo />
-        </Modal>
-        <Modal open={modal === 'sources'} variant="info" title="Sources" onClose={() => setModal(null)}>
-          <SourceList sources={Object.values(data.SOURCES)} />
-        </Modal>
+    <div className={styles.viewport}>
+      <div className={styles.frame}>
+        <img className={styles.bg} src="/bg/inicio.png" alt="" />
+        <GameTools cover />
+        <main className={styles.hero}>
+          <h1 className={styles.title}>How far is up?</h1>
+          <p className={styles.subtitle}>A Space Mission Design Game</p>
+          <div className={styles.menu}>
+            <button type="button" className={`${styles.action} ${styles.primary}`} onClick={() => navigate('/f0')}>
+              Start mission
+            </button>
+            <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={() => setOpen('difficulty')}>
+              Difficulty{level ? `: ${level.title}` : ''}
+            </button>
+            <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={() => setOpen('credits')}>
+              Credits
+            </button>
+          </div>
+        </main>
+        <footer className={styles.footer}>
+          <p>NASA Space Apps 2026 · Space Syntax</p>
+          <p>v1.0</p>
+        </footer>
       </div>
-    </Stage>
+      {open ? (
+        <Dialog title={TITLES[open]} onClose={() => setOpen(null)}>
+          {open === 'credits' ? (
+            <>
+              <p className={styles.love}>Made with love in San Salvador, El Salvador 🇸🇻</p>
+              <p className={styles.team}>Team Space Syntax</p>
+              <ul className={styles.names}>
+                {NAMES.map((name) => <li key={name}>{name}</li>)}
+              </ul>
+              <p className={styles.challenge}>NASA Space Apps Challenge 2026 · Space Mission Design Game</p>
+            </>
+          ) : (
+            <>
+              <p className={styles.challenge}>Sets your budget and how forgiving the mission is. You can change it later from the gear.</p>
+              <DifficultyPicker />
+            </>
+          )}
+        </Dialog>
+      ) : null}
+    </div>
   )
 }

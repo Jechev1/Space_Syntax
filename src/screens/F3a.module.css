@@ -1,19 +1,5 @@
 /* F3a-only pieces. Shared layout lives in scene.module.css. */
 
-/* The girl stands on top of the delta-v bar instead of behind it. */
-.portrait {
-  position: absolute;
-  left: 2.4%;
-  bottom: 14%;
-  height: 40%;
-  width: auto;
-  max-width: none;
-}
-
-.speech {
-  bottom: 47%;
-}
-
 /* Earth to Moon path drawn on the empty wall screen of bg-control. */
 .wall {
   position: absolute;
@@ -124,8 +110,7 @@
   line-height: 1.2;
 }
 
-.chip,
-.tag {
+.chip {
   padding: 0.15em 0.6em;
   border: 1px solid var(--line-bright);
   border-radius: var(--radius-chip);
@@ -147,12 +132,10 @@
   font-weight: var(--fw);
 }
 
-/* Bottom delta-v bar */
+/* Delta-v bar, between the back/help buttons and the main action in the bottom bar. */
 .dock {
-  position: absolute;
-  left: 2.4%;
-  right: 27%;
-  bottom: 3.2%;
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 1em;
@@ -163,7 +146,6 @@
   backdrop-filter: blur(var(--panel-blur));
   color: var(--text);
   font-size: var(--fs-body);
-  pointer-events: auto;
 }
 
 .dockLabel {
@@ -174,7 +156,7 @@
   flex: 1;
   display: grid;
   gap: 0.3em;
-  min-width: 0;
+  min-width: 9em;
 }
 
 .track {
@@ -204,6 +186,7 @@
   color: var(--text-dim);
   font-size: var(--fs-chip);
   text-align: center;
+  white-space: nowrap;
 }
 
 .margins {
@@ -212,7 +195,7 @@
 }
 
 .margin {
-  padding: 0.25em 0.55em;
+  padding: 0.25em 0.45em;
   border: 1px solid var(--line);
   border-radius: var(--radius-chip);
   background: transparent;

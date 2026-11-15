@@ -1,12 +1,11 @@
-import { useEffect } from 'react'
 import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
-import { Stage } from '../components/stage/Stage.jsx'
 import { useGame } from '../engine/useGame.jsx'
-import { usePhaseGuard } from './frame.jsx'
+import { StageScene, usePhaseGuard } from './frame.jsx'
+import { usePlay } from './playContext.jsx'
 import styles from './F3a.module.css'
 import { SceneHud } from './scene.jsx'
 import scene from './scene.module.css'
@@ -17,11 +16,20 @@ const CHARACTER = '/char/nina-chaqueta-portapapeles.png'
 export function F3a() {
   const ready = usePhaseGuard('/f3a')
   if (!ready) return null
-  return <F3aScreen />
+  return (
+    <StageScene
+      background={BACKGROUND}
+      character={<img className={scene.girl} src={CHARACTER} alt="" />}
+      title="How far is upy — Phase 3"
+    >
+      <F3aBody />
+    </StageScene>
+  )
 }
 
-function F3aScreen() {
+function F3aBody() {
   const navigate = useNavigate()
+  const { setModal } = usePlay()
   const game = useGame()
   const { state, data, model } = game
   const plan = model.flightPlan(state)
@@ -29,48 +37,46 @@ function F3aScreen() {
     plan.burns.map((burn) => ({ label: shortLabel(burn.label), dv: burn.dv, chip: '' })),
   )
 
-  useEffect(() => {
-    document.title = 'Space Syntax — Phase 3: Flight plan'
-  }, [])
-
   return (
-    <Stage background={BACKGROUND} character={<img className={styles.portrait} src={CHARACTER} alt="" />}>
-      <div className={scene.screen}>
-        <SceneHud />
-        <Trajectory count={steps.length} distance={data.MOON.distanceKm} />
-        <div className={`${scene.speech} ${styles.speech}`}>
-          <Bubble tone="speech">
-            {state.missionType === 'crewed' ? 'I need fuel for the trip home.' : 'Every burn costs fuel.'}
-          </Bubble>
-        </div>
-        <div className={scene.panel}>
-          <GlassPanel>
-            <button type="button" className={scene.kicker} onClick={() => navigate('/f2')}>
-              Phase 3 · Flight plan
-            </button>
-            <h2 className={scene.title}>Flight plan</h2>
-            <ol className={styles.burns}>
-              {steps.map((step, index) => (
-                <li key={step.label} className={styles.burn}>
-                  <span className={styles.num}>{index + 1}</span>
-                  <span className={styles.burnName}>
-                    {step.label}
-                    {step.chip ? <span className={styles.chip}>{step.chip}</span> : null}
-                  </span>
-                  <span className={styles.dv}>{model.fmt(step.dv)} m/s</span>
-                </li>
-              ))}
-            </ol>
-            <p className={styles.total}>Spacecraft needs {model.fmt(plan.dvRequired)} m/s + margin</p>
-            <p className={scene.source}>Source: NASA Constellation studies</p>
-          </GlassPanel>
+    <div className={scene.screen}>
+      <SceneHud />
+      <Trajectory count={steps.length} distance={data.MOON.distanceKm} />
+      <div className={`${scene.speech} ${styles.speech}`}>
+        <Bubble tone="speech">
+          {state.missionType === 'crewed' ? 'I need fuel for the trip home.' : 'Every burn costs fuel.'}
+        </Bubble>
+      </div>
+      <div className={scene.panel}>
+        <GlassPanel>
+          <p className={scene.kicker}>Phase 3 · Flight plan</p>
+          <h2 className={scene.title}>Flight plan</h2>
+          <ol className={styles.burns}>
+            {steps.map((step, index) => (
+              <li key={step.label} className={styles.burn}>
+                <span className={styles.num}>{index + 1}</span>
+                <span className={styles.burnName}>
+                  {step.label}
+                  {step.chip ? <span className={styles.chip}>{step.chip}</span> : null}
+                </span>
+                <span className={styles.dv}>{model.fmt(step.dv)} m/s</span>
+              </li>
+            ))}
+          </ol>
+          <p className={styles.total}>Spacecraft needs {model.fmt(plan.dvRequired)} m/s + margin</p>
+          <p className={scene.source}>Source: NASA Constellation studies · Isp: Game value</p>
+        </GlassPanel>
+      </div>
+      <div className={scene.dock}>
+        <div className={scene.nav}>
+          <Button variant="secondary" onClick={() => navigate('/f2')}>← Crew</Button>
+          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
         <DeltaVDock game={game} plan={plan} />
         <div className={scene.lock}>
           <GoButton game={game} />
         </div>
       </div>
-    </Stage>
+    </div>
   )
 }
 
@@ -110,7 +116,7 @@ function DeltaVDock({ game, plan }) {
   const marginOk = !check.issues.some((issue) => issue.code === 'lowDvMargin')
 
   return (
-    <div className={`${scene.dock} ${styles.dock}`}>
+    <div className={styles.dock}>
       <span className={styles.dockLabel}>Delta-v</span>
       <div className={styles.meter}>
         <div className={styles.track}>
@@ -118,7 +124,7 @@ function DeltaVDock({ game, plan }) {
           <u style={{ left: `${need}%` }} />
         </div>
         <span className={styles.meterText}>
-          Planned {model.fmt(plan.dvPlanned)} m/s · need {model.fmt(plan.dvRequired)}
+          {model.fmt(plan.dvPlanned)} m/s · need {model.fmt(plan.dvRequired)}
         </span>
       </div>
       <div className={styles.margins} role="group" aria-label="Delta-v margin">
@@ -139,7 +145,6 @@ function DeltaVDock({ game, plan }) {
       <span className={`${styles.status} ${marginOk ? styles.ok : styles.bad}`}>
         {marginOk ? 'Enough margin' : 'Not enough margin'}
       </span>
-      <span className={styles.tag}>Isp: Game value</span>
     </div>
   )
 }
