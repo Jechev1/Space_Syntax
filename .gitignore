@@ -2,5 +2,6 @@
 *.docx
 ~$*
 node_modules/
+dist-ui/
 .DS_Store
 Thumbs.db

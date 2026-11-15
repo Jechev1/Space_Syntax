@@ -1,0 +1,36 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+  padding: var(--fs-body);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-panel);
+  background: var(--bg-deep);
+}
+
+.title {
+  margin: 0;
+  color: var(--math);
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+}
+
+.step,
+.check {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: calc(var(--fs-chip) / 2);
+  font-size: var(--fs-chip);
+}
+
+.step span:first-child {
+  font-family: var(--font-display);
+  color: var(--text);
+}
+
+.check {
+  color: var(--accent);
+  font-weight: 800;
+}

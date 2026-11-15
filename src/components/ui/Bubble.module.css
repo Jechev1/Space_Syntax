@@ -1,0 +1,40 @@
+.bubble {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fs-body);
+  padding: var(--fs-body);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+}
+
+.text {
+  margin: 0;
+  font-size: var(--fs-body);
+}
+
+.speech {
+  position: relative;
+  width: max-content;
+  max-width: 148px;
+  margin: 0;
+  padding: calc(var(--fs-chip) / 2) calc(var(--fs-body) * 0.75);
+  border-radius: var(--radius-panel);
+  background: var(--bubble);
+  color: var(--bubble-text);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.speech::after {
+  content: '';
+  position: absolute;
+  left: 22px;
+  bottom: -7px;
+  border-width: 8px 7px 0;
+  border-style: solid;
+  border-color: var(--bubble) transparent transparent;
+}

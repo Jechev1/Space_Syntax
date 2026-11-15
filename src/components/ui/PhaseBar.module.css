@@ -1,0 +1,63 @@
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--fs-chip) / 3);
+}
+
+.phase {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--fs-chip) / 3);
+  padding: calc(var(--fs-chip) / 4) var(--fs-chip);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  background: var(--panel);
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.n {
+  min-width: 1.5em;
+  color: var(--text);
+  font-family: var(--font-display);
+  text-align: center;
+}
+
+.current {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.done,
+.open {
+  color: var(--text);
+}
+
+.locked {
+  cursor: not-allowed;
+}
+
+.locked .n,
+.locked > span:nth-child(2) {
+  opacity: 0.45;
+}
+
+.flag,
+.reason {
+  color: var(--text);
+}
+
+.reason {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--fs-chip) / 3);
+}
+
+.reason svg {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}

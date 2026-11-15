@@ -1,0 +1,10 @@
+.hud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fs-body);
+  padding: calc(var(--fs-chip) / 2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+}

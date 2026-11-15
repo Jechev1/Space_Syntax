@@ -1,0 +1,114 @@
+.meter {
+  flex: 1 1 30%;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 3);
+  padding: calc(var(--fs-chip) / 2) var(--fs-body);
+  border-radius: var(--radius-btn);
+  background: var(--panel-solid);
+  text-align: left;
+}
+
+button.meter {
+  cursor: pointer;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.label,
+.value {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  font-weight: 700;
+}
+
+.value {
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.delta,
+.status,
+.note {
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: 800;
+}
+
+.note {
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.track {
+  position: relative;
+  height: calc(var(--fs-chip) / 2);
+  overflow: hidden;
+  border-radius: var(--radius-chip);
+  background: var(--bg-deep);
+}
+
+.bar,
+.ghost {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-chip);
+}
+
+.bar {
+  background: var(--accent);
+  transition: width var(--dur-bar) var(--ease);
+}
+
+.ghost {
+  position: absolute;
+  top: 0;
+  background: var(--math);
+  opacity: 0.45;
+}
+
+.warn .bar {
+  background: var(--warn);
+}
+
+.over .bar {
+  background: var(--danger);
+}
+
+.warn .status {
+  color: var(--warn);
+}
+
+.over .status {
+  color: var(--danger);
+}
+
+.locked {
+  cursor: not-allowed;
+}
+
+.locked .label,
+.locked .track {
+  opacity: 0.45;
+}
+
+.reason {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--fs-chip) / 3);
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: 800;
+}
+
+.reason svg {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}

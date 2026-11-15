@@ -1,0 +1,39 @@
+.chip {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--fs-chip) / 3);
+  padding: 0 var(--fs-body);
+  border-radius: var(--radius-chip);
+  color: var(--bg);
+  font-size: var(--fs-chip);
+  font-weight: 800;
+}
+
+.kind {
+  text-transform: uppercase;
+}
+
+.game {
+  background: var(--chip-game);
+}
+
+.nasa {
+  background: var(--chip-nasa);
+}
+
+.cost {
+  background: var(--math);
+}
+
+.evidence {
+  background: var(--accent-soft);
+}
+
+.warn {
+  background: var(--warn);
+}
+
+.danger {
+  background: var(--danger);
+}

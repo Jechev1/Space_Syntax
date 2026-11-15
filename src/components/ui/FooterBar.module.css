@@ -1,0 +1,18 @@
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fs-body);
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+}
+
+.only {
+  justify-content: flex-end;
+}
+
+.side {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--fs-chip) / 2);
+}

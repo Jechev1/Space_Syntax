@@ -1,0 +1,41 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+  padding: var(--fs-body);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+}
+
+.panel.warn {
+  border-color: var(--warn);
+}
+
+.panel.danger {
+  border-color: var(--danger);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+  letter-spacing: 0.02em;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-title);
+  line-height: 1.1;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-body) / 2);
+}

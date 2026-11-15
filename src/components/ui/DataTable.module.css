@@ -1,0 +1,29 @@
+.wrap {
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  padding: calc(var(--fs-chip) / 3) calc(var(--fs-chip) / 2);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--text-dim);
+  font-weight: 800;
+}
+
+tfoot td {
+  color: var(--text);
+  font-weight: 800;
+}
