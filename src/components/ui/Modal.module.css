@@ -2,6 +2,8 @@
   position: absolute;
   inset: 0;
   z-index: 8;
+  /* Screens often set pointer-events: none so clicks reach the scene; the window must still take clicks. */
+  pointer-events: auto;
   display: grid;
   place-items: center;
   padding: var(--fs-body);

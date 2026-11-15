@@ -11,7 +11,7 @@ import { StageScene } from './frame.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './Lab.module.css'
 
-const TITLE = 'How far is up? — Lab'
+const TITLE = 'How far is up? · Lab'
 const BG = '/bg/bg-control.png'
 const GIRL = '/char/nina-chaqueta-portapapeles.png'
 

@@ -22,7 +22,7 @@ export function F1a() {
       background="/bg/bg-hangar.png"
       character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
       objects={<img className={styles.lander} src="/obj/lander.png" alt="" />}
-      title="How far is up? — Phase 1"
+      title="How far is up? · Phase 1"
     >
       <F1aBody />
     </StageScene>

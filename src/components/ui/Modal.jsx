@@ -8,7 +8,8 @@ const KICKERS = {
   danger: 'Error',
 }
 
-export function Modal({ open = false, variant = 'info', title, children, onClose }) {
+/** hideClose: the window has its own buttons (a choice or a confirm), so no extra Close button. */
+export function Modal({ open = false, variant = 'info', title, children, onClose, hideClose = false }) {
   const titleId = useId()
   const ref = useRef(null)
   const onCloseRef = useRef(onClose)
@@ -65,9 +66,11 @@ export function Modal({ open = false, variant = 'info', title, children, onClose
         <p className={styles.kicker}>{KICKERS[name]}</p>
         <h2 className={styles.title} id={titleId}>{title}</h2>
         <div className={styles.body}>{children}</div>
-        <div className={styles.actions}>
-          <Button variant="secondary" onClick={() => onCloseRef.current?.()}>Close</Button>
-        </div>
+        {hideClose ? null : (
+          <div className={styles.actions}>
+            <Button variant="secondary" onClick={() => onCloseRef.current?.()}>Close</Button>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -7,6 +7,9 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
  */
 
 const PLAY_MS = 5000 // how long one run takes on screen, whatever the simulated time
+// With reduced motion the run still plays, only faster: the numbers and bars are the game, not decoration.
+// Decorative motion (flames, flicker, glows) is switched off in each screen's CSS.
+const PLAY_MS_CALM = 1800
 const SEED = 1 // same design, same run: players iterate like in Poly Bridge
 
 /* Passed runs, kept in memory and keyed by the design that passed. Changing the design clears the pass. */
@@ -79,8 +82,8 @@ export function usePlayRun(phase, state, opts = {}) {
       setRun({ status: paused ? 'decision' : 'done', res, t: endT })
     }
     cancelAnimationFrame(raf.current)
-    if (reducedMotion() || endT <= fromT) { finish(); return }
-    const ms = PLAY_MS * (endT - fromT) / (res.time.total || 1)
+    if (endT <= fromT) { finish(); return }
+    const ms = (reducedMotion() ? PLAY_MS_CALM : PLAY_MS) * (endT - fromT) / (res.time.total || 1)
     const start = performance.now()
     const tick = (now) => {
       const p = Math.min(1, (now - start) / Math.max(400, ms))

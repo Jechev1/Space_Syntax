@@ -32,7 +32,7 @@ export function F4() {
     <StageScene
       background={BACKGROUND}
       character={<img className={styles.portrait} src={CHARACTER} alt="" />}
-      title="How far is up? — Phase 4"
+      title="How far is up? · Phase 4"
     >
       <F4Body />
     </StageScene>
@@ -69,6 +69,9 @@ function F4Body() {
         <GlassPanel>
           <p className={scene.kicker}>Phase 4 · Communications</p>
           <h2 className={scene.title}>Choose a link</h2>
+          <p className={scene.note}>
+            Your science makes <b>{model.fmt(model.dataNeedPerDay(state))} Gb a day</b>. Pick a link that sends at least that much, then a ground antenna.
+          </p>
           <LinkChoices game={game} />
           <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
           <LinkVerdict plan={plan} model={model} />
@@ -163,10 +166,12 @@ function LinkChoices({ game }) {
   const { state, data, model, setComms } = game
   const type = state.missionType
   const current = state.comms || {}
+  const need = model.dataNeedPerDay(state)
   return (
     <div className={styles.options}>
       {data.COMMS.links.map((link, index) => {
         const preview = model.commsPlan({ ...state, comms: { link: link.id, dish: current.dish || 'dsn34' } })
+        const enough = preview.gbPerDay >= need
         return (
           <button
             key={link.id}
@@ -180,6 +185,7 @@ function LinkChoices({ game }) {
             <span>
               {LINK_NAMES[link.id] || link.title} · +{model.fmt(link[type].power)} W · {model.fmt(preview.gbPerDay)} Gb
             </span>
+            <span className={`${styles.fit} ${enough ? styles.fitOk : styles.fitShort}`}>{enough ? 'Enough' : 'Too slow'}</span>
           </button>
         )
       })}

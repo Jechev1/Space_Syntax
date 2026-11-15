@@ -28,7 +28,7 @@ export function F1Done() {
           <span className={styles.craftTag}>Your spacecraft</span>
         </div>
       ) : null}
-      title="How far is up? — Phase 1"
+      title="How far is up? · Phase 1"
     >
       <F1DoneBody />
     </StageScene>

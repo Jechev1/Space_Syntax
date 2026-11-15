@@ -37,7 +37,7 @@ export function F1b() {
     <StageScene
       background="/bg/bg-plataforma.png"
       character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
-      title="How far is up? — Phase 1"
+      title="How far is up? · Phase 1"
     >
       <F1bBody />
     </StageScene>
