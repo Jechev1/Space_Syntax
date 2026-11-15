@@ -1,0 +1,43 @@
+/* Phase 8 — mission complete. The girl and the capsule are part of the artwork;
+   the panel stays on the open sky, left-middle, below the moon. */
+
+.panel {
+  position: absolute;
+  left: 4%;
+  top: 28%;
+  width: 32%;
+  max-width: 470px;
+  pointer-events: auto;
+}
+
+.line {
+  margin: 0 0 calc(var(--fs-body) / 3);
+  font-size: var(--fs-body);
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.rows {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(var(--fs-body) / 2);
+  padding: calc(var(--fs-chip) / 3) 0;
+  border-top: 1px solid var(--line);
+}
+
+.row dt {
+  font-size: var(--fs-chip);
+  color: var(--text-dim);
+}
+
+.row dd {
+  margin: 0;
+  font-size: var(--fs-chip);
+  color: var(--text);
+  text-align: right;
+}

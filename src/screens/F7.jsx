@@ -513,7 +513,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
         {dock(
           <>{helpBtn}</>,
           ok
-            ? <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
+            ? <Button variant="outline" onClick={() => navigate('/f8')}>Finish the mission →</Button>
             : <Button variant="outline" onClick={fail}>See what happened →</Button>,
         )}
       </div>

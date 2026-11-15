@@ -423,7 +423,10 @@ export function continuePath(state) {
     const landed = outcome === 'clean' || outcome === 'rough'
     const finished = Boolean(state.surface && state.surface.finished)
     const returns = state.missionType === 'crewed' || state.measure === 'sample'
-    if (landed && finished && returns) return '/f7'
+    if (landed && finished && returns) {
+      const sim = engine().M.returnSim(state)
+      return sim && sim.outcome === 'success' ? '/f8' : '/f7'
+    }
     if (landed) return '/f6'
     if (state.site) return '/f5b'
     return '/f5a'
