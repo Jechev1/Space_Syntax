@@ -112,7 +112,7 @@ export function CapsuleGuide({ difficulty, seed, glow, onDone }) {
   const retryRef = useRef(retry)
   retryRef.current = retry
   const retryButton = useRef(null)
-  const failed = Boolean(result && result.failed)
+  const failed = Boolean(result?.failed)
   useEffect(() => {
     if (failed) retryButton.current?.focus()
   }, [failed])
