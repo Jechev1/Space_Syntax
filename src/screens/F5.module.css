@@ -4,32 +4,24 @@
   pointer-events: none;
 }
 
-.hud {
-  position: absolute;
-  top: 18px;
-  left: 22px;
-  right: calc(22px + var(--tools-reserve));
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  align-items: center;
-  min-height: 46px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-panel);
-  background: var(--panel);
-  backdrop-filter: blur(var(--panel-blur));
-  color: var(--text);
-  font-size: var(--fs-chip);
-  font-weight: var(--fw);
+/* Type scales with the stage height, like scene.module.css in Phases 2 to 4, so the panels fit short windows too.
+   The bottom bar keeps the fixed type of Phase 1, so its buttons look the same on every screen. */
+.hud,
+.speech,
+.tools,
+.panel,
+.banner,
+.gauge {
+  --fs-body: clamp(10px, 2.15cqh, 17px);
+  --fs-chip: clamp(8px, 1.7cqh, 13px);
+  --fs-sub: clamp(13px, 2.8cqh, 21px);
+  --fs-title: clamp(17px, 3.4cqh, 28px);
 }
 
-.hud span {
-  padding: calc(var(--fs-chip) / 2) var(--fs-chip);
-  text-align: center;
-  border-left: 1px solid var(--line);
-}
-
-.hud span:first-child {
-  border-left: 0;
+/* The top bar is the shared scene bar (scene.module.css); Phase 5 only sets its four columns.
+   div. beats the shared .hud grid whatever order the CSS loads in. */
+div.hud {
+  grid-template-columns: 0.9fr 1.5fr 1fr 1.2fr;
 }
 
 .girl {
@@ -54,12 +46,26 @@
   max-width: 150px;
 }
 
+/* Landing site screen: the bubble sits beside the helmet, under the orbiter readings, so they never overlap.
+   The hints are longer here, so it is a little wider too. */
+.speechSite {
+  left: 21%;
+  bottom: 38%;
+}
+
+.speechSite p {
+  max-width: 200px;
+  text-align: left;
+}
+
+/* Right below the top bar (never under the music and settings buttons) and wide enough for the site names
+   on one line, so the panel fits without scrolling. */
 .panel {
   position: absolute;
-  top: 14%;
+  top: max(12%, 72px);
   right: 2.4%;
   bottom: 12%;
-  width: 29%;
+  width: 31%;
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
@@ -77,9 +83,11 @@
   gap: calc(var(--fs-chip) / 2);
 }
 
+/* Bottom bar, same structure as Phase 1 (F1.module.css): back and help start right of the girl, the main
+   action sits alone on the right. */
 .dock {
   position: absolute;
-  left: 2.4%;
+  left: 18%;
   right: 2.4%;
   bottom: 3.2%;
   display: flex;
@@ -94,7 +102,12 @@
   gap: 8px;
 }
 
-.dock button {
+.lock {
+  margin-left: auto;
+}
+
+.lock button,
+.nav button {
   min-width: 132px;
 }
 
@@ -149,20 +162,19 @@
   gap: calc(var(--fs-chip) / 2);
 }
 
+/* Site facts in two columns, label over value, so the panel stays short. */
 .facts {
   margin: 0;
   padding-top: calc(var(--fs-chip) / 2);
   border-top: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 12px;
 }
 
 .facts div {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0 12px;
+  flex-direction: column;
 }
 
 .facts dt,
@@ -178,8 +190,12 @@
 
 .facts dd {
   color: var(--text);
-  text-align: right;
-  flex: 1 1 auto;
+}
+
+/* A fact that is also a warning: amber, and its text already says why. */
+.facts dd.factWarn,
+.factWarn {
+  color: var(--warn);
 }
 
 .warnList {
@@ -239,20 +255,22 @@
   color: var(--bg);
 }
 
+/* Orbiter instruments in the free top-left corner. Once a site is picked each one shows its reading,
+   which can wrap to a few lines (the south pole ones are long). */
 .tools {
   position: absolute;
-  top: 17%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
+  top: max(13%, 72px);
+  left: 2.4%;
+  width: 22%;
+  display: grid;
+  gap: 6px;
   pointer-events: none;
 }
 
 .tool {
   padding: 6px 12px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-chip);
+  border-radius: var(--radius-panel);
   background: var(--panel);
   backdrop-filter: blur(var(--panel-blur));
   color: var(--text);
