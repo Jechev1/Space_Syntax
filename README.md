@@ -35,6 +35,13 @@ The engine is plain JavaScript in `js/`. The screens are React in `src/`. More i
 
 No login and no tracking. See [SECURITY.md](SECURITY.md).
 
+## How we built it
+
+- **Images:** generated with OpenAI image models (gpt-image), then edited for the game. Grey backgrounds removed with `tools/quitar-gris.mjs`.
+- **Code:** frontend and backend written with Claude Code.
+- **Review workflow:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs `tools/check.js`, the test suite and the production build on every pull request and every push to `main`. If the checks pass, it merges the PR into `main` automatically unless the PR is a draft or has the `no-automerge` label.
+- **Deploy workflow:** Vercel builds and serves `main` at https://spacesyntax.laubuilds.work. When Vercel reports a successful deploy, [`.github/workflows/deploy-check.yml`](.github/workflows/deploy-check.yml) smoke-tests the live site.
+
 ## Team
 
 - [Laura Angel](https://www.linkedin.com/in/laujml), Software Engineer
