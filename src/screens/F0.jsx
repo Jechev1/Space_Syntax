@@ -28,7 +28,7 @@ export function F0() {
   const lesson = lessonFor(view, state)
 
   useEffect(() => {
-    document.title = 'Space Syntax — Phase 0: Mission goal'
+    document.title = 'Space Syntax — Phase 0: Mission Goal'
   }, [])
 
   const choices = choicesFor(view, state, data, game)
@@ -51,17 +51,7 @@ export function F0() {
         <div className={styles.column}>
           <div className={styles.panel}>
             <GlassPanel>
-              <div className={styles.kickerRow}>
-                <p className={styles.kicker}>Phase 0 · Mission goal · Step {view + 1} of 3</p>
-                <span className={styles.stepNav}>
-                  {view > 0 ? (
-                    <button type="button" onClick={() => setStep(view - 1)}>Previous</button>
-                  ) : null}
-                  {answered && view < 2 ? (
-                    <button type="button" onClick={() => setStep(view + 1)}>Next</button>
-                  ) : null}
-                </span>
-              </div>
+              <p className={styles.kicker}>Phase 0: Mission Goal · NASA Pre-Phase A · Step {view + 1} of 3</p>
               <h2 className={styles.question}>{stepTitle(view)}</h2>
               <div className={styles.options}>
                 {choices.map((item) => (
@@ -76,6 +66,16 @@ export function F0() {
                 ))}
               </div>
               <p className={styles.hypothesis}>Hypothesis: The Moon is made of cheese.</p>
+              <div className={styles.stepNav}>
+                {view > 0 ? (
+                  <Button variant="secondary" onClick={() => setStep(view - 1)}>← Previous</Button>
+                ) : null}
+                {view < 2 ? (
+                  <span className={answered ? styles.nextOn : undefined}>
+                    <Button variant="secondary" disabled={!answered} onClick={() => setStep(view + 1)}>Next →</Button>
+                  </span>
+                ) : null}
+              </div>
             </GlassPanel>
           </div>
           {lesson ? (
@@ -86,10 +86,7 @@ export function F0() {
                     <p key={fact.label}>
                       <span className={styles.factLabel}>{fact.label}:</span>{' '}
                       {fact.bits.map((item, index) => (
-                        <span key={item.text}>
-                          {index > 0 ? ', ' : ''}
-                          {item.text} <Source item={item} />
-                        </span>
+                        <span key={item.text}>{index > 0 ? ', ' : ''}{item.text}</span>
                       ))}
                     </p>
                   ))}
@@ -121,7 +118,7 @@ export function F0() {
           </div>
         </div>
         <div className={styles.help}>
-          <Modal open={help} variant="info" title="Phase 0" onClose={() => setHelp(false)}>
+          <Modal open={help} variant="info" title="Phase 0: Mission Goal" onClose={() => setHelp(false)}>
             <p>Phase 0 locks the mission goal: what you want to learn, how you will measure it, and whether robots or people go.</p>
             <p>The question and the measurement decide which instruments Phase 1 lets you fly.</p>
             <p>Robotic or crewed sets the budget and the lander, and decides whether later phases must keep a crew alive and bring them home.</p>
@@ -130,42 +127,6 @@ export function F0() {
       </div>
     </Stage>
   )
-}
-
-function Source({ item }) {
-  const marks = [item, item.also].filter((entry) => entry && entry.source != null)
-  const unique = []
-  marks.forEach((entry) => {
-    const label = sourceLabel(entry)
-    const href = typeof entry.source === 'string' && entry.source.startsWith('http') ? entry.source : ''
-    if (!unique.some((row) => row.label === label && row.href === href)) unique.push({ entry, label, href })
-  })
-  return (
-    <span className={styles.src}>
-      {unique.map((row) => (
-        row.href
-          ? <a key={row.href} href={row.href} target="_blank" rel="noopener noreferrer">{row.label}</a>
-          : <span key={row.label}>{row.label}</span>
-      ))}
-    </span>
-  )
-}
-
-function sourceLabel(entry) {
-  if (entry.source === 'valor de juego') return 'game value'
-  if (typeof entry.source === 'string' && entry.source.startsWith('http')) {
-    try {
-      const host = new URL(entry.source).hostname
-      if (host.includes('oig.nasa.gov')) return 'NASA OIG'
-      if (host.endsWith('nasa.gov')) return 'NASA'
-      if (host.includes('usra.edu')) return 'LPI'
-      return host
-    } catch {
-      return 'source'
-    }
-  }
-  const name = String(entry.file || 'mission.config.mjs').split('/').pop()
-  return `${name}:${entry.line}`
 }
 
 function choicesFor(view, state, data, game) {

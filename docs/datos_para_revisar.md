@@ -550,7 +550,7 @@ El radio dibujado de 9 000 km y la panza de 70 000 km están en la fase 3, marca
 
 La pantalla enseña tres topes en el HUD, todos leídos de `mission.config.mjs`: la capacidad del lanzador medio (`fase1.cohetes.medio.capacidad`), el presupuesto de las guías (`maquetas.presupuestoDePantalla`) y la generación de los paneles robóticos (`fase1.potencia.solarPequena.generacion`). Los valores actuales de esa barra se muestran en 0 porque en esta fase todavía no hay nave.
 
-Después de cada respuesta, el panel de aprendizaje muestra como máximo cuatro líneas. Cada cifra sale de `src/data/mission.config.mjs` con la fuente guardada en esa entrada. Si la fuente es `pendiente`, la pantalla cita archivo y línea. Si es `valor de juego`, dice "game value". Si es una URL, enlaza NASA, NASA OIG o LPI.
+Después de cada respuesta, el panel de aprendizaje muestra como máximo cuatro líneas, solo el dato y el valor. Cada cifra sale de `src/data/mission.config.mjs`. La fuente sigue en esa entrada y no se escribe en el panel.
 
 No se muestran, porque no están en el config:
 
