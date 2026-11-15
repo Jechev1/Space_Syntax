@@ -1,14 +1,39 @@
-/* F3a-only pieces. Shared layout lives in scene.module.css. */
+/* F3a-only pieces. The screen chrome (HUD, bubble, dock) reuses F1.module.css
+   so the viewport anchoring matches Phases 1 and 2 exactly. */
+.panel {
+  position: absolute;
+  top: 8%;
+  right: 2.4%;
+  width: 35%;
+  pointer-events: auto;
+}
+
+.line,
+.mathNote {
+  margin: 0;
+  font-weight: var(--fw);
+}
+
+.line {
+  color: var(--text);
+  font-size: var(--fs-chip);
+  line-height: 1.25;
+}
+
+.mathNote {
+  color: var(--text-dim);
+  font-size: var(--fs-body);
+  line-height: 1.35;
+}
 
 /* Earth to Moon path drawn on the empty wall screen of bg-control. */
 .wall {
   position: absolute;
-  left: 17%;
+  left: 16%;
   top: 12%;
-  width: 52%;
+  width: 48%;
   height: 26%;
   color: var(--text);
-  --fs-chip: clamp(8px, 1.7cqh, 13px);
 }
 
 .wall svg {
@@ -87,10 +112,11 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 0.6em;
-  padding: calc(var(--fs-chip) / 2) 0;
+  padding: calc(var(--fs-chip) / 4) 0;
   border-top: 1px solid var(--line);
   color: var(--text);
   font-size: var(--fs-body);
+  line-height: 1.15;
 }
 
 .num {
@@ -101,6 +127,25 @@
   border: 1px solid var(--line-bright);
   border-radius: 50%;
   font-size: var(--fs-chip);
+}
+
+.burn:hover,
+.burn:focus-visible {
+  border-top-color: var(--line-bright);
+  outline: none;
+}
+
+/* TLI is flown by the rocket's upper stage, not the spacecraft: shown dimmed. */
+.tliStep {
+  opacity: 0.75;
+}
+
+.burnHint {
+  margin: 0;
+  min-height: 1.4em;
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  line-height: 1.3;
 }
 
 .burnName {
@@ -125,7 +170,7 @@
 
 .total {
   margin: 0;
-  padding-top: calc(var(--fs-chip) / 2);
+  padding-top: calc(var(--fs-chip) / 4);
   border-top: 1px solid var(--line);
   color: var(--text);
   font-size: var(--fs-body);
@@ -138,8 +183,8 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 1em;
-  padding: 0.7em 1.1em;
+  gap: 0.6em;
+  padding: 0.55em 0.8em;
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   background: var(--panel);
@@ -148,15 +193,16 @@
   font-size: var(--fs-body);
 }
 
-.dockLabel {
-  white-space: nowrap;
+/* Wide enough that a long disabledReason stays inside its own column. */
+.goLock button:first-child {
+  min-width: 230px;
 }
 
 .meter {
   flex: 1;
   display: grid;
   gap: 0.3em;
-  min-width: 9em;
+  min-width: 7em;
 }
 
 .track {
@@ -189,13 +235,25 @@
   white-space: nowrap;
 }
 
+.marginsWrap {
+  display: grid;
+  gap: 0.2em;
+  justify-items: center;
+}
+
+.marginNote {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  white-space: nowrap;
+}
+
 .margins {
   display: flex;
-  gap: 0.3em;
+  gap: 0.25em;
 }
 
 .margin {
-  padding: 0.25em 0.45em;
+  padding: 0.25em 0.35em;
   border: 1px solid var(--line);
   border-radius: var(--radius-chip);
   background: transparent;
@@ -216,19 +274,15 @@
 }
 
 .status {
-  padding: 0.25em 0.8em;
-  border-radius: var(--radius-btn);
   font-size: var(--fs-chip);
   white-space: nowrap;
 }
 
 .ok {
-  background: var(--accent);
-  color: var(--bg-deep);
+  color: var(--accent);
 }
 
 .bad {
-  border: 1px solid var(--danger);
   color: var(--danger);
 }
 
@@ -271,9 +325,14 @@
 /* Play area inside the panel */
 .play {
   display: grid;
-  gap: calc(var(--fs-chip) / 2);
-  padding-top: calc(var(--fs-chip) / 2);
+  gap: calc(var(--fs-chip) / 4);
+  padding-top: calc(var(--fs-chip) / 4);
   border-top: 1px solid var(--line);
+}
+
+.verdictTight {
+  gap: 3px;
+  padding: 4px 7px;
 }
 
 .playRow {
@@ -358,6 +417,12 @@
 
 .starOff {
   color: var(--line-bright);
+}
+
+.verdictAside {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
 }
 
 .link {

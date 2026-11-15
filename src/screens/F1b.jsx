@@ -84,6 +84,7 @@ function confirmReason(state, report, data, model, passed) {
   const list = data.ROCKETS[state.missionType] || []
   const fitsAny = list.some((item) => item.capacity >= report.tli)
   if (!state.rocket) return fitsAny ? 'Pick a rocket that can lift your spacecraft' : 'No rocket can lift this — make your spacecraft lighter'
+  if (report.fitsRocket === false) return 'Too heavy for this rocket — pick a bigger one or trim the design'
   if (report.totalCost > report.budget) return `Over budget by ${usdText(model, report.totalCost - report.budget)}`
   if (!passed) return 'Pass the launch test first'
   return ''
