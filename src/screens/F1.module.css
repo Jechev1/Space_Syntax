@@ -101,45 +101,26 @@
   bottom: 42%;
 }
 
-.pad .speech {
+.pad .speech,
+.review .speech {
   left: 14%;
   bottom: 44%;
 }
 
-.pad .speech p {
+.pad .speech p,
+.review .speech p {
   max-width: 104px;
-}
-
-.moon {
-  position: absolute;
-  left: 53%;
-  top: 14%;
-  width: 3.2%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--text-dim);
-  box-shadow: 0 0 24px var(--line);
-}
-
-.ground {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 30%;
-  border-top: 1px solid var(--line-strong);
-  background: linear-gradient(180deg, var(--panel-solid), var(--bg-deep));
 }
 
 .pads {
   position: absolute;
-  top: 12%;
+  top: 14%;
   bottom: 14%;
-  left: 21%;
+  left: 22%;
   right: 27%;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1%;
+  gap: 1.2%;
   pointer-events: auto;
 }
 
@@ -163,68 +144,74 @@
   cursor: not-allowed;
 }
 
-.rocket {
+.rocketRow {
   flex: 1 1 0;
   min-height: 0;
-  max-width: 100%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
 }
 
-.hull {
-  fill: color-mix(in srgb, var(--text) 80%, var(--bg));
-  stroke: var(--line-strong);
-  stroke-width: 1.5;
-  stroke-linejoin: round;
+.rocketArt {
+  height: 100%;
+  width: auto;
+  max-width: calc(100% - 18px);
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 8px 14px rgba(10, 12, 28, .45));
 }
 
-.side {
-  fill: var(--text-dim);
-  stroke: var(--line-strong);
-  stroke-width: 1.5;
-  stroke-linejoin: round;
+.rocketOver {
+  filter: drop-shadow(0 8px 14px rgba(10, 12, 28, .45)) saturate(.85) hue-rotate(-12deg);
 }
 
-.rocketOver .hull,
-.rocketOver .side {
-  fill: var(--heat);
+.gauge {
+  position: relative;
+  flex: none;
+  width: 10px;
+  height: 62%;
+  overflow: hidden;
+  border: 1.5px solid var(--line-bright);
+  border-radius: 999px;
+  background: var(--bg-deep);
 }
 
-.band,
-.fin {
-  fill: var(--line-strong);
+.gaugeFill {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--accent);
 }
 
-.patch {
-  fill: var(--bg);
-  stroke: var(--text-dim);
-  stroke-width: 1.5;
+.gaugeOver .gaugeFill {
+  background: var(--danger);
 }
 
-.padBase {
-  fill: var(--panel-solid);
-  stroke: var(--line-strong);
-  stroke-width: 1.5;
+.gaugeAlarm {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 2px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--danger);
+  transform: translateX(-50%);
+  box-shadow: -5px 5px 0 -1px var(--danger), 5px 5px 0 -1px var(--danger);
 }
 
-.padLight,
-.level {
-  fill: var(--accent);
-}
-
-.rocketOver .level {
-  fill: var(--danger);
-}
-
-.tube {
-  fill: var(--bg-deep);
-  stroke: var(--line-bright);
-  stroke-width: 1.5;
-}
-
-.alarm {
-  fill: none;
-  stroke: var(--danger);
-  stroke-width: 2;
-  stroke-linecap: round;
+.reviewRocket {
+  position: absolute;
+  left: 42%;
+  bottom: 12%;
+  height: 68%;
+  width: auto;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 10px 18px rgba(10, 12, 28, .5));
+  pointer-events: none;
 }
 
 .tag {
@@ -306,7 +293,8 @@
   overflow: visible;
 }
 
-.pad .panel {
+.pad .panel,
+.review .panel {
   top: 14%;
   bottom: auto;
   max-height: 68%;
@@ -314,7 +302,13 @@
   overflow-x: hidden;
 }
 
-.pad .question {
+.review .panel {
+  max-height: 72%;
+  overflow: auto;
+}
+
+.pad .question,
+.review .question {
   font-size: clamp(var(--fs-sub), 2.1vw, var(--fs-title));
 }
 
