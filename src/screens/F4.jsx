@@ -58,9 +58,14 @@ function F4Body() {
   const toggleMath = () => { setMath(!math); setRunMath(false) }
   const toggleRunMath = () => { setRunMath((open) => !open); setMath(false) }
   const broken = designBroken(state, model)
-  // When the timeline starts or stops, bring the Play panel into view inside the right column.
-  const side = useRef(null)
-  const runStatus = play.run && play.run.status
+  /*
+   * After a run the link choices fold into a one-line summary, so the link panel and the run result fit the
+   * column without scrolling. "Change link" opens the choices again and hides the result until the player
+   * keeps the link or picks a new one (a new design clears the run, which ends the editing).
+   */
+  const [editing, setEditing] = useState(false)
+  useEffect(() => { if (!play.run) setEditing(false) }, [play.run])
+  const compact = Boolean(play.run) && !editing
   const speech = f4Speech(state.difficulty, {
     need: model.fmt(plan.needGbPerDay),
     gb: model.fmt(plan.gbPerDay),
@@ -73,10 +78,6 @@ function F4Body() {
     passed,
     run: runView(play.run),
   })
-  useEffect(() => {
-    const box = side.current
-    if (box && (runStatus === 'running' || runStatus === 'done' || runStatus === 'blocked')) box.scrollTop = box.scrollHeight
-  }, [runStatus])
 
   return (
     <div className={scene.screen}>
@@ -91,12 +92,20 @@ function F4Body() {
           <Bubble tone="speech">{speech}</Bubble>
         </div>
       )}
-      <div className={styles.side} ref={side}>
+      <div className={styles.side}>
         <GlassPanel>
           <p className={scene.kicker}>Phase 4: Communications</p>
-          <h2 className={scene.title}>Choose a link</h2>
-          <LinkChoices game={game} />
-          <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
+          <div className={styles.titleRow}>
+            <h2 className={scene.title}>{compact ? 'Your link' : 'Choose a link'}</h2>
+            {compact ? <button type="button" className={styles.textButton} onClick={() => setEditing(true)}>Change link</button> : null}
+            {editing ? <button type="button" className={styles.textButton} onClick={() => setEditing(false)}>Keep this link</button> : null}
+          </div>
+          {compact ? <LinkSummary plan={plan} /> : (
+            <>
+              <LinkChoices game={game} />
+              <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
+            </>
+          )}
           <LinkVerdict plan={plan} model={model} />
           {broken ? <BrokenDesign reason={broken} /> : null}
           <div className={styles.panelFoot}>
@@ -106,7 +115,9 @@ function F4Body() {
             <SourceTag plan={plan} />
           </div>
         </GlassPanel>
-        <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" unitName="Hour" play={play} showMath={runMath} onMath={toggleRunMath} />
+        {editing ? null : (
+          <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" unitName="Hour" play={play} showMath={runMath} onMath={toggleRunMath} />
+        )}
       </div>
       {runRes && runRes.ready ? (
         <div className={styles.strip}>
@@ -241,7 +252,7 @@ function DishChoices({ game, laser }) {
   const current = state.comms || {}
   return (
     <div className={styles.dishes}>
-      <span className={styles.label}>Ground antenna</span>
+      <span className={styles.label}>Antenna</span>
       {data.COMMS.dishes.map((dish) => (
         <button
           key={dish.id}
@@ -259,9 +270,26 @@ function DishChoices({ game, laser }) {
   )
 }
 
+/* The chosen link and antenna on one row, shown after a run instead of the full lists. */
+function LinkSummary({ plan }) {
+  const { state, model } = useGame()
+  const type = state.missionType
+  const link = plan.link
+  if (!link) return null
+  const name = LINK_NAMES[link.id] || link.title
+  return (
+    <p className={styles.summary}>
+      <span className={styles.summaryName}>{name}{plan.dish ? ` · ${plan.dish.diameter} m antenna` : ''}</span>
+      <span className={styles.optionMeta}>
+        +{model.fmt(link[type].power)} W · +{model.fmt(link[type].mass)} kg · ${model.fmt(link[type].cost + (plan.dish ? plan.dish.cost[type] : 0))}M
+      </span>
+    </p>
+  )
+}
+
 function LinkVerdict({ plan, model }) {
   if (!plan.link) {
-    return <p className={scene.note}>Your science makes {model.fmt(plan.needGbPerDay)} Gb a day. Gb = data you can send to Earth per day.</p>
+    return <p className={scene.note}>Your science makes {model.fmt(plan.needGbPerDay)} Gb of data a day.</p>
   }
   let text = `Sends ${model.fmt(plan.gbPerDay)} Gb a day · your science makes ${model.fmt(plan.needGbPerDay)} Gb`
   if (plan.bottleneck) text = `Bottleneck: you make ${model.fmt(plan.needGbPerDay)} Gb a day but send only ${model.fmt(plan.gbPerDay)} Gb`

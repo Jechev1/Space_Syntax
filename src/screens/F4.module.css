@@ -106,11 +106,18 @@
   border-radius: 50%;
 }
 
+/* Green dot of the station in contact: a soft glow that breathes. */
 .live i,
 .liveDot {
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 0 0.6em var(--accent-glow);
+  box-shadow: var(--accent-glow);
+  animation: liveGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes liveGlow {
+  0%, 100% { box-shadow: 0 0 0.25em var(--accent); }
+  50% { box-shadow: 0 0 0.9em var(--accent), var(--accent-glow); }
 }
 
 .legend {
@@ -222,6 +229,42 @@
   color: var(--bg-deep);
 }
 
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+
+/* Small text action next to the title ("Change link", "Keep this link"). */
+.textButton {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.summary {
+  display: grid;
+  gap: 0.1em;
+  margin: 0;
+  padding: 0.45em 0.7em;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-btn);
+  background: var(--panel-solid);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.summaryName {
+  font-weight: var(--fw-title);
+}
+
 .optionText {
   display: grid;
   gap: 0.1em;
@@ -326,6 +369,7 @@
   border-color: var(--warn);
   background: transparent;
   box-shadow: none;
+  animation: none;
 }
 
 /* Right column: the link panel on top, the Play panel under it. They share one box, so they can never
@@ -457,4 +501,5 @@
 @media (prefers-reduced-motion: reduce) {
   .beamOn { animation: none; }
   .meterFill { transition: none; }
+  .live i, .liveDot { animation: none; }
 }
