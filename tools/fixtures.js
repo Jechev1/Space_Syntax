@@ -204,7 +204,7 @@ for (const type of TYPES) {
       screen: 'f3b', title: 'Launch pad: mission summary', missionType: type,
       note: 'Needs phases 0 to 4 GO. Launch animation is simulate(state, 1). Rows come from launchReadiness().phases.',
       state: s,
-      engine: { launchReadiness: M.launchReadiness(s), evaluate: M.evaluate(s) },
+      engine: { launchReadiness: M.launchReadiness(s), launchRows: (({ go, rows }) => ({ go, rows }))(M.launchRows(s)), hud: M.hud(s), evaluate: M.evaluate(s) },
       sim: { success: entry({ label: 'all GO', state: s, seed: SEED, result: run(s, 1) }) },
     });
   }
@@ -216,7 +216,7 @@ for (const type of TYPES) {
       screen: 'f5a', title: 'Landing site', missionType: type,
       note: 'Choice writes state.site (tranquility, descartes, southPole). One siteReport per site fills the cards.',
       state: s,
-      engine: { evaluate: M.evaluate(s), sites: D.SITES.map(x => ({ id: x.id, report: M.siteReport(s, x.id), validateIfPicked: issues(withSite(s, x.id), 5) })) },
+      engine: { evaluate: M.evaluate(s), hud: M.hud(s), dvRemainingAfterLoi: M.dvRemaining(s, ['loi']), sites: D.SITES.map(x => ({ id: x.id, report: M.siteReport(s, x.id), validateIfPicked: issues(withSite(s, x.id), 5) })) },
       sim: {},
     });
   }

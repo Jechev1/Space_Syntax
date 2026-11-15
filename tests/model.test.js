@@ -784,3 +784,61 @@ test('sanitizeState: phases 4 and 5', async (t) => {
     assert.equal(M.sanitizeState(robotOneWay({ comms: 'ka' })).comms, null);
   });
 });
+
+/* ---------------- HUD helpers ---------------- */
+const SIM_ = require(path.join(__dirname, '..', 'js', 'sim.js'));
+function fullState(type) {
+  const f = require(path.join(__dirname, '..', 'fixtures', `f5a.${type}.json`));
+  return f.state;
+}
+
+test('dvRemaining: crewed after LOI is 5,357 m/s required', () => {
+  const s = fullState('crewed');
+  const all = M.dvRemaining(s, []), loi = M.dvRemaining(s, ['loi']);
+  close(all.required, 6307, 0.5);
+  close(loi.required, 5357, 0.5);
+  close(loi.planned, all.planned - M.flightPlan(s).burns[0].dvPlanned, 1e-9);
+  assert.equal(M.dvRemaining(M.newState(), ['loi']), null);
+});
+
+test('missionDays: crewed matches life support, robotic matches the Phase 4 run for each site', () => {
+  const c = fullState('crewed');
+  assert.equal(M.missionDays(c), M.lifeSupport(c).days);
+  assert.equal(M.missionHours(c), M.lifeSupport(c).days * 24);
+  const base = fullState('robotic');
+  for (const site of [null, ...D.SITES.map(x => x.id)]) {
+    const s = clone(base); s.site = site;
+    const run = SIM_.simulate(s, 4, { seed: 7 });
+    assert.ok(run.ready, 'phase 4 runs');
+    assert.equal(M.missionDays(s), Math.round(run.time.total / 24), `site ${site}`);
+    close(M.missionHours(s), run.time.total, 1e-9);
+  }
+  assert.equal(M.missionDays(M.newState()), null);
+});
+
+test('launchRows: go matches launchReadiness and rows carry raw values', () => {
+  for (const s of [fullState('robotic'), fullState('crewed'), M.newState(), robotOneWay()]) {
+    const L = M.launchRows(s);
+    assert.equal(L.go, M.launchReadiness(s).go);
+    assert.deepEqual(L.rows.map(x => x.key), ['goal', 'spacecraft', 'totalMass', 'deltaV', 'crew', 'missionDays', 'lifeSupport', 'comms']);
+    for (const x of L.rows) assert.equal(typeof x.ok, 'boolean');
+  }
+  const L = M.launchRows(fullState('crewed')), r = M.evaluate(fullState('crewed'));
+  assert.equal(L.rows.find(x => x.key === 'totalMass').value, r.tli);
+  assert.equal(L.rows.find(x => x.key === 'deltaV').value, r.dvPlanned);
+});
+
+test('hud: one call for the bar, safe on an empty state', () => {
+  const empty = M.hud(M.newState());
+  assert.equal(empty.launchMass, 0);
+  assert.equal(empty.dvRemaining, null);
+  assert.equal(empty.days, null);
+  const s = fullState('crewed'), r = M.evaluate(s), h = M.hud(s, { flown: ['loi'], dataSentGb: 3 });
+  assert.equal(h.launchMass, r.tli);
+  assert.equal(h.capacity, r.rocket.capacity);
+  assert.equal(h.dataSentGb, 3);
+  assert.equal(h.dataNeedGbPerDay, M.dataNeedPerDay(s));
+  close(h.dvRemaining.required, 5357, 0.5);
+  assert.equal(h.days, M.lifeSupport(s).days);
+  assert.equal(M.hud(M.newState(), { dataSentGb: 2 }).dataSentGb, 2);
+});

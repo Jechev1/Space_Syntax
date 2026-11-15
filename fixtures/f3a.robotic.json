@@ -1576,6 +1576,13 @@
       }
      ],
      "src": "cev"
+    },
+    "summary": {
+     "pool": 3477.6,
+     "dvUsed": 3069.0507065872475,
+     "tcmUsed": 8.6,
+     "marginLeft": 469.0292934127523,
+     "marginLeftFrac": 0.15510227956770908
     }
    }
   },
@@ -2891,6 +2898,13 @@
       }
      ],
      "src": "cev"
+    },
+    "summary": {
+     "pool": 3024,
+     "dvUsed": 3084.48,
+     "tcmUsed": 6.5,
+     "marginLeft": -149.93344241267096,
+     "marginLeftFrac": 0
     }
    }
   },

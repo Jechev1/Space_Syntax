@@ -168,6 +168,29 @@
    "fitsRocket": true,
    "overBudget": false
   },
+  "hud": {
+   "launchMass": 2008.146448143121,
+   "capacity": 4000,
+   "hardware": 568.3333333333334,
+   "fuel": 1439.8131148097877,
+   "cost": 435,
+   "budget": 650,
+   "overBudget": false,
+   "powerNeed": 250,
+   "powerGen": 450,
+   "dvPlanned": 3477.6,
+   "dvRemaining": {
+    "planned": 3477.6,
+    "required": 3024
+   },
+   "dataNeedGbPerDay": 340,
+   "dataSentGb": 0,
+   "days": 4
+  },
+  "dvRemainingAfterLoi": {
+   "planned": 2385.1,
+   "required": 2074
+  },
   "sites": [
    {
     "id": "tranquility",
