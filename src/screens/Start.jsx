@@ -16,15 +16,15 @@ export function Start() {
   const name = data.CHARACTER.name
 
   useEffect(() => {
-    document.title = 'Space Syntax — Is the Moon made of cheese?'
+    document.title = 'How far is upy'
   }, [])
 
   return (
     <Stage>
       <div className={shell.screen}>
         <div className={shell.scroll}>
-          <GlassPanel eyebrow="NASA Space Apps 2026 · Space Mission Design" title="Is the Moon made of cheese?">
-            <p className={shell.lead}>{name} is sure it is. Design a real Moon mission, with NASA data and real math, and find out.</p>
+          <GlassPanel eyebrow="NASA Space Apps 2026 · Space Mission Design" title="How far is upy">
+            <p className={shell.lead}>Is the Moon made of cheese? {name} is sure it is. Design a real Moon mission, with NASA data and real math, and find out.</p>
             <p className={shell.kicker}>Difficulty</p>
             {data.DIFFICULTIES.map((item, index) => (
               <OptionRow
