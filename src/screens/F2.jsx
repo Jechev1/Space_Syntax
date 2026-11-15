@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
+import { MathBlock } from '../components/ui/MathBlock.jsx'
 import { useGame } from '../engine/useGame.jsx'
+import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F2.module.css'
@@ -36,6 +38,11 @@ function F2Body() {
   const { state, data, model, ensureCrew } = game
   const crewed = state.missionType === 'crewed'
   const life = crewed ? model.lifeSupport(state) : null
+  const play = usePlayRun(2, state)
+  const passed = usePassed(2, state)
+  const [showMath, setShowMath] = useState(false)
+  const runRes = play.run && play.run.res
+  useEffect(() => { setShowMath(false) }, [runRes])
 
   useEffect(() => {
     if (crewed && !state.crew) ensureCrew()
@@ -46,9 +53,23 @@ function F2Body() {
   return (
     <div className={scene.screen}>
       <SceneHud />
-      <div className={scene.speech}>
-        <Bubble tone="speech">{crewed ? 'Every day adds mass.' : 'No crew, no groceries!'}</Bubble>
-      </div>
+      {play.run ? null : (
+        <div className={scene.speech}>
+          <Bubble tone="speech">{crewed ? 'Every day adds mass.' : 'No crew, no groceries!'}</Bubble>
+        </div>
+      )}
+      <SupplyShelf play={play} />
+      <RunPanel
+        title="Run the mission days"
+        label="Play"
+        play={play}
+        showMath={showMath}
+        onMath={() => setShowMath((open) => !open)}
+        left
+      />
+      {showMath && runRes && runRes.math ? (
+        <div className={styles.runMath}><MathBlock math={runRes.math} /></div>
+      ) : null}
       <div className={scene.panel}>
         <GlassPanel>
           <p className={scene.kicker}>Phase 2 · Crew and life support</p>
@@ -61,7 +82,7 @@ function F2Body() {
           <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
         <div className={scene.lock}>
-          <ConfirmButton game={game} crewed={crewed} />
+          <ConfirmButton game={game} crewed={crewed} passed={passed} />
         </div>
       </div>
     </div>
@@ -189,7 +210,7 @@ function NoCrew({ data, model }) {
   )
 }
 
-function ConfirmButton({ game, crewed }) {
+function ConfirmButton({ game, crewed, passed }) {
   const navigate = useNavigate()
   const { state, model, lockCrew, setNotice } = game
   const check = model.validatePhase(state, 2)
@@ -198,7 +219,7 @@ function ConfirmButton({ game, crewed }) {
     <Button
       variant="outline"
       disabled={Boolean(blocker)}
-      disabledReason={blocker ? blocker.message : ''}
+      disabledReason={blocker ? blocker.message : (passed ? '' : 'Pass the mission days test first')}
       onClick={() => {
         flushSync(() => {
           lockCrew()
@@ -209,5 +230,110 @@ function ConfirmButton({ game, crewed }) {
     >
       {crewed ? 'Confirm crew' : 'Continue'}
     </Button>
+  )
+}
+
+const fmtN = (n, d = 0) => Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d })
+const VERDICT = { success: 'Passed', partial: 'Passed, barely', fail: 'Failed' }
+
+/* Verdict, stars, failure cause and fix, and the math toggle. Shared with F4. Draws only what the SimResult carries. */
+export function RunVerdict({ res, showMath, onMath }) {
+  const mathButton = (
+    <button type="button" className={styles.mathLink} aria-expanded={showMath} onClick={onMath}>
+      {showMath ? 'Hide the math' : 'Show the math'}
+    </button>
+  )
+  return (
+    <div className={`${styles.verdict} ${res.ok ? styles.okBox : styles.failBox}`}>
+      <p className={styles.verdictLine}>
+        <b>{VERDICT[res.outcome] || res.outcome}</b>
+        {res.math && !res.ok ? mathButton : null}
+        {res.ok ? (
+          <span aria-label={`${res.stars} of 3 stars`}>
+            {[0, 1, 2].map((i) => <span key={i} className={i < res.stars ? styles.starOn : styles.starOff} aria-hidden="true">★</span>)}
+          </span>
+        ) : null}
+      </p>
+      {res.ok && res.score && res.score.unit === '%' ? <p className={styles.clock}>{res.score.label}: {fmtN(res.score.value, 1)}%</p> : null}
+      {res.failure ? (
+        <>
+          <p className={styles.cause}>{res.failure.cause}</p>
+          <p className={styles.fix}>Try this: {res.failure.fix}</p>
+        </>
+      ) : null}
+      {res.math && res.ok ? mathButton : null}
+    </div>
+  )
+}
+
+/* Compact Play card: button, the latest event, then the verdict. The clock and live meters (children) sit in the panel,
+   or in a strip over the scene when strip is set. */
+export function RunPanel({ title, eyebrow = 'Play', label, play, showMath, onMath, children, left = false, strip = false, unitName = 'Day' }) {
+  const { run, events } = play
+  const res = run && run.res
+  const running = run && run.status === 'running'
+  const done = run && run.status === 'done'
+  const last = events.length ? events[events.length - 1] : null
+  const total = res && res.time ? res.time.total : 0
+  const ready = Boolean(res && res.ready)
+  const clock = ready ? (
+    <p className={styles.clock}>{unitName} {fmtN(run.t, run.t < 10 ? 1 : 0)} of {fmtN(total, total < 10 ? 1 : 0)}</p>
+  ) : null
+  return (
+    <>
+      {strip && ready ? <div className={styles.shelf}>{eyebrow ? <p className={styles.clock}>{eyebrow}</p> : null}{clock}{children}</div> : null}
+      <div className={`${styles.runPanel} ${left ? styles.runLeft : styles.runRight}`}>
+        <GlassPanel eyebrow={strip && ready ? '' : eyebrow} title={title}>
+          <Button variant="outline" disabledReason={running ? 'Running...' : ''} onClick={() => play.play()}>
+            {run && run.status !== 'blocked' ? 'Play again' : label}
+          </Button>
+          {run && run.status === 'blocked' ? (
+            <ul className={styles.blockers}>{res.blockers.map((b) => <li key={b.code}>{b.message}</li>)}</ul>
+          ) : null}
+          {ready ? (
+            <>
+              {strip ? null : clock}
+              {strip ? null : children}
+              {done && res.failure ? null : <p className={`${styles.event} ${last && styles[last.kind] ? styles[last.kind] : ''}`} aria-live="polite">{last ? last.text : ' '}</p>}
+            </>
+          ) : null}
+          {done ? <RunVerdict res={res} showMath={showMath} onMath={onMath} /> : null}
+        </GlassPanel>
+      </div>
+    </>
+  )
+}
+
+/* Supply levels drawn over the shelf in the scene. */
+function SupplyShelf({ play }) {
+  const { run, frame } = play
+  const res = run && run.res
+  if (!res || !res.ready || !frame) return null
+  const max = (key) => (res.fields.find((f) => f.key === key) || {}).max || 1
+  const items = [
+    { key: 'o2', label: 'Oxygen', icon: <OxygenIcon /> },
+    { key: 'food', label: 'Food', icon: <FoodIcon /> },
+    { key: 'water', label: 'Water', icon: <WaterIcon /> },
+  ].filter((item) => res.fields.some((f) => f.key === item.key))
+  if (!items.length) return null
+  const ashore = Math.round(frame.ashore || 0)
+  return (
+    <div className={styles.shelf} role="group" aria-label="Supplies left">
+      <div className={styles.tubes}>
+        {items.map((item) => {
+          const v = Math.max(0, frame[item.key])
+          const pct = Math.max(0, Math.min(1, v / max(item.key)))
+          return (
+            <div className={styles.tube} key={item.key}>
+              <span className={styles.tubeBody} aria-hidden="true">
+                <span className={`${styles.tubeFill} ${pct < 0.15 ? styles.low : ''}`} style={{ width: `${pct * 100}%` }} />
+              </span>
+              <span className={styles.tubeLabel}>{item.icon}{item.label} {fmtN(v)} kg</span>
+            </div>
+          )
+        })}
+      </div>
+      {ashore > 0 ? <p className={styles.ashore}>{ashore} on the Moon</p> : null}
+    </div>
   )
 }

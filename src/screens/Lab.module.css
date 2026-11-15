@@ -1,0 +1,159 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  right: calc(22px + var(--tools-reserve));
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+}
+
+.hud span {
+  padding: calc(var(--fs-chip) / 2) var(--fs-body);
+  text-align: center;
+  border-left: 1px solid var(--line);
+}
+
+.hud span:first-child {
+  border-left: 0;
+}
+
+.girl {
+  position: absolute;
+  left: 2.4%;
+  bottom: 9%;
+  height: 38%;
+  width: auto;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
+}
+
+.speech {
+  position: absolute;
+  left: 11%;
+  bottom: 44%;
+  pointer-events: auto;
+}
+
+.speech p {
+  max-width: 150px;
+}
+
+.panelWide,
+.panelNarrow {
+  position: absolute;
+  top: 14%;
+  right: 2.4%;
+  max-height: 72%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  pointer-events: auto;
+}
+
+.panelWide {
+  width: 56%;
+}
+
+.panelNarrow {
+  width: 30%;
+}
+
+.line,
+.hypothesis,
+.verdictLine {
+  margin: 0;
+  font-weight: var(--fw);
+}
+
+.line {
+  color: var(--text);
+  font-size: var(--fs-chip);
+  line-height: 1.4;
+}
+
+.line b {
+  color: var(--math);
+  font-weight: var(--fw-title);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.verdict {
+  padding: 8px 10px;
+  border: 1px solid var(--tone);
+  border-radius: var(--radius-btn);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rejected {
+  --tone: var(--accent);
+}
+
+.open {
+  --tone: var(--warn);
+}
+
+.hypothesis {
+  color: var(--math);
+  font-size: var(--fs-chip);
+}
+
+.verdictLine {
+  color: var(--tone);
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-title);
+}
+
+.dock {
+  position: absolute;
+  left: 18%;
+  right: 2.4%;
+  bottom: 3.2%;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.nav,
+.main {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.nav button,
+.main button {
+  min-width: 132px;
+}
+
+.panelWide td:first-child {
+  white-space: nowrap;
+}

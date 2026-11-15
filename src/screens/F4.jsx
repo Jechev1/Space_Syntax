@@ -5,6 +5,10 @@ import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { useGame } from '../engine/useGame.jsx'
+import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
+import { MathBlock } from '../components/ui/MathBlock.jsx'
+import { RunPanel } from './F2.jsx'
+import runStyles from './F2.module.css'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F4.module.css'
@@ -42,17 +46,25 @@ function F4Body() {
   const { state, model } = game
   const plan = model.commsPlan(state)
   const [math, setMath] = useState(false)
+  const play = usePlayRun(4, state)
+  const passed = usePassed(4, state)
+  const [runMath, setRunMath] = useState(false)
+  const runRes = play.run && play.run.res
+  useEffect(() => { setRunMath(false) }, [runRes])
 
   return (
     <div className={scene.screen}>
       <SceneHud limits />
       <div className={styles.left}>
-        <Globe />
+        <Globe frame={play.frame} />
         <Ping seconds={plan.roundTrip} />
       </div>
-      <div className={`${scene.speech} ${styles.speech}`}>
-        <Bubble tone="speech">How will anyone know what I found?</Bubble>
-      </div>
+      <Beam frame={play.frame} />
+      {play.run ? null : (
+        <div className={`${scene.speech} ${styles.speech}`}>
+          <Bubble tone="speech">How will anyone know what I found?</Bubble>
+        </div>
+      )}
       <div className={scene.panel}>
         <GlassPanel>
           <p className={scene.kicker}>Phase 4 · Communications</p>
@@ -69,28 +81,38 @@ function F4Body() {
         </GlassPanel>
       </div>
       {math ? <MathPanel game={game} /> : null}
+      <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" strip unitName="Hour" play={play} showMath={runMath} onMath={() => setRunMath((open) => !open)}>
+        <BufferMeter res={runRes} frame={play.frame} />
+      </RunPanel>
+      {runMath && runRes && runRes.math ? (
+        <div className={`${runStyles.runMath} ${styles.runMathLeft}`}><MathBlock math={runRes.math} /></div>
+      ) : null}
       <div className={scene.dock}>
         <div className={scene.nav}>
           <Button variant="secondary" onClick={() => navigate('/f3a')}>← Flight plan</Button>
           <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
         <div className={scene.lock}>
-          <ConfirmButton game={game} />
+          <ConfirmButton game={game} passed={passed} />
         </div>
       </div>
     </div>
   )
 }
 
-function Globe() {
-  const [active, setActive] = useState(0)
+function Globe({ frame }) {
+  const [cycle, setCycle] = useState(0)
+  const driven = Boolean(frame)
+  const up = driven && frame.linkUp > 0.5
+  const active = driven ? (frame.station >= 0 ? Math.round(frame.station) : -1) : cycle
   useEffect(() => {
-    const timer = setInterval(() => setActive((index) => (index + 1) % STATIONS.length), 2500)
+    if (driven) return undefined
+    const timer = setInterval(() => setCycle((index) => (index + 1) % STATIONS.length), 2500)
     return () => clearInterval(timer)
-  }, [])
+  }, [driven])
   return (
     <div className={styles.card}>
-      <div className={styles.globe} role="img" aria-label={`Deep Space Network. ${STATIONS[active].name} is in contact.`}>
+      <div className={styles.globe} role="img" aria-label={active >= 0 ? `Deep Space Network. ${STATIONS[active].name} ${driven && !up ? 'sees the Moon but the link is down' : 'is in contact'}.` : 'Deep Space Network. No station can reach the spacecraft.'}>
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="48" />
           <ellipse cx="50" cy="50" rx="22" ry="48" />
@@ -107,7 +129,7 @@ function Globe() {
           </span>
         ))}
       </div>
-      <span className={styles.legend}><i className={styles.liveDot} /> In contact</span>
+      <span className={styles.legend}><i className={`${styles.liveDot} ${driven && !up ? styles.dim : ''}`} /> {driven && !up ? 'No link' : 'In contact'}</span>
     </div>
   )
 }
@@ -216,7 +238,7 @@ function MathPanel({ game }) {
   )
 }
 
-function ConfirmButton({ game }) {
+function ConfirmButton({ game, passed }) {
   const navigate = useNavigate()
   const { state, model, lockComms, setNotice } = game
   const check = model.validatePhase(state, 4)
@@ -225,7 +247,7 @@ function ConfirmButton({ game }) {
     <Button
       variant="outline"
       disabled={Boolean(blocker)}
-      disabledReason={blocker ? blocker.message : ''}
+      disabledReason={blocker ? blocker.message : (passed ? '' : 'Pass the timeline test first')}
       onClick={() => {
         flushSync(() => {
           lockComms()
@@ -238,3 +260,38 @@ function ConfirmButton({ game }) {
     </Button>
   )
 }
+
+/* Dish beam from the antenna to the Moon in the scene, lit while the link is up. */
+function Beam({ frame }) {
+  if (!frame) return null
+  const up = frame.linkUp > 0.5
+  return (
+    <svg className={styles.beam} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <line className={up ? styles.beamOn : styles.beamOff} x1="43" y1="19" x2="56" y2="11.5" />
+    </svg>
+  )
+}
+
+function BufferMeter({ res, frame }) {
+  if (!res || !res.ready || !frame) return null
+  const max = (key) => (res.fields.find((f) => f.key === key) || {}).max || 1
+  const pct = Math.max(0, Math.min(1, frame.buffer / max('buffer')))
+  const full = pct >= 0.98
+  return (
+    <div className={styles.meter}>
+      <div className={styles.meterRow}>
+        <span>Onboard buffer {model0(frame.buffer)} of {model0(max('buffer'))} Gb</span>
+      </div>
+      <span className={styles.meterTrack} role="img" aria-label={`Buffer ${Math.round(pct * 100)} percent full`}>
+        <span className={`${styles.meterFill} ${full ? styles.full : ''}`} style={{ width: `${pct * 100}%` }} />
+      </span>
+      <div className={styles.meterRow}>
+        <span>Sent {model0(frame.delivered)} Gb</span>
+        <span className={frame.lost > 0.05 ? styles.warn : ''}>Lost {model0(frame.lost)} Gb</span>
+        <span>{frame.linkUp > 0.5 ? 'Link up' : (frame.station >= 0 ? 'Link down' : 'No station')}</span>
+      </div>
+    </div>
+  )
+}
+
+const model0 = (n) => Number(n).toLocaleString('en-US', { maximumFractionDigits: 0 })

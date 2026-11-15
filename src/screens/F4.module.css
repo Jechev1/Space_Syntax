@@ -267,3 +267,83 @@
   width: 34%;
   pointer-events: auto;
 }
+
+.dim {
+  border-color: var(--warn);
+  background: transparent;
+  box-shadow: none;
+}
+
+.runMathLeft {
+  left: 27%;
+}
+
+/* Dish beam over the scene */
+.beam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.beam line {
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.beamOn {
+  stroke: var(--accent);
+  stroke-dasharray: 10 8;
+  filter: drop-shadow(0 0 4px var(--accent-glow));
+  animation: beamFlow 0.6s linear infinite;
+}
+
+.beamOff {
+  stroke: var(--line-strong);
+  stroke-dasharray: 3 9;
+}
+
+@keyframes beamFlow {
+  to { stroke-dashoffset: -18; }
+}
+
+.meter {
+  display: grid;
+  gap: 0.3em;
+  color: var(--text);
+  font-size: var(--fs-chip);
+}
+
+.meterRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6em;
+  font-variant-numeric: tabular-nums;
+}
+
+.meterTrack {
+  display: block;
+  height: 0.9em;
+  overflow: hidden;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-chip);
+  background: var(--bg-deep);
+}
+
+.meterFill {
+  display: block;
+  height: 100%;
+  background: var(--accent-soft);
+  transition: width 0.12s linear;
+}
+
+.meterFill.full {
+  background: var(--danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beamOn { animation: none; }
+  .meterFill { transition: none; }
+}

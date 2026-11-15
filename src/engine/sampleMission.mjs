@@ -26,7 +26,10 @@ export function sampleMission(type, stage) {
   if (stage === 'f6') return s
   // f7: one real measurement, then finish the surface work, all through the engine rules.
   const poi = M.surfacePois(s)[0]
-  const ins = M.unlockedInstruments(s).find((id) => (s.design.science || []).includes(id) && M.canMeasure(s, poi.id, id).ok)
+  // Strongest evidence first, so the sample mission can reach a real verdict in the lab.
+  const order = ['sampler', 'spectrometer', 'neutron', 'camera']
+  const ins = M.unlockedInstruments(s).filter((id) => (s.design.science || []).includes(id) && M.canMeasure(s, poi.id, id).ok)
+    .sort((a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99))[0]
   if (poi && ins) s = M.measure(s, poi.id, ins).state
   s = M.finishSurface(s).state
   s.returnTrip = { seed: 7, entry: null, shield: null }
