@@ -125,6 +125,31 @@ export const HELP_F3 = {
   ],
 }
 
+export const HELP_F6 = {
+  title: 'Phase 6: Surface',
+  blocks: [
+    {
+      heading: 'Test the hypothesis',
+      text: 'The hypothesis says the Moon is made of cheese. Pick a spot on the ground, then an instrument, and read what it finds. Every measurement costs power, hours and data.',
+    },
+    {
+      heading: 'Clue, good proof, strongest',
+      text: 'A picture is only a clue: it shows the ground but not what it is made of. Reading the elements with a spectrometer is good proof, and a sample you can study on Earth is the strongest.',
+      source: 'viperSpectrometer',
+    },
+    {
+      heading: 'Send your data',
+      text: 'Measurements fill the onboard data buffer, the same storage as in the Phase 4 timeline. When it is full, send the data to Earth before measuring again.',
+      source: 'lro',
+    },
+    {
+      heading: 'What the ground really is',
+      text: 'Lunar regolith is gray dust and broken rock, made by impacts over billions of years.',
+      source: 'moonfacts',
+    },
+  ],
+}
+
 export const HELP_F1DONE = {
   title: 'Phase 1: Design Review',
   blocks: [

@@ -6,12 +6,17 @@ import { Chip } from '../components/ui/Chip.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { OptionRow } from '../components/ui/OptionRow.jsx'
+import { HELP_F6 } from '../data/help.mjs'
 import { sampleMission } from '../engine/sampleMission.mjs'
 import { useGame } from '../engine/useGame.jsx'
+import { f6Speech } from './f6Speech.mjs'
 import { StageScene } from './frame.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F6.module.css'
+import scene from './scene.module.css'
 import shell from './shell.module.css'
+
+const KICKER = 'Phase 6: Surface · NASA Phase E'
 
 const MARKS = [
   { x: 25, y: 62 },
@@ -44,7 +49,7 @@ export function F6() {
   const lander = ready ? <img className={styles.lander} src="/obj/lander-base.png" alt="" /> : null
 
   return (
-    <StageScene background="/bg/bg-superficie.png" character={girl} objects={lander} title="How far is up? · Phase 6">
+    <StageScene background="/bg/bg-superficie.png" character={girl} objects={lander} title="How far is up? · Phase 6: Surface">
       {ready ? (
         <F6Body step={step} setStep={setStep} poi={current ? current.id : ''} setPoi={setPoi} />
       ) : (
@@ -61,7 +66,7 @@ function NotLanded() {
     <div className={`${styles.screen} ${styles.guard}`}>
       <div className={styles.panelGuard}>
         <GlassPanel>
-          <p className={styles.kicker}>Phase 6 · Surface</p>
+          <p className={styles.kicker}>{KICKER}</p>
           <h2 className={styles.title}>Land on the Moon first.</h2>
           <p className={styles.line}>Your instruments can only work after a landing.</p>
           <div className={styles.stack}>
@@ -79,13 +84,17 @@ function NotLanded() {
   )
 }
 
+/*
+ * Top bar for Phase 6, in the shared scene bar like Phases 2 to 5, with four cells: place, hours, spare
+ * power and the data buffer. The evidence level has its own meter on the screen, so it stays out of here.
+ */
 function SurfaceHud({ st }) {
   const { model } = useGame()
   const hoursFill = st.hoursTotal > 0 ? st.hoursLeft / st.hoursTotal : 0
   const dataFill = st.bufferMax > 0 ? st.bufferGb / st.bufferMax : 0
   const power = st.power ? st.power.available : 0
   return (
-    <div className={styles.hud} aria-label="Surface status">
+    <div className={`${scene.hud} ${styles.hud}`} aria-label="Surface status">
       <span>Moon surface</span>
       <span className={styles.meterCell} style={{ '--fill': `${Math.min(1, hoursFill) * 100}%` }}>
         Hours left {model.fmt(st.hoursLeft, 1)} / {model.fmt(st.hoursTotal, 1)} h
@@ -94,21 +103,57 @@ function SurfaceHud({ st }) {
       <span className={styles.meterCell} style={{ '--fill': `${Math.min(1, dataFill) * 100}%` }}>
         Data buffer {model.fmt(st.bufferGb, 1)} / {model.fmt(st.bufferMax)} GB
       </span>
-      <span>{st.meter || 'Evidence: none yet'}</span>
     </div>
   )
+}
+
+/** "NASA source" that opens the source window of the stage instead of leaving the game. */
+function SourceLink({ srcKey }) {
+  const { data } = useGame()
+  const { openSource } = usePlay()
+  if (!srcKey || !data.SOURCES[srcKey]) return null
+  return (
+    <button type="button" className={`${shell.link} ${styles.sourceLink}`} onClick={() => openSource(srcKey)}>
+      NASA source
+    </button>
+  )
+}
+
+function HelpWindow({ open, onClose }) {
+  return (
+    <Modal open={open} variant="info" title={HELP_F6.title} onClose={onClose}>
+      {HELP_F6.blocks.map((block) => (
+        <p key={block.heading}><b>{block.heading}:</b> {block.text}</p>
+      ))}
+    </Modal>
+  )
+}
+
+function Speech({ text }) {
+  if (!text) return null
+  return (
+    <div className={styles.speech}>
+      <Bubble tone="speech">{text}</Bubble>
+    </div>
+  )
+}
+
+/** Evidence level as text for f6Speech. */
+function evidenceOf(st) {
+  if (st.segments.composition || st.segments.sample) return 'strong'
+  return st.segments.clue ? 'clue' : 'none'
 }
 
 function F6Body({ step, setStep, poi, setPoi }) {
   const navigate = useNavigate()
   const { state, model, update, setNotice } = useGame()
-  const { setModal } = usePlay()
   const st = model.surfaceStatus(state)
   const [last, setLast] = useState(null)
   const [message, setMessage] = useState('')
   const [event, setEvent] = useState(null)
   const [confirm, setConfirm] = useState('')
   const [journal, setJournal] = useState(false)
+  const [help, setHelp] = useState(false)
 
   useEffect(() => {
     if (st.finished && step !== 'd') setStep('d')
@@ -169,17 +214,17 @@ function F6Body({ step, setStep, poi, setPoi }) {
 
   const finishCheck = model.finishSurface(state)
   const sendCheck = model.canSendData(state)
+  const helpWindow = <HelpWindow open={help} onClose={() => setHelp(false)} />
+  const helpButton = <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
 
   if (step === 'a') {
     return (
       <div className={styles.screen}>
         <SurfaceHud st={st} />
-        <div className={styles.speech}>
-          <Bubble tone="speech">Our question is still open. Let's test it with real instruments.</Bubble>
-        </div>
+        <Speech text={f6Speech(state.difficulty, { step: 'a' })} />
         <div className={styles.panel}>
           <GlassPanel>
-            <p className={styles.kicker}>Phase 6 · Surface</p>
+            <p className={styles.kicker}>{KICKER}</p>
             <h2 className={styles.title}>Touchdown confirmed</h2>
             <p className={styles.line}>You're on the Moon. Your instruments can now test the surface.</p>
             {state.landing && state.landing.outcome === 'rough' ? (
@@ -191,31 +236,30 @@ function F6Body({ step, setStep, poi, setPoi }) {
         <div className={styles.dock}>
           <div className={styles.nav}>
             <Button variant="secondary" onClick={() => navigate('/f5b')}>← Landing</Button>
-            <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+            {helpButton}
           </div>
           <div className={styles.lock}>
             <Button variant="outline" onClick={() => setStep('b')}>Start investigation →</Button>
           </div>
         </div>
+        {helpWindow}
       </div>
     )
   }
 
   if (step === 'd') {
-    return <Verdict st={st} />
+    return <Verdict st={st} helpButton={helpButton} helpWindow={helpWindow} />
   }
 
   const pois = st.pois
   const bufferWarn = st.bufferFull ? 'Data buffer full. Send data before measuring again.' : ''
-  const segments = [
-    ['clue', 'Clue'],
-    ['composition', 'Composition'],
-    ['sample', 'Sample'],
-  ]
+  const speech = f6Speech(state.difficulty, { step: 'b', evidence: evidenceOf(st), bufferFull: st.bufferFull })
 
   return (
     <div className={styles.screen}>
       <SurfaceHud st={st} />
+      <EvidenceMeter st={st} />
+      <Speech text={speech} />
       <div className={styles.marks} role="group" aria-label="Spots to study">
         {pois.map((item, i) => {
           const mark = MARKS[i % MARKS.length]
@@ -238,32 +282,29 @@ function F6Body({ step, setStep, poi, setPoi }) {
           )
         })}
       </div>
-      <div className={`${styles.panel} ${styles.tall}`}>
+      <div className={styles.panel}>
         <GlassPanel>
-          <p className={styles.kicker}>Phase 6 · Surface</p>
+          <p className={styles.kicker}>{KICKER}</p>
           <h2 className={styles.title}>Investigate the surface</h2>
-          <p className={styles.line}>Pick a spot, pick an instrument, read the result. Every measurement costs power, time and data.</p>
+          <p className={styles.line}>Pick a spot, then an instrument. Each one costs power, time and data.</p>
           <div className={styles.options}>
             {st.instruments.length ? st.instruments.map((ins, i) => {
               const cost = model.measureCost(state, ins.id)
               const check = model.canMeasure(state, poi, ins.id)
               const reason = ins.locked ? ins.lockReason : (check.ok ? '' : check.reason)
+              // The row only needs a short tag for an instrument already used here; tapping it shows the full reason.
+              const shown = !ins.locked && check.code === 'repeat' ? 'Done at this spot' : reason
+              // One line of cost under the name instead of a chip, so four instruments fit the panel.
+              const costs = [cost.power ? `${cost.power} W` : '', `${model.fmt(cost.hours, 1)} h`, cost.sampleKg ? `+${model.fmt(cost.sampleKg, 2)} kg` : ''].filter(Boolean).join(' · ')
               return (
                 <OptionRow
                   key={ins.id}
                   variant="line"
                   number={i + 1}
                   text={ins.title}
-                  detail={`Evidence: ${ins.chip}`}
-                  chips={(
-                    <>
-                      <Chip type="game">
-                        {[cost.power ? `${cost.power} W` : '', `${model.fmt(cost.hours, 1)} h`, cost.sampleKg ? `+${model.fmt(cost.sampleKg, 2)} kg` : ''].filter(Boolean).join(' · ')}
-                      </Chip>
-                    </>
-                  )}
+                  detail={`Evidence: ${ins.chip} · ${costs}`}
                   locked={Boolean(reason)}
-                  lockedReason={reason}
+                  lockedReason={shown}
                   onSelect={() => doMeasure(ins.id)}
                   onLocked={() => setMessage(reason)}
                 />
@@ -275,21 +316,14 @@ function F6Body({ step, setStep, poi, setPoi }) {
           {last ? <ResultCard entry={last} pois={pois} /> : null}
         </GlassPanel>
       </div>
-      <div className={styles.dockB}>
-        <div className={styles.evidence} aria-label={st.meter || 'Evidence: none yet'}>
-          <div className={styles.segments}>
-            {segments.map(([id, label]) => (
-              <span key={id} className={`${styles.segment} ${st.segments[id] ? styles.segOn : ''}`}>
-                <span className={styles.segBar} />
-                <span>{label}</span>
-              </span>
-            ))}
-          </div>
-          <p className={styles.evText}>{st.meter || 'Evidence: none yet'}</p>
-        </div>
+      <div className={styles.dock}>
         <div className={styles.nav}>
+          <Button variant="secondary" onClick={() => setStep('a')}>← Touchdown</Button>
+          {helpButton}
           <Button variant="secondary" onClick={() => setJournal(true)}>Journal ({st.journal.length})</Button>
           <Button variant="secondary" disabledReason={sendCheck.ok ? '' : sendCheck.reason} onClick={doSend}>Send data</Button>
+        </div>
+        <div className={styles.lock}>
           <Button variant="outline" disabledReason={finishCheck.ok ? '' : finishCheck.reason} onClick={() => doFinish(false)}>Finish exploration</Button>
         </div>
       </div>
@@ -316,6 +350,29 @@ function F6Body({ step, setStep, poi, setPoi }) {
       </Modal>
 
       <EventDialog event={event} onChoose={choose} />
+      {helpWindow}
+    </div>
+  )
+}
+
+/* Clue, composition and sample, with the level in words. Sits in the free top-left corner. */
+function EvidenceMeter({ st }) {
+  const segments = [
+    ['clue', 'Clue'],
+    ['composition', 'Composition'],
+    ['sample', 'Sample'],
+  ]
+  return (
+    <div className={styles.evidence} aria-label={st.meter || 'Evidence: none yet'}>
+      <div className={styles.segments}>
+        {segments.map(([id, label]) => (
+          <span key={id} className={`${styles.segment} ${st.segments[id] ? styles.segOn : ''}`}>
+            <span className={styles.segBar} />
+            <span>{label}</span>
+          </span>
+        ))}
+      </div>
+      <p className={styles.evText}>{st.meter || 'Evidence: none yet'}</p>
     </div>
   )
 }
@@ -328,17 +385,17 @@ function poiTitle(pois, id) {
 function ResultCard({ entry, pois }) {
   const { data } = useGame()
   const ins = data.SURFACE.instruments[entry.instrument]
-  const src = entry.result && data.SOURCES[entry.result.src]
-  const noteSrc = entry.note && data.SOURCES[entry.note.src]
   return (
     <div className={styles.result} role="status">
       <p className={styles.resultHead}>{ins.title} · {poiTitle(pois, entry.poi)}</p>
-      <p className={styles.resultText}>{entry.result ? entry.result.text : 'No reading.'}</p>
-      {src ? <a className={shell.link} href={src.url} target="_blank" rel="noopener noreferrer">NASA source</a> : null}
+      <p className={styles.resultText}>
+        {entry.result ? entry.result.text : 'No reading.'}{' '}
+        {entry.result ? <SourceLink srcKey={entry.result.src} /> : null}
+      </p>
       {entry.note ? (
         <p className={styles.note}>
           {entry.note.text}{' '}
-          {noteSrc ? <a className={shell.link} href={noteSrc.url} target="_blank" rel="noopener noreferrer">NASA source</a> : null}
+          <SourceLink srcKey={entry.note.src} />
         </p>
       ) : null}
     </div>
@@ -356,13 +413,12 @@ function effectChips(effect = {}, model) {
 
 function EventDialog({ event, onChoose }) {
   // An event needs a decision: the window has no Close button and stays open until the player picks.
-  const { model, data } = useGame()
-  const src = event && data.SOURCES[event.src]
+  const { model } = useGame()
   return (
     <Modal open={Boolean(event)} variant="warn" title={event ? event.title : ''} onClose={() => {}} hideClose>
       {event ? (
         <>
-          <p>{event.text}</p>
+          <p>{event.text} <SourceLink srcKey={event.src} /></p>
           <div className={styles.options}>
             {event.choices.map((choice, i) => (
               <OptionRow
@@ -376,14 +432,13 @@ function EventDialog({ event, onChoose }) {
               />
             ))}
           </div>
-          {src ? <a className={shell.link} href={src.url} target="_blank" rel="noopener noreferrer">NASA source</a> : null}
         </>
       ) : null}
     </Modal>
   )
 }
 
-function Verdict({ st }) {
+function Verdict({ st, helpButton, helpWindow }) {
   const navigate = useNavigate()
   const { state, model, data } = useGame()
   const { setModal } = usePlay()
@@ -392,19 +447,15 @@ function Verdict({ st }) {
   const strong = outcome && outcome.evidence !== 'clue'
   const best = [...st.journal].filter((entry) => entry.evidence === (outcome && outcome.evidence) && entry.result)[0]
   const regolith = data.SURFACE.regolith
-  const regSrc = data.SOURCES[regolith.src]
-  const bestSrc = best && data.SOURCES[best.result.src]
   const crewed = state.missionType === 'crewed'
 
   return (
     <div className={styles.screen}>
       <SurfaceHud st={st} />
-      <div className={styles.speech}>
-        <Bubble tone="speech">{strong ? 'No cheese here.' : 'Not enough proof yet.'}</Bubble>
-      </div>
-      <div className={`${styles.panel} ${styles.tallEnd}`}>
+      <Speech text={f6Speech(state.difficulty, { step: 'd', strong })} />
+      <div className={styles.panel}>
         <GlassPanel>
-          <p className={styles.kicker}>Phase 6 · Surface</p>
+          <p className={styles.kicker}>{KICKER}</p>
           <h2 className={styles.title}>{outcome ? outcome.title : 'Exploration finished'}</h2>
           <p className={styles.line}>{outcome ? outcome.sub : ''}</p>
           <div className={`${styles.verdict} ${strong ? styles.rejected : styles.open}`}>
@@ -412,46 +463,48 @@ function Verdict({ st }) {
             <p className={styles.verdictLine}>
               {strong ? 'Verdict: rejected' : 'Verdict: not settled yet'}
             </p>
+            {/* The full reading is already in the result card and the journal; here it only names the proof. */}
             <p className={styles.line}>
               {strong
-                ? `The ground is rock and dust, not cheese. ${best ? best.result.text : ''}`
+                ? 'The ground is rock and dust, not cheese.'
                 : 'A picture alone cannot tell what the ground is made of. Composition or a sample would settle it.'}
+              {' '}{best ? <SourceLink srcKey={best.result.src} /> : null}
             </p>
-            {bestSrc ? <a className={shell.link} href={bestSrc.url} target="_blank" rel="noopener noreferrer">NASA source</a> : null}
           </div>
-          <p className={styles.line}><b>Regolith:</b> {regolith.text}{' '}
-            {regSrc ? <a className={shell.link} href={regSrc.url} target="_blank" rel="noopener noreferrer">NASA source</a> : null}
-          </p>
+          <p className={styles.line}><b>Regolith:</b> {regolith.text} <SourceLink srcKey={regolith.src} /></p>
           <p className={styles.line}>
             {model.fmt(st.measurements)} measurements, {model.fmt(st.dataSentGb, 1)} GB sent to Earth
             {st.sampleKg > 0 ? `, ${model.fmt(st.sampleKg, 2)} kg of samples on board` : ''}.
           </p>
-          {home ? (
-            <div className={styles.stack}>
-              <Button variant="outline" onClick={() => navigate('/f7')}>Head home →</Button>
-            </div>
-          ) : (
+          {home ? null : (
             <div className={styles.end}>
               <p className={styles.endTitle}>Mission complete</p>
               <p className={styles.line}>
                 {crewed
                   ? 'Your surface work is done.'
-                  : 'Your robotic one-way mission is complete. The lander stays on the Moon, and its data is on its way to Earth.'}
+                  : 'The lander stays on the Moon; its data is on its way to Earth.'}
               </p>
-              <div className={shell.actions}>
-                <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
-                <Button variant="ghost" onClick={() => setModal('sources')}>See all NASA sources</Button>
-                <Button variant="ghost" onClick={() => setModal('reset')}>Start a new mission</Button>
-              </div>
             </div>
           )}
         </GlassPanel>
       </div>
       <div className={styles.dock}>
         <div className={styles.nav}>
-          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+          {helpButton}
+          {home ? null : (
+            <>
+              <Button variant="secondary" onClick={() => setModal('sources')}>See all NASA sources</Button>
+              <Button variant="secondary" onClick={() => setModal('reset')}>Start a new mission</Button>
+            </>
+          )}
+        </div>
+        <div className={styles.lock}>
+          {home
+            ? <Button variant="outline" onClick={() => navigate('/f7')}>Head home →</Button>
+            : <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>}
         </div>
       </div>
+      {helpWindow}
     </div>
   )
 }
