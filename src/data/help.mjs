@@ -65,6 +65,36 @@ export const HELP_F1B = {
   ],
 }
 
+export const HELP_F2 = {
+  title: 'Phase 2: Crew and Life Support',
+  blocks: [
+    {
+      heading: 'Why every day adds mass',
+      text: 'NASA\'s BVAD baseline says each astronaut needs about 0.895 kg of oxygen, 0.800 kg of dry food and 3.217 kg of drinking water per day. Multiply that by the crew and the mission days — every extra day is real mass aboard the ship.',
+      source: 'bvad',
+    },
+    {
+      heading: 'Safety reserve',
+      text: 'Extra supplies for delays and surprises, like a solar storm that keeps the crew aboard one more day. The +20% option is a game value, not a NASA figure.',
+    },
+    {
+      heading: 'Water recycler',
+      text: 'It cleans the crew\'s used water so they can drink it again — the Space Station already recovers 98% of its water this way. It adds 300 kg but cuts the water you must launch, so it pays off on longer missions.',
+      source: 'issWater',
+    },
+    {
+      heading: 'Moonwalk suits',
+      text: 'The astronauts who land need a suit to step outside. The hours mean moonwalk time: Light is cheap for short walks, Lunar is built for freezing shadowed craters, and Heavy carries extra protection.',
+      source: 'axemu',
+    },
+    {
+      heading: 'Two down, two in orbit',
+      text: 'NASA\'s Artemis plan works this way: two astronauts ride the lander down to the surface while two keep the ship in lunar orbit, ready to bring everyone home.',
+      source: 'artemisFaq',
+    },
+  ],
+}
+
 export const HELP_F1DONE = {
   title: 'Phase 1: Design Review',
   blocks: [
