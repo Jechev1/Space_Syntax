@@ -21,11 +21,15 @@
  *    The spacecraft must be complete before launch, so launch readiness covers Phases 0 to 4.
  *  - Phase 5: hovering to dodge hazards costs g_moon (1.62 m/s) of delta-v per second. The descent margin
  *    from Phase 3 buys hover seconds: t = (descent dv × margin) / g + built-in reserve.
+ *  - Phase 6: each measurement spends hours, spare power and data buffer, and adds evidence (clue < composition < sample).
+ *  - Phase 7: return burns were fueled in Phase 3; the rocket equation gives the delta-v actually available (an empty
+ *    sample box gives a little extra). Heat shield capacity vs heat load, then a seeded splashdown vs the recovery zone.
  *
  * State shape (all optional until the phase is played):
  *  { difficulty, question, measure, missionType, design:{structure,shield,thermal,power,science[]}, rocket,
  *    crew:{ size, days, reserve, suit, recycler }, flight:{ margin }, comms:{ link, dish }, site, landing:{ seed, outcome },
- *    events:{ massGrowth, extraCost, risk, extraDays, log[] } }
+ *    events:{ massGrowth, extraCost, risk, extraDays, log[] },
+ *    surface:{ actions[], finished }, returnTrip:{ seed, entry, shield } }
  */
 (function (root) {
   'use strict';
@@ -474,6 +478,317 @@
   }
   function minMargin(state) { return D.FLIGHT.minMargin[state.difficulty || 'engineer'] || 0; }
 
+  /* ======================= PHASE 6: surface science =======================
+   * state.surface = { actions: [ {type:'measure', poi, instrument} | {type:'send'} | {type:'event', id, choice} ], finished }
+   * Everything else (hours, buffer, samples, evidence, journal) is rebuilt by replaying the actions, so a saved
+   * game can be re-checked step by step (see sanitizeState).
+   */
+  const fmtH = (h) => fmt(h, Math.abs(h % 1) > 1e-9 ? 1 : 0);
+  const EVIDENCE = Object.fromEntries(D.SURFACE.evidence.map(e => [e.id, e]));
+  function surfacePois(state) { return (state.site && D.SURFACE.pois[state.site]) || []; }
+  /** Landed (not aborted) with a mission defined. */
+  function canExplore(state) {
+    return !!findSite(state.site) && !!state.landing && state.landing.outcome !== 'abort' && !!evaluate(state);
+  }
+  /** Hours for surface work: one moonwalk with the Phase 2 suit, or the robot's shift. A rough landing costs time. */
+  function surfaceHours(state) {
+    let h = 0;
+    if (state.missionType === 'crewed') { const l = lifeSupport(state); h = l ? l.suit.evaHours : 0; }
+    else if (state.missionType === 'robotic') h = D.SURFACE.roboticHours;
+    if (state.landing && state.landing.outcome === 'rough') h -= D.SURFACE.roughLandingPenalty;
+    return Math.max(0, h);
+  }
+  /** Spare power for instruments: generation minus everything else that is switched on. */
+  function surfacePower(state) {
+    const r = evaluate(state); if (!r) return null;
+    const sciPower = ((state.design && state.design.science) || []).reduce((a, id) => {
+      const o = findOpt('science', id); return a + ((o && o[state.missionType] && o[state.missionType].power) || 0);
+    }, 0);
+    const idle = r.powerNeed - sciPower;
+    return { capacity: r.powerGen, idle, available: Math.max(0, r.powerGen - idle) };
+  }
+  /** Evidence an instrument gives for this question: the hydrogen detector is only good proof for the water question. */
+  function instrumentEvidence(state, id) {
+    const ins = D.SURFACE.instruments[id]; if (!ins) return null;
+    return ins.onlyFor && ins.onlyFor !== state.question ? ins.evidenceOtherwise : ins.evidence;
+  }
+  function surfaceResult(state, id) { const site = D.SURFACE.results[state.site]; return (site && site[id]) || null; }
+  /** Cost of one measurement, for chips and HUD ghost bars. */
+  function measureCost(state, id) {
+    const ins = D.SURFACE.instruments[id]; if (!ins) return null;
+    return { hours: ins.hours, power: ins.power, dataGb: ins.dataGb, sampleKg: id === 'sampler' ? (D.SURFACE.sampleKg[state.missionType] || 0) : 0, evidence: instrumentEvidence(state, id) };
+  }
+  /** Replay the action list. Pure: never mutates state. */
+  function surfaceStatus(state) {
+    const S = D.SURFACE, type = state.missionType;
+    const actions = (state.surface && state.surface.actions) || [];
+    const loaded = (state.design && state.design.science) || [];
+    const usable = loaded.filter(id => unlockedInstruments(state).includes(id) && S.instruments[id]);
+    const st = {
+      hoursTotal: surfaceHours(state), hoursUsed: 0, hoursLeft: 0, power: surfacePower(state),
+      bufferGb: 0, bufferMax: S.bufferGb, dataSentGb: 0,
+      sampleKg: 0, sampleCapacityKg: needsReturn(state) ? (S.returnCapacityKg[type] || 0) : 0,
+      noSignal: 0, risk: 0, measurements: 0, journal: [], events: [],
+      segments: { clue: false, composition: false, sample: false }, evidence: null,
+      finished: !!(state.surface && state.surface.finished),
+    };
+    const used = {}; // poi -> [instrument]
+    for (const a of actions) {
+      if (a.type === 'measure') {
+        const ins = S.instruments[a.instrument]; if (!ins) continue;
+        const ev = instrumentEvidence(state, a.instrument), res = surfaceResult(state, a.instrument);
+        st.journal.push({
+          missionHour: st.hoursUsed, poi: a.poi, instrument: a.instrument, evidence: ev, result: res,
+          note: a.instrument === 'neutron' && state.site === 'southPole' ? S.hydrogenNote : null,
+        });
+        st.hoursUsed += ins.hours; st.bufferGb += ins.dataGb;
+        if (a.instrument === 'sampler') st.sampleKg += S.sampleKg[type] || 0;
+        st.segments[ev] = true;
+        if (!st.evidence || EVIDENCE[ev].rank > EVIDENCE[st.evidence].rank) st.evidence = ev;
+        if (st.noSignal > 0) st.noSignal--;
+        (used[a.poi] = used[a.poi] || []).push(a.instrument);
+        st.measurements++;
+      } else if (a.type === 'send') {
+        st.dataSentGb += st.bufferGb; st.bufferGb = 0;
+      } else if (a.type === 'event') {
+        const ev = D.SURFACE_EVENTS.find(e => e.id === a.id), ch = ev && ev.choices.find(c => c.id === a.choice);
+        if (!ch) continue;
+        const eff = ch.effect || {};
+        if (eff.hours) st.hoursUsed -= eff.hours; // hours are negative in the data: time lost
+        if (eff.risk) st.risk += eff.risk;
+        if (eff.noSignal) st.noSignal = Math.max(st.noSignal, eff.noSignal);
+        st.events.push({ id: a.id, choice: a.choice });
+      }
+    }
+    st.hoursLeft = Math.max(0, st.hoursTotal - st.hoursUsed);
+    st.bufferFull = st.bufferGb >= st.bufferMax - 1e-9;
+    st.meter = st.evidence ? EVIDENCE[st.evidence].meter : null;
+    st.pois = surfacePois(state).map(p => {
+      const u = used[p.id] || [];
+      const done = u.length > 0 && (u.includes('sampler') || usable.every(id => u.includes(id)));
+      return { id: p.id, title: p.title, used: u, status: !u.length ? 'Not studied' : done ? 'Done' : 'Studied: ' + u.map(id => S.instruments[id].short).join(', ') };
+    });
+    st.instruments = loaded.filter(id => S.instruments[id]).map(id => Object.assign({ id }, S.instruments[id], {
+      locked: !usable.includes(id), lockReason: usable.includes(id) ? null : 'Your Phase 0 question doesn\'t need this',
+      evidenceNow: instrumentEvidence(state, id), chip: EVIDENCE[instrumentEvidence(state, id)].chip,
+    }));
+    return st;
+  }
+  /** Can this instrument be used on this spot right now? { ok, code, reason } */
+  function canMeasure(state, poiId, instrumentId) {
+    const no = (code, reason) => ({ ok: false, code, reason });
+    if (!canExplore(state)) return no('notLanded', 'Land on the Moon first');
+    if (state.missionType === 'crewed' && !lifeSupport(state)) return no('noCrew', 'Choose your crew in Phase 2 first');
+    if (!surfacePois(state).some(p => p.id === poiId)) return no('unknownPoi', 'Pick a spot on the map');
+    const ins = D.SURFACE.instruments[instrumentId];
+    if (!ins || !((state.design && state.design.science) || []).includes(instrumentId)) return no('notLoaded', 'This instrument is not on board');
+    if (!unlockedInstruments(state).includes(instrumentId)) return no('notNeeded', 'Your Phase 0 question doesn\'t need this');
+    const st = surfaceStatus(state);
+    if (st.finished) return no('finished', 'Exploration is finished');
+    if (((state.surface && state.surface.actions) || []).length >= D.SURFACE.maxActions) return no('tooMany', 'Logbook full');
+    if (st.pois.find(p => p.id === poiId).used.includes(instrumentId)) return no('repeat', 'Already measured here with this instrument');
+    if (ins.hours > st.hoursLeft + 1e-9) return no('noTime', `Not enough time: needs ${fmtH(ins.hours)} h`);
+    if (st.power && ins.power > st.power.available) return no('noPower', `Not enough power: needs ${fmt(ins.power)} W`);
+    if (st.bufferGb + ins.dataGb > st.bufferMax + 1e-9) return no('bufferFull', 'Data buffer full. Send data before measuring again.');
+    if (instrumentId === 'sampler' && st.sampleKg + (D.SURFACE.sampleKg[state.missionType] || 0) > st.sampleCapacityKg + 1e-9) return no('boxFull', 'No room left for samples');
+    return { ok: true, code: null, reason: null };
+  }
+  function withAction(state, action) {
+    const next = JSON.parse(JSON.stringify(state));
+    next.surface = Object.assign({ actions: [], finished: false }, next.surface || {});
+    next.surface.actions = (next.surface.actions || []).concat(action);
+    return next;
+  }
+  /** Pure: take a measurement. Returns { ok, reason, state, entry } (state unchanged when not ok). */
+  function measure(state, poiId, instrumentId) {
+    const c = canMeasure(state, poiId, instrumentId);
+    if (!c.ok) return { ok: false, code: c.code, reason: c.reason, state };
+    const next = withAction(state, { type: 'measure', poi: poiId, instrument: instrumentId });
+    const st = surfaceStatus(next);
+    return { ok: true, state: next, entry: st.journal[st.journal.length - 1] };
+  }
+  function canSendData(state) {
+    if (!canExplore(state)) return { ok: false, code: 'notLanded', reason: 'Land on the Moon first' };
+    const st = surfaceStatus(state);
+    if (st.noSignal > 0) return { ok: false, code: 'noSignal', reason: 'No signal: behind the Moon' };
+    if (st.bufferGb <= 0) return { ok: false, code: 'empty', reason: 'Nothing to send yet' };
+    if (((state.surface && state.surface.actions) || []).length >= D.SURFACE.maxActions) return { ok: false, code: 'tooMany', reason: 'Logbook full' };
+    return { ok: true };
+  }
+  /** Pure: send the data buffer to Earth. */
+  function sendData(state) {
+    const c = canSendData(state);
+    return c.ok ? { ok: true, state: withAction(state, { type: 'send' }) } : Object.assign({ state }, c);
+  }
+  /** Maybe one surface event after the latest measurement. Deterministic for (seed, measurement count). Never repeats. */
+  function rollSurfaceEvent(state, seed) {
+    const st = surfaceStatus(state);
+    if (st.finished || !st.measurements) return null;
+    const r = rng((seed >>> 0) * 31 + st.measurements * 104729 + 6);
+    if (r() >= (D.SURFACE_EVENT_CHANCE[state.difficulty || 'engineer'] || 0)) return null;
+    const seen = st.events.map(e => e.id);
+    const pool = D.SURFACE_EVENTS.filter(e => !seen.includes(e.id) && (!e.crewedOnly || state.missionType === 'crewed'));
+    return pool.length ? pool[Math.floor(r() * pool.length)] : null;
+  }
+  /** Pure: apply a surface event choice (each event at most once). */
+  function applySurfaceEventChoice(state, eventId, choiceId) {
+    const ev = D.SURFACE_EVENTS.find(e => e.id === eventId);
+    if (!ev || !ev.choices.some(c => c.id === choiceId)) return state;
+    if (ev.crewedOnly && state.missionType !== 'crewed') return state;
+    const st = surfaceStatus(state);
+    if (st.finished || st.events.some(e => e.id === eventId)) return state;
+    if (((state.surface && state.surface.actions) || []).length >= D.SURFACE.maxActions) return state;
+    return withAction(state, { type: 'event', id: eventId, choice: choiceId });
+  }
+  /** Pure: end the exploration. confirm is the question to ask when hours are left. */
+  function finishSurface(state) {
+    const st = surfaceStatus(state);
+    if (!st.measurements) return { ok: false, code: 'noMeasurement', reason: 'Take at least one measurement', state };
+    const next = JSON.parse(JSON.stringify(state));
+    next.surface = Object.assign({ actions: [] }, next.surface || {}, { finished: true });
+    return { ok: true, state: next, confirm: st.hoursLeft > 1e-9 ? `You still have ${fmtH(st.hoursLeft)} hours. Finish anyway?` : null };
+  }
+  /** Closing screen of Phase 6, chosen by the strongest evidence. */
+  function surfaceOutcome(state) {
+    const st = surfaceStatus(state);
+    if (!st.evidence) return null;
+    return Object.assign({ evidence: st.evidence, meter: st.meter, sampleKg: st.sampleKg }, D.SURFACE.outcomes[st.evidence]);
+  }
+
+  /* ======================= PHASE 7: return to Earth =======================
+   * state.returnTrip = { seed, entry, shield }
+   * Delta-v: the return burns were fueled in Phase 3 (dv × (1 + margin)). Samples lighter than the allowance give
+   * a little extra (rocket equation). Shown to players as one pool, as in the screen guide: 3,283 − 1,833 = 1,450.
+   * Each burn may need up to a few % more than the textbook value (navigation dispersion, game value).
+   */
+  function returnApplies(state) { return needsReturn(state) && !!evaluate(state); }
+  function findEntry(id) { return D.RETURN.entries.find(e => e.id === id) || null; }
+  function findShield(id) { return D.RETURN.shields.find(s => s.id === id) || null; }
+  /** Final mass each return burn pushes and how much of it is the sample allowance. */
+  function returnBurnMasses(state) {
+    const r = evaluate(state); if (!r) return null;
+    if (state.missionType === 'crewed') {
+      return { ascent: { mFinal: r.breakdown.ascent, allowance: D.BASE.crewed.samples.mass }, tei: { mFinal: r.breakdown.orbiter, allowance: 0 } };
+    }
+    return { direct: { mFinal: D.BASE.robotic.returnCapsule.mass, allowance: D.SURFACE.returnCapacityKg.robotic } };
+  }
+  /** The two fuel steps (or one for a robot capsule): needed vs available delta-v, in order. Pure and seeded. */
+  function returnBurns(state, seed) {
+    if (!returnApplies(state)) return null;
+    const keys = D.RETURN.burns[state.missionType], k = 1 + marginOf(state);
+    const masses = returnBurnMasses(state);
+    const collected = surfaceStatus(state).sampleKg;
+    const disp = D.RETURN.dispersion[state.difficulty || 'engineer'] || 0;
+    const r = rng(((seed >>> 0) ^ 0x7e7) + 7);
+    const burns = keys.map(key => {
+      const dv = D.DV[key].value, planned = dv * k, m = masses[key];
+      const prop = m.mFinal * fuelPerKg(planned), tanks = prop * D.ENGINE.tankFraction;
+      const mActual = m.mFinal - Math.max(0, m.allowance - collected); // empty sample box = lighter cabin
+      const available = ve * Math.log((mActual + prop + tanks) / (mActual + tanks));
+      const extra = disp * r();
+      return { key, label: D.RETURN.stepLabels[key], src: D.DV[key].src, dv, planned, available, dispersion: extra, need: dv * (1 + extra) };
+    });
+    const pool = burns.reduce((a, b) => a + b.available, 0);
+    let remaining = pool, failAt = null;
+    for (const b of burns) {
+      b.before = remaining; b.ok = remaining >= b.need - 1e-9;
+      remaining -= b.need; b.after = remaining;
+      if (!b.ok && !failAt) failAt = b.key;
+    }
+    return { burns, pool, remaining, ok: !failAt, failAt, margin: marginOf(state) };
+  }
+  /** Heat shield check. entryId / shieldId override the saved choice (for previewing the slider). */
+  function thermalCheck(state, entryId, shieldId) {
+    const rt = state.returnTrip || {};
+    const entry = findEntry(entryId || rt.entry), shield = findShield(shieldId || rt.shield);
+    if (!entry || !shield) return null;
+    const T = D.RETURN.thermal;
+    const load = entry.heatLoad * (T.loadFactor[state.difficulty || 'engineer'] || 1);
+    const ratio = shield.capacity / load;
+    const status = ratio >= T.okRatio ? 'ok' : ratio >= T.lowRatio ? 'low' : 'tooLow';
+    return {
+      entry, shield, load, ratio, status, addedMass: shield.mass[state.missionType] || 0,
+      label: status === 'ok' ? 'Thermal margin: OK' : status === 'low' ? 'Thermal margin: low' : 'Thermal margin: too low',
+      message: status === 'ok' ? null : `${shield.title} shield with ${entry.title.toLowerCase()} leaves ${status === 'low' ? 'little' : 'no'} margin.`,
+    };
+  }
+  /** Seeded splashdown: miss distance from the target vs the recovery zone. */
+  function splashdown(state, seed, entryId) {
+    const entry = findEntry(entryId || (state.returnTrip && state.returnTrip.entry)); if (!entry) return null;
+    const R = D.RETURN, r = rng(((seed >>> 0) ^ 0x5a1) + 13);
+    const maxMiss = entry.missKm * (R.missFactor[state.difficulty || 'engineer'] || 1);
+    const missKm = R.minMissKm + Math.max(0, maxMiss - R.minMissKm) * r();
+    const inZone = missKm <= R.recoveryZoneKm + 1e-9;
+    return { entry, missKm, zoneKm: R.recoveryZoneKm, inZone, score: inZone ? Math.round(100 * (1 - missKm / R.recoveryZoneKm)) : 0 };
+  }
+  /** Whole return, step by step, with the first failure and its cause chain. Pure. */
+  function returnSim(state) {
+    if (!returnApplies(state)) return { applicable: false };
+    const rt = state.returnTrip || {}, seed = Number.isInteger(rt.seed) ? rt.seed : 0;
+    const fuel = returnBurns(state, seed);
+    const out = { applicable: true, seed, fuel, thermal: null, splash: null, outcome: 'pending', failure: null };
+    if (!fuel.ok) { out.outcome = 'fail'; out.failure = failureReport(state, 'fuel', out); return out; }
+    out.thermal = thermalCheck(state);
+    if (!out.thermal) return out;
+    if (out.thermal.status === 'tooLow') { out.outcome = 'fail'; out.failure = failureReport(state, 'thermal', out); return out; }
+    out.splash = splashdown(state, seed);
+    if (!out.splash.inZone) { out.outcome = 'fail'; out.failure = failureReport(state, 'zone', out); return out; }
+    out.outcome = 'success';
+    return out;
+  }
+  /** "Not just you lost": cause in plain words + a 3-step chain built from the real game state. */
+  function failureReport(state, kind, sim) {
+    const descope = D.RETURN.descope;
+    if (kind === 'fuel') {
+      const b = sim.fuel.burns.find(x => x.key === sim.fuel.failAt);
+      const pct = Math.round(marginOf(state) * 100);
+      return {
+        code: 'fuelShort', step: b.key, backTo: 3, descope,
+        title: `Not enough fuel for the ${b.label.toLowerCase()}`,
+        sub: `The ${b.label.toLowerCase()} needs ${fmt(b.need)} m/s. Remaining budget was ${fmt(Math.max(0, b.before))} m/s.`,
+        chain: [
+          { text: `Decision: ${pct}% delta-v reserve`, phase: 3 },
+          { text: `Effect: ${fmt(sim.fuel.pool)} m/s for the trip home`, phase: 3 },
+          { text: `Result: ${fmt(b.need - Math.max(0, b.before))} m/s short at "${b.label}"`, phase: 7 },
+        ],
+      };
+    }
+    if (kind === 'thermal') {
+      const t = sim.thermal;
+      return {
+        code: 'thermalTooLow', step: 'reentry', backTo: 7, descope,
+        title: 'The heat shield could not take the heat',
+        sub: t.message,
+        chain: [
+          { text: `Decision: ${t.shield.title.toLowerCase()} heat shield`, phase: 7 },
+          { text: `Effect: ${t.entry.title.toLowerCase()} heat load ${fmt(t.load, 2)}`, phase: 7 },
+          { text: `Result: thermal margin ${fmt(t.ratio, 2)}×, needs ${fmt(D.RETURN.thermal.lowRatio, 2)}×`, phase: 7 },
+        ],
+      };
+    }
+    const s = sim.splash;
+    return {
+      code: 'missedZone', step: 'splashdown', backTo: 7, descope,
+      title: 'Splashdown outside the recovery zone',
+      sub: `The capsule came down ${fmt(s.missKm, 1)} km from the target. Recovery ships cover ${fmt(s.zoneKm)} km.`,
+      chain: [
+        { text: `Decision: ${s.entry.title.toLowerCase()}`, phase: 7 },
+        { text: `Effect: landed ${fmt(s.missKm, 1)} km from the target`, phase: 7 },
+        { text: `Result: outside the ${fmt(s.zoneKm)} km recovery zone`, phase: 7 },
+      ],
+    };
+  }
+  /** "Show the math" for the return burns: remaining − needed = what is left for the next step. */
+  function returnMath(state) {
+    const rt = state.returnTrip || {};
+    const f = returnBurns(state, Number.isInteger(rt.seed) ? rt.seed : 0); if (!f) return null;
+    const planned = f.burns.reduce((a, b) => a + b.planned, 0);
+    const steps = [{ eq: 'budget = Σ Δv × (1 + margin)', num: `(${f.burns.map(b => fmt(b.dv)).join(' + ')}) m/s × ${fmt(1 + f.margin, 2)} = ${fmt(planned)} m/s` }];
+    if (f.pool - planned >= 0.5) steps.push({ eq: 'lighter = more Δv', num: `+ ${fmt(f.pool - planned)} m/s because the sample box is not full = ${fmt(f.pool)} m/s` });
+    f.burns.forEach(b => steps.push({ eq: 'left = remaining − needed', num: `${fmt(b.before)} m/s − ${fmt(b.need)} m/s = ${fmt(b.after)} m/s after "${b.label}"` }));
+    return { title: 'Fuel for the trip home', steps, check: f.ok ? 'Enough fuel to come home ✔' : `Short at "${D.RETURN.stepLabels[f.failAt]}"`, src: 'cev' };
+  }
+
   /* ======================= Validation (GO / NO GO) ======================= */
   /** issues: { code, severity:'block'|'warn', message, phase } */
   function validatePhase(state, n) {
@@ -542,6 +857,36 @@
       else if (!r.fitsRocket) block('tooHeavy', `With your fuel plan you are ${fmt(r.tli - r.rocket.capacity)} kg too heavy for ${r.rocket.title}`);
       if (r.overBudget) block('overBudget', `Over budget by $${fmt(r.totalCost - r.budget)}M`);
       if (r.risk >= 2) warn('highRisk', 'You took several risky choices: mission success odds are lower');
+      return result(issues);
+    }
+    if (n === 6) {
+      if (!findSite(state.site) || !state.landing) { block('noLanding', 'Land on the Moon first', 5); return result(issues); }
+      if (state.landing.outcome === 'abort') { block('landingAbort', 'The landing was aborted: no surface science this time', 5); return result(issues); }
+      const st = surfaceStatus(state);
+      if (!st.measurements) block('noMeasurement', 'Take at least one measurement');
+      else {
+        if (!st.finished && st.hoursLeft > 1e-9) warn('hoursLeft', `You still have ${fmtH(st.hoursLeft)} hours. Finish anyway?`);
+        if (st.evidence === 'clue') warn('weakEvidence', 'Pictures are clues: you need composition or samples for proof');
+        if (state.measure === 'sample' && st.sampleKg === 0) warn('noSample', 'Your plan was to bring samples home, but none were collected');
+      }
+      if (st.bufferGb > 0) warn('unsentData', `${fmt(st.bufferGb, 1)} Gb of data not sent yet`);
+      if (st.risk > 0) warn('surfaceRisk', 'The crew kept working during a solar storm: safety score is lower');
+      return result(issues);
+    }
+    if (n === 7) {
+      if (!returnApplies(state)) return result(issues); // one-way robots stay on the Moon
+      const rt = state.returnTrip || {};
+      const fuel = returnBurns(state, Number.isInteger(rt.seed) ? rt.seed : 0);
+      if (!fuel.ok) { block('fuelShort', `Not enough fuel to come home: needs ${fmt(fuel.burns.find(b => b.key === fuel.failAt).need)} m/s`, 3); return result(issues); }
+      if (!findEntry(rt.entry)) block('noEntry', 'Pick a reentry path');
+      if (!findShield(rt.shield)) block('noShield', 'Pick a shield thickness');
+      const t = thermalCheck(state);
+      if (t && t.status === 'tooLow') block('thermalTooLow', 'Thermal margin: too low');
+      else if (t && t.status === 'low') warn('thermalLow', t.message);
+      if (t && t.status !== 'tooLow') {
+        const s = splashdown(state, Number.isInteger(rt.seed) ? rt.seed : 0);
+        if (!s.inZone) block('missedZone', `Splashdown ${fmt(s.missKm, 1)} km from the target, outside the ${fmt(s.zoneKm)} km recovery zone`);
+      }
       return result(issues);
     }
     return result(issues);
@@ -630,13 +975,35 @@
     s.events.risk = Math.round(num(e.risk, 0, 10, 0));
     s.events.extraDays = Math.round(num(e.extraDays, 0, 10, 0));
     s.events.log = Array.isArray(e.log) ? e.log.filter(x => x && D.EVENTS.some(ev => ev.id === x.id && ev.choices.some(c => c.id === x.choice))).map(x => ({ id: x.id, choice: x.choice })).slice(0, 20) : [];
+    // Phase 6: replay every saved action through the real rules; anything that would not be allowed is dropped.
+    if (raw.surface && typeof raw.surface === 'object' && Array.isArray(raw.surface.actions) && canExplore(s)) {
+      let t = Object.assign({}, s, { surface: { actions: [], finished: false } });
+      for (const a of raw.surface.actions.slice(0, D.SURFACE.maxActions)) {
+        if (!a || typeof a !== 'object') continue;
+        if (a.type === 'measure' && typeof a.poi === 'string' && typeof a.instrument === 'string') t = measure(t, a.poi, a.instrument).state;
+        else if (a.type === 'send') t = sendData(t).state;
+        else if (a.type === 'event' && typeof a.id === 'string' && typeof a.choice === 'string') t = applySurfaceEventChoice(t, a.id, a.choice);
+      }
+      if (raw.surface.finished === true) t = finishSurface(t).state;
+      s.surface = t.surface;
+    }
+    // Phase 7
+    if (raw.returnTrip && typeof raw.returnTrip === 'object' && needsReturn(s)) {
+      const rt = raw.returnTrip;
+      s.returnTrip = {
+        seed: Number.isInteger(rt.seed) ? rt.seed >>> 0 : 0,
+        entry: oneOf(rt.entry, D.RETURN.entries.map(x => x.id)),
+        shield: oneOf(rt.shield, D.RETURN.shields.map(x => x.id)),
+      };
+    }
     return s;
   }
 
   /** A fresh game state. */
   function newState() {
     return { difficulty: 'engineer', question: null, measure: null, missionType: null, design: { science: [] }, rocket: null,
-      crew: null, flight: { margin: D.FLIGHT.defaultMargin }, comms: null, site: null, landing: null, events: { massGrowth: 0, extraCost: 0, risk: 0, extraDays: 0, log: [] } };
+      crew: null, flight: { margin: D.FLIGHT.defaultMargin }, comms: null, site: null, landing: null, events: { massGrowth: 0, extraCost: 0, risk: 0, extraDays: 0, log: [] },
+      surface: null, returnTrip: null };
   }
   /** Sensible starting crew plan for Phase 2. */
   function defaultCrew() { return { size: 4, days: minDays() + 1, reserve: 0.2, suit: null, recycler: false }; }
@@ -715,7 +1082,13 @@
     return out.filter(x => x[key] > 0).sort((a, b) => b[key] - a[key]).slice(0, 4);
   }
 
-  const MODEL = { commsPlan, commsMath, lightDelay, dishGain, dataNeedPerDay, siteReport, hoverAvailable, landingSim, landingMath, findSite, sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
+  const MODEL = {
+    // Phase 6
+    surfacePois, canExplore, surfaceHours, surfacePower, instrumentEvidence, surfaceResult, measureCost, surfaceStatus,
+    canMeasure, measure, canSendData, sendData, rollSurfaceEvent, applySurfaceEventChoice, finishSurface, surfaceOutcome,
+    // Phase 7
+    returnApplies, findEntry, findShield, returnBurns, thermalCheck, splashdown, returnSim, returnMath,
+    commsPlan, commsMath, lightDelay, dishGain, dataNeedPerDay, siteReport, hoverAvailable, landingSim, landingMath, findSite, sanitizeState, marginOf, factorsFor, minDays, lifeSupport, lifeMath, flightPlan: flightPlanFor, minMargin, validatePhase, launchReadiness, rng, rollEvent, applyEventChoice, newState, defaultCrew, sci, fuelPerKg, gearForSub, whereOf, fmt, ve, batteryMass, powerMass, moonDensityMath, moonGravityMath, batteryMath, rocketMath, fuelFactor, F, evaluate, previewWith, gearRatio, needsReturn, unlockedInstruments, requiredInstruments, payloadAnswers, missingSubsystems, descopeSuggestions, optionsFor, findOpt, findSub };
   if (typeof module !== 'undefined' && module.exports) module.exports = MODEL;
   else root.SS_MODEL = MODEL;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -67,6 +67,14 @@
     altair: { title: 'NASA MSFC — Altair Descent and Ascent Trajectory Design (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20100035768/downloads/20100035768.pdf' },
     ascent: { title: 'NASA — Lunar Ascent and Rendezvous Trajectory Design (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20080009584/downloads/20080009584.pdf' },
     mdl: { title: 'NASA Goddard — Mission Design Lab', url: 'https://etd.gsfc.nasa.gov/capabilities/integrated-design-center/mission-design-lab/' },
+    // Phases 6 and 7
+    lcross: { title: 'NASA Science — LCROSS (water found in Cabeus crater, 2009)', url: 'https://science.nasa.gov/mission/lcross/' },
+    skipEntry: { title: 'NASA — Orion to test new entry technique (skip entry) on Artemis I', url: 'https://www.nasa.gov/missions/orion-spacecraft-to-test-new-entry-technique-on-artemis-i-mission/' },
+    artemis1Entry: { title: 'NASA NTRS — Orion Artemis I Entry Performance, AAS 24-174 (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20240000024/downloads/AAS_24_174_Orion_Artemis_I_Entry_Performance.pdf' },
+    artemis1Test: { title: 'NASA NTRS — Artemis I test flight buys down risk, IAC 2023 (PDF)', url: 'https://ntrs.nasa.gov/api/citations/20230012789/downloads/IAC%202023Artemis%20I%20paper-FINALSTRIVES.pdf' },
+    avcoat: { title: 'NASA — Cause of the Artemis I Orion heat shield char loss', url: 'https://www.nasa.gov/missions/artemis/nasa-identifies-cause-of-artemis-i-orion-heat-shield-char-loss/' },
+    artemis2Shield: { title: 'NASA — Analysis confirms Artemis II heat shield performance', url: 'https://www.nasa.gov/missions/artemis/artemis-2/rigorous-analysis-confirms-nasas-artemis-ii-heat-shield-performance/' },
+    orionFacts: { title: 'NASA — Orion fun facts (parachutes, splashdown speed)', url: 'https://www.nasa.gov/reference/orion-fun-facts/' },
   };
 
   /* Short facts shown in "Did you know?" chips. */
@@ -345,7 +353,135 @@
   ];
   const EVENT_CHANCE = { cadet: 0.3, engineer: 0.6, director: 0.9 }; // per phase — game values
 
-  const DATA = { COMMS, SITES, LANDING, LIFE, FLIGHT, EVENTS, EVENT_CHANCE, CHARACTERS, SCENES, SCENE_ART, MOON, CONST, WATER_DENSITY, BATTERY, CHARACTER, SOURCES, FACTS, QUESTIONS, MEASURES, MISSION_TYPES, DV, ENGINE, BASE, SUBSYSTEMS, ROCKETS, BUDGET, DIFFICULTIES };
+  /* ---------------- PHASE 6: surface science ----------------
+   * Only the instruments loaded in Phase 1 can be used. Each measurement costs time, power and data
+   * and adds evidence. Power, hours, data and sample masses are game values.
+   * Evidence levels: clue (camera) < composition (spectrometer, or hydrogen for the water question) < sample.
+   */
+  const SURFACE = {
+    roboticHours: 6,          // h of surface operations for a robot in this game — game value
+    roughLandingPenalty: 1,   // h lost after a rough landing (checking the lander) — game value
+    // crewed hours = one moonwalk with the Phase 2 suit (suit.evaHours) — game value
+    bufferGb: 5,              // onboard data buffer before it must be sent to Earth — game value
+    sampleKg: { robotic: 0.25, crewed: 25 }, // kg per sample — game values
+    // return capacity: robotic = sample allowance in the return capsule (0.5 kg), crewed = BASE.crewed.samples (100 kg)
+    returnCapacityKg: { robotic: 0.5, crewed: 100 },
+    maxActions: 60,           // safety cap on the saved action list
+    instruments: {
+      camera: { title: 'Take a picture', short: 'camera', icon: '📷', power: 10, hours: 0.5, dataGb: 1.2, evidence: 'clue', src: 'game' },
+      spectrometer: { title: 'Read the elements', short: 'spectrometer', icon: '🧪', power: 40, hours: 1, dataGb: 0.4, evidence: 'composition', src: 'game' },
+      neutron: { title: 'Look for hydrogen', short: 'hydrogen', icon: '💧', power: 30, hours: 1, dataGb: 0.2, evidence: 'composition', evidenceOtherwise: 'clue', onlyFor: 'water', src: 'game' },
+      sampler: { title: 'Collect a sample', short: 'sample', icon: '📦', power: 0, hours: 1.5, dataGb: 0, evidence: 'sample', src: 'game' },
+    },
+    evidence: [
+      { id: 'clue', rank: 1, chip: 'Clue +1', segment: 'Clue', meter: 'Evidence: Weak' },
+      { id: 'composition', rank: 2, chip: 'Good proof +2', segment: 'Composition', meter: 'Evidence: Good' },
+      { id: 'sample', rank: 3, chip: 'Strongest +3', segment: 'Sample', meter: 'Evidence: Strong' },
+    ],
+    // Points of interest per landing site (ids match SITES)
+    pois: {
+      tranquility: [
+        { id: 'plain', title: 'Flat lava plain' },
+        { id: 'crater', title: 'Small fresh crater' },
+        { id: 'boulder', title: 'Lonely boulder' },
+      ],
+      descartes: [
+        { id: 'ridge', title: 'Bright ridge' },
+        { id: 'craterRim', title: 'Crater rim' },
+        { id: 'boulder', title: 'White boulder' },
+        { id: 'valley', title: 'Smooth valley floor' },
+      ],
+      southPole: [
+        { id: 'rim', title: 'Sunlit crater rim' },
+        { id: 'shadow', title: 'Edge of a permanently shadowed crater' },
+        { id: 'slope', title: 'Gentle inner slope' },
+      ],
+    },
+    // What each instrument finds at each site (NASA-sourced)
+    regolith: { text: 'Gray dust and broken rock, made by impacts over billions of years.', src: 'moonfacts' },
+    results: {
+      tranquility: {
+        camera: { text: 'Dark, flat terrain with craters. A picture alone can\'t tell what it\'s made of.', src: 'lro' },
+        spectrometer: { text: 'Oxygen, silicon, magnesium, iron, calcium and aluminum, with small amounts of titanium and others.', src: 'moonfacts' },
+        neutron: { text: 'Very little hydrogen here. This lava plain is dry.', src: 'lro' },
+        sampler: { text: 'Dark basalt, rich in iron and titanium, about 3.7 billion years old.', src: 'sampleScience' },
+      },
+      descartes: {
+        camera: { text: 'Bright, hilly ground full of craters. A picture alone can\'t tell what it\'s made of.', src: 'lro' },
+        spectrometer: { text: 'Light-colored rock, typical of the highlands.', src: 'sampleScience' },
+        neutron: { text: 'Very little hydrogen here. The highlands near the equator are dry.', src: 'lro' },
+        sampler: { text: 'Anorthosite: a light rock from the Moon\'s old crust.', src: 'sampleScience' },
+      },
+      southPole: {
+        camera: { text: 'Long shadows and a crater floor that never sees the Sun. A picture alone can\'t tell what it\'s made of.', src: 'moonfacts' },
+        spectrometer: { text: 'Oxygen, silicon, magnesium, iron, calcium and aluminum, the same elements as the rest of the crust.', src: 'moonfacts' },
+        neutron: { text: 'Hydrogen signal in a permanently shadowed crater. Water ice is possible.', src: 'lcross' },
+        sampler: { text: 'Cold regolith from the crater edge. Labs on Earth can test it for water.', src: 'lcross' },
+      },
+    },
+    hydrogenNote: { text: 'Hydrogen is a clue of water, not proof. In 2009 NASA\'s LCROSS impact found water in Cabeus crater, near the south pole.', src: 'lcross' },
+    outcomes: {
+      sample: { pose: 'wow', title: 'Samples in hand', sub: 'Real rock from the surface. Time to take it home.' },
+      composition: { pose: 'thinking', title: 'Good clues, no sample', sub: 'Composition data is strong, but a sample would be stronger.' },
+      clue: { pose: 'thinking', title: 'Pictures are clues', sub: 'We need composition or samples for proof.' },
+    },
+  };
+  /* Phase 6 events. Rolled after a measurement. effect ops: hours (−n), risk (+n), noSignal (n measurements). */
+  const SURFACE_EVENTS = [
+    { id: 'surfaceStorm', crewedOnly: true, title: 'Solar storm: radiation rising', src: 'radiation',
+      text: 'A solar storm is raising radiation levels. The crew can shelter behind food and water, which block some radiation.',
+      choices: [
+        { id: 'shelter', label: 'Shelter behind supplies', effect: { hours: -1 } },
+        { id: 'keepWorking', label: 'Keep working', effect: { risk: 1 } },
+      ] },
+    { id: 'noSignal', title: 'Behind the Moon: no signal', src: 'jplArtemisNet',
+      text: 'The spacecraft will be out of contact for about 41 minutes, as during Artemis II.',
+      choices: [
+        { id: 'wait', label: 'Wait for signal', effect: { hours: -1 } },
+        { id: 'store', label: 'Keep measuring, store data', effect: { noSignal: 2 } },
+      ] },
+  ];
+  const SURFACE_EVENT_CHANCE = { cadet: 0.1, engineer: 0.2, director: 0.3 }; // per measurement — game values
+
+  /* ---------------- PHASE 7: return to Earth ----------------
+   * Return burns use DV (ascent 1,833 + TEI 1,450 = 3,283 m/s for crews; 'direct' for robot sample capsules).
+   * Each burn may need a little more than planned (navigation dispersion, game value): the Phase 3 margin covers it.
+   * Reentry: heat load (game value) vs shield capacity (game value). Splashdown: seeded miss distance vs recovery zone.
+   */
+  const RETURN = {
+    burns: { crewed: ['ascent', 'tei'], robotic: ['direct'] },
+    stepLabels: { ascent: 'Liftoff from the Moon', tei: 'Earth return burn', direct: 'Liftoff straight home', reentry: 'Reentry', splashdown: 'Splashdown' },
+    dispersion: { cadet: 0.02, engineer: 0.06, director: 0.10 }, // max extra delta-v a burn may need — game values
+    entries: [
+      { id: 'direct', title: 'Direct entry', pro: 'Simple. One pass through the atmosphere.', con: 'Less control over the landing spot.',
+        precision: 'Lower', heatLoad: 1.0, missKm: 14, src: 'game' },
+      { id: 'skip', title: 'Skip entry', pro: 'Bounces out, then re-enters. More control over the landing spot.', con: 'Two load peaks of about 4 g each. More complex.',
+        precision: 'Higher', heatLoad: 1.3, missKm: 5, peaks: 2, src: 'skipEntry' },
+    ], // heatLoad and missKm are game values
+    shields: [
+      { id: 'thin', title: 'Thin', capacity: 1.5, mass: { robotic: 0, crewed: 0 }, src: 'game' },
+      { id: 'standard', title: 'Standard', capacity: 1.9, mass: { robotic: 2, crewed: 150 }, src: 'game' },
+      { id: 'thick', title: 'Thick', capacity: 2.3, mass: { robotic: 4, crewed: 300 }, src: 'game' },
+    ], // capacity (in heat-load units) and added kg are game values
+    thermal: { okRatio: 1.4, lowRatio: 1.15, loadFactor: { cadet: 0.9, engineer: 1, director: 1.15 } }, // game values
+    recoveryZoneKm: 10, minMissKm: 0.5, missFactor: { cadet: 0.6, engineer: 1, director: 1.2 }, // game values
+    descope: { text: 'Descope: plan fewer days or a smaller crew, or pick a bigger rocket.', src: 'seHandbook' },
+  };
+
+  /* Short facts for Phases 6 and 7 */
+  Object.assign(FACTS, {
+    lcross: { text: 'In 2009 NASA\'s LCROSS crashed a rocket stage into Cabeus crater near the south pole and found water in the plume.', src: 'lcross' },
+    skipRange: { text: 'Skip entry can reach up to 5,524 miles (4,800 nautical miles), compared with 1,725 miles for Apollo.', src: 'skipEntry' },
+    entrySpeed: { text: 'Artemis I entered the atmosphere at about 24,581 mph (about 11 km/s).', src: 'artemis1Test' },
+    avcoatHeat: { text: 'Orion\'s Avcoat heat shield faces about 2,760 °C (about 5,000 °F) during reentry.', src: 'avcoat' },
+    artemis2Shield: { text: 'The Artemis II heat shield had 9 spots of char loss, compared with 103 on Artemis I. A shorter entry path reduced the damage.', src: 'artemis2Shield' },
+    parachutes: { text: 'Parachutes slow Orion to about 17 mph (about 27 km/h) for splashdown.', src: 'orionFacts' },
+    artemis1Landing: { text: 'Artemis I had to splash down within 5.4 nautical miles of its target, and it did.', src: 'artemis1Entry' },
+    artemis2Landing: { text: 'Artemis II splashed down about 0.59 miles from its predicted point, off San Diego.', src: 'artemis2Shield' },
+    surfaceBlackout: { text: 'On Artemis II the crew lost contact for about 41 minutes while Orion was behind the Moon.', src: 'jplArtemisNet' },
+  });
+
+  const DATA = { SURFACE, SURFACE_EVENTS, SURFACE_EVENT_CHANCE, RETURN, COMMS, SITES, LANDING, LIFE, FLIGHT, EVENTS, EVENT_CHANCE, CHARACTERS, SCENES, SCENE_ART, MOON, CONST, WATER_DENSITY, BATTERY, CHARACTER, SOURCES, FACTS, QUESTIONS, MEASURES, MISSION_TYPES, DV, ENGINE, BASE, SUBSYSTEMS, ROCKETS, BUDGET, DIFFICULTIES };
   if (typeof module !== 'undefined' && module.exports) module.exports = DATA;
   else root.SS_DATA = DATA;
 })(typeof window !== 'undefined' ? window : globalThis);
