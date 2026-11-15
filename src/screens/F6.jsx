@@ -7,8 +7,8 @@ import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { OptionRow } from '../components/ui/OptionRow.jsx'
 import { HELP_F6 } from '../data/help.mjs'
-import { sampleMission } from '../engine/sampleMission.mjs'
 import { useGame } from '../engine/useGame.jsx'
+import { HelpWindow, loadSample } from './F5a.jsx'
 import { f6Speech } from './f6Speech.mjs'
 import { StageScene } from './frame.jsx'
 import { usePlay } from './playContext.jsx'
@@ -61,7 +61,7 @@ export function F6() {
 
 function NotLanded() {
   const navigate = useNavigate()
-  const { state, update } = useGame()
+  const { state, model, update } = useGame()
   return (
     <div className={`${styles.screen} ${styles.guard}`}>
       <div className={styles.panelGuard}>
@@ -73,7 +73,7 @@ function NotLanded() {
             <Button variant="outline" onClick={() => navigate('/f5b')}>Go to the landing</Button>
             <Button
               variant="outline"
-              onClick={() => update((next) => Object.assign(next, sampleMission(state.missionType || 'robotic', 'f6')))}
+              onClick={() => update((next) => loadSample(next, model, state.missionType || 'robotic', 'f6'))}
             >
               Load a sample mission
             </Button>
@@ -116,16 +116,6 @@ function SourceLink({ srcKey }) {
     <button type="button" className={`${shell.link} ${styles.sourceLink}`} onClick={() => openSource(srcKey)}>
       NASA source
     </button>
-  )
-}
-
-function HelpWindow({ open, onClose }) {
-  return (
-    <Modal open={open} variant="info" title={HELP_F6.title} onClose={onClose}>
-      {HELP_F6.blocks.map((block) => (
-        <p key={block.heading}><b>{block.heading}:</b> {block.text}</p>
-      ))}
-    </Modal>
   )
 }
 
@@ -214,7 +204,7 @@ function F6Body({ step, setStep, poi, setPoi }) {
 
   const finishCheck = model.finishSurface(state)
   const sendCheck = model.canSendData(state)
-  const helpWindow = <HelpWindow open={help} onClose={() => setHelp(false)} />
+  const helpWindow = <HelpWindow help={HELP_F6} open={help} onClose={() => setHelp(false)} />
   const helpButton = <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
 
   if (step === 'a') {
