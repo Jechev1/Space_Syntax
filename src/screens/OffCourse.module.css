@@ -1,0 +1,17 @@
+/* Off course: one panel on the open sky, like Phase 8. */
+
+.panel {
+  position: absolute;
+  left: 30%;
+  top: 24%;
+  width: 40%;
+  max-width: 520px;
+  pointer-events: auto;
+}
+
+.line {
+  margin: 0 0 calc(var(--fs-body) / 3);
+  font-size: var(--fs-body);
+  line-height: 1.35;
+  color: var(--text);
+}
