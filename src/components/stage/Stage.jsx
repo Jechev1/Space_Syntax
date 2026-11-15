@@ -25,25 +25,42 @@ export function Stage({ background = '', objects = null, character = null, child
   const grainId = useId().replace(/:/g, '')
   const frameRef = useRef(null)
   const photo = Boolean(background)
-  const scale = useStageScale(frameRef, photo)
+  const scale = useStageScale(frameRef)
   const portrait = typeof character === 'string'
     ? <img className={styles.portrait} src={character} alt="" />
     : character
+  const grain = (
+    <>
+      <svg className={styles.grainSvg} aria-hidden="true">
+        <filter id={grainId}>
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch" />
+        </filter>
+      </svg>
+      <div className={styles.grain} style={{ filter: `url(#${grainId})` }} aria-hidden="true" />
+    </>
+  )
+
+  if (photo) {
+    return (
+      <div className={`${styles.viewport} ${styles.photoStage}`} ref={frameRef}>
+        <img className={styles.photo} src={background} alt="" />
+        {grain}
+        <div className={styles.objects}>{objects}</div>
+        <div className={styles.character}>{portrait}</div>
+        <div className={styles.ui}>{children}</div>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.viewport} ref={frameRef}>
       <div className={styles.fit} style={{ width: STAGE_W * scale, height: STAGE_H * scale }}>
-        <div className={`${styles.stage} ${photo ? styles.hasPhoto : ''}`} style={{ transform: `scale(${scale})` }}>
-          {photo ? <img className={styles.photo} src={background} alt="" /> : <div className={styles.sky} aria-hidden="true" />}
-          {photo ? null : <div className={styles.stars} style={{ backgroundImage: starImage(STAR_NEAR, 'var(--text)') }} aria-hidden="true" />}
-          {photo ? null : <div className={`${styles.stars} ${styles.starsFar}`} style={{ backgroundImage: starImage(STAR_FAR, 'var(--text-dim)') }} aria-hidden="true" />}
-          {photo ? null : <div className={styles.fog} aria-hidden="true" />}
-          <svg className={styles.grainSvg} aria-hidden="true">
-            <filter id={grainId}>
-              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch" />
-            </filter>
-          </svg>
-          <div className={styles.grain} style={{ filter: `url(#${grainId})` }} aria-hidden="true" />
+        <div className={styles.stage} style={{ transform: `scale(${scale})` }}>
+          <div className={styles.sky} aria-hidden="true" />
+          <div className={styles.stars} style={{ backgroundImage: starImage(STAR_NEAR, 'var(--text)') }} aria-hidden="true" />
+          <div className={`${styles.stars} ${styles.starsFar}`} style={{ backgroundImage: starImage(STAR_FAR, 'var(--text-dim)') }} aria-hidden="true" />
+          <div className={styles.fog} aria-hidden="true" />
+          {grain}
           <div className={styles.objects}>{objects}</div>
           <div className={styles.character}>{portrait}</div>
           <div className={styles.ui}>{children}</div>
@@ -53,7 +70,7 @@ export function Stage({ background = '', objects = null, character = null, child
   )
 }
 
-function useStageScale(ref, cover) {
+function useStageScale(ref) {
   const [scale, setScale] = useState(1)
 
   useLayoutEffect(() => {
@@ -61,16 +78,14 @@ function useStageScale(ref, cover) {
     if (!el) return undefined
     const fit = () => {
       const box = el.getBoundingClientRect()
-      const next = cover
-        ? Math.max(box.width / STAGE_W, box.height / STAGE_H)
-        : Math.min(box.width / STAGE_W, box.height / STAGE_H)
+      const next = Math.min(box.width / STAGE_W, box.height / STAGE_H)
       setScale(next > 0 ? next : 1)
     }
     fit()
     const observer = new ResizeObserver(fit)
     observer.observe(el)
     return () => observer.disconnect()
-  }, [ref, cover])
+  }, [ref])
 
   return scale
 }
