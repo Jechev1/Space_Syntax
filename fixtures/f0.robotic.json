@@ -1,0 +1,117 @@
+{
+ "screen": "f0",
+ "title": "Mission goal",
+ "missionType": "robotic",
+ "note": "Choices write state.question, state.measure, state.missionType. Lists come from SS_DATA.QUESTIONS, MEASURES, MISSION_TYPES.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "robotic",
+  "design": {
+   "science": []
+  },
+  "rocket": null,
+  "crew": null,
+  "flight": {
+   "margin": 0
+  },
+  "comms": null,
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "validate": {
+   "ok": true,
+   "issues": []
+  },
+  "unlockedInstruments": [
+   "camera",
+   "spectrometer",
+   "neutron"
+  ],
+  "requiredInstruments": [
+   "spectrometer",
+   "neutron"
+  ],
+  "density": {
+   "title": "How dense is the Moon?",
+   "steps": [
+    {
+     "eq": "V = 4/3 · π · r³",
+     "num": "V = 4/3 · π · (1,737,400 m)³ = 2.197×10¹⁹ m³"
+    },
+    {
+     "eq": "ρ = M / V",
+     "num": "ρ = 7.346×10²² kg ÷ 2.197×10¹⁹ m³ = 3,344 kg/m³"
+    },
+    {
+     "eq": "compare",
+     "num": "Water is 1,000 kg/m³ → the Moon is 3.3× denser than water"
+    }
+   ],
+   "result": 3343.9737775811927,
+   "check": "NASA lists 3,344 kg/m³ ✔",
+   "src": "nssdc"
+  }
+ },
+ "sim": {
+  "success": {
+   "phase": 0,
+   "title": "Mission goal",
+   "ready": true,
+   "seed": 1,
+   "ok": true,
+   "outcome": "success",
+   "stars": 1,
+   "time": {
+    "unit": "s",
+    "total": 0
+   },
+   "fields": [],
+   "frames": [
+    {
+     "t": 0
+    }
+   ],
+   "events": [
+    {
+     "t": 0,
+     "kind": "success",
+     "text": "Hypothesis logged: \"The Moon is made of cheese.\" Now go test it."
+    }
+   ],
+   "failure": null,
+   "score": null,
+   "math": {
+    "title": "How dense is the Moon?",
+    "steps": [
+     {
+      "eq": "V = 4/3 · π · r³",
+      "num": "V = 4/3 · π · (1,737,400 m)³ = 2.197×10¹⁹ m³"
+     },
+     {
+      "eq": "ρ = M / V",
+      "num": "ρ = 7.346×10²² kg ÷ 2.197×10¹⁹ m³ = 3,344 kg/m³"
+     },
+     {
+      "eq": "compare",
+      "num": "Water is 1,000 kg/m³ → the Moon is 3.3× denser than water"
+     }
+    ],
+    "result": 3343.9737775811927,
+    "check": "NASA lists 3,344 kg/m³ ✔",
+    "src": "nssdc"
+   }
+  }
+ }
+}

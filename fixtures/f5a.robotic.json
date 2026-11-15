@@ -1,0 +1,312 @@
+{
+ "screen": "f5a",
+ "title": "Landing site",
+ "missionType": "robotic",
+ "note": "Choice writes state.site (tranquility, descartes, southPole). One siteReport per site fills the cards.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "robotic",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "solarBig",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": "medium",
+  "crew": null,
+  "flight": {
+   "margin": 0.15
+  },
+  "comms": {
+   "link": "ka",
+   "dish": "dsn34"
+  },
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Lander core (computer, radio, engines)",
+     "where": "lander",
+     "mass": 250,
+     "cost": 150,
+     "power": 100,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy",
+     "where": "lander",
+     "mass": 120,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "lander",
+     "mass": 30,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings)",
+     "where": "lander",
+     "mass": 25,
+     "cost": 5,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar panels + big battery",
+     "where": "lander",
+     "mass": 83.33333333333334,
+     "cost": 30,
+     "power": 0,
+     "gen": 450,
+     "src": "lunarPower",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "lander",
+     "mass": 18,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "lander",
+     "mass": 12,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Comms: Ka-band high-gain antenna",
+     "where": "lander",
+     "mass": 30,
+     "cost": 40,
+     "power": 110,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Ground: 34 m DSN antenna time",
+     "where": "ground",
+     "mass": 0,
+     "cost": 5,
+     "power": 0,
+     "gen": 0,
+     "src": "dsn",
+     "kind": "hw"
+    }
+   ],
+   "dry": 568.3333333333334,
+   "tli": 2008.146448143121,
+   "propellant": 1439.8131148097877,
+   "breakdown": {
+    "lander": 568.3333333333334,
+    "returnFuel": 0
+   },
+   "cost": 315,
+   "totalCost": 435,
+   "budget": 650,
+   "powerNeed": 250,
+   "powerGen": 450,
+   "rocket": {
+    "id": "medium",
+    "title": "Medium launcher",
+    "capacity": 4000,
+    "cost": 120,
+    "capSrc": "game",
+    "costSrc": "game",
+    "blurb": "Commercial-class workhorse."
+   },
+   "nightHours": 100,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 3.533395509929245,
+   "life": null,
+   "margin": 0.15,
+   "dvRequired": 3024,
+   "dvPlanned": 3477.6,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": true,
+   "overBudget": false
+  },
+  "sites": [
+   {
+    "id": "tranquility",
+    "report": {
+     "site": {
+      "id": "tranquility",
+      "title": "Sea of Tranquility (Apollo 11)",
+      "terrain": "Mare (dark lava plain)",
+      "rock": "Basalt rich in iron and titanium, about 3.7 billion years old",
+      "darkHours": 354,
+      "lightHours": 354,
+      "hazard": 1,
+      "hoverNeed": 20,
+      "bestFor": [
+       "made",
+       "age"
+      ],
+      "earthView": "always",
+      "src": "sampleScience",
+      "lola": "Flat, gentle slopes",
+      "lroc": "Few boulders",
+      "diviner": "About 127 °C at noon, −173 °C at night"
+     },
+     "scienceMatch": true,
+     "survivesNight": false,
+     "nightHours": 100,
+     "opsHours": 354,
+     "evaHours": null,
+     "coldRisk": false,
+     "earthView": "always",
+     "hoverAvailable": 67.6111111111111,
+     "hoverTypical": 10
+    },
+    "validateIfPicked": {
+     "ok": true,
+     "issues": [
+      {
+       "code": "nightDeath",
+       "severity": "warn",
+       "message": "Your lander survives 100 h of darkness; nights here last 354 h",
+       "phase": 5
+      }
+     ]
+    }
+   },
+   {
+    "id": "descartes",
+    "report": {
+     "site": {
+      "id": "descartes",
+      "title": "Descartes Highlands (Apollo 16)",
+      "terrain": "Highlands (bright, old crust)",
+      "rock": "Impact breccias of the bright anorthositic crust, about 3.8 to 4.2 billion years old",
+      "darkHours": 354,
+      "lightHours": 354,
+      "hazard": 2,
+      "hoverNeed": 35,
+      "bestFor": [
+       "made"
+      ],
+      "earthView": "always",
+      "src": "sampleScience",
+      "lola": "Rolling hills, steeper slopes",
+      "lroc": "Many boulders and craters",
+      "diviner": "About 127 °C at noon, −173 °C at night"
+     },
+     "scienceMatch": true,
+     "survivesNight": false,
+     "nightHours": 100,
+     "opsHours": 354,
+     "evaHours": null,
+     "coldRisk": false,
+     "earthView": "always",
+     "hoverAvailable": 67.6111111111111,
+     "hoverTypical": 17.5
+    },
+    "validateIfPicked": {
+     "ok": true,
+     "issues": [
+      {
+       "code": "nightDeath",
+       "severity": "warn",
+       "message": "Your lander survives 100 h of darkness; nights here last 354 h",
+       "phase": 5
+      }
+     ]
+    }
+   },
+   {
+    "id": "southPole",
+    "report": {
+     "site": {
+      "id": "southPole",
+      "title": "South Pole crater rim",
+      "terrain": "Polar (near shadowed craters)",
+      "rock": "Regolith, with water ice hidden in permanently shadowed craters nearby",
+      "darkHours": 100,
+      "lightHours": 600,
+      "hazard": 3,
+      "hoverNeed": 50,
+      "bestFor": [
+       "water"
+      ],
+      "earthView": "intermittent",
+      "coldShadow": true,
+      "src": "moonfacts",
+      "lola": "Steep crater rims, long shadows",
+      "lroc": "Hard to see: the Sun is always low",
+      "diviner": "Shadowed craters reach about 25 K (−250 °C), among the coldest places measured in the solar system"
+     },
+     "scienceMatch": false,
+     "survivesNight": true,
+     "nightHours": 100,
+     "opsHours": 700,
+     "evaHours": null,
+     "coldRisk": false,
+     "earthView": "intermittent",
+     "hoverAvailable": 67.6111111111111,
+     "hoverTypical": 25
+    },
+    "validateIfPicked": {
+     "ok": true,
+     "issues": [
+      {
+       "code": "siteMismatch",
+       "severity": "warn",
+       "message": "This site is not the best place to answer your question",
+       "phase": 5
+      },
+      {
+       "code": "earthHidden",
+       "severity": "warn",
+       "message": "Earth is low on the horizon here: contact comes and goes",
+       "phase": 5
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "sim": {}
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Space Syntax demo: Phase 5B Powered descent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="5b.css">
+</head>
+<body>
+  <!-- Layer 1: the scene (canvas). Layer 2: live HTML text on top (HUD, panels, decision card). -->
+  <canvas id="scene" aria-label="Lander descending to the Moon"></canvas>
+  <div id="ui">
+    <div id="hud" class="glass"></div>
+    <div id="ticker" class="glass pill" hidden></div>
+
+    <div id="gauge" class="glass">
+      <span id="gaugeLabel">Altitude</span>
+      <div id="gaugeBar"><i id="gaugeMark"></i></div>
+      <b id="gaugeVal">0 m</b>
+    </div>
+
+    <div id="bubble" class="bubble">Watch the<br>fuel margin!</div>
+
+    <aside id="panel" class="glass">
+      <h2>Phase 5 &middot; Powered descent</h2>
+      <dl>
+        <div><dt>Descent delta-v</dt><dd id="pDv">-</dd></div>
+        <div><dt>Margin left</dt><dd id="pMargin">-</dd></div>
+        <div><dt>Gravity</dt><dd id="pG">-</dd></div>
+      </dl>
+      <span id="pill" class="pill">Time compressed</span>
+      <div class="controls">
+        <label>Seed <select id="seedSel"></select></label>
+        <label>Phase 3 margin <select id="marginSel"></select></label>
+        <button id="again" class="btn">Fly again</button>
+      </div>
+    </aside>
+
+    <section id="decision" class="card warn glass" hidden>
+      <h3 id="dPrompt"></h3>
+      <div id="dOptions" class="row"></div>
+    </section>
+
+    <section id="result" class="card glass" hidden>
+      <h3 id="rTitle"></h3>
+      <div id="rStars" class="stars"></div>
+      <p id="rBody"></p>
+      <p id="rFix" class="fix" hidden></p>
+    </section>
+  </div>
+  <script src="../js/data.js"></script>
+  <script src="../js/model.js"></script>
+  <script src="../js/sim/kit.js"></script>
+  <script src="../js/sim/p1.js"></script>
+  <script src="../js/sim/p2.js"></script>
+  <script src="../js/sim/p3.js"></script>
+  <script src="../js/sim/p4.js"></script>
+  <script src="../js/sim/p5.js"></script>
+  <script src="../js/sim.js"></script>
+  <script src="5b.js"></script>
+</body>
+</html>

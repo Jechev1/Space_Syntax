@@ -1,0 +1,2899 @@
+{
+ "screen": "f3a",
+ "title": "Flight plan",
+ "missionType": "robotic",
+ "note": "Choice writes state.flight.margin (one of FLIGHT.marginOptions). Sim path x,y move the ship dot on the Earth to Moon diagram.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "robotic",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "solarBig",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": "medium",
+  "crew": null,
+  "flight": {
+   "margin": 0.15
+  },
+  "comms": null,
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "flightPlan": {
+   "tli": {
+    "dv": 3150,
+    "by": "rocket upper stage",
+    "src": "cev"
+   },
+   "burns": [
+    {
+     "key": "loi",
+     "label": "Lunar orbit insertion (NASA range 890–950)",
+     "src": "altair",
+     "dv": 950,
+     "dvPlanned": 1092.5,
+     "vehicle": "lander"
+    },
+    {
+     "key": "descent",
+     "label": "Powered descent to the surface",
+     "src": "altair",
+     "dv": 2074,
+     "dvPlanned": 2385.1,
+     "vehicle": "lander"
+    }
+   ],
+   "margin": 0.15,
+   "dvRequired": 3024,
+   "dvPlanned": 3477.6
+  },
+  "rocketMath": {
+   "ve": 3079.2880999999998,
+   "veS": "3,079",
+   "isp": 314,
+   "burns": [
+    {
+     "name": "Brake into lunar orbit",
+     "dv": 1092.5,
+     "ratio": 1.425880898379989,
+     "mFinal": 1288.5631762298442,
+     "prop": 568.1309320512955,
+     "tanks": 45.450474564103644,
+     "mStart": 1902.1445828452433
+    },
+    {
+     "name": "Land on the Moon",
+     "dv": 2385.1,
+     "ratio": 2.1696419335598995,
+     "mFinal": 538.3333333333334,
+     "prop": 694.6572619412137,
+     "tanks": 55.5725809552971,
+     "mStart": 1288.5631762298442
+    }
+   ],
+   "tli": 1902.1445828452438,
+   "dry": 538.3333333333334,
+   "margin": 0.15
+  },
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Lander core (computer, radio, engines)",
+     "where": "lander",
+     "mass": 250,
+     "cost": 150,
+     "power": 100,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy",
+     "where": "lander",
+     "mass": 120,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "lander",
+     "mass": 30,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings)",
+     "where": "lander",
+     "mass": 25,
+     "cost": 5,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar panels + big battery",
+     "where": "lander",
+     "mass": 83.33333333333334,
+     "cost": 30,
+     "power": 0,
+     "gen": 450,
+     "src": "lunarPower",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "lander",
+     "mass": 18,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "lander",
+     "mass": 12,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    }
+   ],
+   "dry": 538.3333333333334,
+   "tli": 1902.1445828452438,
+   "propellant": 1363.8112495119103,
+   "breakdown": {
+    "lander": 538.3333333333334,
+    "returnFuel": 0
+   },
+   "cost": 270,
+   "totalCost": 390,
+   "budget": 650,
+   "powerNeed": 140,
+   "powerGen": 450,
+   "rocket": {
+    "id": "medium",
+    "title": "Medium launcher",
+    "capacity": 4000,
+    "cost": 120,
+    "capSrc": "game",
+    "costSrc": "game",
+    "blurb": "Commercial-class workhorse."
+   },
+   "nightHours": 100,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 3.533395509929245,
+   "life": null,
+   "margin": 0.15,
+   "dvRequired": 3024,
+   "dvPlanned": 3477.6,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": true,
+   "overBudget": false
+  },
+  "marginTable": [
+   {
+    "margin": 0,
+    "dvPlanned": 3024,
+    "launchMass": 1603.382081394064,
+    "fits": true,
+    "totalCost": 390,
+    "go": true,
+    "issues": [
+     "zeroDvMargin"
+    ]
+   },
+   {
+    "margin": 0.05,
+    "dvPlanned": 3175.2000000000003,
+    "launchMass": 1696.895884382841,
+    "fits": true,
+    "totalCost": 390,
+    "go": true,
+    "issues": []
+   },
+   {
+    "margin": 0.1,
+    "dvPlanned": 3326.4,
+    "launchMass": 1796.3419400190976,
+    "fits": true,
+    "totalCost": 390,
+    "go": true,
+    "issues": []
+   },
+   {
+    "margin": 0.15,
+    "dvPlanned": 3477.6,
+    "launchMass": 1902.1445828452438,
+    "fits": true,
+    "totalCost": 390,
+    "go": true,
+    "issues": []
+   },
+   {
+    "margin": 0.2,
+    "dvPlanned": 3628.7999999999997,
+    "launchMass": 2014.7635589878266,
+    "fits": true,
+    "totalCost": 390,
+    "go": true,
+    "issues": []
+   }
+  ],
+  "minMargin": 0,
+  "validate": {
+   "ok": true,
+   "issues": []
+  }
+ },
+ "sim": {
+  "success": {
+   "label": "margin 15%",
+   "seed": 7,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "robotic",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "solarBig",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "medium",
+    "crew": null,
+    "flight": {
+     "margin": 0.15
+    },
+    "comms": null,
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 3,
+    "title": "Fly to the Moon",
+    "ready": true,
+    "seed": 7,
+    "ok": true,
+    "outcome": "success",
+    "stars": 1,
+    "time": {
+     "unit": "h",
+     "total": 75.5
+    },
+    "fields": [
+     {
+      "key": "progress",
+      "label": "Trip progress",
+      "unit": "",
+      "max": 1
+     },
+     {
+      "key": "x",
+      "label": "Position x (Earth to Moon)",
+      "unit": "km",
+      "max": 393400
+     },
+     {
+      "key": "y",
+      "label": "Position y",
+      "unit": "km",
+      "max": 79000
+     },
+     {
+      "key": "reserve",
+      "label": "Delta-v reserve",
+      "unit": "m/s",
+      "max": 12000
+     },
+     {
+      "key": "dvUsed",
+      "label": "Delta-v used",
+      "unit": "m/s",
+      "max": 12000
+     },
+     {
+      "key": "leg",
+      "label": "Leg number",
+      "unit": "",
+      "max": 8
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "progress": 0,
+      "x": 0,
+      "y": 0,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 0
+     },
+     {
+      "t": 0.5,
+      "progress": 0.007,
+      "x": 0,
+      "y": 0,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 0.629,
+      "progress": 0.008,
+      "x": 689.784,
+      "y": 394.617,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 1.258,
+      "progress": 0.017,
+      "x": 4048.479,
+      "y": 2315.673,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 1.888,
+      "progress": 0.025,
+      "x": 7407.708,
+      "y": 4235.289,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 2.517,
+      "progress": 0.033,
+      "x": 10766.937,
+      "y": 6151.714,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 3.146,
+      "progress": 0.042,
+      "x": 14125.632,
+      "y": 8063.198,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 3.775,
+      "progress": 0.05,
+      "x": 17484.861,
+      "y": 9968.91,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 4.404,
+      "progress": 0.058,
+      "x": 20844.09,
+      "y": 11867.108,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 5.033,
+      "progress": 0.067,
+      "x": 24202.785,
+      "y": 13756.063,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 5.663,
+      "progress": 0.075,
+      "x": 27562.014,
+      "y": 15634.951,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 6.292,
+      "progress": 0.083,
+      "x": 30921.243,
+      "y": 17502.056,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 6.921,
+      "progress": 0.092,
+      "x": 34279.938,
+      "y": 19355.676,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 7.55,
+      "progress": 0.1,
+      "x": 37639.167,
+      "y": 21195.004,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 8.179,
+      "progress": 0.108,
+      "x": 40998.396,
+      "y": 23018.358,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 8.808,
+      "progress": 0.117,
+      "x": 44357.091,
+      "y": 24824.078,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 9.438,
+      "progress": 0.125,
+      "x": 47716.319,
+      "y": 26611.377,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 10.067,
+      "progress": 0.133,
+      "x": 51075.548,
+      "y": 28378.619,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 10.696,
+      "progress": 0.142,
+      "x": 54434.243,
+      "y": 30124.198,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 11.325,
+      "progress": 0.15,
+      "x": 57793.472,
+      "y": 31847.352,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 11.954,
+      "progress": 0.158,
+      "x": 61152.701,
+      "y": 33546.503,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 12.583,
+      "progress": 0.167,
+      "x": 64511.396,
+      "y": 35220.107,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 13.213,
+      "progress": 0.175,
+      "x": 67870.625,
+      "y": 36867.435,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 13.842,
+      "progress": 0.183,
+      "x": 71229.854,
+      "y": 38486.976,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 14.471,
+      "progress": 0.192,
+      "x": 74588.549,
+      "y": 40077.261,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 15.1,
+      "progress": 0.2,
+      "x": 77947.778,
+      "y": 41637.595,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 15.729,
+      "progress": 0.208,
+      "x": 81307.007,
+      "y": 43166.548,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 16.358,
+      "progress": 0.217,
+      "x": 84665.702,
+      "y": 44662.732,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 16.988,
+      "progress": 0.225,
+      "x": 88024.931,
+      "y": 46125.496,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 17.617,
+      "progress": 0.233,
+      "x": 91384.159,
+      "y": 47553.495,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 18.246,
+      "progress": 0.242,
+      "x": 94742.854,
+      "y": 48945.437,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 18.875,
+      "progress": 0.25,
+      "x": 98102.083,
+      "y": 50300.713,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 19.504,
+      "progress": 0.258,
+      "x": 101461.312,
+      "y": 51618.079,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 20.133,
+      "progress": 0.267,
+      "x": 104820.007,
+      "y": 52896.342,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 20.763,
+      "progress": 0.275,
+      "x": 108179.236,
+      "y": 54134.944,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 21.392,
+      "progress": 0.283,
+      "x": 111538.465,
+      "y": 55332.746,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 22.021,
+      "progress": 0.292,
+      "x": 114897.16,
+      "y": 56488.665,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 22.65,
+      "progress": 0.3,
+      "x": 118256.389,
+      "y": 57602.197,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 23.279,
+      "progress": 0.308,
+      "x": 121615.618,
+      "y": 58672.315,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 23.908,
+      "progress": 0.317,
+      "x": 124974.313,
+      "y": 59698.053,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 24.538,
+      "progress": 0.325,
+      "x": 128333.542,
+      "y": 60678.966,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 25.167,
+      "progress": 0.333,
+      "x": 131692.771,
+      "y": 61614.146,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 25.796,
+      "progress": 0.342,
+      "x": 135051.466,
+      "y": 62502.751,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 26.425,
+      "progress": 0.35,
+      "x": 138410.694,
+      "y": 63344.395,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 27.054,
+      "progress": 0.358,
+      "x": 141769.923,
+      "y": 64138.297,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 27.683,
+      "progress": 0.367,
+      "x": 145128.618,
+      "y": 64883.745,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 28.313,
+      "progress": 0.375,
+      "x": 148487.847,
+      "y": 65580.414,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 28.942,
+      "progress": 0.383,
+      "x": 151847.076,
+      "y": 66227.657,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 29.571,
+      "progress": 0.392,
+      "x": 155205.771,
+      "y": 66824.894,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 30.2,
+      "progress": 0.4,
+      "x": 158565,
+      "y": 67371.867,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 30.829,
+      "progress": 0.408,
+      "x": 161924.229,
+      "y": 67868.062,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 31.458,
+      "progress": 0.417,
+      "x": 165282.924,
+      "y": 68313.04,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 32.088,
+      "progress": 0.425,
+      "x": 168642.153,
+      "y": 68706.608,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 32.717,
+      "progress": 0.433,
+      "x": 172001.382,
+      "y": 69048.392,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 33.346,
+      "progress": 0.442,
+      "x": 175360.077,
+      "y": 69338.095,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 33.975,
+      "progress": 0.45,
+      "x": 178719.306,
+      "y": 69575.589,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 34.604,
+      "progress": 0.458,
+      "x": 182078.534,
+      "y": 69760.646,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 35.233,
+      "progress": 0.467,
+      "x": 185437.229,
+      "y": 69893.109,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 35.863,
+      "progress": 0.475,
+      "x": 188796.458,
+      "y": 69972.921,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 36.492,
+      "progress": 0.483,
+      "x": 192155.687,
+      "y": 69999.995,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 36.5,
+      "progress": 0.483,
+      "x": 192200,
+      "y": 70000,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 2
+     },
+     {
+      "t": 37,
+      "progress": 0.49,
+      "x": 192200,
+      "y": 70000,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 37.121,
+      "progress": 0.492,
+      "x": 192844.938,
+      "y": 69999.028,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 37.75,
+      "progress": 0.5,
+      "x": 196204.167,
+      "y": 69962.521,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 38.379,
+      "progress": 0.508,
+      "x": 199563.396,
+      "y": 69873.286,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 39.008,
+      "progress": 0.517,
+      "x": 202922.091,
+      "y": 69731.415,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 39.638,
+      "progress": 0.525,
+      "x": 206281.319,
+      "y": 69536.971,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 40.267,
+      "progress": 0.533,
+      "x": 209640.548,
+      "y": 69290.118,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 40.896,
+      "progress": 0.542,
+      "x": 212999.243,
+      "y": 68991.095,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 41.525,
+      "progress": 0.55,
+      "x": 216358.472,
+      "y": 68640.032,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 42.154,
+      "progress": 0.558,
+      "x": 219717.701,
+      "y": 68237.236,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 42.783,
+      "progress": 0.567,
+      "x": 223076.396,
+      "y": 67783.088,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 43.413,
+      "progress": 0.575,
+      "x": 226435.625,
+      "y": 67277.785,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 44.042,
+      "progress": 0.583,
+      "x": 229794.854,
+      "y": 66721.777,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 44.671,
+      "progress": 0.592,
+      "x": 233153.549,
+      "y": 66115.582,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 45.3,
+      "progress": 0.6,
+      "x": 236512.778,
+      "y": 65459.465,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 45.929,
+      "progress": 0.608,
+      "x": 239872.007,
+      "y": 64754.012,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 46.558,
+      "progress": 0.617,
+      "x": 243230.702,
+      "y": 63999.88,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 47.188,
+      "progress": 0.625,
+      "x": 246589.931,
+      "y": 63197.397,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 47.817,
+      "progress": 0.633,
+      "x": 249949.159,
+      "y": 62347.283,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 48.446,
+      "progress": 0.642,
+      "x": 253307.854,
+      "y": 61450.326,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 49.075,
+      "progress": 0.65,
+      "x": 256667.083,
+      "y": 60506.917,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 49.704,
+      "progress": 0.658,
+      "x": 260026.312,
+      "y": 59517.904,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 50.333,
+      "progress": 0.667,
+      "x": 263385.007,
+      "y": 58484.203,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 50.963,
+      "progress": 0.675,
+      "x": 266744.236,
+      "y": 57406.262,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 51.592,
+      "progress": 0.683,
+      "x": 270103.465,
+      "y": 56285.056,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 52.221,
+      "progress": 0.692,
+      "x": 273462.16,
+      "y": 55121.617,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 52.85,
+      "progress": 0.7,
+      "x": 276821.389,
+      "y": 53916.453,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 53.479,
+      "progress": 0.708,
+      "x": 280180.618,
+      "y": 52670.653,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 54.108,
+      "progress": 0.717,
+      "x": 283539.313,
+      "y": 51385.364,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 54.738,
+      "progress": 0.725,
+      "x": 286898.542,
+      "y": 50061.146,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 55.367,
+      "progress": 0.733,
+      "x": 290257.771,
+      "y": 48699.198,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 55.996,
+      "progress": 0.742,
+      "x": 293616.466,
+      "y": 47300.772,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 56.625,
+      "progress": 0.75,
+      "x": 296975.694,
+      "y": 45866.476,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 57.254,
+      "progress": 0.758,
+      "x": 300334.923,
+      "y": 44397.613,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 57.883,
+      "progress": 0.767,
+      "x": 303693.618,
+      "y": 42895.529,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 58.513,
+      "progress": 0.775,
+      "x": 307052.847,
+      "y": 41360.88,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 59.142,
+      "progress": 0.783,
+      "x": 310412.076,
+      "y": 39795.058,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 59.771,
+      "progress": 0.792,
+      "x": 313770.771,
+      "y": 38199.499,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 60.4,
+      "progress": 0.8,
+      "x": 317130,
+      "y": 36574.9,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 61.029,
+      "progress": 0.808,
+      "x": 320489.229,
+      "y": 34922.734,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 61.658,
+      "progress": 0.817,
+      "x": 323847.924,
+      "y": 33244.517,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 62.288,
+      "progress": 0.825,
+      "x": 327207.153,
+      "y": 31540.979,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 62.917,
+      "progress": 0.833,
+      "x": 330566.382,
+      "y": 29813.67,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 63.546,
+      "progress": 0.842,
+      "x": 333925.077,
+      "y": 28064.171,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 64.175,
+      "progress": 0.85,
+      "x": 337284.306,
+      "y": 26293.244,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 64.804,
+      "progress": 0.858,
+      "x": 340643.534,
+      "y": 24502.5,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 65.433,
+      "progress": 0.867,
+      "x": 344002.229,
+      "y": 22693.579,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 66.063,
+      "progress": 0.875,
+      "x": 347361.458,
+      "y": 20867.268,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 66.692,
+      "progress": 0.883,
+      "x": 350720.687,
+      "y": 19025.229,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 67.321,
+      "progress": 0.892,
+      "x": 354079.382,
+      "y": 17169.148,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 67.95,
+      "progress": 0.9,
+      "x": 357438.611,
+      "y": 15299.833,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 68.579,
+      "progress": 0.908,
+      "x": 360797.84,
+      "y": 13418.987,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 69.208,
+      "progress": 0.917,
+      "x": 364156.535,
+      "y": 11528.328,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 69.838,
+      "progress": 0.925,
+      "x": 367515.764,
+      "y": 9628.682,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 70.467,
+      "progress": 0.933,
+      "x": 370874.993,
+      "y": 7721.778,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 71.096,
+      "progress": 0.942,
+      "x": 374233.688,
+      "y": 5809.359,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 71.725,
+      "progress": 0.95,
+      "x": 377592.917,
+      "y": 3892.257,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 72.354,
+      "progress": 0.958,
+      "x": 380952.146,
+      "y": 1972.223,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 72.983,
+      "progress": 0.967,
+      "x": 384310.841,
+      "y": 51.007,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 73,
+      "progress": 0.967,
+      "x": 384400,
+      "y": 0,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 4
+     },
+     {
+      "t": 73.5,
+      "progress": 0.974,
+      "x": 384400,
+      "y": 0,
+      "reserve": 3477.6,
+      "dvUsed": 0,
+      "leg": 5
+     },
+     {
+      "t": 73.613,
+      "progress": 0.975,
+      "x": 384398.418,
+      "y": 168.74,
+      "reserve": 3261.316,
+      "dvUsed": 216.284,
+      "leg": 5
+     },
+     {
+      "t": 74,
+      "progress": 0.98,
+      "x": 384368.768,
+      "y": 749.132,
+      "reserve": 2516.338,
+      "dvUsed": 961.262,
+      "leg": 6
+     },
+     {
+      "t": 74.242,
+      "progress": 0.983,
+      "x": 384331.323,
+      "y": 1109.719,
+      "reserve": 1497.433,
+      "dvUsed": 1980.167,
+      "leg": 6
+     },
+     {
+      "t": 74.5,
+      "progress": 0.987,
+      "x": 384275.289,
+      "y": 1493.065,
+      "reserve": 408.549,
+      "dvUsed": 3069.051,
+      "leg": 7
+     },
+     {
+      "t": 74.871,
+      "progress": 0.992,
+      "x": 384166.133,
+      "y": 2038.359,
+      "reserve": 408.549,
+      "dvUsed": 3069.051,
+      "leg": 7
+     },
+     {
+      "t": 75.5,
+      "progress": 1,
+      "x": 383904.613,
+      "y": 2944.752,
+      "reserve": 408.549,
+      "dvUsed": 3069.051,
+      "leg": 7
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Fuel is sized as delta-v x (1 + 15%). This margin also pays for hovering in Phase 5 and the trip home in Phase 7."
+     },
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "This run ends at touchdown. The fuel for the trip home is checked in Phase 7."
+     },
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "The rocket upper stage does the 3,150 m/s trans-lunar burn. That fuel is not yours."
+     },
+     {
+      "t": 37,
+      "kind": "info",
+      "text": "Course correction used 4.8 m/s from the 10 m/s allowance. Navigation is never perfect."
+     },
+     {
+      "t": 73.5,
+      "kind": "info",
+      "text": "Course correction used 3.8 m/s from the 10 m/s allowance. Navigation is never perfect."
+     },
+     {
+      "t": 74,
+      "kind": "info",
+      "text": "Lunar orbit insertion (NASA range 890–950) done: 961 m/s used, plan was 950. 2,516 m/s in the pool."
+     },
+     {
+      "t": 74.5,
+      "kind": "info",
+      "text": "Powered descent to the surface done: 2,108 m/s used, plan was 2,074. 409 m/s in the pool."
+     },
+     {
+      "t": 75.5,
+      "kind": "success",
+      "text": "Landed with 469 m/s of margin left for Phases 5 and 7."
+     }
+    ],
+    "failure": null,
+    "score": {
+     "label": "Reserve left, not too much",
+     "value": -0.0026,
+     "unit": "of needed dv",
+     "thresholds": [
+      0,
+      0.01,
+      0.025
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Delta-v budget: real math",
+     "steps": [
+      {
+       "eq": "ve = Isp x g0",
+       "num": "314 s x 9.80665 m/s² = 3,079 m/s"
+      },
+      {
+       "eq": "planned dv = needed dv x (1 + margin)",
+       "num": "3,024 m/s x 1.15 = 3,478 m/s"
+      },
+      {
+       "eq": "dv = ve x ln(m0 / m1)",
+       "num": "Powered descent to the surface: 2,385 m/s needs 1.29 kg of fuel for each kg that arrives"
+      },
+      {
+       "eq": "navigation error = needed dv x dispersion",
+       "num": "LOI and descent cost 45 m/s more than planned. Corrections used 8.6 of 10 m/s allowance"
+      },
+      {
+       "eq": "margin left = planned + allowance - needed - errors",
+       "num": "3,478 + 60 allowance - 3,024 - 45 = 469 m/s"
+      }
+     ],
+     "src": "cev"
+    }
+   }
+  },
+  "fail": {
+   "label": "margin 0%, flight director",
+   "seed": 1,
+   "state": {
+    "difficulty": "director",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "robotic",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "solarBig",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "medium",
+    "crew": null,
+    "flight": {
+     "margin": 0
+    },
+    "comms": null,
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 3,
+    "title": "Fly to the Moon",
+    "ready": true,
+    "seed": 1,
+    "ok": false,
+    "outcome": "fail",
+    "stars": 0,
+    "time": {
+     "unit": "h",
+     "total": 74.467
+    },
+    "fields": [
+     {
+      "key": "progress",
+      "label": "Trip progress",
+      "unit": "",
+      "max": 1
+     },
+     {
+      "key": "x",
+      "label": "Position x (Earth to Moon)",
+      "unit": "km",
+      "max": 393400
+     },
+     {
+      "key": "y",
+      "label": "Position y",
+      "unit": "km",
+      "max": 79000
+     },
+     {
+      "key": "reserve",
+      "label": "Delta-v reserve",
+      "unit": "m/s",
+      "max": 12000
+     },
+     {
+      "key": "dvUsed",
+      "label": "Delta-v used",
+      "unit": "m/s",
+      "max": 12000
+     },
+     {
+      "key": "leg",
+      "label": "Leg number",
+      "unit": "",
+      "max": 8
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "progress": 0,
+      "x": 0,
+      "y": 0,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 0
+     },
+     {
+      "t": 0.5,
+      "progress": 0.007,
+      "x": 0,
+      "y": 0,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 0.621,
+      "progress": 0.008,
+      "x": 643.87,
+      "y": 368.35,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 1.241,
+      "progress": 0.016,
+      "x": 3956.651,
+      "y": 2263.167,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 1.862,
+      "progress": 0.025,
+      "x": 7269.965,
+      "y": 4156.629,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 2.482,
+      "progress": 0.033,
+      "x": 10582.746,
+      "y": 6046.74,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 3.103,
+      "progress": 0.041,
+      "x": 13896.06,
+      "y": 7932.722,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 3.723,
+      "progress": 0.049,
+      "x": 17209.374,
+      "y": 9812.888,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 4.344,
+      "progress": 0.058,
+      "x": 20522.155,
+      "y": 11685.557,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 4.965,
+      "progress": 0.066,
+      "x": 23835.469,
+      "y": 13549.961,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 5.585,
+      "progress": 0.074,
+      "x": 27148.25,
+      "y": 15404.132,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 6.206,
+      "progress": 0.082,
+      "x": 30461.564,
+      "y": 17247.308,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 6.826,
+      "progress": 0.09,
+      "x": 33774.345,
+      "y": 19077.544,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 7.447,
+      "progress": 0.099,
+      "x": 37087.659,
+      "y": 20894.088,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 8.067,
+      "progress": 0.107,
+      "x": 40400.974,
+      "y": 22695.313,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 8.688,
+      "progress": 0.115,
+      "x": 43713.754,
+      "y": 24479.61,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 9.308,
+      "progress": 0.123,
+      "x": 47027.069,
+      "y": 26246.248,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 9.929,
+      "progress": 0.132,
+      "x": 50339.849,
+      "y": 27993.362,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 10.55,
+      "progress": 0.14,
+      "x": 53653.164,
+      "y": 29720.233,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 11.17,
+      "progress": 0.148,
+      "x": 56966.478,
+      "y": 31425.313,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 11.791,
+      "progress": 0.156,
+      "x": 60279.259,
+      "y": 33107.083,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 12.411,
+      "progress": 0.164,
+      "x": 63592.573,
+      "y": 34764.851,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 13.032,
+      "progress": 0.173,
+      "x": 66905.354,
+      "y": 36396.868,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 13.652,
+      "progress": 0.181,
+      "x": 70218.668,
+      "y": 38002.463,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 14.273,
+      "progress": 0.189,
+      "x": 73531.449,
+      "y": 39579.942,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 14.893,
+      "progress": 0.197,
+      "x": 76844.763,
+      "y": 41128.657,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 15.514,
+      "progress": 0.205,
+      "x": 80158.078,
+      "y": 42647.216,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 16.135,
+      "progress": 0.214,
+      "x": 83470.858,
+      "y": 44134.269,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 16.755,
+      "progress": 0.222,
+      "x": 86784.173,
+      "y": 45589.203,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 17.376,
+      "progress": 0.23,
+      "x": 90096.953,
+      "y": 47010.485,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 17.996,
+      "progress": 0.238,
+      "x": 93410.268,
+      "y": 48397.529,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 18.617,
+      "progress": 0.247,
+      "x": 96723.582,
+      "y": 49749.088,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 19.237,
+      "progress": 0.255,
+      "x": 100036.363,
+      "y": 51063.961,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 19.858,
+      "progress": 0.263,
+      "x": 103349.677,
+      "y": 52341.608,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 20.478,
+      "progress": 0.271,
+      "x": 106662.458,
+      "y": 53580.68,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 21.099,
+      "progress": 0.279,
+      "x": 109975.772,
+      "y": 54780.67,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 21.72,
+      "progress": 0.288,
+      "x": 113288.553,
+      "y": 55940.309,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 22.34,
+      "progress": 0.296,
+      "x": 116601.867,
+      "y": 57059.123,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 22.961,
+      "progress": 0.304,
+      "x": 119915.182,
+      "y": 58136.099,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 23.581,
+      "progress": 0.312,
+      "x": 123227.962,
+      "y": 59170.287,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 24.202,
+      "progress": 0.321,
+      "x": 126541.277,
+      "y": 60161.26,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 24.822,
+      "progress": 0.329,
+      "x": 129854.057,
+      "y": 61107.972,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 25.443,
+      "progress": 0.337,
+      "x": 133167.372,
+      "y": 62010.036,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 26.064,
+      "progress": 0.345,
+      "x": 136480.686,
+      "y": 62866.633,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 26.684,
+      "progress": 0.353,
+      "x": 139793.467,
+      "y": 63677.008,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 27.305,
+      "progress": 0.362,
+      "x": 143106.781,
+      "y": 64440.828,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 27.925,
+      "progress": 0.37,
+      "x": 146419.562,
+      "y": 65157.288,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 28.546,
+      "progress": 0.378,
+      "x": 149732.876,
+      "y": 65826.093,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 29.166,
+      "progress": 0.386,
+      "x": 153045.657,
+      "y": 66446.537,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 29.787,
+      "progress": 0.395,
+      "x": 156358.971,
+      "y": 67018.365,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 30.407,
+      "progress": 0.403,
+      "x": 159672.286,
+      "y": 67541.054,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 31.028,
+      "progress": 0.411,
+      "x": 162985.066,
+      "y": 68014.149,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 31.649,
+      "progress": 0.419,
+      "x": 166298.381,
+      "y": 68437.455,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 32.269,
+      "progress": 0.427,
+      "x": 169611.161,
+      "y": 68810.526,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 32.89,
+      "progress": 0.436,
+      "x": 172924.476,
+      "y": 69133.208,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 33.51,
+      "progress": 0.444,
+      "x": 176237.256,
+      "y": 69405.16,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 34.131,
+      "progress": 0.452,
+      "x": 179550.571,
+      "y": 69626.272,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 34.751,
+      "progress": 0.46,
+      "x": 182863.885,
+      "y": 69796.332,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 35.372,
+      "progress": 0.469,
+      "x": 186176.666,
+      "y": 69915.202,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 35.992,
+      "progress": 0.477,
+      "x": 189489.98,
+      "y": 69982.832,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 1
+     },
+     {
+      "t": 36.5,
+      "progress": 0.483,
+      "x": 192200,
+      "y": 70000,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 2
+     },
+     {
+      "t": 36.613,
+      "progress": 0.485,
+      "x": 192200,
+      "y": 70000,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 2
+     },
+     {
+      "t": 37,
+      "progress": 0.49,
+      "x": 192200,
+      "y": 70000,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 37.234,
+      "progress": 0.493,
+      "x": 193446.631,
+      "y": 69996.367,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 37.854,
+      "progress": 0.501,
+      "x": 196759.945,
+      "y": 69951.396,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 38.475,
+      "progress": 0.51,
+      "x": 200072.726,
+      "y": 69855.156,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 39.095,
+      "progress": 0.518,
+      "x": 203386.04,
+      "y": 69707.685,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 39.716,
+      "progress": 0.526,
+      "x": 206698.821,
+      "y": 69509.139,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 40.336,
+      "progress": 0.534,
+      "x": 210012.135,
+      "y": 69259.601,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 40.957,
+      "progress": 0.542,
+      "x": 213325.449,
+      "y": 68959.28,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 41.577,
+      "progress": 0.551,
+      "x": 216638.23,
+      "y": 68608.458,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 42.198,
+      "progress": 0.559,
+      "x": 219951.544,
+      "y": 68207.278,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 42.819,
+      "progress": 0.567,
+      "x": 223264.325,
+      "y": 67756.165,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 43.439,
+      "progress": 0.575,
+      "x": 226577.639,
+      "y": 67255.303,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 44.06,
+      "progress": 0.584,
+      "x": 229890.42,
+      "y": 66705.221,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 44.68,
+      "progress": 0.592,
+      "x": 233203.734,
+      "y": 66106.145,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 45.301,
+      "progress": 0.6,
+      "x": 236517.049,
+      "y": 65458.599,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 45.921,
+      "progress": 0.608,
+      "x": 239829.829,
+      "y": 64763.174,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 46.542,
+      "progress": 0.616,
+      "x": 243143.144,
+      "y": 64020.154,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 47.162,
+      "progress": 0.625,
+      "x": 246455.924,
+      "y": 63230.326,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 47.783,
+      "progress": 0.633,
+      "x": 249769.239,
+      "y": 62394.012,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 48.404,
+      "progress": 0.641,
+      "x": 253082.019,
+      "y": 61512.096,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 49.024,
+      "progress": 0.649,
+      "x": 256395.334,
+      "y": 60584.94,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 49.645,
+      "progress": 0.658,
+      "x": 259708.648,
+      "y": 59613.362,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 50.265,
+      "progress": 0.666,
+      "x": 263021.429,
+      "y": 58598.242,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 50.886,
+      "progress": 0.674,
+      "x": 266334.743,
+      "y": 57539.996,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 51.506,
+      "progress": 0.682,
+      "x": 269647.524,
+      "y": 56439.742,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 52.127,
+      "progress": 0.69,
+      "x": 272960.838,
+      "y": 55297.931,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 52.748,
+      "progress": 0.699,
+      "x": 276274.153,
+      "y": 54115.576,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 53.368,
+      "progress": 0.707,
+      "x": 279586.933,
+      "y": 52893.741,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 53.989,
+      "progress": 0.715,
+      "x": 282900.248,
+      "y": 51632.931,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 54.609,
+      "progress": 0.723,
+      "x": 286213.028,
+      "y": 50334.474,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 55.23,
+      "progress": 0.732,
+      "x": 289526.343,
+      "y": 48998.906,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 55.85,
+      "progress": 0.74,
+      "x": 292839.657,
+      "y": 47627.411,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 56.471,
+      "progress": 0.748,
+      "x": 296152.438,
+      "y": 46221.223,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 57.091,
+      "progress": 0.756,
+      "x": 299465.752,
+      "y": 44780.922,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 57.712,
+      "progress": 0.764,
+      "x": 302778.533,
+      "y": 43308.027,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 58.333,
+      "progress": 0.773,
+      "x": 306091.847,
+      "y": 41803.143,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 58.953,
+      "progress": 0.781,
+      "x": 309404.628,
+      "y": 40267.858,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 59.574,
+      "progress": 0.789,
+      "x": 312717.942,
+      "y": 38702.803,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 60.194,
+      "progress": 0.797,
+      "x": 316031.257,
+      "y": 37109.371,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 60.815,
+      "progress": 0.805,
+      "x": 319344.037,
+      "y": 35488.992,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 61.435,
+      "progress": 0.814,
+      "x": 322657.352,
+      "y": 33842.334,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 62.056,
+      "progress": 0.822,
+      "x": 325970.132,
+      "y": 32171.133,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 62.676,
+      "progress": 0.83,
+      "x": 329283.447,
+      "y": 30476.076,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 63.297,
+      "progress": 0.838,
+      "x": 332596.761,
+      "y": 28758.674,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 63.918,
+      "progress": 0.847,
+      "x": 335909.542,
+      "y": 27020.467,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 64.538,
+      "progress": 0.855,
+      "x": 339222.856,
+      "y": 25262.17,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 65.159,
+      "progress": 0.863,
+      "x": 342535.637,
+      "y": 23485.638,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 65.779,
+      "progress": 0.871,
+      "x": 345848.951,
+      "y": 21691.601,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 66.4,
+      "progress": 0.879,
+      "x": 349161.732,
+      "y": 19881.953,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 67.02,
+      "progress": 0.888,
+      "x": 352475.046,
+      "y": 18057.436,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 67.641,
+      "progress": 0.896,
+      "x": 355788.361,
+      "y": 16219.679,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 68.261,
+      "progress": 0.904,
+      "x": 359101.141,
+      "y": 14370.329,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 68.882,
+      "progress": 0.912,
+      "x": 362414.456,
+      "y": 12510.145,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 69.503,
+      "progress": 0.921,
+      "x": 365727.236,
+      "y": 10641.09,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 70.123,
+      "progress": 0.929,
+      "x": 369040.551,
+      "y": 8763.933,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 70.744,
+      "progress": 0.937,
+      "x": 372353.331,
+      "y": 6880.653,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 71.364,
+      "progress": 0.945,
+      "x": 375666.646,
+      "y": 4992.026,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 71.985,
+      "progress": 0.953,
+      "x": 378979.96,
+      "y": 3099.738,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 72.605,
+      "progress": 0.962,
+      "x": 382292.741,
+      "y": 1205.483,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 3
+     },
+     {
+      "t": 73,
+      "progress": 0.967,
+      "x": 384400,
+      "y": 0,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 4
+     },
+     {
+      "t": 73.226,
+      "progress": 0.97,
+      "x": 384400,
+      "y": 0,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 4
+     },
+     {
+      "t": 73.5,
+      "progress": 0.974,
+      "x": 384400,
+      "y": 0,
+      "reserve": 3024,
+      "dvUsed": 0,
+      "leg": 5
+     },
+     {
+      "t": 73.846,
+      "progress": 0.978,
+      "x": 384385.005,
+      "y": 519.311,
+      "reserve": 2358.205,
+      "dvUsed": 665.795,
+      "leg": 5
+     },
+     {
+      "t": 74,
+      "progress": 0.98,
+      "x": 384368.768,
+      "y": 749.132,
+      "reserve": 2062.979,
+      "dvUsed": 961.021,
+      "leg": 6
+     },
+     {
+      "t": 74.467,
+      "progress": 0.986,
+      "x": 384283.367,
+      "y": 1444.229,
+      "reserve": 0,
+      "dvUsed": 3084.37,
+      "leg": 6
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Fuel is sized as delta-v x (1 + 0%). This margin also pays for hovering in Phase 5 and the trip home in Phase 7."
+     },
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "This run ends at touchdown. The fuel for the trip home is checked in Phase 7."
+     },
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "The rocket upper stage does the 3,150 m/s trans-lunar burn. That fuel is not yours."
+     },
+     {
+      "t": 37,
+      "kind": "info",
+      "text": "Course correction used 3.7 m/s from the 10 m/s allowance. Navigation is never perfect."
+     },
+     {
+      "t": 73.5,
+      "kind": "info",
+      "text": "Course correction used 2.8 m/s from the 10 m/s allowance. Navigation is never perfect."
+     },
+     {
+      "t": 74,
+      "kind": "info",
+      "text": "Lunar orbit insertion (NASA range 890–950) done: 961 m/s used, plan was 950. 2,063 m/s in the pool."
+     },
+     {
+      "t": 74.467,
+      "kind": "fail",
+      "text": "Out of fuel during the powered descent to the surface. 150 m/s short."
+     }
+    ],
+    "failure": {
+     "t": 74.467,
+     "code": "outOfFuel",
+     "cause": "The powered descent to the surface needed 2,273 m/s but only 2,123 m/s was left. You were 150 m/s short.",
+     "fix": "Raise your margin to 10%.",
+     "burn": "descent",
+     "shortMs": 150
+    },
+    "score": {
+     "label": "Reserve left, not too much",
+     "value": 0,
+     "unit": "of needed dv",
+     "thresholds": [
+      0,
+      0.01,
+      0.025
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Delta-v budget: real math",
+     "steps": [
+      {
+       "eq": "ve = Isp x g0",
+       "num": "314 s x 9.80665 m/s² = 3,079 m/s"
+      },
+      {
+       "eq": "planned dv = needed dv x (1 + margin)",
+       "num": "3,024 m/s x 1.00 = 3,024 m/s"
+      },
+      {
+       "eq": "dv = ve x ln(m0 / m1)",
+       "num": "Powered descent to the surface: 2,074 m/s needs 1.04 kg of fuel for each kg that arrives"
+      },
+      {
+       "eq": "navigation error = needed dv x dispersion",
+       "num": "LOI and descent cost 210 m/s more than planned. Corrections used 6.5 of 10 m/s allowance"
+      },
+      {
+       "eq": "margin left = planned + allowance - needed - errors",
+       "num": "3,024 + 60 allowance - 3,024 - 210 = -150 m/s"
+      }
+     ],
+     "src": "cev"
+    }
+   }
+  },
+  "partial": null
+ }
+}

@@ -5,7 +5,7 @@
  * SimResult = {
  *   phase: number, title: string, ready: true, seed: number,
  *   ok: boolean,                         // passed the mini-mission
- *   outcome: 'success' | 'partial' | 'fail',
+ *   outcome: 'success' | 'partial' | 'fail' | 'pending', // 'pending' only with a decision (run paused, ok false, stars 0, failure null)
  *   stars: 0..3,                         // 0 when ok is false
  *   time: { unit: 's'|'min'|'h'|'day', total: number },
  *   fields: [{ key, label, unit, max }], // what each frame carries, so bars and gauges can be drawn generically
@@ -14,6 +14,7 @@
  *   failure: null | { t, code, cause, fix },  // where it broke, why, and one hint to fix it
  *   score: { label, value, unit, thresholds: [one, two, three], higherIsBetter },
  *   math: null | { title, steps: [{ eq, num }], src },
+ *   decision?: { t, code, prompt, marginLeft, options: [{ id, label, dvCost }] }, // optional, only on a paused ('pending') run
  * }
  * When the phase cannot run yet: { phase, title, ready: false, blockers: [{ code, message, phase }] }.
  */
@@ -62,6 +63,7 @@
       ok, outcome: r.outcome || (ok ? 'success' : 'fail'), stars,
       time: r.time, fields: r.fields || [], frames, events,
       failure: ok ? null : (r.failure || null), score, math: r.math || null,
+      ...(r.decision ? { decision: r.decision } : {}),
     };
   }
 

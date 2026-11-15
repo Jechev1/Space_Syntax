@@ -1,0 +1,251 @@
+{
+ "screen": "f2",
+ "title": "Crew and life support",
+ "missionType": "robotic",
+ "note": "Robotic missions skip this screen. Show the success run or go straight to 3A.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "robotic",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "solarBig",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": "medium",
+  "crew": null,
+  "flight": {
+   "margin": 0
+  },
+  "comms": null,
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Lander core (computer, radio, engines)",
+     "where": "lander",
+     "mass": 250,
+     "cost": 150,
+     "power": 100,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy",
+     "where": "lander",
+     "mass": 120,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "lander",
+     "mass": 30,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings)",
+     "where": "lander",
+     "mass": 25,
+     "cost": 5,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar panels + big battery",
+     "where": "lander",
+     "mass": 83.33333333333334,
+     "cost": 30,
+     "power": 0,
+     "gen": 450,
+     "src": "lunarPower",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "lander",
+     "mass": 18,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "lander",
+     "mass": 12,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    }
+   ],
+   "dry": 538.3333333333334,
+   "tli": 1603.382081394064,
+   "propellant": 1065.0487480607308,
+   "breakdown": {
+    "lander": 538.3333333333334,
+    "returnFuel": 0
+   },
+   "cost": 270,
+   "totalCost": 390,
+   "budget": 650,
+   "powerNeed": 140,
+   "powerGen": 450,
+   "rocket": {
+    "id": "medium",
+    "title": "Medium launcher",
+    "capacity": 4000,
+    "cost": 120,
+    "capSrc": "game",
+    "costSrc": "game",
+    "blurb": "Commercial-class workhorse."
+   },
+   "nightHours": 100,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 2.9784187270477966,
+   "life": null,
+   "margin": 0,
+   "dvRequired": 3024,
+   "dvPlanned": 3024,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": true,
+   "overBudget": false
+  },
+  "validate": {
+   "ok": true,
+   "issues": []
+  }
+ },
+ "sim": {
+  "success": {
+   "label": "default plan",
+   "seed": 7,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "robotic",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "solarBig",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "medium",
+    "crew": null,
+    "flight": {
+     "margin": 0
+    },
+    "comms": null,
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 2,
+    "title": "Mission days",
+    "ready": true,
+    "seed": 7,
+    "ok": true,
+    "outcome": "success",
+    "stars": 3,
+    "time": {
+     "unit": "day",
+     "total": 9
+    },
+    "fields": [
+     {
+      "key": "crew",
+      "label": "People on board",
+      "unit": "people",
+      "max": 1
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "crew": 0
+     },
+     {
+      "t": 3,
+      "crew": 0
+     },
+     {
+      "t": 6,
+      "crew": 0
+     },
+     {
+      "t": 9,
+      "crew": 0
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "success",
+      "text": "No crew, no groceries. Robots skip life support."
+     }
+    ],
+    "failure": null,
+    "score": {
+     "label": "Robots need no supplies",
+     "value": 1,
+     "unit": "score",
+     "thresholds": [
+      0,
+      0.5,
+      1
+     ],
+     "higherIsBetter": true
+    },
+    "math": null
+   }
+  }
+ }
+}

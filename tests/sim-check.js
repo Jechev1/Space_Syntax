@@ -13,7 +13,9 @@ function checkResult(r, phase) {
   if (r.ready === false) { assert.ok(Array.isArray(r.blockers) && r.blockers.length > 0, 'not ready needs blockers'); return; }
   assert.equal(r.ready, true);
   assert.equal(typeof r.ok, 'boolean');
-  assert.ok(['success', 'partial', 'fail'].includes(r.outcome));
+  assert.ok(['success', 'partial', 'fail', 'pending'].includes(r.outcome));
+  assert.equal(r.outcome === 'pending', !!r.decision, "'pending' needs a decision, and only then");
+  if (r.decision) assert.ok(Array.isArray(r.decision.options) && r.decision.options.length >= 2 && typeof r.decision.prompt === 'string');
   assert.ok(Number.isInteger(r.stars) && r.stars >= 0 && r.stars <= 3);
   if (!r.ok) assert.equal(r.stars, 0);
   assert.ok(['s', 'min', 'h', 'day'].includes(r.time.unit));
@@ -27,7 +29,7 @@ function checkResult(r, phase) {
     assert.ok(e.t >= 0 && e.t <= r.time.total + 1e-9, 'event inside the run');
     assert.ok(!EM_DASH.test(e.text), 'no em dashes in game copy');
   }
-  if (r.ok) assert.equal(r.failure, null);
+  if (r.ok || r.outcome === 'pending') assert.equal(r.failure, null);
   else {
     assert.ok(r.failure && typeof r.failure.cause === 'string' && typeof r.failure.fix === 'string', 'a failed run explains why and how to fix it');
     assert.ok(!EM_DASH.test(r.failure.cause + r.failure.fix));

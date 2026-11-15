@@ -1,0 +1,464 @@
+{
+ "screen": "f5a",
+ "title": "Landing site",
+ "missionType": "crewed",
+ "note": "Choice writes state.site (tranquility, descartes, southPole). One siteReport per site fills the cards.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "crewed",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "crewSolar",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": "sls2",
+  "crew": {
+   "size": 4,
+   "days": 10,
+   "reserve": 0.2,
+   "suit": "lunar",
+   "recycler": false
+  },
+  "flight": {
+   "margin": 0.05
+  },
+  "comms": {
+   "link": "ka",
+   "dish": "dsn34"
+  },
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Crew capsule with heat shield",
+     "where": "orbiter",
+     "mass": 3800,
+     "cost": 1000,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Service module (engines, structure)",
+     "where": "orbiter",
+     "mass": 3150,
+     "cost": 300,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander ascent cabin",
+     "where": "ascent",
+     "mass": 1500,
+     "cost": 700,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander descent stage",
+     "where": "descent",
+     "mass": 1300,
+     "cost": 800,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (orbiter)",
+     "where": "orbiter",
+     "mass": 1251,
+     "cost": 150,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (ascent)",
+     "where": "ascent",
+     "mass": 270,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (descent)",
+     "where": "descent",
+     "mass": 234,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "orbiter",
+     "mass": 350,
+     "cost": 90,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (orbiter)",
+     "where": "orbiter",
+     "mass": 150,
+     "cost": 40,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (lander)",
+     "where": "ascent",
+     "mass": 150,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar arrays",
+     "where": "orbiter",
+     "mass": 500,
+     "cost": 80,
+     "power": 0,
+     "gen": 2500,
+     "src": "esaEsm",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "descent",
+     "mass": 20,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "descent",
+     "mass": 15,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Comms: Ka-band high-gain antenna",
+     "where": "orbiter",
+     "mass": 120,
+     "cost": 90,
+     "power": 300,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Ground: 34 m DSN antenna time",
+     "where": "ground",
+     "mass": 0,
+     "cost": 20,
+     "power": 0,
+     "gen": 0,
+     "src": "dsn",
+     "kind": "hw"
+    },
+    {
+     "label": "Crew staying in orbit (2)",
+     "where": "orbiter",
+     "mass": 164,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "crew"
+    },
+    {
+     "label": "Landing crew (2)",
+     "where": "ascent",
+     "mass": 164,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "crew"
+    },
+    {
+     "label": "Moonwalk suits ×2: Lunar suit (AxEMU-style)",
+     "where": "ascent",
+     "mass": 250,
+     "cost": 100,
+     "power": 0,
+     "gen": 0,
+     "src": "axemu",
+     "kind": "crew"
+    },
+    {
+     "label": "Supplies in orbit (O₂, food, water)",
+     "where": "orbiter",
+     "mass": 200.40959999999998,
+     "cost": 0,
+     "power": 900,
+     "gen": 0,
+     "src": "bvad",
+     "kind": "consumable"
+    },
+    {
+     "label": "Surface supplies (O₂, food, water)",
+     "where": "descent",
+     "mass": 35.3664,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "bvad",
+     "kind": "consumable"
+    },
+    {
+     "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+     "where": "ascent",
+     "mass": 100,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "samples",
+     "kind": "sample"
+    }
+   ],
+   "dry": 13723.776000000002,
+   "tli": 44330.715575618575,
+   "propellant": 30606.939575618573,
+   "breakdown": {
+    "orbiter": 9685.4096,
+    "ascent": 2434,
+    "descent": 1604.3663999999999,
+    "orbiterWet": 16736.196554428865,
+    "landerWet": 14346.652326293357
+   },
+   "cost": 3435,
+   "totalCost": 6235,
+   "budget": 7700,
+   "powerNeed": 1240,
+   "powerGen": 2500,
+   "rocket": {
+    "id": "sls2",
+    "title": "SLS Block 2",
+    "capacity": 46000,
+    "cost": 2800,
+    "capSrc": "sls",
+    "costSrc": "game",
+    "blurb": "Most powerful version. Up to 46 t to deep space."
+   },
+   "nightHours": null,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 3.2302127035313437,
+   "life": {
+    "size": 4,
+    "days": 10,
+    "reserve": 0.2,
+    "landingCrew": 2,
+    "orbitCrew": 2,
+    "suit": {
+     "id": "lunar",
+     "title": "Lunar suit (AxEMU-style)",
+     "mass": 125,
+     "evaHours": 8,
+     "cost": 50,
+     "shadowOk": true,
+     "src": "axemu",
+     "blurb": "Built for lunar dust and at least 2 h in shadowed craters as cold as 48 K."
+    },
+    "recycler": false,
+    "crewDays": 40,
+    "perDay": {
+     "o2": 0.895,
+     "food": 0.8,
+     "water": 3.217,
+     "src": "bvad"
+    },
+    "daily": 4.912,
+    "o2": 42.959999999999994,
+    "food": 38.4,
+    "water": 154.416,
+    "waterSaved": 0,
+    "recyclerBreakEvenDays": 21.32452912778416,
+    "surfaceSupplies": 35.3664,
+    "orbiterSupplies": 200.40959999999998,
+    "suppliesTotal": 235.77599999999998,
+    "suitsMass": 250,
+    "crewMass": 328,
+    "minDays": 9,
+    "daysOk": true
+   },
+   "margin": 0.05,
+   "dvRequired": 6307,
+   "dvPlanned": 6622.35,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": true,
+   "overBudget": false
+  },
+  "sites": [
+   {
+    "id": "tranquility",
+    "report": {
+     "site": {
+      "id": "tranquility",
+      "title": "Sea of Tranquility (Apollo 11)",
+      "terrain": "Mare (dark lava plain)",
+      "rock": "Basalt rich in iron and titanium, about 3.7 billion years old",
+      "darkHours": 354,
+      "lightHours": 354,
+      "hazard": 1,
+      "hoverNeed": 20,
+      "bestFor": [
+       "made",
+       "age"
+      ],
+      "earthView": "always",
+      "src": "sampleScience",
+      "lola": "Flat, gentle slopes",
+      "lroc": "Few boulders",
+      "diviner": "About 127 °C at noon, −173 °C at night"
+     },
+     "scienceMatch": true,
+     "survivesNight": true,
+     "nightHours": null,
+     "opsHours": 72,
+     "evaHours": 48,
+     "coldRisk": false,
+     "earthView": "always",
+     "hoverAvailable": 29.203703703703702,
+     "hoverTypical": 10
+    },
+    "validateIfPicked": {
+     "ok": true,
+     "issues": []
+    }
+   },
+   {
+    "id": "descartes",
+    "report": {
+     "site": {
+      "id": "descartes",
+      "title": "Descartes Highlands (Apollo 16)",
+      "terrain": "Highlands (bright, old crust)",
+      "rock": "Impact breccias of the bright anorthositic crust, about 3.8 to 4.2 billion years old",
+      "darkHours": 354,
+      "lightHours": 354,
+      "hazard": 2,
+      "hoverNeed": 35,
+      "bestFor": [
+       "made"
+      ],
+      "earthView": "always",
+      "src": "sampleScience",
+      "lola": "Rolling hills, steeper slopes",
+      "lroc": "Many boulders and craters",
+      "diviner": "About 127 °C at noon, −173 °C at night"
+     },
+     "scienceMatch": true,
+     "survivesNight": true,
+     "nightHours": null,
+     "opsHours": 72,
+     "evaHours": 48,
+     "coldRisk": false,
+     "earthView": "always",
+     "hoverAvailable": 29.203703703703702,
+     "hoverTypical": 17.5
+    },
+    "validateIfPicked": {
+     "ok": true,
+     "issues": []
+    }
+   },
+   {
+    "id": "southPole",
+    "report": {
+     "site": {
+      "id": "southPole",
+      "title": "South Pole crater rim",
+      "terrain": "Polar (near shadowed craters)",
+      "rock": "Regolith, with water ice hidden in permanently shadowed craters nearby",
+      "darkHours": 100,
+      "lightHours": 600,
+      "hazard": 3,
+      "hoverNeed": 50,
+      "bestFor": [
+       "water"
+      ],
+      "earthView": "intermittent",
+      "coldShadow": true,
+      "src": "moonfacts",
+      "lola": "Steep crater rims, long shadows",
+      "lroc": "Hard to see: the Sun is always low",
+      "diviner": "Shadowed craters reach about 25 K (−250 °C), among the coldest places measured in the solar system"
+     },
+     "scienceMatch": false,
+     "survivesNight": true,
+     "nightHours": null,
+     "opsHours": 72,
+     "evaHours": 48,
+     "coldRisk": false,
+     "earthView": "intermittent",
+     "hoverAvailable": 29.203703703703702,
+     "hoverTypical": 25
+    },
+    "validateIfPicked": {
+     "ok": true,
+     "issues": [
+      {
+       "code": "siteMismatch",
+       "severity": "warn",
+       "message": "This site is not the best place to answer your question",
+       "phase": 5
+      },
+      {
+       "code": "earthHidden",
+       "severity": "warn",
+       "message": "Earth is low on the horizon here: contact comes and goes",
+       "phase": 5
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "sim": {}
+}

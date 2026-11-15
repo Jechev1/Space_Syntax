@@ -39,7 +39,7 @@
   }
 
   /** Fly one descent: braking, hover for hoverSec, then terminal descent or abort climb. */
-  function fly(mode, hoverSec, touchSpeed, lateral) {
+  function fly(mode, hoverSec, touchSpeed, lateral, stopAtHover) {
     const T = TUNING, dt = T.dt, rows = [];
     let s = { alt: T.startAlt, vz: T.startVz, x: T.startOffset, vx: T.startVx };
     let t = 0, dv = 0, phase = 'brake', hoverT = 0, abortT = 0, thr = 0, touch = null;
@@ -78,6 +78,7 @@
         t = touch.t; s = { alt: 0, vz: -sp, x: s.x, vx: s.vx }; thr = 0; log(); break;
       }
       log();
+      if (stopAtHover && phase === 'hover') break;
     }
     return { rows, dv, touch, marks };
   }
@@ -88,7 +89,10 @@
     if (!v.ok) return K.notReady(5, title, v.issues);
     const seed = K.seedOf(opts, state.landing && state.landing.seed);
     const T = TUNING, L = D.LANDING;
-    const sim = M.landingSim(state, seed), site = sim.site, outcome = sim.outcome;
+    const sim = M.landingSim(state, seed), site = sim.site;
+    const choice = opts && opts.choice, interactive = !!(opts && opts.interactive) && choice !== 'detour' && choice !== 'abort';
+    const pAbort = choice === 'abort';
+    const outcome = pAbort ? 'abort' : sim.outcome;
     const need = sim.hoverNeeded, avail = sim.hoverAvailable;
     const r = M.rng((seed ^ 0xd35c) >>> 0);
     const dir0 = r() < 0.5 ? -1 : 1, sideSpeed = 0.8 + 0.4 * site.hazard;
@@ -97,11 +101,11 @@
 
     const frac = clamp((avail / need - L.roughFraction) / (1 - L.roughFraction), 0, 1);
     const touchSpeed = outcome === 'clean' ? T.cleanTouch : T.roughTouchMin + T.roughTouchSpan * (1 - frac);
-    const hoverSec = outcome === 'clean' ? need : avail;
+    const hoverSec = pAbort ? 0 : outcome === 'clean' ? need : avail;
 
     // Fuel budget: a reference run that hovers for every second the margin pays for, sideways thrust included.
     const budget = fly('clean', avail, T.cleanTouch, lateral).dv;
-    const run = fly(outcome, hoverSec, touchSpeed, lateral);
+    const run = fly(outcome, hoverSec, touchSpeed, lateral, interactive);
     const ve = M.ve, m0 = T.lander0;
     const mDry = m0 * Math.exp(-budget / ve), fuelMass = m0 - mDry;
     const fuelPct = (dv) => clamp((m0 * Math.exp(-dv / ve) - mDry) / fuelMass * 100, 0, 100);
@@ -115,6 +119,29 @@
     }));
     const end = run.rows[run.rows.length - 1];
     const total = end.t;
+    const fieldList = [
+      { key: 'alt', label: 'Altitude', unit: 'm', max: 700 },
+      { key: 'vz', label: 'Vertical speed', unit: 'm/s', max: 35 },
+      { key: 'x', label: 'Sideways offset', unit: 'm', max: 100 },
+      { key: 'fuel', label: 'Final approach fuel', unit: '%', max: 100 },
+      { key: 'hoverLeft', label: 'Hover time left in the tank', unit: 's', max: Math.max(60, Math.ceil(avail)) },
+      { key: 'needLeft', label: 'Hover time the terrain needs', unit: 's', max: Math.max(60, Math.ceil(need)) },
+      { key: 'throttle', label: 'Throttle', unit: '', max: 1 },
+      { key: 'dv', label: 'Delta-v spent', unit: 'm/s', max: Math.max(100, Math.ceil(budget)) },
+    ];
+    if (interactive) {
+      const pause = K.result({
+        phase: 5, title, seed, ok: false, outcome: 'pending', time: { unit: 's', total }, fields: fieldList, frames,
+        events: [{ t: 0, kind: 'info', text: `Final approach over ${site.title.split(' (')[0]}. Braking burn started.` },
+          { t: total, kind: 'warn', text: 'Rocks ahead.' }],
+        score: null, math: null,
+      });
+      pause.decision = {
+        t: total, code: 'rocksAhead', prompt: 'Rocks ahead.', marginLeft: Math.round(avail * G),
+        options: [{ id: 'detour', label: 'Take the detour', dvCost: Math.round(need * G) }, { id: 'abort', label: 'Abort descent', dvCost: 0 }],
+      };
+      return pause;
+    }
     const events = [];
     const hs = run.marks.hoverStart, he = run.marks.hoverEnd;
     events.push({ t: 0, kind: 'info', text: `Final approach over ${site.title.split(' (')[0]}. Braking burn started.` });
@@ -139,6 +166,14 @@
       out = 'partial';
       events.push({ t: he, kind: 'warn', text: 'Hover fuel is gone. Settling for the nearest ground.' });
       events.push({ t: total, kind: 'warn', text: `Contact light! Hard landing at ${K.round(touchTxt, 1)} m/s, over the safe limit of ${T.touchLimit} m/s. The lander is damaged.` });
+    } else if (pAbort) {
+      ok = false; out = 'fail';
+      events.push({ t: he, kind: 'fail', text: 'You aborted the descent. Climbing back to orbit.' });
+      failure = {
+        t: he, code: 'playerAbort',
+        cause: 'You chose to abort when rocks showed up, so the lander climbed back to orbit.',
+        fix: `Raise your Phase 3 margin to about ${fixMargin}% or pick an easier site, so you can afford the detour.`,
+      };
     } else {
       ok = false; out = 'fail';
       events.push({ t: he, kind: 'fail', text: 'Abort! Fuel for hovering is gone. Climbing back to orbit.' });
@@ -159,16 +194,7 @@
     );
     const res = K.result({
       phase: 5, title, seed, ok, outcome: out, time: { unit: 's', total },
-      fields: [
-        { key: 'alt', label: 'Altitude', unit: 'm', max: 700 },
-        { key: 'vz', label: 'Vertical speed', unit: 'm/s', max: 35 },
-        { key: 'x', label: 'Sideways offset', unit: 'm', max: 100 },
-        { key: 'fuel', label: 'Final approach fuel', unit: '%', max: 100 },
-        { key: 'hoverLeft', label: 'Hover time left in the tank', unit: 's', max: Math.max(60, Math.ceil(avail)) },
-        { key: 'needLeft', label: 'Hover time the terrain needs', unit: 's', max: Math.max(60, Math.ceil(need)) },
-        { key: 'throttle', label: 'Throttle', unit: '', max: 1 },
-        { key: 'dv', label: 'Delta-v spent', unit: 'm/s', max: Math.max(100, Math.ceil(budget)) },
-      ],
+      fields: fieldList,
       frames, events, failure, score, math,
     });
     if (out === 'partial') res.stars = Math.min(res.stars, 1);

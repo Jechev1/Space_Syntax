@@ -8,7 +8,8 @@
     "check": "node tools/check.js",
     "balance": "node tools/balance.js",
     "serve": "python tools/serve.py 8080",
-    "shots": "bash tools/shots.sh"
+    "shots": "bash tools/shots.sh",
+    "fixtures": "node tools/fixtures.js"
   },
   "engines": { "node": ">=20" }
 }

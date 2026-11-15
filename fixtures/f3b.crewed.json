@@ -1,0 +1,1230 @@
+{
+ "screen": "f3b",
+ "title": "Launch pad: mission summary",
+ "missionType": "crewed",
+ "note": "Needs phases 0 to 4 GO. Launch animation is simulate(state, 1). Rows come from launchReadiness().phases.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "crewed",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "crewSolar",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": "sls2",
+  "crew": {
+   "size": 4,
+   "days": 10,
+   "reserve": 0.2,
+   "suit": "lunar",
+   "recycler": false
+  },
+  "flight": {
+   "margin": 0.05
+  },
+  "comms": {
+   "link": "ka",
+   "dish": "dsn34"
+  },
+  "site": "tranquility",
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "launchReadiness": {
+   "go": true,
+   "phases": [
+    {
+     "phase": 0,
+     "ok": true,
+     "issues": []
+    },
+    {
+     "phase": 1,
+     "ok": true,
+     "issues": [
+      {
+       "code": "lowMassMargin",
+       "severity": "warn",
+       "message": "Less than 10% mass margin: later phases may push you over",
+       "phase": 1
+      }
+     ]
+    },
+    {
+     "phase": 2,
+     "ok": true,
+     "issues": []
+    },
+    {
+     "phase": 3,
+     "ok": true,
+     "issues": []
+    },
+    {
+     "phase": 4,
+     "ok": true,
+     "issues": []
+    }
+   ],
+   "issues": [
+    {
+     "code": "lowMassMargin",
+     "severity": "warn",
+     "message": "Less than 10% mass margin: later phases may push you over",
+     "phase": 1
+    }
+   ]
+  },
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Crew capsule with heat shield",
+     "where": "orbiter",
+     "mass": 3800,
+     "cost": 1000,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Service module (engines, structure)",
+     "where": "orbiter",
+     "mass": 3150,
+     "cost": 300,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander ascent cabin",
+     "where": "ascent",
+     "mass": 1500,
+     "cost": 700,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander descent stage",
+     "where": "descent",
+     "mass": 1300,
+     "cost": 800,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (orbiter)",
+     "where": "orbiter",
+     "mass": 1251,
+     "cost": 150,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (ascent)",
+     "where": "ascent",
+     "mass": 270,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (descent)",
+     "where": "descent",
+     "mass": 234,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "orbiter",
+     "mass": 350,
+     "cost": 90,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (orbiter)",
+     "where": "orbiter",
+     "mass": 150,
+     "cost": 40,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (lander)",
+     "where": "ascent",
+     "mass": 150,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar arrays",
+     "where": "orbiter",
+     "mass": 500,
+     "cost": 80,
+     "power": 0,
+     "gen": 2500,
+     "src": "esaEsm",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "descent",
+     "mass": 20,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "descent",
+     "mass": 15,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Comms: Ka-band high-gain antenna",
+     "where": "orbiter",
+     "mass": 120,
+     "cost": 90,
+     "power": 300,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Ground: 34 m DSN antenna time",
+     "where": "ground",
+     "mass": 0,
+     "cost": 20,
+     "power": 0,
+     "gen": 0,
+     "src": "dsn",
+     "kind": "hw"
+    },
+    {
+     "label": "Crew staying in orbit (2)",
+     "where": "orbiter",
+     "mass": 164,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "crew"
+    },
+    {
+     "label": "Landing crew (2)",
+     "where": "ascent",
+     "mass": 164,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "crew"
+    },
+    {
+     "label": "Moonwalk suits ×2: Lunar suit (AxEMU-style)",
+     "where": "ascent",
+     "mass": 250,
+     "cost": 100,
+     "power": 0,
+     "gen": 0,
+     "src": "axemu",
+     "kind": "crew"
+    },
+    {
+     "label": "Supplies in orbit (O₂, food, water)",
+     "where": "orbiter",
+     "mass": 200.40959999999998,
+     "cost": 0,
+     "power": 900,
+     "gen": 0,
+     "src": "bvad",
+     "kind": "consumable"
+    },
+    {
+     "label": "Surface supplies (O₂, food, water)",
+     "where": "descent",
+     "mass": 35.3664,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "bvad",
+     "kind": "consumable"
+    },
+    {
+     "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+     "where": "ascent",
+     "mass": 100,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "samples",
+     "kind": "sample"
+    }
+   ],
+   "dry": 13723.776000000002,
+   "tli": 44330.715575618575,
+   "propellant": 30606.939575618573,
+   "breakdown": {
+    "orbiter": 9685.4096,
+    "ascent": 2434,
+    "descent": 1604.3663999999999,
+    "orbiterWet": 16736.196554428865,
+    "landerWet": 14346.652326293357
+   },
+   "cost": 3435,
+   "totalCost": 6235,
+   "budget": 7700,
+   "powerNeed": 1240,
+   "powerGen": 2500,
+   "rocket": {
+    "id": "sls2",
+    "title": "SLS Block 2",
+    "capacity": 46000,
+    "cost": 2800,
+    "capSrc": "sls",
+    "costSrc": "game",
+    "blurb": "Most powerful version. Up to 46 t to deep space."
+   },
+   "nightHours": null,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 3.2302127035313437,
+   "life": {
+    "size": 4,
+    "days": 10,
+    "reserve": 0.2,
+    "landingCrew": 2,
+    "orbitCrew": 2,
+    "suit": {
+     "id": "lunar",
+     "title": "Lunar suit (AxEMU-style)",
+     "mass": 125,
+     "evaHours": 8,
+     "cost": 50,
+     "shadowOk": true,
+     "src": "axemu",
+     "blurb": "Built for lunar dust and at least 2 h in shadowed craters as cold as 48 K."
+    },
+    "recycler": false,
+    "crewDays": 40,
+    "perDay": {
+     "o2": 0.895,
+     "food": 0.8,
+     "water": 3.217,
+     "src": "bvad"
+    },
+    "daily": 4.912,
+    "o2": 42.959999999999994,
+    "food": 38.4,
+    "water": 154.416,
+    "waterSaved": 0,
+    "recyclerBreakEvenDays": 21.32452912778416,
+    "surfaceSupplies": 35.3664,
+    "orbiterSupplies": 200.40959999999998,
+    "suppliesTotal": 235.77599999999998,
+    "suitsMass": 250,
+    "crewMass": 328,
+    "minDays": 9,
+    "daysOk": true
+   },
+   "margin": 0.05,
+   "dvRequired": 6307,
+   "dvPlanned": 6622.35,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": true,
+   "overBudget": false
+  }
+ },
+ "sim": {
+  "success": {
+   "label": "all GO",
+   "seed": 7,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "crewed",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "crewSolar",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "sls2",
+    "crew": {
+     "size": 4,
+     "days": 10,
+     "reserve": 0.2,
+     "suit": "lunar",
+     "recycler": false
+    },
+    "flight": {
+     "margin": 0.05
+    },
+    "comms": {
+     "link": "ka",
+     "dish": "dsn34"
+    },
+    "site": "tranquility",
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 1,
+    "title": "Launch",
+    "ready": true,
+    "seed": 7,
+    "ok": true,
+    "outcome": "success",
+    "stars": 1,
+    "time": {
+     "unit": "s",
+     "total": 590.009121218537
+    },
+    "fields": [
+     {
+      "key": "dv",
+      "label": "Speed gained",
+      "unit": "m/s",
+      "max": 3150
+     },
+     {
+      "key": "prop",
+      "label": "Fuel left",
+      "unit": "kg",
+      "max": 50231
+     },
+     {
+      "key": "mass",
+      "label": "Stack mass",
+      "unit": "kg",
+      "max": 98580
+     },
+     {
+      "key": "accel",
+      "label": "Acceleration",
+      "unit": "m/s²",
+      "max": 7.8
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "dv": 0,
+      "prop": 50230.097,
+      "mass": 98579.22,
+      "accel": 3.848
+     },
+     {
+      "t": 5.9,
+      "dv": 22.758,
+      "prop": 49736.16,
+      "mass": 98085.283,
+      "accel": 3.867
+     },
+     {
+      "t": 11.8,
+      "dv": 45.631,
+      "prop": 49242.223,
+      "mass": 97591.346,
+      "accel": 3.887
+     },
+     {
+      "t": 17.7,
+      "dv": 68.621,
+      "prop": 48748.286,
+      "mass": 97097.409,
+      "accel": 3.906
+     },
+     {
+      "t": 23.6,
+      "dv": 91.727,
+      "prop": 48254.349,
+      "mass": 96603.472,
+      "accel": 3.926
+     },
+     {
+      "t": 29.5,
+      "dv": 114.952,
+      "prop": 47760.412,
+      "mass": 96109.535,
+      "accel": 3.946
+     },
+     {
+      "t": 35.401,
+      "dv": 138.297,
+      "prop": 47266.475,
+      "mass": 95615.598,
+      "accel": 3.967
+     },
+     {
+      "t": 41.301,
+      "dv": 161.762,
+      "prop": 46772.538,
+      "mass": 95121.661,
+      "accel": 3.987
+     },
+     {
+      "t": 47.201,
+      "dv": 185.35,
+      "prop": 46278.601,
+      "mass": 94627.725,
+      "accel": 4.008
+     },
+     {
+      "t": 53.101,
+      "dv": 209.061,
+      "prop": 45784.664,
+      "mass": 94133.788,
+      "accel": 4.029
+     },
+     {
+      "t": 59.001,
+      "dv": 232.897,
+      "prop": 45290.727,
+      "mass": 93639.851,
+      "accel": 4.051
+     },
+     {
+      "t": 64.901,
+      "dv": 256.859,
+      "prop": 44796.79,
+      "mass": 93145.914,
+      "accel": 4.072
+     },
+     {
+      "t": 70.801,
+      "dv": 280.948,
+      "prop": 44302.854,
+      "mass": 92651.977,
+      "accel": 4.094
+     },
+     {
+      "t": 76.701,
+      "dv": 305.166,
+      "prop": 43808.917,
+      "mass": 92158.04,
+      "accel": 4.116
+     },
+     {
+      "t": 82.601,
+      "dv": 329.514,
+      "prop": 43314.98,
+      "mass": 91664.103,
+      "accel": 4.138
+     },
+     {
+      "t": 88.501,
+      "dv": 353.994,
+      "prop": 42821.043,
+      "mass": 91170.166,
+      "accel": 4.16
+     },
+     {
+      "t": 94.401,
+      "dv": 378.607,
+      "prop": 42327.106,
+      "mass": 90676.229,
+      "accel": 4.183
+     },
+     {
+      "t": 100.302,
+      "dv": 403.354,
+      "prop": 41833.169,
+      "mass": 90182.292,
+      "accel": 4.206
+     },
+     {
+      "t": 106.202,
+      "dv": 428.237,
+      "prop": 41339.232,
+      "mass": 89688.355,
+      "accel": 4.229
+     },
+     {
+      "t": 112.102,
+      "dv": 453.258,
+      "prop": 40845.295,
+      "mass": 89194.418,
+      "accel": 4.252
+     },
+     {
+      "t": 118.002,
+      "dv": 478.417,
+      "prop": 40351.358,
+      "mass": 88700.482,
+      "accel": 4.276
+     },
+     {
+      "t": 123.902,
+      "dv": 503.717,
+      "prop": 39857.421,
+      "mass": 88206.545,
+      "accel": 4.3
+     },
+     {
+      "t": 129.802,
+      "dv": 529.159,
+      "prop": 39363.484,
+      "mass": 87712.608,
+      "accel": 4.324
+     },
+     {
+      "t": 135.702,
+      "dv": 554.745,
+      "prop": 38869.547,
+      "mass": 87218.671,
+      "accel": 4.349
+     },
+     {
+      "t": 141.602,
+      "dv": 580.476,
+      "prop": 38375.611,
+      "mass": 86724.734,
+      "accel": 4.374
+     },
+     {
+      "t": 147.502,
+      "dv": 606.354,
+      "prop": 37881.674,
+      "mass": 86230.797,
+      "accel": 4.399
+     },
+     {
+      "t": 153.402,
+      "dv": 632.381,
+      "prop": 37387.737,
+      "mass": 85736.86,
+      "accel": 4.424
+     },
+     {
+      "t": 159.302,
+      "dv": 658.558,
+      "prop": 36893.8,
+      "mass": 85242.923,
+      "accel": 4.45
+     },
+     {
+      "t": 165.203,
+      "dv": 684.887,
+      "prop": 36399.863,
+      "mass": 84748.986,
+      "accel": 4.475
+     },
+     {
+      "t": 171.103,
+      "dv": 711.37,
+      "prop": 35905.926,
+      "mass": 84255.049,
+      "accel": 4.502
+     },
+     {
+      "t": 177.003,
+      "dv": 738.009,
+      "prop": 35411.989,
+      "mass": 83761.112,
+      "accel": 4.528
+     },
+     {
+      "t": 182.903,
+      "dv": 764.805,
+      "prop": 34918.052,
+      "mass": 83267.175,
+      "accel": 4.555
+     },
+     {
+      "t": 188.803,
+      "dv": 791.761,
+      "prop": 34424.115,
+      "mass": 82773.238,
+      "accel": 4.582
+     },
+     {
+      "t": 194.703,
+      "dv": 818.878,
+      "prop": 33930.178,
+      "mass": 82279.302,
+      "accel": 4.61
+     },
+     {
+      "t": 200.603,
+      "dv": 846.158,
+      "prop": 33436.241,
+      "mass": 81785.365,
+      "accel": 4.638
+     },
+     {
+      "t": 206.503,
+      "dv": 873.604,
+      "prop": 32942.304,
+      "mass": 81291.428,
+      "accel": 4.666
+     },
+     {
+      "t": 212.403,
+      "dv": 901.217,
+      "prop": 32448.367,
+      "mass": 80797.491,
+      "accel": 4.694
+     },
+     {
+      "t": 218.303,
+      "dv": 928.999,
+      "prop": 31954.431,
+      "mass": 80303.554,
+      "accel": 4.723
+     },
+     {
+      "t": 224.203,
+      "dv": 956.953,
+      "prop": 31460.494,
+      "mass": 79809.617,
+      "accel": 4.752
+     },
+     {
+      "t": 230.104,
+      "dv": 985.08,
+      "prop": 30966.557,
+      "mass": 79315.68,
+      "accel": 4.782
+     },
+     {
+      "t": 236.004,
+      "dv": 1013.383,
+      "prop": 30472.62,
+      "mass": 78821.743,
+      "accel": 4.812
+     },
+     {
+      "t": 241.904,
+      "dv": 1041.864,
+      "prop": 29978.683,
+      "mass": 78327.806,
+      "accel": 4.842
+     },
+     {
+      "t": 247.804,
+      "dv": 1070.525,
+      "prop": 29484.746,
+      "mass": 77833.869,
+      "accel": 4.873
+     },
+     {
+      "t": 253.704,
+      "dv": 1099.368,
+      "prop": 28990.809,
+      "mass": 77339.932,
+      "accel": 4.904
+     },
+     {
+      "t": 259.604,
+      "dv": 1128.396,
+      "prop": 28496.872,
+      "mass": 76845.995,
+      "accel": 4.936
+     },
+     {
+      "t": 265.504,
+      "dv": 1157.612,
+      "prop": 28002.935,
+      "mass": 76352.059,
+      "accel": 4.968
+     },
+     {
+      "t": 271.404,
+      "dv": 1187.017,
+      "prop": 27508.998,
+      "mass": 75858.122,
+      "accel": 5
+     },
+     {
+      "t": 277.304,
+      "dv": 1216.614,
+      "prop": 27015.061,
+      "mass": 75364.185,
+      "accel": 5.033
+     },
+     {
+      "t": 283.204,
+      "dv": 1246.406,
+      "prop": 26521.124,
+      "mass": 74870.248,
+      "accel": 5.066
+     },
+     {
+      "t": 289.104,
+      "dv": 1276.395,
+      "prop": 26027.188,
+      "mass": 74376.311,
+      "accel": 5.1
+     },
+     {
+      "t": 295.005,
+      "dv": 1306.583,
+      "prop": 25533.251,
+      "mass": 73882.374,
+      "accel": 5.134
+     },
+     {
+      "t": 300.905,
+      "dv": 1336.975,
+      "prop": 25039.314,
+      "mass": 73388.437,
+      "accel": 5.168
+     },
+     {
+      "t": 306.805,
+      "dv": 1367.571,
+      "prop": 24545.377,
+      "mass": 72894.5,
+      "accel": 5.203
+     },
+     {
+      "t": 312.705,
+      "dv": 1398.376,
+      "prop": 24051.44,
+      "mass": 72400.563,
+      "accel": 5.239
+     },
+     {
+      "t": 318.605,
+      "dv": 1429.391,
+      "prop": 23557.503,
+      "mass": 71906.626,
+      "accel": 5.275
+     },
+     {
+      "t": 324.505,
+      "dv": 1460.62,
+      "prop": 23063.566,
+      "mass": 71412.689,
+      "accel": 5.311
+     },
+     {
+      "t": 330.405,
+      "dv": 1492.066,
+      "prop": 22569.629,
+      "mass": 70918.752,
+      "accel": 5.348
+     },
+     {
+      "t": 336.305,
+      "dv": 1523.732,
+      "prop": 22075.692,
+      "mass": 70424.816,
+      "accel": 5.386
+     },
+     {
+      "t": 342.205,
+      "dv": 1555.621,
+      "prop": 21581.755,
+      "mass": 69930.879,
+      "accel": 5.424
+     },
+     {
+      "t": 348.105,
+      "dv": 1587.735,
+      "prop": 21087.818,
+      "mass": 69436.942,
+      "accel": 5.462
+     },
+     {
+      "t": 354.005,
+      "dv": 1620.079,
+      "prop": 20593.881,
+      "mass": 68943.005,
+      "accel": 5.502
+     },
+     {
+      "t": 359.906,
+      "dv": 1652.656,
+      "prop": 20099.945,
+      "mass": 68449.068,
+      "accel": 5.541
+     },
+     {
+      "t": 365.806,
+      "dv": 1685.468,
+      "prop": 19606.008,
+      "mass": 67955.131,
+      "accel": 5.582
+     },
+     {
+      "t": 371.706,
+      "dv": 1718.52,
+      "prop": 19112.071,
+      "mass": 67461.194,
+      "accel": 5.622
+     },
+     {
+      "t": 377.606,
+      "dv": 1751.815,
+      "prop": 18618.134,
+      "mass": 66967.257,
+      "accel": 5.664
+     },
+     {
+      "t": 383.506,
+      "dv": 1785.356,
+      "prop": 18124.197,
+      "mass": 66473.32,
+      "accel": 5.706
+     },
+     {
+      "t": 389.406,
+      "dv": 1819.147,
+      "prop": 17630.26,
+      "mass": 65979.383,
+      "accel": 5.749
+     },
+     {
+      "t": 395.306,
+      "dv": 1853.193,
+      "prop": 17136.323,
+      "mass": 65485.446,
+      "accel": 5.792
+     },
+     {
+      "t": 401.206,
+      "dv": 1887.496,
+      "prop": 16642.386,
+      "mass": 64991.509,
+      "accel": 5.836
+     },
+     {
+      "t": 407.106,
+      "dv": 1922.06,
+      "prop": 16148.449,
+      "mass": 64497.572,
+      "accel": 5.881
+     },
+     {
+      "t": 413.006,
+      "dv": 1956.891,
+      "prop": 15654.512,
+      "mass": 64003.636,
+      "accel": 5.926
+     },
+     {
+      "t": 418.906,
+      "dv": 1991.991,
+      "prop": 15160.575,
+      "mass": 63509.699,
+      "accel": 5.972
+     },
+     {
+      "t": 424.807,
+      "dv": 2027.365,
+      "prop": 14666.638,
+      "mass": 63015.762,
+      "accel": 6.019
+     },
+     {
+      "t": 430.707,
+      "dv": 2063.018,
+      "prop": 14172.701,
+      "mass": 62521.825,
+      "accel": 6.067
+     },
+     {
+      "t": 436.607,
+      "dv": 2098.954,
+      "prop": 13678.765,
+      "mass": 62027.888,
+      "accel": 6.115
+     },
+     {
+      "t": 442.507,
+      "dv": 2135.176,
+      "prop": 13184.828,
+      "mass": 61533.951,
+      "accel": 6.164
+     },
+     {
+      "t": 448.407,
+      "dv": 2171.691,
+      "prop": 12690.891,
+      "mass": 61040.014,
+      "accel": 6.214
+     },
+     {
+      "t": 454.307,
+      "dv": 2208.503,
+      "prop": 12196.954,
+      "mass": 60546.077,
+      "accel": 6.265
+     },
+     {
+      "t": 460.207,
+      "dv": 2245.615,
+      "prop": 11703.017,
+      "mass": 60052.14,
+      "accel": 6.316
+     },
+     {
+      "t": 466.107,
+      "dv": 2283.035,
+      "prop": 11209.08,
+      "mass": 59558.203,
+      "accel": 6.368
+     },
+     {
+      "t": 472.007,
+      "dv": 2320.766,
+      "prop": 10715.143,
+      "mass": 59064.266,
+      "accel": 6.422
+     },
+     {
+      "t": 477.907,
+      "dv": 2358.814,
+      "prop": 10221.206,
+      "mass": 58570.329,
+      "accel": 6.476
+     },
+     {
+      "t": 483.807,
+      "dv": 2397.184,
+      "prop": 9727.269,
+      "mass": 58076.393,
+      "accel": 6.531
+     },
+     {
+      "t": 489.708,
+      "dv": 2435.882,
+      "prop": 9233.332,
+      "mass": 57582.456,
+      "accel": 6.587
+     },
+     {
+      "t": 495.608,
+      "dv": 2474.914,
+      "prop": 8739.395,
+      "mass": 57088.519,
+      "accel": 6.644
+     },
+     {
+      "t": 501.508,
+      "dv": 2514.284,
+      "prop": 8245.458,
+      "mass": 56594.582,
+      "accel": 6.702
+     },
+     {
+      "t": 507.408,
+      "dv": 2554,
+      "prop": 7751.522,
+      "mass": 56100.645,
+      "accel": 6.761
+     },
+     {
+      "t": 513.308,
+      "dv": 2594.067,
+      "prop": 7257.585,
+      "mass": 55606.708,
+      "accel": 6.821
+     },
+     {
+      "t": 519.208,
+      "dv": 2634.491,
+      "prop": 6763.648,
+      "mass": 55112.771,
+      "accel": 6.882
+     },
+     {
+      "t": 525.108,
+      "dv": 2675.279,
+      "prop": 6269.711,
+      "mass": 54618.834,
+      "accel": 6.944
+     },
+     {
+      "t": 531.008,
+      "dv": 2716.438,
+      "prop": 5775.774,
+      "mass": 54124.897,
+      "accel": 7.008
+     },
+     {
+      "t": 536.908,
+      "dv": 2757.974,
+      "prop": 5281.837,
+      "mass": 53630.96,
+      "accel": 7.072
+     },
+     {
+      "t": 542.808,
+      "dv": 2799.895,
+      "prop": 4787.9,
+      "mass": 53137.023,
+      "accel": 7.138
+     },
+     {
+      "t": 548.708,
+      "dv": 2842.207,
+      "prop": 4293.963,
+      "mass": 52643.086,
+      "accel": 7.205
+     },
+     {
+      "t": 554.609,
+      "dv": 2884.917,
+      "prop": 3800.026,
+      "mass": 52149.149,
+      "accel": 7.273
+     },
+     {
+      "t": 560.509,
+      "dv": 2928.035,
+      "prop": 3306.089,
+      "mass": 51655.213,
+      "accel": 7.343
+     },
+     {
+      "t": 566.409,
+      "dv": 2971.566,
+      "prop": 2812.152,
+      "mass": 51161.276,
+      "accel": 7.414
+     },
+     {
+      "t": 572.309,
+      "dv": 3015.52,
+      "prop": 2318.215,
+      "mass": 50667.339,
+      "accel": 7.486
+     },
+     {
+      "t": 578.209,
+      "dv": 3059.905,
+      "prop": 1824.279,
+      "mass": 50173.402,
+      "accel": 7.56
+     },
+     {
+      "t": 584.109,
+      "dv": 3104.728,
+      "prop": 1330.342,
+      "mass": 49679.465,
+      "accel": 7.635
+     },
+     {
+      "t": 590.009,
+      "dv": 3150,
+      "prop": 836.405,
+      "mass": 49185.528,
+      "accel": 7.711
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Upper stage ignites with 44,331 kg of spacecraft on top."
+     },
+     {
+      "t": 295.0045606092685,
+      "kind": "info",
+      "text": "Halfway: 1,307 m/s gained, the stack keeps getting lighter."
+     },
+     {
+      "t": 590.009121218537,
+      "kind": "success",
+      "text": "Engine cut at 3,150 m/s. You are on your way to the Moon with 3.6% mass to spare."
+     }
+    ],
+    "failure": null,
+    "score": {
+     "label": "Mass margin",
+     "value": 0.0363,
+     "unit": "fraction of rocket capacity",
+     "thresholds": [
+      0,
+      0.1,
+      0.2
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Rocket equation for the upper stage",
+     "steps": [
+      {
+       "eq": "ve = Isp × g₀",
+       "num": "462 s (hydrogen upper stage) × 9.80665 = 4,531 m/s"
+      },
+      {
+       "eq": "Stage sized so a full-capacity payload gets exactly Δv(TLI)",
+       "num": "46,000 kg → 3,150 m/s, so fuel = 50,230 kg, tanks = 4,018 kg"
+      },
+      {
+       "eq": "Δv = ve × ln(m₀ / m_f)",
+       "num": "4,531 × ln(98,579 / 48,349) = 3,228 m/s with your 44,331 kg"
+      },
+      {
+       "eq": "Needed",
+       "num": "3,150 m/s, enough"
+      }
+     ],
+     "src": "cev"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,848 @@
+{
+ "screen": "f1a",
+ "title": "Assembly building",
+ "missionType": "robotic",
+ "note": "Choices write state.design[subsystemId] (single) or state.design.science (array). No rocket yet, so fitsRocket is null.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "robotic",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "solarBig",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": null,
+  "crew": null,
+  "flight": {
+   "margin": 0
+  },
+  "comms": null,
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "subsystems": [
+   {
+    "id": "structure",
+    "title": "Structure",
+    "multi": false,
+    "options": [
+     {
+      "id": "aluminum",
+      "title": "Aluminum alloy",
+      "blurb": "Proven, cheap, a bit heavy.",
+      "src": "finckenor"
+     },
+     {
+      "id": "composite",
+      "title": "Graphite-epoxy composite",
+      "blurb": "Lighter and stiff on paper, pricey to build. Savings can shrink in real designs.",
+      "src": "game"
+     }
+    ]
+   },
+   {
+    "id": "shield",
+    "title": "Micrometeoroid shield",
+    "multi": false,
+    "options": [
+     {
+      "id": "solid",
+      "title": "Solid aluminum plate",
+      "blurb": "The \"brute force\" approach: thick and heavy.",
+      "src": "hvit"
+     },
+     {
+      "id": "whipple",
+      "title": "Whipple shield",
+      "blurb": "A thin bumper in front of the wall. Same protection, less mass.",
+      "src": "hvit"
+     },
+     {
+      "id": "stuffed",
+      "title": "Stuffed Whipple (Nextel + Kevlar)",
+      "blurb": "Extra fabric layers inside. Best protection per kg, highest cost.",
+      "src": "hvit"
+     }
+    ]
+   },
+   {
+    "id": "thermal",
+    "title": "Thermal control",
+    "multi": false,
+    "options": [
+     {
+      "id": "passive",
+      "title": "Passive (blankets + coatings)",
+      "blurb": "Multi-layer blankets and reflective paint. Light, no power.",
+      "src": "moonfacts"
+     },
+     {
+      "id": "active",
+      "title": "Active (heaters + radiators)",
+      "blurb": "Pumps heat around. Handles extremes better, but uses power.",
+      "src": "moonfacts"
+     }
+    ]
+   },
+   {
+    "id": "power",
+    "title": "Power",
+    "multi": false,
+    "options": [
+     {
+      "id": "solarSmall",
+      "title": "Solar panels + small battery",
+      "blurb": "Light and cheap. The battery covers only a few hours — your lander sleeps at night and may not wake up.",
+      "src": "lunarPower"
+     },
+     {
+      "id": "solarBig",
+      "title": "Solar panels + big battery",
+      "blurb": "Can ride out about 100 hours of dark — enough for some polar sites.",
+      "src": "lunarPower"
+     },
+     {
+      "id": "rps",
+      "title": "Solar + radioisotope generator",
+      "blurb": "A nuclear battery like NASA's MMRTG (about 110 W, about 45 kg) keeps you powered all night. Very expensive.",
+      "src": "mmrtgSheet"
+     }
+    ]
+   },
+   {
+    "id": "science",
+    "title": "Science payload",
+    "multi": true,
+    "options": [
+     {
+      "id": "camera",
+      "title": "High-res camera",
+      "blurb": "Shape, color and texture. Inspired by LRO's LROC.",
+      "src": "lro"
+     },
+     {
+      "id": "spectrometer",
+      "title": "Composition spectrometer",
+      "blurb": "Reads which elements are in the soil. Cheese vs. rock, settled.",
+      "src": "moonfacts"
+     },
+     {
+      "id": "neutron",
+      "title": "Neutron detector",
+      "blurb": "Finds hydrogen, a sign of water ice. Inspired by LRO's LEND.",
+      "src": "lro"
+     },
+     {
+      "id": "sampler",
+      "title": "Sample collector",
+      "blurb": "Scoop + sealed box to bring soil home. The strongest proof.",
+      "src": "samples"
+     }
+    ]
+   }
+  ],
+  "previewIfPicked": {
+   "structure": [
+    {
+     "id": "aluminum",
+     "launchMass": 1603.382081394064,
+     "hardware": 538.3333333333334,
+     "cost": 270,
+     "powerNeed": 140,
+     "powerGen": 450
+    },
+    {
+     "id": "composite",
+     "launchMass": 1499.1374259473912,
+     "hardware": 503.33333333333337,
+     "cost": 290,
+     "powerNeed": 140,
+     "powerGen": 450
+    }
+   ],
+   "shield": [
+    {
+     "id": "solid",
+     "launchMass": 1692.734643205498,
+     "hardware": 568.3333333333334,
+     "cost": 263,
+     "powerNeed": 140,
+     "powerGen": 450
+    },
+    {
+     "id": "whipple",
+     "launchMass": 1603.382081394064,
+     "hardware": 538.3333333333334,
+     "cost": 270,
+     "powerNeed": 140,
+     "powerGen": 450
+    },
+    {
+     "id": "stuffed",
+     "launchMass": 1579.5547315776817,
+     "hardware": 530.3333333333334,
+     "cost": 280,
+     "powerNeed": 140,
+     "powerGen": 450
+    }
+   ],
+   "thermal": [
+    {
+     "id": "passive",
+     "launchMass": 1603.382081394064,
+     "hardware": 538.3333333333334,
+     "cost": 270,
+     "powerNeed": 140,
+     "powerGen": 450
+    },
+    {
+     "id": "active",
+     "launchMass": 1662.95045593502,
+     "hardware": 558.3333333333334,
+     "cost": 285,
+     "powerNeed": 180,
+     "powerGen": 450
+    }
+   ],
+   "power": [
+    {
+     "id": "solarSmall",
+     "launchMass": 1512.0439070979314,
+     "hardware": 507.6666666666667,
+     "cost": 255,
+     "powerNeed": 140,
+     "powerGen": 450
+    },
+    {
+     "id": "solarBig",
+     "launchMass": 1603.382081394064,
+     "hardware": 538.3333333333334,
+     "cost": 270,
+     "powerNeed": 140,
+     "powerGen": 450
+    },
+    {
+     "id": "rps",
+     "launchMass": 1646.0727498150825,
+     "hardware": 552.6666666666666,
+     "cost": 350,
+     "powerNeed": 140,
+     "powerGen": 450
+    }
+   ],
+   "science": [
+    {
+     "id": "camera",
+     "launchMass": 1567.6410566694906,
+     "hardware": 526.3333333333334,
+     "cost": 245,
+     "powerNeed": 125,
+     "powerGen": 450
+    },
+    {
+     "id": "spectrometer",
+     "launchMass": 1549.7705443072036,
+     "hardware": 520.3333333333334,
+     "cost": 230,
+     "powerNeed": 115,
+     "powerGen": 450
+    },
+    {
+     "id": "neutron",
+     "launchMass": 1668.9072933891155,
+     "hardware": 560.3333333333334,
+     "cost": 300,
+     "powerNeed": 155,
+     "powerGen": 450
+    },
+    {
+     "id": "sampler",
+     "launchMass": 1692.734643205498,
+     "hardware": 568.3333333333334,
+     "cost": 305,
+     "powerNeed": 180,
+     "powerGen": 450
+    }
+   ]
+  },
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Lander core (computer, radio, engines)",
+     "where": "lander",
+     "mass": 250,
+     "cost": 150,
+     "power": 100,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy",
+     "where": "lander",
+     "mass": 120,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "lander",
+     "mass": 30,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings)",
+     "where": "lander",
+     "mass": 25,
+     "cost": 5,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar panels + big battery",
+     "where": "lander",
+     "mass": 83.33333333333334,
+     "cost": 30,
+     "power": 0,
+     "gen": 450,
+     "src": "lunarPower",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "lander",
+     "mass": 18,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "lander",
+     "mass": 12,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    }
+   ],
+   "dry": 538.3333333333334,
+   "tli": 1603.382081394064,
+   "propellant": 1065.0487480607308,
+   "breakdown": {
+    "lander": 538.3333333333334,
+    "returnFuel": 0
+   },
+   "cost": 270,
+   "totalCost": 270,
+   "budget": 650,
+   "powerNeed": 140,
+   "powerGen": 450,
+   "rocket": null,
+   "nightHours": 100,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 2.9784187270477966,
+   "life": null,
+   "margin": 0,
+   "dvRequired": 3024,
+   "dvPlanned": 3024,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": null,
+   "overBudget": false
+  },
+  "rocketMath": {
+   "ve": 3079.2880999999998,
+   "veS": "3,079",
+   "isp": 314,
+   "burns": [
+    {
+     "name": "Brake into lunar orbit",
+     "dv": 950,
+     "ratio": 1.3613990265340745,
+     "mFinal": 1143.6949734625462,
+     "prop": 425.6362110477017,
+     "tanks": 34.05089688381614,
+     "mStart": 1603.382081394064
+    },
+    {
+     "name": "Land on the Moon",
+     "dv": 2074,
+     "ratio": 1.9611524814617427,
+     "mFinal": 538.3333333333334,
+     "prop": 560.5200371566784,
+     "tanks": 44.841602972534275,
+     "mStart": 1143.6949734625462
+    }
+   ],
+   "tli": 1603.382081394064,
+   "dry": 538.3333333333334,
+   "margin": 0
+  },
+  "validate": {
+   "ok": false,
+   "issues": [
+    {
+     "code": "noRocket",
+     "severity": "block",
+     "message": "Pick a rocket",
+     "phase": 1
+    }
+   ]
+  },
+  "missing": [],
+  "descopeByMass": [
+   {
+    "sub": "structure",
+    "opt": "composite",
+    "label": "Structure → Graphite-epoxy composite",
+    "saves": 104.24465544667282,
+    "costSaves": -20,
+    "after": {
+     "lines": [
+      {
+       "label": "Lander core (computer, radio, engines)",
+       "where": "lander",
+       "mass": 250,
+       "cost": 150,
+       "power": 100,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Graphite-epoxy composite",
+       "where": "lander",
+       "mass": 85,
+       "cost": 30,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Micrometeoroid shield: Whipple shield",
+       "where": "lander",
+       "mass": 30,
+       "cost": 10,
+       "power": 0,
+       "gen": 0,
+       "src": "hvit",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings)",
+       "where": "lander",
+       "mass": 25,
+       "cost": 5,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Power: Solar panels + big battery",
+       "where": "lander",
+       "mass": 83.33333333333334,
+       "cost": 30,
+       "power": 0,
+       "gen": 450,
+       "src": "lunarPower",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: Composition spectrometer",
+       "where": "lander",
+       "mass": 18,
+       "cost": 40,
+       "power": 25,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: High-res camera",
+       "where": "lander",
+       "mass": 12,
+       "cost": 25,
+       "power": 15,
+       "gen": 0,
+       "src": "lro",
+       "kind": "hw"
+      }
+     ],
+     "dry": 503.33333333333337,
+     "tli": 1499.1374259473912,
+     "propellant": 995.8040926140578,
+     "breakdown": {
+      "lander": 503.33333333333337,
+      "returnFuel": 0
+     },
+     "cost": 290,
+     "totalCost": 290,
+     "budget": 650,
+     "powerNeed": 140,
+     "powerGen": 450,
+     "rocket": null,
+     "nightHours": 100,
+     "protection": 3,
+     "strength": 2,
+     "fuelMultiplier": 2.9784187270477966,
+     "life": null,
+     "margin": 0,
+     "dvRequired": 3024,
+     "dvPlanned": 3024,
+     "risk": 0,
+     "extraCost": 0,
+     "massGrowth": 0,
+     "fitsRocket": null,
+     "overBudget": false
+    }
+   },
+   {
+    "sub": "power",
+    "opt": "solarSmall",
+    "label": "Power → Solar panels + small battery",
+    "saves": 91.33817429613259,
+    "costSaves": 15,
+    "after": {
+     "lines": [
+      {
+       "label": "Lander core (computer, radio, engines)",
+       "where": "lander",
+       "mass": 250,
+       "cost": 150,
+       "power": 100,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy",
+       "where": "lander",
+       "mass": 120,
+       "cost": 10,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Micrometeoroid shield: Whipple shield",
+       "where": "lander",
+       "mass": 30,
+       "cost": 10,
+       "power": 0,
+       "gen": 0,
+       "src": "hvit",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings)",
+       "where": "lander",
+       "mass": 25,
+       "cost": 5,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Power: Solar panels + small battery",
+       "where": "lander",
+       "mass": 52.666666666666664,
+       "cost": 15,
+       "power": 0,
+       "gen": 450,
+       "src": "lunarPower",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: Composition spectrometer",
+       "where": "lander",
+       "mass": 18,
+       "cost": 40,
+       "power": 25,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: High-res camera",
+       "where": "lander",
+       "mass": 12,
+       "cost": 25,
+       "power": 15,
+       "gen": 0,
+       "src": "lro",
+       "kind": "hw"
+      }
+     ],
+     "dry": 507.6666666666667,
+     "tli": 1512.0439070979314,
+     "propellant": 1004.3772404312647,
+     "breakdown": {
+      "lander": 507.6666666666667,
+      "returnFuel": 0
+     },
+     "cost": 255,
+     "totalCost": 255,
+     "budget": 650,
+     "powerNeed": 140,
+     "powerGen": 450,
+     "rocket": null,
+     "nightHours": 0,
+     "protection": 3,
+     "strength": 2,
+     "fuelMultiplier": 2.9784187270477966,
+     "life": null,
+     "margin": 0,
+     "dvRequired": 3024,
+     "dvPlanned": 3024,
+     "risk": 0,
+     "extraCost": 0,
+     "massGrowth": 0,
+     "fitsRocket": null,
+     "overBudget": false
+    }
+   },
+   {
+    "sub": "science",
+    "opt": "camera",
+    "remove": true,
+    "label": "Remove High-res camera",
+    "saves": 35.741024724573435,
+    "costSaves": 25,
+    "after": {
+     "lines": [
+      {
+       "label": "Lander core (computer, radio, engines)",
+       "where": "lander",
+       "mass": 250,
+       "cost": 150,
+       "power": 100,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy",
+       "where": "lander",
+       "mass": 120,
+       "cost": 10,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Micrometeoroid shield: Whipple shield",
+       "where": "lander",
+       "mass": 30,
+       "cost": 10,
+       "power": 0,
+       "gen": 0,
+       "src": "hvit",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings)",
+       "where": "lander",
+       "mass": 25,
+       "cost": 5,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Power: Solar panels + big battery",
+       "where": "lander",
+       "mass": 83.33333333333334,
+       "cost": 30,
+       "power": 0,
+       "gen": 450,
+       "src": "lunarPower",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: Composition spectrometer",
+       "where": "lander",
+       "mass": 18,
+       "cost": 40,
+       "power": 25,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      }
+     ],
+     "dry": 526.3333333333334,
+     "tli": 1567.6410566694906,
+     "propellant": 1041.3077233361573,
+     "breakdown": {
+      "lander": 526.3333333333334,
+      "returnFuel": 0
+     },
+     "cost": 245,
+     "totalCost": 245,
+     "budget": 650,
+     "powerNeed": 125,
+     "powerGen": 450,
+     "rocket": null,
+     "nightHours": 100,
+     "protection": 3,
+     "strength": 2,
+     "fuelMultiplier": 2.978418727047797,
+     "life": null,
+     "margin": 0,
+     "dvRequired": 3024,
+     "dvPlanned": 3024,
+     "risk": 0,
+     "extraCost": 0,
+     "massGrowth": 0,
+     "fitsRocket": null,
+     "overBudget": false
+    }
+   },
+   {
+    "sub": "shield",
+    "opt": "stuffed",
+    "label": "Micrometeoroid shield → Stuffed Whipple (Nextel + Kevlar)",
+    "saves": 23.827349816382366,
+    "costSaves": -10,
+    "after": {
+     "lines": [
+      {
+       "label": "Lander core (computer, radio, engines)",
+       "where": "lander",
+       "mass": 250,
+       "cost": 150,
+       "power": 100,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy",
+       "where": "lander",
+       "mass": 120,
+       "cost": 10,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Micrometeoroid shield: Stuffed Whipple (Nextel + Kevlar)",
+       "where": "lander",
+       "mass": 22,
+       "cost": 20,
+       "power": 0,
+       "gen": 0,
+       "src": "hvit",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings)",
+       "where": "lander",
+       "mass": 25,
+       "cost": 5,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Power: Solar panels + big battery",
+       "where": "lander",
+       "mass": 83.33333333333334,
+       "cost": 30,
+       "power": 0,
+       "gen": 450,
+       "src": "lunarPower",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: Composition spectrometer",
+       "where": "lander",
+       "mass": 18,
+       "cost": 40,
+       "power": 25,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: High-res camera",
+       "where": "lander",
+       "mass": 12,
+       "cost": 25,
+       "power": 15,
+       "gen": 0,
+       "src": "lro",
+       "kind": "hw"
+      }
+     ],
+     "dry": 530.3333333333334,
+     "tli": 1579.5547315776817,
+     "propellant": 1049.2213982443482,
+     "breakdown": {
+      "lander": 530.3333333333334,
+      "returnFuel": 0
+     },
+     "cost": 280,
+     "totalCost": 280,
+     "budget": 650,
+     "powerNeed": 140,
+     "powerGen": 450,
+     "rocket": null,
+     "nightHours": 100,
+     "protection": 4,
+     "strength": 2,
+     "fuelMultiplier": 2.9784187270477966,
+     "life": null,
+     "margin": 0,
+     "dvRequired": 3024,
+     "dvPlanned": 3024,
+     "risk": 0,
+     "extraCost": 0,
+     "massGrowth": 0,
+     "fitsRocket": null,
+     "overBudget": false
+    }
+   }
+  ]
+ },
+ "sim": {}
+}

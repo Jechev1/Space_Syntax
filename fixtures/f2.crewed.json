@@ -1,0 +1,1252 @@
+{
+ "screen": "f2",
+ "title": "Crew and life support",
+ "missionType": "crewed",
+ "note": "Writes state.crew = { size, days, reserve, suit, recycler }. Defaults from M.defaultCrew().",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "crewed",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "crewSolar",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": "sls2",
+  "crew": {
+   "size": 4,
+   "days": 10,
+   "reserve": 0.2,
+   "suit": "lunar",
+   "recycler": false
+  },
+  "flight": {
+   "margin": 0
+  },
+  "comms": null,
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Crew capsule with heat shield",
+     "where": "orbiter",
+     "mass": 3800,
+     "cost": 1000,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Service module (engines, structure)",
+     "where": "orbiter",
+     "mass": 3150,
+     "cost": 300,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander ascent cabin",
+     "where": "ascent",
+     "mass": 1500,
+     "cost": 700,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander descent stage",
+     "where": "descent",
+     "mass": 1300,
+     "cost": 800,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (orbiter)",
+     "where": "orbiter",
+     "mass": 1251,
+     "cost": 150,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (ascent)",
+     "where": "ascent",
+     "mass": 270,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (descent)",
+     "where": "descent",
+     "mass": 234,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "orbiter",
+     "mass": 350,
+     "cost": 90,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (orbiter)",
+     "where": "orbiter",
+     "mass": 150,
+     "cost": 40,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (lander)",
+     "where": "ascent",
+     "mass": 150,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar arrays",
+     "where": "orbiter",
+     "mass": 500,
+     "cost": 80,
+     "power": 0,
+     "gen": 2500,
+     "src": "esaEsm",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "descent",
+     "mass": 20,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "descent",
+     "mass": 15,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Crew staying in orbit (2)",
+     "where": "orbiter",
+     "mass": 164,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "crew"
+    },
+    {
+     "label": "Landing crew (2)",
+     "where": "ascent",
+     "mass": 164,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "crew"
+    },
+    {
+     "label": "Moonwalk suits ×2: Lunar suit (AxEMU-style)",
+     "where": "ascent",
+     "mass": 250,
+     "cost": 100,
+     "power": 0,
+     "gen": 0,
+     "src": "axemu",
+     "kind": "crew"
+    },
+    {
+     "label": "Supplies in orbit (O₂, food, water)",
+     "where": "orbiter",
+     "mass": 200.40959999999998,
+     "cost": 0,
+     "power": 900,
+     "gen": 0,
+     "src": "bvad",
+     "kind": "consumable"
+    },
+    {
+     "label": "Surface supplies (O₂, food, water)",
+     "where": "descent",
+     "mass": 35.3664,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "bvad",
+     "kind": "consumable"
+    },
+    {
+     "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+     "where": "ascent",
+     "mass": 100,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "samples",
+     "kind": "sample"
+    }
+   ],
+   "dry": 13603.776000000002,
+   "tli": 41401.21795481019,
+   "propellant": 27797.44195481019,
+   "breakdown": {
+    "orbiter": 9565.4096,
+    "ascent": 2434,
+    "descent": 1604.3663999999999,
+    "orbiterWet": 16092.457820037847,
+    "landerWet": 13439.096398763737
+   },
+   "cost": 3325,
+   "totalCost": 6125,
+   "budget": 7700,
+   "powerNeed": 940,
+   "powerGen": 2500,
+   "rocket": {
+    "id": "sls2",
+    "title": "SLS Block 2",
+    "capacity": 46000,
+    "cost": 2800,
+    "capSrc": "sls",
+    "costSrc": "game",
+    "blurb": "Most powerful version. Up to 46 t to deep space."
+   },
+   "nightHours": null,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 3.0433622219897023,
+   "life": {
+    "size": 4,
+    "days": 10,
+    "reserve": 0.2,
+    "landingCrew": 2,
+    "orbitCrew": 2,
+    "suit": {
+     "id": "lunar",
+     "title": "Lunar suit (AxEMU-style)",
+     "mass": 125,
+     "evaHours": 8,
+     "cost": 50,
+     "shadowOk": true,
+     "src": "axemu",
+     "blurb": "Built for lunar dust and at least 2 h in shadowed craters as cold as 48 K."
+    },
+    "recycler": false,
+    "crewDays": 40,
+    "perDay": {
+     "o2": 0.895,
+     "food": 0.8,
+     "water": 3.217,
+     "src": "bvad"
+    },
+    "daily": 4.912,
+    "o2": 42.959999999999994,
+    "food": 38.4,
+    "water": 154.416,
+    "waterSaved": 0,
+    "recyclerBreakEvenDays": 21.32452912778416,
+    "surfaceSupplies": 35.3664,
+    "orbiterSupplies": 200.40959999999998,
+    "suppliesTotal": 235.77599999999998,
+    "suitsMass": 250,
+    "crewMass": 328,
+    "minDays": 9,
+    "daysOk": true
+   },
+   "margin": 0,
+   "dvRequired": 6307,
+   "dvPlanned": 6307,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": true,
+   "overBudget": false
+  },
+  "life": {
+   "size": 4,
+   "days": 10,
+   "reserve": 0.2,
+   "landingCrew": 2,
+   "orbitCrew": 2,
+   "suit": {
+    "id": "lunar",
+    "title": "Lunar suit (AxEMU-style)",
+    "mass": 125,
+    "evaHours": 8,
+    "cost": 50,
+    "shadowOk": true,
+    "src": "axemu",
+    "blurb": "Built for lunar dust and at least 2 h in shadowed craters as cold as 48 K."
+   },
+   "recycler": false,
+   "crewDays": 40,
+   "perDay": {
+    "o2": 0.895,
+    "food": 0.8,
+    "water": 3.217,
+    "src": "bvad"
+   },
+   "daily": 4.912,
+   "o2": 42.959999999999994,
+   "food": 38.4,
+   "water": 154.416,
+   "waterSaved": 0,
+   "recyclerBreakEvenDays": 21.32452912778416,
+   "surfaceSupplies": 35.3664,
+   "orbiterSupplies": 200.40959999999998,
+   "suppliesTotal": 235.77599999999998,
+   "suitsMass": 250,
+   "crewMass": 328,
+   "minDays": 9,
+   "daysOk": true
+  },
+  "lifeMath": {
+   "title": "Life support: real NASA numbers",
+   "steps": [
+    {
+     "eq": "crew-days = crew × days",
+     "num": "4 × 10 = 40 crew-days"
+    },
+    {
+     "eq": "O₂ = crew-days × 0.895",
+     "num": "40 × 0.895 kg × 1.2 = 43 kg"
+    },
+    {
+     "eq": "food = crew-days × 0.800",
+     "num": "40 × 0.8 kg × 1.2 = 38 kg"
+    },
+    {
+     "eq": "water = crew-days × 3.217",
+     "num": "40 × 3.217 kg × 1.2 = 154 kg"
+    }
+   ],
+   "check": "Daily values from NASA BVAD Table 3-31",
+   "src": "bvad"
+  },
+  "validate": {
+   "ok": true,
+   "issues": []
+  },
+  "minDays": 9,
+  "choices": {
+   "crewSize": [
+    1,
+    4
+   ],
+   "days": [
+    1,
+    30
+   ],
+   "reserve": [
+    0,
+    0.2
+   ],
+   "suits": [
+    {
+     "id": "light",
+     "title": "Light EVA suit",
+     "mass": 90,
+     "evaHours": 4,
+     "cost": 20,
+     "shadowOk": false,
+     "blurb": "Light and cheap. Short moonwalks, no deep-cold craters."
+    },
+    {
+     "id": "lunar",
+     "title": "Lunar suit (AxEMU-style)",
+     "mass": 125,
+     "evaHours": 8,
+     "cost": 50,
+     "shadowOk": true,
+     "src": "axemu",
+     "blurb": "Built for lunar dust and at least 2 h in shadowed craters as cold as 48 K."
+    },
+    {
+     "id": "heavy",
+     "title": "Heavy-duty suit",
+     "mass": 150,
+     "evaHours": 10,
+     "cost": 70,
+     "shadowOk": true,
+     "blurb": "Extra protection and longest moonwalks. The heaviest."
+    }
+   ],
+   "recycler": {
+    "title": "Water recycler",
+    "mass": 300,
+    "power": 300,
+    "cost": 120,
+    "recovery": 0.98,
+    "src": "issWater",
+    "blurb": "Cleans used water so the crew can drink it again. The Space Station recovers about 98% of its water."
+   }
+  }
+ },
+ "sim": {
+  "success": {
+   "label": "default plan",
+   "seed": 7,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "crewed",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "crewSolar",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "sls2",
+    "crew": {
+     "size": 4,
+     "days": 10,
+     "reserve": 0.2,
+     "suit": "lunar",
+     "recycler": false
+    },
+    "flight": {
+     "margin": 0
+    },
+    "comms": null,
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 2,
+    "title": "Mission days",
+    "ready": true,
+    "seed": 7,
+    "ok": true,
+    "outcome": "success",
+    "stars": 3,
+    "time": {
+     "unit": "day",
+     "total": 9
+    },
+    "fields": [
+     {
+      "key": "o2",
+      "label": "Oxygen left",
+      "unit": "kg",
+      "max": 43
+     },
+     {
+      "key": "food",
+      "label": "Food left",
+      "unit": "kg",
+      "max": 39
+     },
+     {
+      "key": "water",
+      "label": "Water left",
+      "unit": "kg",
+      "max": 155
+     },
+     {
+      "key": "ashore",
+      "label": "Crew on the surface",
+      "unit": "people",
+      "max": 2
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "o2": 42.96,
+      "food": 38.4,
+      "water": 154.416,
+      "ashore": 0
+     },
+     {
+      "t": 0.25,
+      "o2": 42.065,
+      "food": 37.6,
+      "water": 151.199,
+      "ashore": 0
+     },
+     {
+      "t": 0.5,
+      "o2": 41.17,
+      "food": 36.8,
+      "water": 147.982,
+      "ashore": 0
+     },
+     {
+      "t": 0.75,
+      "o2": 40.275,
+      "food": 36,
+      "water": 144.765,
+      "ashore": 0
+     },
+     {
+      "t": 1,
+      "o2": 39.38,
+      "food": 35.2,
+      "water": 141.548,
+      "ashore": 0
+     },
+     {
+      "t": 1.25,
+      "o2": 38.485,
+      "food": 34.4,
+      "water": 138.331,
+      "ashore": 0
+     },
+     {
+      "t": 1.5,
+      "o2": 37.59,
+      "food": 33.6,
+      "water": 135.114,
+      "ashore": 0
+     },
+     {
+      "t": 1.75,
+      "o2": 36.695,
+      "food": 32.8,
+      "water": 131.897,
+      "ashore": 0
+     },
+     {
+      "t": 2,
+      "o2": 35.8,
+      "food": 32,
+      "water": 128.68,
+      "ashore": 0
+     },
+     {
+      "t": 2.25,
+      "o2": 34.905,
+      "food": 31.2,
+      "water": 125.463,
+      "ashore": 0
+     },
+     {
+      "t": 2.5,
+      "o2": 34.01,
+      "food": 30.4,
+      "water": 122.246,
+      "ashore": 0
+     },
+     {
+      "t": 2.75,
+      "o2": 33.115,
+      "food": 29.6,
+      "water": 119.029,
+      "ashore": 0
+     },
+     {
+      "t": 3,
+      "o2": 32.22,
+      "food": 28.8,
+      "water": 115.812,
+      "ashore": 0
+     },
+     {
+      "t": 3.25,
+      "o2": 31.325,
+      "food": 28,
+      "water": 112.595,
+      "ashore": 2
+     },
+     {
+      "t": 3.5,
+      "o2": 30.43,
+      "food": 27.2,
+      "water": 109.378,
+      "ashore": 2
+     },
+     {
+      "t": 3.75,
+      "o2": 29.535,
+      "food": 26.4,
+      "water": 106.161,
+      "ashore": 2
+     },
+     {
+      "t": 4,
+      "o2": 28.64,
+      "food": 25.6,
+      "water": 102.944,
+      "ashore": 2
+     },
+     {
+      "t": 4.25,
+      "o2": 27.745,
+      "food": 24.8,
+      "water": 99.727,
+      "ashore": 2
+     },
+     {
+      "t": 4.5,
+      "o2": 26.85,
+      "food": 24,
+      "water": 96.51,
+      "ashore": 2
+     },
+     {
+      "t": 4.75,
+      "o2": 25.955,
+      "food": 23.2,
+      "water": 93.293,
+      "ashore": 2
+     },
+     {
+      "t": 5,
+      "o2": 25.06,
+      "food": 22.4,
+      "water": 90.076,
+      "ashore": 2
+     },
+     {
+      "t": 5.25,
+      "o2": 24.165,
+      "food": 21.6,
+      "water": 86.859,
+      "ashore": 2
+     },
+     {
+      "t": 5.5,
+      "o2": 23.27,
+      "food": 20.8,
+      "water": 83.642,
+      "ashore": 2
+     },
+     {
+      "t": 5.75,
+      "o2": 22.375,
+      "food": 20,
+      "water": 80.425,
+      "ashore": 2
+     },
+     {
+      "t": 6,
+      "o2": 21.48,
+      "food": 19.2,
+      "water": 77.208,
+      "ashore": 2
+     },
+     {
+      "t": 6.25,
+      "o2": 19.511,
+      "food": 17.44,
+      "water": 70.131,
+      "ashore": 0
+     },
+     {
+      "t": 6.5,
+      "o2": 18.616,
+      "food": 16.64,
+      "water": 66.914,
+      "ashore": 0
+     },
+     {
+      "t": 6.75,
+      "o2": 17.721,
+      "food": 15.84,
+      "water": 63.697,
+      "ashore": 0
+     },
+     {
+      "t": 7,
+      "o2": 16.826,
+      "food": 15.04,
+      "water": 60.48,
+      "ashore": 0
+     },
+     {
+      "t": 7.25,
+      "o2": 15.931,
+      "food": 14.24,
+      "water": 57.263,
+      "ashore": 0
+     },
+     {
+      "t": 7.5,
+      "o2": 15.036,
+      "food": 13.44,
+      "water": 54.046,
+      "ashore": 0
+     },
+     {
+      "t": 7.75,
+      "o2": 14.141,
+      "food": 12.64,
+      "water": 50.829,
+      "ashore": 0
+     },
+     {
+      "t": 8,
+      "o2": 13.246,
+      "food": 11.84,
+      "water": 47.612,
+      "ashore": 0
+     },
+     {
+      "t": 8.25,
+      "o2": 12.351,
+      "food": 11.04,
+      "water": 44.395,
+      "ashore": 0
+     },
+     {
+      "t": 8.5,
+      "o2": 11.456,
+      "food": 10.24,
+      "water": 41.178,
+      "ashore": 0
+     },
+     {
+      "t": 8.75,
+      "o2": 10.561,
+      "food": 9.44,
+      "water": 37.961,
+      "ashore": 0
+     },
+     {
+      "t": 9,
+      "o2": 9.666,
+      "food": 8.64,
+      "water": 34.744,
+      "ashore": 0
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "4 crew, 10 days of supplies, 20% reserve. Trip needs 9 days."
+     },
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Launch day: the whole crew is on the ship."
+     },
+     {
+      "t": 3,
+      "kind": "info",
+      "text": "Day 3: 2 crew go down to the surface."
+     },
+     {
+      "t": 6,
+      "kind": "info",
+      "text": "Day 6: the descent stage stays on the Moon with its leftover supplies."
+     },
+     {
+      "t": 6,
+      "kind": "info",
+      "text": "Day 6: everyone is back on the ship and heading home."
+     },
+     {
+      "t": 9,
+      "kind": "success",
+      "text": "Home safe after 9 days. 26% of the thinnest supply was left."
+     }
+    ],
+    "failure": null,
+    "score": {
+     "label": "Supply balance",
+     "value": 1,
+     "unit": "score",
+     "thresholds": [
+      0,
+      0.5,
+      0.9
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Life support: real NASA numbers",
+     "steps": [
+      {
+       "eq": "crew-days = crew × days",
+       "num": "4 × 10 = 40 crew-days"
+      },
+      {
+       "eq": "O₂ = crew-days × 0.895",
+       "num": "40 × 0.895 kg × 1.2 = 43 kg"
+      },
+      {
+       "eq": "food = crew-days × 0.800",
+       "num": "40 × 0.8 kg × 1.2 = 38 kg"
+      },
+      {
+       "eq": "water = crew-days × 3.217",
+       "num": "40 × 3.217 kg × 1.2 = 154 kg"
+      },
+      {
+       "eq": "left = loaded − used − left on the descent stage",
+       "num": "oxygen 43.0 − 32.2 − 1.1 = 9.7 kg, food 38.4 − 28.8 − 1.0 = 8.6 kg, water 154.4 − 115.8 − 3.9 = 34.7 kg"
+      }
+     ],
+     "src": "bvad"
+    }
+   }
+  },
+  "fail": {
+   "label": "no reserve, no recycler, 8 days",
+   "seed": 1,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "crewed",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "crewSolar",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "sls2",
+    "crew": {
+     "size": 4,
+     "days": 8,
+     "reserve": 0,
+     "suit": "lunar",
+     "recycler": false
+    },
+    "flight": {
+     "margin": 0
+    },
+    "comms": null,
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 2,
+    "title": "Mission days",
+    "ready": true,
+    "seed": 1,
+    "ok": false,
+    "outcome": "fail",
+    "stars": 0,
+    "time": {
+     "unit": "day",
+     "total": 8
+    },
+    "fields": [
+     {
+      "key": "o2",
+      "label": "Oxygen left",
+      "unit": "kg",
+      "max": 29
+     },
+     {
+      "key": "food",
+      "label": "Food left",
+      "unit": "kg",
+      "max": 26
+     },
+     {
+      "key": "water",
+      "label": "Water left",
+      "unit": "kg",
+      "max": 103
+     },
+     {
+      "key": "ashore",
+      "label": "Crew on the surface",
+      "unit": "people",
+      "max": 2
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "o2": 28.64,
+      "food": 25.6,
+      "water": 102.944,
+      "ashore": 0
+     },
+     {
+      "t": 0.25,
+      "o2": 27.745,
+      "food": 24.8,
+      "water": 99.727,
+      "ashore": 0
+     },
+     {
+      "t": 0.5,
+      "o2": 26.85,
+      "food": 24,
+      "water": 96.51,
+      "ashore": 0
+     },
+     {
+      "t": 0.75,
+      "o2": 25.955,
+      "food": 23.2,
+      "water": 93.293,
+      "ashore": 0
+     },
+     {
+      "t": 1,
+      "o2": 25.06,
+      "food": 22.4,
+      "water": 90.076,
+      "ashore": 0
+     },
+     {
+      "t": 1.25,
+      "o2": 24.165,
+      "food": 21.6,
+      "water": 86.859,
+      "ashore": 0
+     },
+     {
+      "t": 1.5,
+      "o2": 23.27,
+      "food": 20.8,
+      "water": 83.642,
+      "ashore": 0
+     },
+     {
+      "t": 1.75,
+      "o2": 22.375,
+      "food": 20,
+      "water": 80.425,
+      "ashore": 0
+     },
+     {
+      "t": 2,
+      "o2": 21.48,
+      "food": 19.2,
+      "water": 77.208,
+      "ashore": 0
+     },
+     {
+      "t": 2.25,
+      "o2": 20.585,
+      "food": 18.4,
+      "water": 73.991,
+      "ashore": 0
+     },
+     {
+      "t": 2.5,
+      "o2": 19.69,
+      "food": 17.6,
+      "water": 70.774,
+      "ashore": 0
+     },
+     {
+      "t": 2.75,
+      "o2": 18.795,
+      "food": 16.8,
+      "water": 67.557,
+      "ashore": 0
+     },
+     {
+      "t": 3,
+      "o2": 17.9,
+      "food": 16,
+      "water": 64.34,
+      "ashore": 0
+     },
+     {
+      "t": 3.25,
+      "o2": 17.005,
+      "food": 15.2,
+      "water": 61.123,
+      "ashore": 2
+     },
+     {
+      "t": 3.5,
+      "o2": 16.11,
+      "food": 14.4,
+      "water": 57.906,
+      "ashore": 2
+     },
+     {
+      "t": 3.75,
+      "o2": 15.215,
+      "food": 13.6,
+      "water": 54.689,
+      "ashore": 2
+     },
+     {
+      "t": 4,
+      "o2": 14.32,
+      "food": 12.8,
+      "water": 51.472,
+      "ashore": 2
+     },
+     {
+      "t": 4.25,
+      "o2": 13.425,
+      "food": 12,
+      "water": 48.255,
+      "ashore": 2
+     },
+     {
+      "t": 4.5,
+      "o2": 12.53,
+      "food": 11.2,
+      "water": 45.038,
+      "ashore": 2
+     },
+     {
+      "t": 4.75,
+      "o2": 11.635,
+      "food": 10.4,
+      "water": 41.821,
+      "ashore": 2
+     },
+     {
+      "t": 5,
+      "o2": 10.74,
+      "food": 9.6,
+      "water": 38.604,
+      "ashore": 2
+     },
+     {
+      "t": 5.25,
+      "o2": 9.845,
+      "food": 8.8,
+      "water": 35.387,
+      "ashore": 2
+     },
+     {
+      "t": 5.5,
+      "o2": 8.95,
+      "food": 8,
+      "water": 32.17,
+      "ashore": 2
+     },
+     {
+      "t": 5.75,
+      "o2": 8.055,
+      "food": 7.2,
+      "water": 28.953,
+      "ashore": 2
+     },
+     {
+      "t": 6,
+      "o2": 7.16,
+      "food": 6.4,
+      "water": 25.736,
+      "ashore": 2
+     },
+     {
+      "t": 6.25,
+      "o2": 6.265,
+      "food": 5.6,
+      "water": 22.519,
+      "ashore": 0
+     },
+     {
+      "t": 6.5,
+      "o2": 5.37,
+      "food": 4.8,
+      "water": 19.302,
+      "ashore": 0
+     },
+     {
+      "t": 6.75,
+      "o2": 4.475,
+      "food": 4,
+      "water": 16.085,
+      "ashore": 0
+     },
+     {
+      "t": 7,
+      "o2": 3.58,
+      "food": 3.2,
+      "water": 12.868,
+      "ashore": 0
+     },
+     {
+      "t": 7.25,
+      "o2": 2.685,
+      "food": 2.4,
+      "water": 9.651,
+      "ashore": 0
+     },
+     {
+      "t": 7.5,
+      "o2": 1.79,
+      "food": 1.6,
+      "water": 6.434,
+      "ashore": 0
+     },
+     {
+      "t": 7.75,
+      "o2": 0.895,
+      "food": 0.8,
+      "water": 3.217,
+      "ashore": 0
+     },
+     {
+      "t": 8,
+      "o2": 0,
+      "food": 0,
+      "water": 0,
+      "ashore": 0
+     },
+     {
+      "t": 8,
+      "o2": 0,
+      "food": 0,
+      "water": 0,
+      "ashore": 0
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "4 crew, 8 days of supplies, 0% reserve. Trip needs 9 days."
+     },
+     {
+      "t": 0,
+      "kind": "warn",
+      "text": "You planned 8 days but the trip needs 9. You will eat into the reserve."
+     },
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Launch day: the whole crew is on the ship."
+     },
+     {
+      "t": 3,
+      "kind": "info",
+      "text": "Day 3: 2 crew go down to the surface."
+     },
+     {
+      "t": 6,
+      "kind": "info",
+      "text": "Day 6: the descent stage stays on the Moon with its leftover supplies."
+     },
+     {
+      "t": 6,
+      "kind": "info",
+      "text": "Day 6: everyone is back on the ship and heading home."
+     },
+     {
+      "t": 8,
+      "kind": "fail",
+      "text": "The food ran out on the ship on day 9 of 9."
+     }
+    ],
+    "failure": {
+     "t": 8,
+     "code": "foodOut",
+     "cause": "The food ran out on the ship on day 9 of 9.",
+     "fix": "Plan at least 9 days of supplies."
+    },
+    "score": {
+     "label": "Supply balance",
+     "value": 0,
+     "unit": "score",
+     "thresholds": [
+      0,
+      0.5,
+      0.9
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Life support: real NASA numbers",
+     "steps": [
+      {
+       "eq": "crew-days = crew × days",
+       "num": "4 × 8 = 32 crew-days"
+      },
+      {
+       "eq": "O₂ = crew-days × 0.895",
+       "num": "32 × 0.895 kg = 29 kg"
+      },
+      {
+       "eq": "food = crew-days × 0.800",
+       "num": "32 × 0.8 kg = 26 kg"
+      },
+      {
+       "eq": "water = crew-days × 3.217",
+       "num": "32 × 3.217 kg = 103 kg"
+      },
+      {
+       "eq": "left = loaded − used − left on the descent stage",
+       "num": "oxygen 28.6 − 28.6 − 0.0 = 0.0 kg, food 25.6 − 25.6 − 0.0 = 0.0 kg, water 102.9 − 102.9 − 0.0 = 0.0 kg"
+      }
+     ],
+     "src": "bvad"
+    }
+   }
+  },
+  "partial": null
+ }
+}

@@ -1,0 +1,1091 @@
+{
+ "screen": "f1a",
+ "title": "Assembly building",
+ "missionType": "crewed",
+ "note": "Choices write state.design[subsystemId] (single) or state.design.science (array). No rocket yet, so fitsRocket is null.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "crewed",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "crewSolar",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": null,
+  "crew": null,
+  "flight": {
+   "margin": 0
+  },
+  "comms": null,
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "subsystems": [
+   {
+    "id": "structure",
+    "title": "Structure",
+    "multi": false,
+    "options": [
+     {
+      "id": "aluminum",
+      "title": "Aluminum alloy",
+      "blurb": "Proven, cheap, a bit heavy.",
+      "src": "finckenor"
+     },
+     {
+      "id": "composite",
+      "title": "Graphite-epoxy composite",
+      "blurb": "Lighter and stiff on paper, pricey to build. Savings can shrink in real designs.",
+      "src": "game"
+     }
+    ]
+   },
+   {
+    "id": "shield",
+    "title": "Micrometeoroid shield",
+    "multi": false,
+    "options": [
+     {
+      "id": "solid",
+      "title": "Solid aluminum plate",
+      "blurb": "The \"brute force\" approach: thick and heavy.",
+      "src": "hvit"
+     },
+     {
+      "id": "whipple",
+      "title": "Whipple shield",
+      "blurb": "A thin bumper in front of the wall. Same protection, less mass.",
+      "src": "hvit"
+     },
+     {
+      "id": "stuffed",
+      "title": "Stuffed Whipple (Nextel + Kevlar)",
+      "blurb": "Extra fabric layers inside. Best protection per kg, highest cost.",
+      "src": "hvit"
+     }
+    ]
+   },
+   {
+    "id": "thermal",
+    "title": "Thermal control",
+    "multi": false,
+    "options": [
+     {
+      "id": "passive",
+      "title": "Passive (blankets + coatings)",
+      "blurb": "Multi-layer blankets and reflective paint. Light, no power.",
+      "src": "moonfacts"
+     },
+     {
+      "id": "active",
+      "title": "Active (heaters + radiators)",
+      "blurb": "Pumps heat around. Handles extremes better, but uses power.",
+      "src": "moonfacts"
+     }
+    ]
+   },
+   {
+    "id": "power",
+    "title": "Power",
+    "multi": false,
+    "options": [
+     {
+      "id": "crewSolar",
+      "title": "Solar arrays",
+      "blurb": "Wings like Orion's service module (4 wings, 11.2 kW). Light, but no Sun = no power.",
+      "src": "esaEsm"
+     },
+     {
+      "id": "crewSolarBat",
+      "title": "Solar arrays + big batteries",
+      "blurb": "Batteries keep the orbiter powered when it passes through the Moon's shadow.",
+      "src": "esaEsm"
+     },
+     {
+      "id": "fuelCells",
+      "title": "Fuel cells (Apollo-style)",
+      "blurb": "Hydrogen + oxygen make power — and drinking water as a bonus. Heavy.",
+      "src": "nssdcCsm"
+     }
+    ]
+   },
+   {
+    "id": "science",
+    "title": "Science payload",
+    "multi": true,
+    "options": [
+     {
+      "id": "camera",
+      "title": "High-res camera",
+      "blurb": "Shape, color and texture. Inspired by LRO's LROC.",
+      "src": "lro"
+     },
+     {
+      "id": "spectrometer",
+      "title": "Composition spectrometer",
+      "blurb": "Reads which elements are in the soil. Cheese vs. rock, settled.",
+      "src": "moonfacts"
+     },
+     {
+      "id": "neutron",
+      "title": "Neutron detector",
+      "blurb": "Finds hydrogen, a sign of water ice. Inspired by LRO's LEND.",
+      "src": "lro"
+     },
+     {
+      "id": "sampler",
+      "title": "Sample collector",
+      "blurb": "Scoop + sealed box to bring soil home. The strongest proof.",
+      "src": "samples"
+     }
+    ]
+   }
+  ],
+  "previewIfPicked": {
+   "structure": [
+    {
+     "id": "aluminum",
+     "launchMass": 39459.68625473099,
+     "hardware": 13390,
+     "cost": 3225,
+     "powerNeed": 940,
+     "powerGen": 2500
+    },
+    {
+     "id": "composite",
+     "launchMass": 38013.186076764825,
+     "hardware": 12902.5,
+     "cost": 3525,
+     "powerNeed": 940,
+     "powerGen": 2500
+    }
+   ],
+   "shield": [
+    {
+     "id": "solid",
+     "launchMass": 40285.179769273585,
+     "hardware": 13740,
+     "cost": 3165,
+     "powerNeed": 940,
+     "powerGen": 2500
+    },
+    {
+     "id": "whipple",
+     "launchMass": 39459.68625473099,
+     "hardware": 13390,
+     "cost": 3225,
+     "powerNeed": 940,
+     "powerGen": 2500
+    },
+    {
+     "id": "stuffed",
+     "launchMass": 39223.83096486166,
+     "hardware": 13290,
+     "cost": 3315,
+     "powerNeed": 940,
+     "powerGen": 2500
+    }
+   ],
+   "thermal": [
+    {
+     "id": "passive",
+     "launchMass": 39459.68625473099,
+     "hardware": 13390,
+     "cost": 3225,
+     "powerNeed": 940,
+     "powerGen": 2500
+    },
+    {
+     "id": "active",
+     "launchMass": 40069.88355054515,
+     "hardware": 13540,
+     "cost": 3305,
+     "powerNeed": 1540,
+     "powerGen": 2500
+    }
+   ],
+   "power": [
+    {
+     "id": "crewSolar",
+     "launchMass": 39459.68625473099,
+     "hardware": 13390,
+     "cost": 3225,
+     "powerNeed": 940,
+     "powerGen": 2500
+    },
+    {
+     "id": "crewSolarBat",
+     "launchMass": 40403.10741420824,
+     "hardware": 13790,
+     "cost": 3295,
+     "powerNeed": 940,
+     "powerGen": 2500
+    },
+    {
+     "id": "fuelCells",
+     "launchMass": 40874.817993946876,
+     "hardware": 13990,
+     "cost": 3345,
+     "powerNeed": 940,
+     "powerGen": 3000
+    }
+   ],
+   "science": [
+    {
+     "id": "camera",
+     "launchMass": 39415.00997382527,
+     "hardware": 13375,
+     "cost": 3200,
+     "powerNeed": 925,
+     "powerGen": 2500
+    },
+    {
+     "id": "spectrometer",
+     "launchMass": 39400.11788019003,
+     "hardware": 13370,
+     "cost": 3185,
+     "powerNeed": 915,
+     "powerGen": 2500
+    },
+    {
+     "id": "neutron",
+     "launchMass": 39534.14672290718,
+     "hardware": 13415,
+     "cost": 3255,
+     "powerNeed": 955,
+     "powerGen": 2500
+    },
+    {
+     "id": "sampler",
+     "launchMass": 39690.782696550814,
+     "hardware": 13430,
+     "cost": 3245,
+     "powerNeed": 940,
+     "powerGen": 2500
+    }
+   ]
+  },
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Crew capsule with heat shield",
+     "where": "orbiter",
+     "mass": 3800,
+     "cost": 1000,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Service module (engines, structure)",
+     "where": "orbiter",
+     "mass": 3150,
+     "cost": 300,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander ascent cabin",
+     "where": "ascent",
+     "mass": 1500,
+     "cost": 700,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Lander descent stage",
+     "where": "descent",
+     "mass": 1300,
+     "cost": 800,
+     "power": 0,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (orbiter)",
+     "where": "orbiter",
+     "mass": 1251,
+     "cost": 150,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (ascent)",
+     "where": "ascent",
+     "mass": 270,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy (descent)",
+     "where": "descent",
+     "mass": 234,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "orbiter",
+     "mass": 350,
+     "cost": 90,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (orbiter)",
+     "where": "orbiter",
+     "mass": 150,
+     "cost": 40,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings) (lander)",
+     "where": "ascent",
+     "mass": 150,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar arrays",
+     "where": "orbiter",
+     "mass": 500,
+     "cost": 80,
+     "power": 0,
+     "gen": 2500,
+     "src": "esaEsm",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "descent",
+     "mass": 20,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "descent",
+     "mass": 15,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    },
+    {
+     "label": "Crew & supplies (sized in Phase 2)",
+     "where": "orbiter",
+     "mass": 600,
+     "cost": 0,
+     "power": 900,
+     "gen": 0,
+     "src": "game",
+     "kind": "consumable"
+    },
+    {
+     "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+     "where": "ascent",
+     "mass": 100,
+     "cost": 0,
+     "power": 0,
+     "gen": 0,
+     "src": "samples",
+     "kind": "sample"
+    }
+   ],
+   "dry": 13390,
+   "tli": 39459.68625473099,
+   "propellant": 26069.686254730987,
+   "breakdown": {
+    "orbiter": 9801,
+    "ascent": 2020,
+    "descent": 1569,
+    "orbiterWet": 16488.805570248758,
+    "landerWet": 11657.851017497756
+   },
+   "cost": 3225,
+   "totalCost": 3225,
+   "budget": 7700,
+   "powerNeed": 940,
+   "powerGen": 2500,
+   "rocket": null,
+   "nightHours": null,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 2.9469519234302455,
+   "life": null,
+   "margin": 0,
+   "dvRequired": 6307,
+   "dvPlanned": 6307,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": null,
+   "overBudget": false
+  },
+  "rocketMath": {
+   "ve": 3079.2880999999998,
+   "veS": "3,079",
+   "isp": 314,
+   "burns": [
+    {
+     "name": "Brake into lunar orbit (everything)",
+     "dv": 950,
+     "ratio": 1.3613990265340745,
+     "mFinal": 28146.656587746507,
+     "prop": 10475.02746943006,
+     "tanks": 838.0021975544049,
+     "mStart": 39459.68625473097
+    },
+    {
+     "name": "Land on the Moon (whole lander)",
+     "dv": 2074,
+     "ratio": 1.9611524814617427,
+     "mFinal": 5487.310815708923,
+     "prop": 5713.463149804474,
+     "tanks": 457.0770519843579,
+     "mStart": 11657.851017497753
+    },
+    {
+     "name": "Lift off from the Moon (cabin)",
+     "dv": 1833,
+     "ratio": 1.813515919597993,
+     "mFinal": 2020,
+     "prop": 1757.6951997304839,
+     "tanks": 140.6156159784387,
+     "mStart": 3918.3108157089227
+    },
+    {
+     "name": "Fire engines toward Earth (orbiter)",
+     "dv": 1450,
+     "ratio": 1.601415715378736,
+     "mFinal": 9801,
+     "prop": 6192.412565045144,
+     "tanks": 495.39300520361155,
+     "mStart": 16488.805570248755
+    }
+   ],
+   "tli": 39459.68625473099,
+   "dry": 13390,
+   "margin": 0
+  },
+  "validate": {
+   "ok": false,
+   "issues": [
+    {
+     "code": "noRocket",
+     "severity": "block",
+     "message": "Pick a rocket",
+     "phase": 1
+    }
+   ]
+  },
+  "missing": [],
+  "descopeByMass": [
+   {
+    "sub": "structure",
+    "opt": "composite",
+    "label": "Structure → Graphite-epoxy composite",
+    "saves": 1446.5001779661616,
+    "costSaves": -300,
+    "after": {
+     "lines": [
+      {
+       "label": "Crew capsule with heat shield",
+       "where": "orbiter",
+       "mass": 3800,
+       "cost": 1000,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Service module (engines, structure)",
+       "where": "orbiter",
+       "mass": 3150,
+       "cost": 300,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Lander ascent cabin",
+       "where": "ascent",
+       "mass": 1500,
+       "cost": 700,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Lander descent stage",
+       "where": "descent",
+       "mass": 1300,
+       "cost": 800,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Graphite-epoxy composite (orbiter)",
+       "where": "orbiter",
+       "mass": 903.5,
+       "cost": 450,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Graphite-epoxy composite (ascent)",
+       "where": "ascent",
+       "mass": 195,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Graphite-epoxy composite (descent)",
+       "where": "descent",
+       "mass": 169,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Micrometeoroid shield: Whipple shield",
+       "where": "orbiter",
+       "mass": 350,
+       "cost": 90,
+       "power": 0,
+       "gen": 0,
+       "src": "hvit",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings) (orbiter)",
+       "where": "orbiter",
+       "mass": 150,
+       "cost": 40,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings) (lander)",
+       "where": "ascent",
+       "mass": 150,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Power: Solar arrays",
+       "where": "orbiter",
+       "mass": 500,
+       "cost": 80,
+       "power": 0,
+       "gen": 2500,
+       "src": "esaEsm",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: Composition spectrometer",
+       "where": "descent",
+       "mass": 20,
+       "cost": 40,
+       "power": 25,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: High-res camera",
+       "where": "descent",
+       "mass": 15,
+       "cost": 25,
+       "power": 15,
+       "gen": 0,
+       "src": "lro",
+       "kind": "hw"
+      },
+      {
+       "label": "Crew & supplies (sized in Phase 2)",
+       "where": "orbiter",
+       "mass": 600,
+       "cost": 0,
+       "power": 900,
+       "gen": 0,
+       "src": "game",
+       "kind": "consumable"
+      },
+      {
+       "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+       "where": "ascent",
+       "mass": 100,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "samples",
+       "kind": "sample"
+      }
+     ],
+     "dry": 12902.5,
+     "tli": 38013.186076764825,
+     "propellant": 25110.686076764825,
+     "breakdown": {
+      "orbiter": 9453.5,
+      "ascent": 1945,
+      "descent": 1504,
+      "orbiterWet": 15904.185640072097,
+      "landerWet": 11210.6800839433
+     },
+     "cost": 3525,
+     "totalCost": 3525,
+     "budget": 7700,
+     "powerNeed": 940,
+     "powerGen": 2500,
+     "rocket": null,
+     "nightHours": null,
+     "protection": 3,
+     "strength": 2,
+     "fuelMultiplier": 2.946187644004249,
+     "life": null,
+     "margin": 0,
+     "dvRequired": 6307,
+     "dvPlanned": 6307,
+     "risk": 0,
+     "extraCost": 0,
+     "massGrowth": 0,
+     "fitsRocket": null,
+     "overBudget": false
+    }
+   },
+   {
+    "sub": "shield",
+    "opt": "stuffed",
+    "label": "Micrometeoroid shield → Stuffed Whipple (Nextel + Kevlar)",
+    "saves": 235.85528986932331,
+    "costSaves": -90,
+    "after": {
+     "lines": [
+      {
+       "label": "Crew capsule with heat shield",
+       "where": "orbiter",
+       "mass": 3800,
+       "cost": 1000,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Service module (engines, structure)",
+       "where": "orbiter",
+       "mass": 3150,
+       "cost": 300,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Lander ascent cabin",
+       "where": "ascent",
+       "mass": 1500,
+       "cost": 700,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Lander descent stage",
+       "where": "descent",
+       "mass": 1300,
+       "cost": 800,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy (orbiter)",
+       "where": "orbiter",
+       "mass": 1251,
+       "cost": 150,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy (ascent)",
+       "where": "ascent",
+       "mass": 270,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy (descent)",
+       "where": "descent",
+       "mass": 234,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Micrometeoroid shield: Stuffed Whipple (Nextel + Kevlar)",
+       "where": "orbiter",
+       "mass": 250,
+       "cost": 180,
+       "power": 0,
+       "gen": 0,
+       "src": "hvit",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings) (orbiter)",
+       "where": "orbiter",
+       "mass": 150,
+       "cost": 40,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings) (lander)",
+       "where": "ascent",
+       "mass": 150,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Power: Solar arrays",
+       "where": "orbiter",
+       "mass": 500,
+       "cost": 80,
+       "power": 0,
+       "gen": 2500,
+       "src": "esaEsm",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: Composition spectrometer",
+       "where": "descent",
+       "mass": 20,
+       "cost": 40,
+       "power": 25,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: High-res camera",
+       "where": "descent",
+       "mass": 15,
+       "cost": 25,
+       "power": 15,
+       "gen": 0,
+       "src": "lro",
+       "kind": "hw"
+      },
+      {
+       "label": "Crew & supplies (sized in Phase 2)",
+       "where": "orbiter",
+       "mass": 600,
+       "cost": 0,
+       "power": 900,
+       "gen": 0,
+       "src": "game",
+       "kind": "consumable"
+      },
+      {
+       "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+       "where": "ascent",
+       "mass": 100,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "samples",
+       "kind": "sample"
+      }
+     ],
+     "dry": 13290,
+     "tli": 39223.83096486166,
+     "propellant": 25933.830964861663,
+     "breakdown": {
+      "orbiter": 9701,
+      "ascent": 2020,
+      "descent": 1569,
+      "orbiterWet": 16320.569619118782,
+      "landerWet": 11657.851017497756
+     },
+     "cost": 3315,
+     "totalCost": 3315,
+     "budget": 7700,
+     "powerNeed": 940,
+     "powerGen": 2500,
+     "rocket": null,
+     "nightHours": null,
+     "protection": 4,
+     "strength": 2,
+     "fuelMultiplier": 2.95137930510622,
+     "life": null,
+     "margin": 0,
+     "dvRequired": 6307,
+     "dvPlanned": 6307,
+     "risk": 0,
+     "extraCost": 0,
+     "massGrowth": 0,
+     "fitsRocket": null,
+     "overBudget": false
+    }
+   },
+   {
+    "sub": "science",
+    "opt": "camera",
+    "remove": true,
+    "label": "Remove High-res camera",
+    "saves": 44.67628090571816,
+    "costSaves": 25,
+    "after": {
+     "lines": [
+      {
+       "label": "Crew capsule with heat shield",
+       "where": "orbiter",
+       "mass": 3800,
+       "cost": 1000,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Service module (engines, structure)",
+       "where": "orbiter",
+       "mass": 3150,
+       "cost": 300,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Lander ascent cabin",
+       "where": "ascent",
+       "mass": 1500,
+       "cost": 700,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Lander descent stage",
+       "where": "descent",
+       "mass": 1300,
+       "cost": 800,
+       "power": 0,
+       "gen": 0,
+       "src": "game",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy (orbiter)",
+       "where": "orbiter",
+       "mass": 1251,
+       "cost": 150,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy (ascent)",
+       "where": "ascent",
+       "mass": 270,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Structure: Aluminum alloy (descent)",
+       "where": "descent",
+       "mass": 234,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "finckenor",
+       "kind": "hw"
+      },
+      {
+       "label": "Micrometeoroid shield: Whipple shield",
+       "where": "orbiter",
+       "mass": 350,
+       "cost": 90,
+       "power": 0,
+       "gen": 0,
+       "src": "hvit",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings) (orbiter)",
+       "where": "orbiter",
+       "mass": 150,
+       "cost": 40,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Thermal control: Passive (blankets + coatings) (lander)",
+       "where": "ascent",
+       "mass": 150,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Power: Solar arrays",
+       "where": "orbiter",
+       "mass": 500,
+       "cost": 80,
+       "power": 0,
+       "gen": 2500,
+       "src": "esaEsm",
+       "kind": "hw"
+      },
+      {
+       "label": "Science payload: Composition spectrometer",
+       "where": "descent",
+       "mass": 20,
+       "cost": 40,
+       "power": 25,
+       "gen": 0,
+       "src": "moonfacts",
+       "kind": "hw"
+      },
+      {
+       "label": "Crew & supplies (sized in Phase 2)",
+       "where": "orbiter",
+       "mass": 600,
+       "cost": 0,
+       "power": 900,
+       "gen": 0,
+       "src": "game",
+       "kind": "consumable"
+      },
+      {
+       "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+       "where": "ascent",
+       "mass": 100,
+       "cost": 0,
+       "power": 0,
+       "gen": 0,
+       "src": "samples",
+       "kind": "sample"
+      }
+     ],
+     "dry": 13375,
+     "tli": 39415.00997382527,
+     "propellant": 26040.00997382527,
+     "breakdown": {
+      "orbiter": 9801,
+      "ascent": 2020,
+      "descent": 1554,
+      "orbiterWet": 16488.805570248758,
+      "landerWet": 11625.98335569849
+     },
+     "cost": 3200,
+     "totalCost": 3200,
+     "budget": 7700,
+     "powerNeed": 925,
+     "powerGen": 2500,
+     "rocket": null,
+     "nightHours": null,
+     "protection": 3,
+     "strength": 2,
+     "fuelMultiplier": 2.9469166335570294,
+     "life": null,
+     "margin": 0,
+     "dvRequired": 6307,
+     "dvPlanned": 6307,
+     "risk": 0,
+     "extraCost": 0,
+     "massGrowth": 0,
+     "fitsRocket": null,
+     "overBudget": false
+    }
+   }
+  ]
+ },
+ "sim": {}
+}

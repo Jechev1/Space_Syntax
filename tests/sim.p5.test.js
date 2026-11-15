@@ -125,3 +125,33 @@ test('whenever Phase 5 validation blocks, the run is not ok', () => {
   }
   assert.ok(blocked > 0);
 });
+
+test('interactive run pauses at the rocks and offers a choice', () => {
+  const { s, seed } = find('descartes', 0.1, 'clean');
+  const p = P.simulate(s, { seed, interactive: true });
+  checkResult(p, 5);
+  assert.equal(p.outcome, 'pending'); assert.equal(p.ok, false); assert.equal(p.stars, 0); assert.equal(p.failure, null);
+  assert.equal(p.decision.code, 'rocksAhead');
+  const need = M.landingSim(s, seed).hoverNeeded;
+  assert.ok(Math.abs(p.decision.options[0].dvCost - need * 1.62) <= 1);
+  assert.deepEqual(p.decision.options.map(o => o.id), ['detour', 'abort']);
+  assert.equal(p.decision.options[1].dvCost, 0);
+  assert.equal(p.decision.marginLeft, Math.round(M.hoverAvailable(s) * D.MOON.gravity));
+  const full = P.simulate(s, { seed, choice: 'detour' });
+  assert.deepEqual(full, P.simulate(s, { seed }));
+  assert.equal(full.decision, undefined);
+  // the full run is thinned to 200 frames, so compare every full frame inside the paused window
+  const upto = full.frames.filter(f => f.t <= p.decision.t);
+  assert.ok(upto.length > 10);
+  for (const f of upto) { const q = p.frames.find(x => x.t === f.t); assert.ok(q, 't ' + f.t); assert.equal(q.alt, f.alt); }
+  assert.ok(p.frames.length < full.frames.length);
+});
+
+test('choosing abort ends the run with playerAbort', () => {
+  const { s, seed } = find('tranquility', 0.1, 'clean');
+  const a = P.simulate(s, { seed, choice: 'abort' });
+  checkResult(a, 5);
+  assert.equal(a.outcome, 'fail'); assert.equal(a.failure.code, 'playerAbort');
+  assert.match(a.failure.fix, /Phase 3/);
+  assert.ok(a.frames[a.frames.length - 1].vz > 0);
+});

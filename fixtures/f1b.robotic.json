@@ -1,0 +1,1870 @@
+{
+ "screen": "f1b",
+ "title": "Launch pad: pick your rocket",
+ "missionType": "robotic",
+ "note": "Choice writes state.rocket. rockets[] drives the three cards and fuel tubes. The sim here is the launch run, also used by screen 3B.",
+ "state": {
+  "difficulty": "cadet",
+  "question": "made",
+  "measure": "chem",
+  "missionType": "robotic",
+  "design": {
+   "structure": "aluminum",
+   "shield": "whipple",
+   "thermal": "passive",
+   "power": "solarBig",
+   "science": [
+    "spectrometer",
+    "camera"
+   ]
+  },
+  "rocket": "medium",
+  "crew": null,
+  "flight": {
+   "margin": 0
+  },
+  "comms": null,
+  "site": null,
+  "landing": null,
+  "events": {
+   "massGrowth": 0,
+   "extraCost": 0,
+   "risk": 0,
+   "extraDays": 0,
+   "log": []
+  },
+  "surface": null,
+  "returnTrip": null
+ },
+ "engine": {
+  "evaluate": {
+   "lines": [
+    {
+     "label": "Lander core (computer, radio, engines)",
+     "where": "lander",
+     "mass": 250,
+     "cost": 150,
+     "power": 100,
+     "gen": 0,
+     "src": "game",
+     "kind": "hw"
+    },
+    {
+     "label": "Structure: Aluminum alloy",
+     "where": "lander",
+     "mass": 120,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "finckenor",
+     "kind": "hw"
+    },
+    {
+     "label": "Micrometeoroid shield: Whipple shield",
+     "where": "lander",
+     "mass": 30,
+     "cost": 10,
+     "power": 0,
+     "gen": 0,
+     "src": "hvit",
+     "kind": "hw"
+    },
+    {
+     "label": "Thermal control: Passive (blankets + coatings)",
+     "where": "lander",
+     "mass": 25,
+     "cost": 5,
+     "power": 0,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Power: Solar panels + big battery",
+     "where": "lander",
+     "mass": 83.33333333333334,
+     "cost": 30,
+     "power": 0,
+     "gen": 450,
+     "src": "lunarPower",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: Composition spectrometer",
+     "where": "lander",
+     "mass": 18,
+     "cost": 40,
+     "power": 25,
+     "gen": 0,
+     "src": "moonfacts",
+     "kind": "hw"
+    },
+    {
+     "label": "Science payload: High-res camera",
+     "where": "lander",
+     "mass": 12,
+     "cost": 25,
+     "power": 15,
+     "gen": 0,
+     "src": "lro",
+     "kind": "hw"
+    }
+   ],
+   "dry": 538.3333333333334,
+   "tli": 1603.382081394064,
+   "propellant": 1065.0487480607308,
+   "breakdown": {
+    "lander": 538.3333333333334,
+    "returnFuel": 0
+   },
+   "cost": 270,
+   "totalCost": 390,
+   "budget": 650,
+   "powerNeed": 140,
+   "powerGen": 450,
+   "rocket": {
+    "id": "medium",
+    "title": "Medium launcher",
+    "capacity": 4000,
+    "cost": 120,
+    "capSrc": "game",
+    "costSrc": "game",
+    "blurb": "Commercial-class workhorse."
+   },
+   "nightHours": 100,
+   "protection": 3,
+   "strength": 2,
+   "fuelMultiplier": 2.9784187270477966,
+   "life": null,
+   "margin": 0,
+   "dvRequired": 3024,
+   "dvPlanned": 3024,
+   "risk": 0,
+   "extraCost": 0,
+   "massGrowth": 0,
+   "fitsRocket": true,
+   "overBudget": false
+  },
+  "rockets": [
+   {
+    "id": "small",
+    "title": "Small launcher",
+    "capacity": 1500,
+    "cost": 60,
+    "launchMass": 1603.382081394064,
+    "fits": false,
+    "fillFraction": 1.0689213875960426,
+    "totalCost": 330,
+    "overBudget": false
+   },
+   {
+    "id": "medium",
+    "title": "Medium launcher",
+    "capacity": 4000,
+    "cost": 120,
+    "launchMass": 1603.382081394064,
+    "fits": true,
+    "fillFraction": 0.400845520348516,
+    "totalCost": 390,
+    "overBudget": false
+   },
+   {
+    "id": "heavy",
+    "title": "Heavy launcher",
+    "capacity": 12000,
+    "cost": 250,
+    "launchMass": 1603.382081394064,
+    "fits": true,
+    "fillFraction": 0.13361517344950533,
+    "totalCost": 520,
+    "overBudget": false
+   }
+  ],
+  "validate": {
+   "ok": true,
+   "issues": []
+  }
+ },
+ "sim": {
+  "success": {
+   "label": "medium",
+   "seed": 7,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "robotic",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "solarBig",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "medium",
+    "crew": null,
+    "flight": {
+     "margin": 0
+    },
+    "comms": null,
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 1,
+    "title": "Launch",
+    "ready": true,
+    "seed": 7,
+    "ok": true,
+    "outcome": "success",
+    "stars": 3,
+    "time": {
+     "unit": "s",
+     "total": 435.043288162117
+    },
+    "fields": [
+     {
+      "key": "dv",
+      "label": "Speed gained",
+      "unit": "m/s",
+      "max": 3150
+     },
+     {
+      "key": "prop",
+      "label": "Fuel left",
+      "unit": "kg",
+      "max": 4368
+     },
+     {
+      "key": "mass",
+      "label": "Stack mass",
+      "unit": "kg",
+      "max": 6321
+     },
+     {
+      "key": "accel",
+      "label": "Acceleration",
+      "unit": "m/s²",
+      "max": 10.5
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "dv": 0,
+      "prop": 4367.834,
+      "mass": 6320.643,
+      "accel": 5.218
+     },
+     {
+      "t": 4.35,
+      "dv": 22.758,
+      "prop": 4336.165,
+      "mass": 6288.973,
+      "accel": 5.244
+     },
+     {
+      "t": 8.701,
+      "dv": 45.631,
+      "prop": 4304.495,
+      "mass": 6257.303,
+      "accel": 5.271
+     },
+     {
+      "t": 13.051,
+      "dv": 68.621,
+      "prop": 4272.825,
+      "mass": 6225.633,
+      "accel": 5.298
+     },
+     {
+      "t": 17.402,
+      "dv": 91.727,
+      "prop": 4241.155,
+      "mass": 6193.964,
+      "accel": 5.325
+     },
+     {
+      "t": 21.752,
+      "dv": 114.952,
+      "prop": 4209.485,
+      "mass": 6162.294,
+      "accel": 5.352
+     },
+     {
+      "t": 26.103,
+      "dv": 138.297,
+      "prop": 4177.815,
+      "mass": 6130.624,
+      "accel": 5.38
+     },
+     {
+      "t": 30.453,
+      "dv": 161.762,
+      "prop": 4146.145,
+      "mass": 6098.954,
+      "accel": 5.408
+     },
+     {
+      "t": 34.803,
+      "dv": 185.35,
+      "prop": 4114.475,
+      "mass": 6067.284,
+      "accel": 5.436
+     },
+     {
+      "t": 39.154,
+      "dv": 209.061,
+      "prop": 4082.805,
+      "mass": 6035.614,
+      "accel": 5.465
+     },
+     {
+      "t": 43.504,
+      "dv": 232.897,
+      "prop": 4051.135,
+      "mass": 6003.944,
+      "accel": 5.493
+     },
+     {
+      "t": 47.855,
+      "dv": 256.859,
+      "prop": 4019.465,
+      "mass": 5972.274,
+      "accel": 5.523
+     },
+     {
+      "t": 52.205,
+      "dv": 280.948,
+      "prop": 3987.795,
+      "mass": 5940.604,
+      "accel": 5.552
+     },
+     {
+      "t": 56.556,
+      "dv": 305.166,
+      "prop": 3956.125,
+      "mass": 5908.934,
+      "accel": 5.582
+     },
+     {
+      "t": 60.906,
+      "dv": 329.514,
+      "prop": 3924.455,
+      "mass": 5877.264,
+      "accel": 5.612
+     },
+     {
+      "t": 65.256,
+      "dv": 353.994,
+      "prop": 3892.785,
+      "mass": 5845.594,
+      "accel": 5.642
+     },
+     {
+      "t": 69.607,
+      "dv": 378.607,
+      "prop": 3861.115,
+      "mass": 5813.924,
+      "accel": 5.673
+     },
+     {
+      "t": 73.957,
+      "dv": 403.354,
+      "prop": 3829.445,
+      "mass": 5782.254,
+      "accel": 5.704
+     },
+     {
+      "t": 78.308,
+      "dv": 428.237,
+      "prop": 3797.775,
+      "mass": 5750.584,
+      "accel": 5.735
+     },
+     {
+      "t": 82.658,
+      "dv": 453.258,
+      "prop": 3766.105,
+      "mass": 5718.914,
+      "accel": 5.767
+     },
+     {
+      "t": 87.009,
+      "dv": 478.417,
+      "prop": 3734.435,
+      "mass": 5687.244,
+      "accel": 5.799
+     },
+     {
+      "t": 91.359,
+      "dv": 503.717,
+      "prop": 3702.766,
+      "mass": 5655.574,
+      "accel": 5.832
+     },
+     {
+      "t": 95.71,
+      "dv": 529.159,
+      "prop": 3671.096,
+      "mass": 5623.904,
+      "accel": 5.865
+     },
+     {
+      "t": 100.06,
+      "dv": 554.745,
+      "prop": 3639.426,
+      "mass": 5592.234,
+      "accel": 5.898
+     },
+     {
+      "t": 104.41,
+      "dv": 580.476,
+      "prop": 3607.756,
+      "mass": 5560.564,
+      "accel": 5.931
+     },
+     {
+      "t": 108.761,
+      "dv": 606.354,
+      "prop": 3576.086,
+      "mass": 5528.895,
+      "accel": 5.965
+     },
+     {
+      "t": 113.111,
+      "dv": 632.381,
+      "prop": 3544.416,
+      "mass": 5497.225,
+      "accel": 6
+     },
+     {
+      "t": 117.462,
+      "dv": 658.558,
+      "prop": 3512.746,
+      "mass": 5465.555,
+      "accel": 6.035
+     },
+     {
+      "t": 121.812,
+      "dv": 684.887,
+      "prop": 3481.076,
+      "mass": 5433.885,
+      "accel": 6.07
+     },
+     {
+      "t": 126.163,
+      "dv": 711.37,
+      "prop": 3449.406,
+      "mass": 5402.215,
+      "accel": 6.105
+     },
+     {
+      "t": 130.513,
+      "dv": 738.009,
+      "prop": 3417.736,
+      "mass": 5370.545,
+      "accel": 6.141
+     },
+     {
+      "t": 134.863,
+      "dv": 764.805,
+      "prop": 3386.066,
+      "mass": 5338.875,
+      "accel": 6.178
+     },
+     {
+      "t": 139.214,
+      "dv": 791.761,
+      "prop": 3354.396,
+      "mass": 5307.205,
+      "accel": 6.215
+     },
+     {
+      "t": 143.564,
+      "dv": 818.878,
+      "prop": 3322.726,
+      "mass": 5275.535,
+      "accel": 6.252
+     },
+     {
+      "t": 147.915,
+      "dv": 846.158,
+      "prop": 3291.056,
+      "mass": 5243.865,
+      "accel": 6.29
+     },
+     {
+      "t": 152.265,
+      "dv": 873.604,
+      "prop": 3259.386,
+      "mass": 5212.195,
+      "accel": 6.328
+     },
+     {
+      "t": 156.616,
+      "dv": 901.217,
+      "prop": 3227.716,
+      "mass": 5180.525,
+      "accel": 6.367
+     },
+     {
+      "t": 160.966,
+      "dv": 928.999,
+      "prop": 3196.046,
+      "mass": 5148.855,
+      "accel": 6.406
+     },
+     {
+      "t": 165.316,
+      "dv": 956.953,
+      "prop": 3164.376,
+      "mass": 5117.185,
+      "accel": 6.445
+     },
+     {
+      "t": 169.667,
+      "dv": 985.08,
+      "prop": 3132.706,
+      "mass": 5085.515,
+      "accel": 6.485
+     },
+     {
+      "t": 174.017,
+      "dv": 1013.383,
+      "prop": 3101.036,
+      "mass": 5053.845,
+      "accel": 6.526
+     },
+     {
+      "t": 178.368,
+      "dv": 1041.864,
+      "prop": 3069.366,
+      "mass": 5022.175,
+      "accel": 6.567
+     },
+     {
+      "t": 182.718,
+      "dv": 1070.525,
+      "prop": 3037.697,
+      "mass": 4990.505,
+      "accel": 6.609
+     },
+     {
+      "t": 187.069,
+      "dv": 1099.368,
+      "prop": 3006.027,
+      "mass": 4958.835,
+      "accel": 6.651
+     },
+     {
+      "t": 191.419,
+      "dv": 1128.396,
+      "prop": 2974.357,
+      "mass": 4927.165,
+      "accel": 6.694
+     },
+     {
+      "t": 195.769,
+      "dv": 1157.612,
+      "prop": 2942.687,
+      "mass": 4895.496,
+      "accel": 6.737
+     },
+     {
+      "t": 200.12,
+      "dv": 1187.017,
+      "prop": 2911.017,
+      "mass": 4863.826,
+      "accel": 6.781
+     },
+     {
+      "t": 204.47,
+      "dv": 1216.614,
+      "prop": 2879.347,
+      "mass": 4832.156,
+      "accel": 6.826
+     },
+     {
+      "t": 208.821,
+      "dv": 1246.406,
+      "prop": 2847.677,
+      "mass": 4800.486,
+      "accel": 6.871
+     },
+     {
+      "t": 213.171,
+      "dv": 1276.395,
+      "prop": 2816.007,
+      "mass": 4768.816,
+      "accel": 6.916
+     },
+     {
+      "t": 217.522,
+      "dv": 1306.583,
+      "prop": 2784.337,
+      "mass": 4737.146,
+      "accel": 6.962
+     },
+     {
+      "t": 221.872,
+      "dv": 1336.975,
+      "prop": 2752.667,
+      "mass": 4705.476,
+      "accel": 7.009
+     },
+     {
+      "t": 226.223,
+      "dv": 1367.571,
+      "prop": 2720.997,
+      "mass": 4673.806,
+      "accel": 7.057
+     },
+     {
+      "t": 230.573,
+      "dv": 1398.376,
+      "prop": 2689.327,
+      "mass": 4642.136,
+      "accel": 7.105
+     },
+     {
+      "t": 234.923,
+      "dv": 1429.391,
+      "prop": 2657.657,
+      "mass": 4610.466,
+      "accel": 7.154
+     },
+     {
+      "t": 239.274,
+      "dv": 1460.62,
+      "prop": 2625.987,
+      "mass": 4578.796,
+      "accel": 7.203
+     },
+     {
+      "t": 243.624,
+      "dv": 1492.066,
+      "prop": 2594.317,
+      "mass": 4547.126,
+      "accel": 7.253
+     },
+     {
+      "t": 247.975,
+      "dv": 1523.732,
+      "prop": 2562.647,
+      "mass": 4515.456,
+      "accel": 7.304
+     },
+     {
+      "t": 252.325,
+      "dv": 1555.621,
+      "prop": 2530.977,
+      "mass": 4483.786,
+      "accel": 7.356
+     },
+     {
+      "t": 256.676,
+      "dv": 1587.735,
+      "prop": 2499.307,
+      "mass": 4452.116,
+      "accel": 7.408
+     },
+     {
+      "t": 261.026,
+      "dv": 1620.079,
+      "prop": 2467.637,
+      "mass": 4420.446,
+      "accel": 7.461
+     },
+     {
+      "t": 265.376,
+      "dv": 1652.656,
+      "prop": 2435.967,
+      "mass": 4388.776,
+      "accel": 7.515
+     },
+     {
+      "t": 269.727,
+      "dv": 1685.468,
+      "prop": 2404.298,
+      "mass": 4357.106,
+      "accel": 7.57
+     },
+     {
+      "t": 274.077,
+      "dv": 1718.52,
+      "prop": 2372.628,
+      "mass": 4325.436,
+      "accel": 7.625
+     },
+     {
+      "t": 278.428,
+      "dv": 1751.815,
+      "prop": 2340.958,
+      "mass": 4293.766,
+      "accel": 7.681
+     },
+     {
+      "t": 282.778,
+      "dv": 1785.356,
+      "prop": 2309.288,
+      "mass": 4262.096,
+      "accel": 7.738
+     },
+     {
+      "t": 287.129,
+      "dv": 1819.147,
+      "prop": 2277.618,
+      "mass": 4230.427,
+      "accel": 7.796
+     },
+     {
+      "t": 291.479,
+      "dv": 1853.193,
+      "prop": 2245.948,
+      "mass": 4198.757,
+      "accel": 7.855
+     },
+     {
+      "t": 295.829,
+      "dv": 1887.496,
+      "prop": 2214.278,
+      "mass": 4167.087,
+      "accel": 7.915
+     },
+     {
+      "t": 300.18,
+      "dv": 1922.06,
+      "prop": 2182.608,
+      "mass": 4135.417,
+      "accel": 7.976
+     },
+     {
+      "t": 304.53,
+      "dv": 1956.891,
+      "prop": 2150.938,
+      "mass": 4103.747,
+      "accel": 8.037
+     },
+     {
+      "t": 308.881,
+      "dv": 1991.991,
+      "prop": 2119.268,
+      "mass": 4072.077,
+      "accel": 8.1
+     },
+     {
+      "t": 313.231,
+      "dv": 2027.365,
+      "prop": 2087.598,
+      "mass": 4040.407,
+      "accel": 8.163
+     },
+     {
+      "t": 317.582,
+      "dv": 2063.018,
+      "prop": 2055.928,
+      "mass": 4008.737,
+      "accel": 8.228
+     },
+     {
+      "t": 321.932,
+      "dv": 2098.954,
+      "prop": 2024.258,
+      "mass": 3977.067,
+      "accel": 8.293
+     },
+     {
+      "t": 326.282,
+      "dv": 2135.176,
+      "prop": 1992.588,
+      "mass": 3945.397,
+      "accel": 8.36
+     },
+     {
+      "t": 330.633,
+      "dv": 2171.691,
+      "prop": 1960.918,
+      "mass": 3913.727,
+      "accel": 8.427
+     },
+     {
+      "t": 334.983,
+      "dv": 2208.503,
+      "prop": 1929.248,
+      "mass": 3882.057,
+      "accel": 8.496
+     },
+     {
+      "t": 339.334,
+      "dv": 2245.615,
+      "prop": 1897.578,
+      "mass": 3850.387,
+      "accel": 8.566
+     },
+     {
+      "t": 343.684,
+      "dv": 2283.035,
+      "prop": 1865.908,
+      "mass": 3818.717,
+      "accel": 8.637
+     },
+     {
+      "t": 348.035,
+      "dv": 2320.766,
+      "prop": 1834.238,
+      "mass": 3787.047,
+      "accel": 8.709
+     },
+     {
+      "t": 352.385,
+      "dv": 2358.814,
+      "prop": 1802.568,
+      "mass": 3755.377,
+      "accel": 8.783
+     },
+     {
+      "t": 356.735,
+      "dv": 2397.184,
+      "prop": 1770.898,
+      "mass": 3723.707,
+      "accel": 8.857
+     },
+     {
+      "t": 361.086,
+      "dv": 2435.882,
+      "prop": 1739.229,
+      "mass": 3692.037,
+      "accel": 8.933
+     },
+     {
+      "t": 365.436,
+      "dv": 2474.914,
+      "prop": 1707.559,
+      "mass": 3660.367,
+      "accel": 9.011
+     },
+     {
+      "t": 369.787,
+      "dv": 2514.284,
+      "prop": 1675.889,
+      "mass": 3628.697,
+      "accel": 9.089
+     },
+     {
+      "t": 374.137,
+      "dv": 2554,
+      "prop": 1644.219,
+      "mass": 3597.028,
+      "accel": 9.169
+     },
+     {
+      "t": 378.488,
+      "dv": 2594.067,
+      "prop": 1612.549,
+      "mass": 3565.358,
+      "accel": 9.251
+     },
+     {
+      "t": 382.838,
+      "dv": 2634.491,
+      "prop": 1580.879,
+      "mass": 3533.688,
+      "accel": 9.334
+     },
+     {
+      "t": 387.189,
+      "dv": 2675.279,
+      "prop": 1549.209,
+      "mass": 3502.018,
+      "accel": 9.418
+     },
+     {
+      "t": 391.539,
+      "dv": 2716.438,
+      "prop": 1517.539,
+      "mass": 3470.348,
+      "accel": 9.504
+     },
+     {
+      "t": 395.889,
+      "dv": 2757.974,
+      "prop": 1485.869,
+      "mass": 3438.678,
+      "accel": 9.591
+     },
+     {
+      "t": 400.24,
+      "dv": 2799.895,
+      "prop": 1454.199,
+      "mass": 3407.008,
+      "accel": 9.681
+     },
+     {
+      "t": 404.59,
+      "dv": 2842.207,
+      "prop": 1422.529,
+      "mass": 3375.338,
+      "accel": 9.771
+     },
+     {
+      "t": 408.941,
+      "dv": 2884.917,
+      "prop": 1390.859,
+      "mass": 3343.668,
+      "accel": 9.864
+     },
+     {
+      "t": 413.291,
+      "dv": 2928.035,
+      "prop": 1359.189,
+      "mass": 3311.998,
+      "accel": 9.958
+     },
+     {
+      "t": 417.642,
+      "dv": 2971.566,
+      "prop": 1327.519,
+      "mass": 3280.328,
+      "accel": 10.054
+     },
+     {
+      "t": 421.992,
+      "dv": 3015.52,
+      "prop": 1295.849,
+      "mass": 3248.658,
+      "accel": 10.153
+     },
+     {
+      "t": 426.342,
+      "dv": 3059.905,
+      "prop": 1264.179,
+      "mass": 3216.988,
+      "accel": 10.252
+     },
+     {
+      "t": 430.693,
+      "dv": 3104.728,
+      "prop": 1232.509,
+      "mass": 3185.318,
+      "accel": 10.354
+     },
+     {
+      "t": 435.043,
+      "dv": 3150,
+      "prop": 1200.839,
+      "mass": 3153.648,
+      "accel": 10.458
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Upper stage ignites with 1,603 kg of spacecraft on top."
+     },
+     {
+      "t": 217.5216440810585,
+      "kind": "info",
+      "text": "Halfway: 1,307 m/s gained, the stack keeps getting lighter."
+     },
+     {
+      "t": 435.043288162117,
+      "kind": "success",
+      "text": "Engine cut at 3,150 m/s. You are on your way to the Moon with 59.9% mass to spare."
+     }
+    ],
+    "failure": null,
+    "score": {
+     "label": "Mass margin",
+     "value": 0.5992,
+     "unit": "fraction of rocket capacity",
+     "thresholds": [
+      0,
+      0.1,
+      0.2
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Rocket equation for the upper stage",
+     "steps": [
+      {
+       "eq": "ve = Isp × g₀",
+       "num": "462 s (hydrogen upper stage) × 9.80665 = 4,531 m/s"
+      },
+      {
+       "eq": "Stage sized so a full-capacity payload gets exactly Δv(TLI)",
+       "num": "4,000 kg → 3,150 m/s, so fuel = 4,368 kg, tanks = 349 kg"
+      },
+      {
+       "eq": "Δv = ve × ln(m₀ / m_f)",
+       "num": "4,531 × ln(6,321 / 1,953) = 5,322 m/s with your 1,603 kg"
+      },
+      {
+       "eq": "Needed",
+       "num": "3,150 m/s, enough"
+      }
+     ],
+     "src": "cev"
+    }
+   }
+  },
+  "fail": {
+   "label": "rocket too small",
+   "seed": 7,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "robotic",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "solarBig",
+     "science": [
+      "spectrometer",
+      "camera",
+      "neutron",
+      "sampler"
+     ]
+    },
+    "rocket": "small",
+    "crew": null,
+    "flight": {
+     "margin": 0
+    },
+    "comms": null,
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 1,
+    "title": "Launch",
+    "ready": true,
+    "seed": 7,
+    "ok": false,
+    "outcome": "fail",
+    "stars": 0,
+    "time": {
+     "unit": "s",
+     "total": 600
+    },
+    "fields": [
+     {
+      "key": "dv",
+      "label": "Speed gained",
+      "unit": "m/s",
+      "max": 3150
+     },
+     {
+      "key": "prop",
+      "label": "Fuel left",
+      "unit": "kg",
+      "max": 1638
+     },
+     {
+      "key": "mass",
+      "label": "Stack mass",
+      "unit": "kg",
+      "max": 3528
+     },
+     {
+      "key": "accel",
+      "label": "Acceleration",
+      "unit": "m/s²",
+      "max": 6.6
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "dv": 0,
+      "prop": 1637.938,
+      "mass": 3527.233,
+      "accel": 3.507
+     },
+     {
+      "t": 6,
+      "dv": 21.088,
+      "prop": 1621.559,
+      "mass": 3510.853,
+      "accel": 3.523
+     },
+     {
+      "t": 12,
+      "dv": 42.275,
+      "prop": 1605.179,
+      "mass": 3494.474,
+      "accel": 3.539
+     },
+     {
+      "t": 18,
+      "dv": 63.561,
+      "prop": 1588.8,
+      "mass": 3478.095,
+      "accel": 3.556
+     },
+     {
+      "t": 24,
+      "dv": 84.948,
+      "prop": 1572.42,
+      "mass": 3461.715,
+      "accel": 3.573
+     },
+     {
+      "t": 30,
+      "dv": 106.436,
+      "prop": 1556.041,
+      "mass": 3445.336,
+      "accel": 3.59
+     },
+     {
+      "t": 36,
+      "dv": 128.026,
+      "prop": 1539.662,
+      "mass": 3428.957,
+      "accel": 3.607
+     },
+     {
+      "t": 42,
+      "dv": 149.72,
+      "prop": 1523.282,
+      "mass": 3412.577,
+      "accel": 3.624
+     },
+     {
+      "t": 48,
+      "dv": 171.518,
+      "prop": 1506.903,
+      "mass": 3396.198,
+      "accel": 3.642
+     },
+     {
+      "t": 54,
+      "dv": 193.422,
+      "prop": 1490.524,
+      "mass": 3379.818,
+      "accel": 3.659
+     },
+     {
+      "t": 60,
+      "dv": 215.432,
+      "prop": 1474.144,
+      "mass": 3363.439,
+      "accel": 3.677
+     },
+     {
+      "t": 66,
+      "dv": 237.55,
+      "prop": 1457.765,
+      "mass": 3347.06,
+      "accel": 3.695
+     },
+     {
+      "t": 72,
+      "dv": 259.776,
+      "prop": 1441.385,
+      "mass": 3330.68,
+      "accel": 3.713
+     },
+     {
+      "t": 78,
+      "dv": 282.111,
+      "prop": 1425.006,
+      "mass": 3314.301,
+      "accel": 3.732
+     },
+     {
+      "t": 84,
+      "dv": 304.557,
+      "prop": 1408.627,
+      "mass": 3297.922,
+      "accel": 3.75
+     },
+     {
+      "t": 90,
+      "dv": 327.115,
+      "prop": 1392.247,
+      "mass": 3281.542,
+      "accel": 3.769
+     },
+     {
+      "t": 96,
+      "dv": 349.786,
+      "prop": 1375.868,
+      "mass": 3265.163,
+      "accel": 3.788
+     },
+     {
+      "t": 102,
+      "dv": 372.571,
+      "prop": 1359.488,
+      "mass": 3248.783,
+      "accel": 3.807
+     },
+     {
+      "t": 108,
+      "dv": 395.471,
+      "prop": 1343.109,
+      "mass": 3232.404,
+      "accel": 3.826
+     },
+     {
+      "t": 114,
+      "dv": 418.488,
+      "prop": 1326.73,
+      "mass": 3216.025,
+      "accel": 3.846
+     },
+     {
+      "t": 120,
+      "dv": 441.621,
+      "prop": 1310.35,
+      "mass": 3199.645,
+      "accel": 3.866
+     },
+     {
+      "t": 126,
+      "dv": 464.874,
+      "prop": 1293.971,
+      "mass": 3183.266,
+      "accel": 3.885
+     },
+     {
+      "t": 132,
+      "dv": 488.247,
+      "prop": 1277.592,
+      "mass": 3166.886,
+      "accel": 3.905
+     },
+     {
+      "t": 138,
+      "dv": 511.741,
+      "prop": 1261.212,
+      "mass": 3150.507,
+      "accel": 3.926
+     },
+     {
+      "t": 144,
+      "dv": 535.357,
+      "prop": 1244.833,
+      "mass": 3134.128,
+      "accel": 3.946
+     },
+     {
+      "t": 150,
+      "dv": 559.097,
+      "prop": 1228.453,
+      "mass": 3117.748,
+      "accel": 3.967
+     },
+     {
+      "t": 156,
+      "dv": 582.962,
+      "prop": 1212.074,
+      "mass": 3101.369,
+      "accel": 3.988
+     },
+     {
+      "t": 162,
+      "dv": 606.953,
+      "prop": 1195.695,
+      "mass": 3084.99,
+      "accel": 4.009
+     },
+     {
+      "t": 168,
+      "dv": 631.072,
+      "prop": 1179.315,
+      "mass": 3068.61,
+      "accel": 4.031
+     },
+     {
+      "t": 174,
+      "dv": 655.321,
+      "prop": 1162.936,
+      "mass": 3052.231,
+      "accel": 4.052
+     },
+     {
+      "t": 180,
+      "dv": 679.699,
+      "prop": 1146.557,
+      "mass": 3035.851,
+      "accel": 4.074
+     },
+     {
+      "t": 186,
+      "dv": 704.21,
+      "prop": 1130.177,
+      "mass": 3019.472,
+      "accel": 4.096
+     },
+     {
+      "t": 192,
+      "dv": 728.854,
+      "prop": 1113.798,
+      "mass": 3003.093,
+      "accel": 4.119
+     },
+     {
+      "t": 198,
+      "dv": 753.633,
+      "prop": 1097.418,
+      "mass": 2986.713,
+      "accel": 4.141
+     },
+     {
+      "t": 204,
+      "dv": 778.547,
+      "prop": 1081.039,
+      "mass": 2970.334,
+      "accel": 4.164
+     },
+     {
+      "t": 210,
+      "dv": 803.6,
+      "prop": 1064.66,
+      "mass": 2953.955,
+      "accel": 4.187
+     },
+     {
+      "t": 216,
+      "dv": 828.792,
+      "prop": 1048.28,
+      "mass": 2937.575,
+      "accel": 4.21
+     },
+     {
+      "t": 222,
+      "dv": 854.125,
+      "prop": 1031.901,
+      "mass": 2921.196,
+      "accel": 4.234
+     },
+     {
+      "t": 228,
+      "dv": 879.6,
+      "prop": 1015.522,
+      "mass": 2904.816,
+      "accel": 4.258
+     },
+     {
+      "t": 234,
+      "dv": 905.22,
+      "prop": 999.142,
+      "mass": 2888.437,
+      "accel": 4.282
+     },
+     {
+      "t": 240,
+      "dv": 930.985,
+      "prop": 982.763,
+      "mass": 2872.058,
+      "accel": 4.306
+     },
+     {
+      "t": 246,
+      "dv": 956.897,
+      "prop": 966.383,
+      "mass": 2855.678,
+      "accel": 4.331
+     },
+     {
+      "t": 252,
+      "dv": 982.959,
+      "prop": 950.004,
+      "mass": 2839.299,
+      "accel": 4.356
+     },
+     {
+      "t": 258,
+      "dv": 1009.171,
+      "prop": 933.625,
+      "mass": 2822.92,
+      "accel": 4.381
+     },
+     {
+      "t": 264,
+      "dv": 1035.536,
+      "prop": 917.245,
+      "mass": 2806.54,
+      "accel": 4.407
+     },
+     {
+      "t": 270,
+      "dv": 1062.055,
+      "prop": 900.866,
+      "mass": 2790.161,
+      "accel": 4.433
+     },
+     {
+      "t": 276,
+      "dv": 1088.73,
+      "prop": 884.486,
+      "mass": 2773.781,
+      "accel": 4.459
+     },
+     {
+      "t": 282,
+      "dv": 1115.564,
+      "prop": 868.107,
+      "mass": 2757.402,
+      "accel": 4.485
+     },
+     {
+      "t": 288,
+      "dv": 1142.557,
+      "prop": 851.728,
+      "mass": 2741.023,
+      "accel": 4.512
+     },
+     {
+      "t": 294,
+      "dv": 1169.712,
+      "prop": 835.348,
+      "mass": 2724.643,
+      "accel": 4.539
+     },
+     {
+      "t": 300,
+      "dv": 1197.03,
+      "prop": 818.969,
+      "mass": 2708.264,
+      "accel": 4.567
+     },
+     {
+      "t": 306,
+      "dv": 1224.515,
+      "prop": 802.59,
+      "mass": 2691.884,
+      "accel": 4.595
+     },
+     {
+      "t": 312,
+      "dv": 1252.167,
+      "prop": 786.21,
+      "mass": 2675.505,
+      "accel": 4.623
+     },
+     {
+      "t": 318,
+      "dv": 1279.989,
+      "prop": 769.831,
+      "mass": 2659.126,
+      "accel": 4.651
+     },
+     {
+      "t": 324,
+      "dv": 1307.982,
+      "prop": 753.451,
+      "mass": 2642.746,
+      "accel": 4.68
+     },
+     {
+      "t": 330,
+      "dv": 1336.15,
+      "prop": 737.072,
+      "mass": 2626.367,
+      "accel": 4.709
+     },
+     {
+      "t": 336,
+      "dv": 1364.494,
+      "prop": 720.693,
+      "mass": 2609.988,
+      "accel": 4.739
+     },
+     {
+      "t": 342,
+      "dv": 1393.017,
+      "prop": 704.313,
+      "mass": 2593.608,
+      "accel": 4.769
+     },
+     {
+      "t": 348,
+      "dv": 1421.72,
+      "prop": 687.934,
+      "mass": 2577.229,
+      "accel": 4.799
+     },
+     {
+      "t": 354,
+      "dv": 1450.606,
+      "prop": 671.555,
+      "mass": 2560.849,
+      "accel": 4.83
+     },
+     {
+      "t": 360,
+      "dv": 1479.678,
+      "prop": 655.175,
+      "mass": 2544.47,
+      "accel": 4.861
+     },
+     {
+      "t": 366,
+      "dv": 1508.937,
+      "prop": 638.796,
+      "mass": 2528.091,
+      "accel": 4.892
+     },
+     {
+      "t": 372,
+      "dv": 1538.387,
+      "prop": 622.416,
+      "mass": 2511.711,
+      "accel": 4.924
+     },
+     {
+      "t": 378,
+      "dv": 1568.029,
+      "prop": 606.037,
+      "mass": 2495.332,
+      "accel": 4.957
+     },
+     {
+      "t": 384,
+      "dv": 1597.866,
+      "prop": 589.658,
+      "mass": 2478.953,
+      "accel": 4.989
+     },
+     {
+      "t": 390,
+      "dv": 1627.902,
+      "prop": 573.278,
+      "mass": 2462.573,
+      "accel": 5.022
+     },
+     {
+      "t": 396,
+      "dv": 1658.137,
+      "prop": 556.899,
+      "mass": 2446.194,
+      "accel": 5.056
+     },
+     {
+      "t": 402,
+      "dv": 1688.576,
+      "prop": 540.52,
+      "mass": 2429.814,
+      "accel": 5.09
+     },
+     {
+      "t": 408,
+      "dv": 1719.221,
+      "prop": 524.14,
+      "mass": 2413.435,
+      "accel": 5.125
+     },
+     {
+      "t": 414,
+      "dv": 1750.074,
+      "prop": 507.761,
+      "mass": 2397.056,
+      "accel": 5.16
+     },
+     {
+      "t": 420,
+      "dv": 1781.139,
+      "prop": 491.381,
+      "mass": 2380.676,
+      "accel": 5.195
+     },
+     {
+      "t": 426,
+      "dv": 1812.418,
+      "prop": 475.002,
+      "mass": 2364.297,
+      "accel": 5.231
+     },
+     {
+      "t": 432,
+      "dv": 1843.915,
+      "prop": 458.623,
+      "mass": 2347.918,
+      "accel": 5.268
+     },
+     {
+      "t": 438,
+      "dv": 1875.632,
+      "prop": 442.243,
+      "mass": 2331.538,
+      "accel": 5.305
+     },
+     {
+      "t": 444,
+      "dv": 1907.573,
+      "prop": 425.864,
+      "mass": 2315.159,
+      "accel": 5.342
+     },
+     {
+      "t": 450,
+      "dv": 1939.741,
+      "prop": 409.484,
+      "mass": 2298.779,
+      "accel": 5.38
+     },
+     {
+      "t": 456,
+      "dv": 1972.139,
+      "prop": 393.105,
+      "mass": 2282.4,
+      "accel": 5.419
+     },
+     {
+      "t": 462,
+      "dv": 2004.77,
+      "prop": 376.726,
+      "mass": 2266.021,
+      "accel": 5.458
+     },
+     {
+      "t": 468,
+      "dv": 2037.638,
+      "prop": 360.346,
+      "mass": 2249.641,
+      "accel": 5.498
+     },
+     {
+      "t": 474,
+      "dv": 2070.746,
+      "prop": 343.967,
+      "mass": 2233.262,
+      "accel": 5.538
+     },
+     {
+      "t": 480,
+      "dv": 2104.097,
+      "prop": 327.588,
+      "mass": 2216.882,
+      "accel": 5.579
+     },
+     {
+      "t": 486,
+      "dv": 2137.696,
+      "prop": 311.208,
+      "mass": 2200.503,
+      "accel": 5.621
+     },
+     {
+      "t": 492,
+      "dv": 2171.547,
+      "prop": 294.829,
+      "mass": 2184.124,
+      "accel": 5.663
+     },
+     {
+      "t": 498,
+      "dv": 2205.651,
+      "prop": 278.449,
+      "mass": 2167.744,
+      "accel": 5.706
+     },
+     {
+      "t": 504,
+      "dv": 2240.015,
+      "prop": 262.07,
+      "mass": 2151.365,
+      "accel": 5.749
+     },
+     {
+      "t": 510,
+      "dv": 2274.641,
+      "prop": 245.691,
+      "mass": 2134.986,
+      "accel": 5.793
+     },
+     {
+      "t": 516,
+      "dv": 2309.534,
+      "prop": 229.311,
+      "mass": 2118.606,
+      "accel": 5.838
+     },
+     {
+      "t": 522,
+      "dv": 2344.698,
+      "prop": 212.932,
+      "mass": 2102.227,
+      "accel": 5.883
+     },
+     {
+      "t": 528,
+      "dv": 2380.136,
+      "prop": 196.553,
+      "mass": 2085.847,
+      "accel": 5.93
+     },
+     {
+      "t": 534,
+      "dv": 2415.854,
+      "prop": 180.173,
+      "mass": 2069.468,
+      "accel": 5.977
+     },
+     {
+      "t": 540,
+      "dv": 2451.856,
+      "prop": 163.794,
+      "mass": 2053.089,
+      "accel": 6.024
+     },
+     {
+      "t": 546,
+      "dv": 2488.147,
+      "prop": 147.414,
+      "mass": 2036.709,
+      "accel": 6.073
+     },
+     {
+      "t": 552,
+      "dv": 2524.73,
+      "prop": 131.035,
+      "mass": 2020.33,
+      "accel": 6.122
+     },
+     {
+      "t": 558,
+      "dv": 2561.611,
+      "prop": 114.656,
+      "mass": 2003.951,
+      "accel": 6.172
+     },
+     {
+      "t": 564,
+      "dv": 2598.795,
+      "prop": 98.276,
+      "mass": 1987.571,
+      "accel": 6.223
+     },
+     {
+      "t": 570,
+      "dv": 2636.286,
+      "prop": 81.897,
+      "mass": 1971.192,
+      "accel": 6.275
+     },
+     {
+      "t": 576,
+      "dv": 2674.091,
+      "prop": 65.518,
+      "mass": 1954.812,
+      "accel": 6.327
+     },
+     {
+      "t": 582,
+      "dv": 2712.213,
+      "prop": 49.138,
+      "mass": 1938.433,
+      "accel": 6.381
+     },
+     {
+      "t": 588,
+      "dv": 2750.659,
+      "prop": 32.759,
+      "mass": 1922.054,
+      "accel": 6.435
+     },
+     {
+      "t": 594,
+      "dv": 2789.434,
+      "prop": 16.379,
+      "mass": 1905.674,
+      "accel": 6.49
+     },
+     {
+      "t": 600,
+      "dv": 2828.544,
+      "prop": 0,
+      "mass": 1889.295,
+      "accel": 6.546
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Upper stage ignites with 1,758 kg of spacecraft on top."
+     },
+     {
+      "t": 300,
+      "kind": "info",
+      "text": "Halfway: 1,197 m/s gained, the stack keeps getting lighter."
+     },
+     {
+      "t": 600,
+      "kind": "fail",
+      "text": "You ran out of fuel at 2,829 m/s, 321 m/s short of the Moon. Your ship is 258 kg too heavy for Small launcher."
+     }
+    ],
+    "failure": {
+     "t": 600,
+     "code": "tooHeavy",
+     "cause": "You ran out of fuel at 2,829 m/s, 321 m/s short of the Moon. Your ship is 258 kg too heavy for Small launcher.",
+     "fix": "Pick Medium launcher, or drop or swap \"Structure: Aluminum alloy\", your heaviest item."
+    },
+    "score": {
+     "label": "Mass margin",
+     "value": -0.1722,
+     "unit": "fraction of rocket capacity",
+     "thresholds": [
+      0,
+      0.1,
+      0.2
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Rocket equation for the upper stage",
+     "steps": [
+      {
+       "eq": "ve = Isp × g₀",
+       "num": "462 s (hydrogen upper stage) × 9.80665 = 4,531 m/s"
+      },
+      {
+       "eq": "Stage sized so a full-capacity payload gets exactly Δv(TLI)",
+       "num": "1,500 kg → 3,150 m/s, so fuel = 1,638 kg, tanks = 131 kg"
+      },
+      {
+       "eq": "Δv = ve × ln(m₀ / m_f)",
+       "num": "4,531 × ln(3,527 / 1,889) = 2,829 m/s with your 1,758 kg"
+      },
+      {
+       "eq": "Needed",
+       "num": "3,150 m/s, 321 m/s short"
+      }
+     ],
+     "src": "cev"
+    }
+   }
+  },
+  "partial": null
+ }
+}
