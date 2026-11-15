@@ -241,10 +241,6 @@ function useGameState() {
         next.design[sub.id] = optId
       }
       next.phase1Done = false
-      if (!sub.multi) {
-        const missing = M.missingSubsystems(next)
-        if (missing.length) next.activeSub = missing[0]
-      }
     }),
     pickRocket: (id) => update((next) => { next.rocket = id }),
     applyDescope: (index) => update((next) => {
