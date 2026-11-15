@@ -305,10 +305,9 @@ function F6Body({ step, setStep, poi, setPoi }) {
             ))}
           </ol>
         ) : <p>Nothing yet. Take a measurement first.</p>}
-        <Button variant="outline" onClick={() => setJournal(false)}>Close</Button>
       </Modal>
 
-      <Modal open={Boolean(confirm)} variant="warn" title="Finish exploration?" onClose={() => setConfirm('')}>
+      <Modal open={Boolean(confirm)} variant="warn" title="Finish exploration?" onClose={() => setConfirm('')} hideClose>
         <p>{confirm}</p>
         <div className={shell.actions}>
           <Button variant="secondary" onClick={() => setConfirm('')}>Keep exploring</Button>
@@ -356,11 +355,11 @@ function effectChips(effect = {}, model) {
 }
 
 function EventDialog({ event, onChoose }) {
-  // Closing the window counts as the first, safest choice.
+  // An event needs a decision: the window has no Close button and stays open until the player picks.
   const { model, data } = useGame()
   const src = event && data.SOURCES[event.src]
   return (
-    <Modal open={Boolean(event)} variant="warn" title={event ? event.title : ''} onClose={() => event && onChoose(event.choices[0].id)}>
+    <Modal open={Boolean(event)} variant="warn" title={event ? event.title : ''} onClose={() => {}} hideClose>
       {event ? (
         <>
           <p>{event.text}</p>
