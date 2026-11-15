@@ -3,13 +3,13 @@ import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
+import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { useGame } from '../engine/useGame.jsx'
 import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
 import { RunPanel } from './F2.jsx'
-import runStyles from './F2.module.css'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { f4Speech } from './f4Speech.mjs'
 import styles from './F4.module.css'
@@ -45,16 +45,14 @@ function F4Body() {
   const game = useGame()
   const { state, model } = game
   const plan = model.commsPlan(state)
-  const [math, setMath] = useState(false)
   const [help, setHelp] = useState(false)
   const play = usePlayRun(4, state)
   const passed = usePassed(4, state)
-  const [runMath, setRunMath] = useState(false)
   const runRes = play.run && play.run.res
-  useEffect(() => { setRunMath(false) }, [runRes])
-  // Only one math panel at a time, so they never cover each other.
-  const toggleMath = () => { setMath(!math); setRunMath(false) }
-  const toggleRunMath = () => { setRunMath((open) => !open); setMath(false) }
+  // The math opens in a popup, like Phase 1: 'link' for the comms math, 'run' for the timeline result.
+  const [mathOpen, setMathOpen] = useState(null)
+  useEffect(() => { setMathOpen((open) => (open === 'run' ? null : open)) }, [runRes])
+  const linkMath = model.commsMath(state)
   const broken = designBroken(state, model)
   /*
    * After a run the link choices fold into a one-line summary, so the link panel and the run result fit the
@@ -85,11 +83,9 @@ function F4Body() {
         <Ping seconds={plan.roundTrip} />
       </div>
       <Beam frame={play.frame} />
-      {math ? null : (
-        <div className={`${scene.speech} ${styles.speech}`}>
-          <Bubble tone="speech">{speech}</Bubble>
-        </div>
-      )}
+      <div className={`${scene.speech} ${styles.speech}`}>
+        <Bubble tone="speech">{speech}</Bubble>
+      </div>
       <div className={styles.side}>
         <GlassPanel>
           <p className={scene.kicker}>Phase 4: Communications</p>
@@ -109,16 +105,14 @@ function F4Body() {
           <LinkVerdict plan={plan} model={model} />
           {broken ? <BrokenDesign reason={broken} /> : null}
           <div className={styles.panelFoot}>
-            <button type="button" className={styles.mathLink} aria-pressed={math} onClick={toggleMath}>
-              {math ? 'Hide the math' : 'Show the math'}
-            </button>
+            <Button variant="outline" onClick={() => setMathOpen('link')}>Show the math</Button>
             {/* Shown only after a run: change the link, or keep it and go back to the result. */}
             {compact ? <button type="button" className={styles.pill} onClick={() => setEditing(true)}><span>Change link</span></button> : null}
             {editing ? <button type="button" className={styles.pill} onClick={() => setEditing(false)}><span>Keep this link</span></button> : null}
           </div>
         </GlassPanel>
         {editing ? null : (
-          <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" unitName="Hour" play={play} showMath={runMath} onMath={toggleRunMath} />
+          <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" unitName="Hour" play={play} showMath={false} onMath={() => setMathOpen('run')} />
         )}
       </div>
       {runRes && runRes.ready ? (
@@ -127,9 +121,17 @@ function F4Body() {
           <BufferMeter res={runRes} frame={play.frame} />
         </div>
       ) : null}
-      {math ? <MathPanel game={game} /> : null}
-      {runMath && runRes && runRes.math ? (
-        <div className={`${runStyles.runMath} ${styles.runMathLeft}`}><MathBlock math={runRes.math} /></div>
+      {mathOpen === 'link' ? (
+        <Dialog title={linkMath.title || 'The math'} onClose={() => setMathOpen(null)}>
+          <MathBlock math={{ ...linkMath, title: null }}>
+            <p className={scene.source}>Source: NASA Deep Space Network</p>
+          </MathBlock>
+        </Dialog>
+      ) : null}
+      {mathOpen === 'run' && runRes && runRes.math ? (
+        <Dialog title="Mission timeline: real math" onClose={() => setMathOpen(null)}>
+          <MathBlock math={{ ...runRes.math, title: null }} />
+        </Dialog>
       ) : null}
       <div className={scene.dock}>
         <div className={scene.nav}>
@@ -140,13 +142,11 @@ function F4Body() {
           <ConfirmButton game={game} passed={passed} />
         </div>
       </div>
-      <div className={styles.helpLayer}>
-        <Modal open={help} variant="info" title="Phase 4: Communications" onClose={() => setHelp(false)}>
-          <p>Phase 4 picks how your spacecraft talks to Earth: a radio link on board and an antenna of NASA's Deep Space Network on the ground.</p>
-          <p>Your science makes data every day. The link has to send at least that much, or data piles up in the onboard buffer and is lost when it fills.</p>
-          <p>A faster link or a bigger dish sends more, but adds power, mass and cost. Run the mission timeline to test it, then confirm the link before the launch.</p>
-        </Modal>
-      </div>
+      <Modal open={help} variant="info" title="Phase 4: Communications" onClose={() => setHelp(false)}>
+        <p>Phase 4 picks how your spacecraft talks to Earth: a radio link on board and an antenna of NASA's Deep Space Network on the ground.</p>
+        <p>Your science makes data every day. The link has to send at least that much, or data piles up in the onboard buffer and is lost when it fills.</p>
+        <p>A faster link or a bigger dish sends more, but adds power, mass and cost. Run the mission timeline to test it, then confirm the link before the launch.</p>
+      </Modal>
     </div>
   )
 }
@@ -304,22 +304,6 @@ function LinkVerdict({ plan, model }) {
       <p className={`${scene.note} ${plan.bottleneck ? styles.warn : ''}`}>{text}</p>
       {plan.weatherRisk ? <p className={`${scene.note} ${styles.warn}`}>Clouds over the ground station can block a laser.</p> : null}
     </>
-  )
-}
-
-function MathPanel({ game }) {
-  const math = game.model.commsMath(game.state)
-  return (
-    <div className={styles.help}>
-      <GlassPanel>
-        <p className={scene.kicker}>{math.title}</p>
-        {math.steps.map((step) => (
-          <p key={step.eq} className={scene.note}><b>{step.eq}</b> · {step.num}</p>
-        ))}
-        {math.check ? <p className={scene.note}>{math.check}</p> : null}
-        <p className={scene.source}>Source: NASA Deep Space Network</p>
-      </GlassPanel>
-    </div>
   )
 }
 
