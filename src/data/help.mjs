@@ -218,3 +218,25 @@ export const HELP_F5B = {
     },
   ],
 }
+
+export const HELP_LAB = {
+  title: 'Lab: Final Verdict',
+  blocks: [
+    {
+      heading: 'What the lab does',
+      text: 'Back on Earth, scientists study everything your mission brought back: the data your instruments sent by radio and, on a crewed trip, the samples in the return box.',
+    },
+    {
+      heading: 'Clue, good proof, strongest',
+      text: 'A picture is only a clue. Reading the elements with a spectrometer is good proof, and a sample studied in the lab is the strongest. Only good proof or better can reject the hypothesis.',
+    },
+    {
+      heading: 'Why rock, not cheese',
+      text: 'The Moon\'s average density is 3,344 kg/m³, more than 3 times denser than water. That is rock and metal; cheese is only a little denser than water.',
+    },
+    {
+      heading: 'Mission report',
+      text: 'The report puts every phase on one page: what you chose and the real numbers behind it, from the mission goal to the trip home.',
+    },
+  ],
+}
