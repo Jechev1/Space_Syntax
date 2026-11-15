@@ -3,15 +3,20 @@ import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { DataTable } from '../components/ui/DataTable.jsx'
+import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
-import { sampleMission } from '../engine/sampleMission.mjs'
+import { HELP_LAB } from '../data/help.mjs'
 import { useGame } from '../engine/useGame.jsx'
+import { HelpWindow, loadSample } from './F5a.jsx'
 import { StageScene } from './frame.jsx'
+import { labSpeech } from './labSpeech.mjs'
 import { usePlay } from './playContext.jsx'
 import styles from './Lab.module.css'
+import scene from './scene.module.css'
 
 const TITLE = 'How far is up? · Lab'
+const KICKER = 'Lab · Back on Earth'
 const BG = '/bg/bg-control.png'
 const GIRL = '/char/nina-chaqueta-portapapeles.png'
 
@@ -39,54 +44,83 @@ function labStatus(state, model) {
   return { open: true, sim: null }
 }
 
-function loadSample(update, model, data) {
-  const s = sampleMission('crewed', 'f7')
-  outer: for (const entry of data.RETURN.entries) {
+/** Crewed sample at the lab that keeps the player's difficulty, with an entry and shield that splash down safely. */
+function loadLabSample(next, model, data) {
+  loadSample(next, model, 'crewed', 'f7')
+  for (const entry of data.RETURN.entries) {
     for (const shield of data.RETURN.shields) {
-      s.returnTrip = Object.assign({}, s.returnTrip, { entry: entry.id, shield: shield.id })
-      if (model.returnSim(s).outcome === 'success') break outer
+      next.returnTrip = Object.assign({}, next.returnTrip, { entry: entry.id, shield: shield.id })
+      if (model.returnSim(next).outcome === 'success') return
     }
   }
-  update((next) => { Object.assign(next, s) })
 }
 
 export function Lab() {
-  const { state, model, data, update } = useGame()
+  const { state, model } = useGame()
   const status = labStatus(state, model)
-  if (!status.open) return <Locked status={status} update={update} model={model} data={data} />
   return (
     <StageScene background={BG} character={<Girl />} title={TITLE}>
-      <LabBody status={status} />
+      {status.open ? <LabBody status={status} /> : <Locked status={status} />}
     </StageScene>
   )
 }
 
-function Locked({ status, update, model, data }) {
+function Locked({ status }) {
   const navigate = useNavigate()
+  const { model, data, update } = useGame()
   return (
-    <StageScene background={BG} character={<Girl />} title={TITLE}>
-      <div className={styles.screen}>
-        <div className={styles.panelNarrow}>
-          <GlassPanel eyebrow="Lab" title="The lab is not open yet" tone="warn">
-            <p className={styles.line}>{status.reason}</p>
-            <div className={styles.actions}>
-              <Button variant="outline" onClick={() => navigate(status.back)}>
-                {status.back === '/f7' ? 'Back to the trip home' : 'Back to the Moon surface'}
-              </Button>
-              <Button variant="secondary" onClick={() => loadSample(update, model, data)}>Load a sample mission</Button>
-            </div>
-          </GlassPanel>
-        </div>
+    <div className={styles.screen}>
+      <div className={styles.panelGuard}>
+        <GlassPanel>
+          <p className={styles.kicker}>{KICKER}</p>
+          <h2 className={styles.title}>The lab is not open yet</h2>
+          <p className={styles.line}>{status.reason}</p>
+          <div className={styles.stack}>
+            <Button variant="outline" onClick={() => navigate(status.back)}>
+              {status.back === '/f7' ? 'Back to the trip home' : 'Back to the Moon surface'}
+            </Button>
+            <Button variant="outline" onClick={() => update((next) => loadLabSample(next, model, data))}>
+              Load a sample mission
+            </Button>
+          </div>
+        </GlassPanel>
       </div>
-    </StageScene>
+    </div>
+  )
+}
+
+/*
+ * Top bar for the Lab, in the shared scene bar like Phases 2 to 6, with four cells: place, measurements,
+ * data sent to Earth and samples brought home.
+ */
+function LabHud({ st }) {
+  const { model } = useGame()
+  return (
+    <div className={`${scene.hud} ${styles.hud}`} aria-label="Lab status">
+      <span>Lab · Earth</span>
+      <span>{model.fmt(st.measurements)} {st.measurements === 1 ? 'measurement' : 'measurements'}</span>
+      <span>Data sent {model.fmt(st.dataSentGb, 1)} GB</span>
+      <span>{st.sampleKg > 0 ? `Samples ${model.fmt(st.sampleKg, 2)} kg` : 'No samples'}</span>
+    </div>
+  )
+}
+
+function Speech({ text }) {
+  if (!text) return null
+  return (
+    <div className={styles.speech}>
+      <Bubble tone="speech">{text}</Bubble>
+    </div>
   )
 }
 
 function LabBody({ status }) {
   const navigate = useNavigate()
   const { state, model, data } = useGame()
-  const { setModal, openSource } = usePlay()
+  const { setModal } = usePlay()
   const [step, setStep] = useState('verdict')
+  const [help, setHelp] = useState(false)
+  const [math, setMath] = useState(false)
 
   const outcome = model.surfaceOutcome(state)
   const st = model.surfaceStatus(state)
@@ -95,23 +129,21 @@ function LabBody({ status }) {
   const home = model.returnApplies(state)
   const best = st.journal.find((entry) => entry.evidence === evidence && entry.result)
   const regolith = data.SURFACE.regolith
-  const hud = (
-    <div className={styles.hud} aria-label="Lab status">
-      <span>Lab · Earth</span>
-      <span>{st.sampleKg > 0 ? 'Samples and data analysed' : 'Data analysed'}</span>
-      <span>{strong ? 'Hypothesis rejected' : 'Hypothesis not proven yet'}</span>
-    </div>
-  )
-  const speech = (text) => <div className={styles.speech}><Bubble tone="speech">{text}</Bubble></div>
+  const helpButton = <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
+  const helpWindow = <HelpWindow help={HELP_LAB} open={help} onClose={() => setHelp(false)} />
 
   if (step === 'report') {
     return (
       <div className={styles.screen}>
-        {hud}
-        {speech('One page for the whole trip.')}
-        <div className={styles.panelWide}>
-          <GlassPanel eyebrow="Lab · Mission report" title="Your mission, phase by phase">
-            <DataTable columns={COLUMNS} rows={reportRows(state, model, data, st, status.sim)} />
+        <LabHud st={st} />
+        <Speech text={labSpeech(state.difficulty, { step: 'report' })} />
+        <div className={`${styles.panel} ${styles.panelWide}`}>
+          <GlassPanel>
+            <p className={styles.kicker}>{KICKER}</p>
+            <h2 className={styles.title}>Your mission, phase by phase</h2>
+            <div className={styles.table}>
+              <DataTable columns={COLUMNS} rows={reportRows(state, model, data, st, status.sim)} />
+            </div>
             <p className={styles.line}>
               {strong
                 ? 'You asked a question, built a way to test it, and let the evidence answer. That is how science works.'
@@ -122,13 +154,14 @@ function LabBody({ status }) {
         <div className={styles.dock}>
           <div className={styles.nav}>
             <Button variant="secondary" onClick={() => setStep('verdict')}>← Verdict</Button>
-            <Button variant="secondary" onClick={() => setModal('sources')}>See all NASA sources</Button>
+            {helpButton}
+            <Button variant="secondary" onClick={() => navigate('/')}>Home</Button>
           </div>
-          <div className={styles.main}>
-            <Button variant="ghost" onClick={() => navigate('/')}>Home</Button>
+          <div className={styles.lock}>
             <Button variant="outline" onClick={() => setModal('reset')}>Start a new mission</Button>
           </div>
         </div>
+        {helpWindow}
       </div>
     )
   }
@@ -138,48 +171,54 @@ function LabBody({ status }) {
     : home
       ? 'The lab studied the data from your instruments.'
       : 'The lab studied the data your lander sent from the Moon.'
-  const tone = strong ? styles.rejected : styles.open
+  const density = model.moonDensityMath()
 
   return (
     <div className={styles.screen}>
-      {hud}
-      {speech(strong ? 'No cheese. Just rock.' : 'We need better proof.')}
-      <div className={styles.panelWide}>
-        <GlassPanel eyebrow="Lab · Final verdict" title="Is the Moon made of cheese?">
-          <div className={`${styles.verdict} ${tone}`}>
+      <LabHud st={st} />
+      <Speech text={labSpeech(state.difficulty, { step: 'verdict', strong })} />
+      <div className={styles.panel}>
+        <GlassPanel>
+          <p className={styles.kicker}>{KICKER}</p>
+          <h2 className={styles.title}>Is the Moon made of cheese?</h2>
+          <p className={styles.line}>{analysed}</p>
+          <div className={`${styles.verdict} ${strong ? styles.rejected : styles.open}`}>
             <p className={styles.hypothesis}>Hypothesis: The Moon is made of cheese.</p>
             <p className={styles.verdictLine}>{strong ? 'Verdict: rejected' : 'Verdict: not proven yet'}</p>
-            <p className={styles.line}>{analysed}</p>
             {strong ? (
               <p className={styles.line}>The ground is rock and dust, not cheese. {best ? best.result.text : ''}</p>
             ) : (
-              <>
-                <p className={styles.line}>Your evidence was only pictures. A picture cannot tell rock from cheese.</p>
-                <p className={styles.line}>Next time bring a spectrometer to read the elements, or collect a sample to bring home.</p>
-              </>
+              <p className={styles.line}>
+                Your evidence was only pictures, and a picture cannot tell rock from cheese. Next time bring a
+                spectrometer to read the elements, or collect a sample to bring home.
+              </p>
             )}
           </div>
-          <div className={styles.actions}>
-            <Button variant="ghost" onClick={() => openSource('nssdc')}>Moon fact sheet ↗</Button>
-            <Button variant="ghost" onClick={() => openSource(regolith.src)}>Regolith ↗</Button>
-            {best ? <Button variant="ghost" onClick={() => openSource(best.result.src)}>Your result ↗</Button> : null}
-            {evidence === 'sample' ? <Button variant="ghost" onClick={() => openSource('samples')}>Lunar samples ↗</Button> : null}
-            {evidence === 'sample' ? <Button variant="ghost" onClick={() => openSource('sampleScience')}>Sample science ↗</Button> : null}
-          </div>
           <p className={styles.line}><b>Density:</b> {data.FACTS.density.text}</p>
-          <MathBlock math={model.moonDensityMath()} />
           <p className={styles.line}><b>Regolith:</b> {regolith.text}</p>
           <p className={styles.line}>{data.FACTS.crust.text}</p>
+          <div className={styles.stack}>
+            <Button variant="outline" onClick={() => setMath(true)}>Show the math</Button>
+          </div>
         </GlassPanel>
       </div>
       <div className={styles.dock}>
         <div className={styles.nav}>
-          <Button variant="secondary" onClick={() => setModal('sources')}>See all NASA sources</Button>
+          <Button variant="secondary" onClick={() => navigate(home ? '/f7' : '/f6')}>
+            {home ? '← Trip home' : '← Surface'}
+          </Button>
+          {helpButton}
         </div>
-        <div className={styles.main}>
+        <div className={styles.lock}>
           <Button variant="outline" onClick={() => setStep('report')}>Mission report →</Button>
         </div>
       </div>
+      {math ? (
+        <Dialog title={density.title || 'The math'} onClose={() => setMath(false)}>
+          <MathBlock math={{ ...density, title: null }} />
+        </Dialog>
+      ) : null}
+      {helpWindow}
     </div>
   )
 }

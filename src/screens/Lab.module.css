@@ -4,33 +4,23 @@
   pointer-events: none;
 }
 
-.hud {
-  position: absolute;
-  top: 18px;
-  left: 22px;
-  right: calc(22px + var(--tools-reserve));
-  z-index: 3;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: center;
-  min-height: 46px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-panel);
-  background: var(--panel);
-  backdrop-filter: blur(var(--panel-blur));
-  color: var(--text);
-  font-size: var(--fs-chip);
-  font-weight: var(--fw);
+/* Type scales with the stage height, like Phases 2 to 6, so the panels fit short windows too.
+   The bottom bar keeps the fixed type of Phase 1, so its buttons look the same on every screen. */
+.hud,
+.speech,
+.panel,
+.panelGuard {
+  --fs-body: clamp(10px, 2.15cqh, 17px);
+  --fs-chip: clamp(8px, 1.7cqh, 13px);
+  --fs-sub: clamp(13px, 2.8cqh, 21px);
+  --fs-title: clamp(17px, 3.4cqh, 28px);
 }
 
-.hud span {
-  padding: calc(var(--fs-chip) / 2) var(--fs-body);
-  text-align: center;
-  border-left: 1px solid var(--line);
-}
-
-.hud span:first-child {
-  border-left: 0;
+/* The top bar is the shared scene bar (scene.module.css); the Lab only sets its four columns.
+   div. beats the shared .hud grid whatever order the CSS loads in. */
+div.hud {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
 }
 
 .girl {
@@ -47,34 +37,44 @@
 .speech {
   position: absolute;
   left: 11%;
-  bottom: 44%;
+  bottom: 50%;
   pointer-events: auto;
 }
 
 .speech p {
-  max-width: 150px;
+  max-width: 190px;
 }
 
-.panelWide,
-.panelNarrow {
+/* Right below the top bar (never under the music and settings buttons) and above the bottom bar. The
+   content is sized to fit; the overflow rule is only a safety net for very short windows. */
+.panel,
+.panelGuard {
   position: absolute;
-  top: 14%;
+  top: max(12%, 72px);
   right: 2.4%;
-  max-height: 72%;
+  width: 34%;
+  max-height: calc(88% - max(12%, 72px) - 8px);
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   pointer-events: auto;
 }
 
+/* The report table needs the room of three columns. */
 .panelWide {
-  width: 56%;
+  width: 58%;
 }
 
-.panelNarrow {
-  width: 30%;
+.panelGuard {
+  top: 24%;
+  right: auto;
+  left: 50%;
+  width: 34%;
+  transform: translateX(-50%);
 }
 
+.kicker,
+.title,
 .line,
 .hypothesis,
 .verdictLine {
@@ -82,7 +82,22 @@
   font-weight: var(--fw);
 }
 
+.kicker {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.title {
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  font-weight: var(--fw-title);
+  line-height: 1.2;
+  color: var(--text);
+}
+
 .line {
+  margin-top: 4px;
   color: var(--text);
   font-size: var(--fs-chip);
   line-height: 1.4;
@@ -93,20 +108,25 @@
   font-weight: var(--fw-title);
 }
 
-.actions {
+.stack {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
 .verdict {
+  margin: 8px 0;
   padding: 8px 10px;
   border: 1px solid var(--tone);
   border-radius: var(--radius-btn);
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.verdict .line {
+  margin: 0;
 }
 
 .rejected {
@@ -129,12 +149,29 @@
   font-weight: var(--fw-title);
 }
 
+/* Report table: the same scaled type as the panel, so all eight rows fit without scrolling. */
+.table {
+  margin: 6px 0;
+  font-size: var(--fs-chip);
+}
+
+.table th,
+.table td {
+  font-size: var(--fs-chip);
+  line-height: 1.3;
+}
+
+.table td:first-child {
+  white-space: nowrap;
+}
+
+/* Bottom bar, same structure as Phase 1 (F1.module.css): back, help and the tools start right of the girl,
+   the main action sits alone on the right. */
 .dock {
   position: absolute;
   left: 18%;
   right: 2.4%;
   bottom: 3.2%;
-  z-index: 3;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -142,18 +179,16 @@
   pointer-events: auto;
 }
 
-.nav,
-.main {
+.nav {
   display: flex;
-  align-items: flex-end;
   gap: 8px;
 }
 
-.nav button,
-.main button {
-  min-width: 132px;
+.lock {
+  margin-left: auto;
 }
 
-.panelWide td:first-child {
-  white-space: nowrap;
+.lock button,
+.nav button {
+  min-width: 132px;
 }
