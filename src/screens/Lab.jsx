@@ -155,10 +155,12 @@ function LabBody({ status }) {
           <div className={styles.nav}>
             <Button variant="secondary" onClick={() => setStep('verdict')}>← Verdict</Button>
             {helpButton}
-            <Button variant="secondary" onClick={() => navigate('/')}>Home</Button>
           </div>
           <div className={styles.lock}>
-            <Button variant="outline" onClick={() => setModal('reset')}>Start a new mission</Button>
+            {/* A mission that flew home ends on Phase 8; a one-way robot ends here in the lab. */}
+            {home
+              ? <Button variant="outline" onClick={() => navigate('/f8')}>Finish the mission →</Button>
+              : <Button variant="outline" onClick={() => setModal('reset')}>Start a new mission</Button>}
           </div>
         </div>
         {helpWindow}
@@ -204,9 +206,7 @@ function LabBody({ status }) {
       </div>
       <div className={styles.dock}>
         <div className={styles.nav}>
-          <Button variant="secondary" onClick={() => navigate(home ? '/f7' : '/f6')}>
-            {home ? '← Trip home' : '← Surface'}
-          </Button>
+          <Button variant="secondary" onClick={() => navigate('/f7')}>{home ? '← Trip home' : '← Phase 7'}</Button>
           {helpButton}
         </div>
         <div className={styles.lock}>

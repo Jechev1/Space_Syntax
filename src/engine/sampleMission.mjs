@@ -7,7 +7,8 @@ import robotic from '../../fixtures/f5b.robotic.json'
 import crewed from '../../fixtures/f5b.crewed.json'
 
 const BASE = { robotic: robotic.state, crewed: crewed.state }
-const UI = { phase0Done: true, phase1Done: true }
+// Every sample starts at Phase 5 or later, so the rocket has already launched (Phase 8 checks this).
+const UI = { phase0Done: true, phase1Done: true, launched: true }
 
 /**
  * A full engine state ready for a screen.

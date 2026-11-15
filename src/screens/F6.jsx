@@ -11,7 +11,6 @@ import { useGame } from '../engine/useGame.jsx'
 import { HelpWindow, loadSample } from './F5a.jsx'
 import { f6Speech } from './f6Speech.mjs'
 import { StageScene } from './frame.jsx'
-import { usePlay } from './playContext.jsx'
 import styles from './F6.module.css'
 import scene from './scene.module.css'
 import shell from './shell.module.css'
@@ -417,7 +416,6 @@ function EventDialog({ event, onChoose }) {
 function Verdict({ st, helpButton, helpWindow }) {
   const navigate = useNavigate()
   const { state, model, data } = useGame()
-  const { setModal } = usePlay()
   const outcome = model.surfaceOutcome(state)
   const home = model.returnApplies(state)
   const strong = outcome && outcome.evidence !== 'clue'
@@ -464,17 +462,12 @@ function Verdict({ st, helpButton, helpWindow }) {
       </div>
       <div className={styles.dock}>
         <div className={styles.nav}>
+          <Button variant="secondary" onClick={() => navigate('/f5b')}>← Landing</Button>
           {helpButton}
-          {home ? null : (
-            <>
-              <Button variant="secondary" onClick={() => setModal('reset')}>Start a new mission</Button>
-            </>
-          )}
         </div>
         <div className={styles.lock}>
-          {home
-            ? <Button variant="outline" onClick={() => navigate('/f7')}>Head home →</Button>
-            : <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>}
+          {/* Every mission goes on to Phase 7; a one-way robot gets its own short Phase 7 there. */}
+          <Button variant="outline" onClick={() => navigate('/f7')}>{home ? 'Head home →' : 'Phase 7: Return →'}</Button>
         </div>
       </div>
       {helpWindow}

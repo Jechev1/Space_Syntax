@@ -49,8 +49,10 @@
   height: 30%;
 }
 
+/* Seated on the cabin seat of bg-cabina.png: hips on the cushion, back against the backrest. */
 .girlSeat {
-  bottom: 9%;
+  left: 5.5%;
+  bottom: 17.4%;
 }
 
 .speech {
@@ -58,6 +60,12 @@
   left: 11%;
   bottom: 44%;
   pointer-events: auto;
+}
+
+/* In the cabin the girl sits higher, so her bubble moves up above her head. */
+.speechSeat {
+  left: 12%;
+  bottom: 57%;
 }
 
 .speech p {
@@ -132,6 +140,11 @@
   display: flex;
   align-items: flex-end;
   gap: 8px;
+}
+
+/* The main action sits alone on the right, like Phase 1. */
+.main {
+  margin-left: auto;
 }
 
 .nav button,
