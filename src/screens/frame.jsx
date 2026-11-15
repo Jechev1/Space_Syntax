@@ -28,6 +28,7 @@ function screenTarget(path, state, model) {
   if ((path === '/f1a' || path === '/f1b') && !state.phase0Done) return '/f0'
   if (path === '/f1b' && (model.missingSubsystems(state).length || !model.payloadAnswers(state))) return '/f1a'
   if (path === '/f1done' && !state.phase1Done) return state.phase0Done ? '/f1a' : '/f0'
+  if (path === '/f2' && !state.phase1Done) return state.phase0Done ? '/f1a' : '/f0'
   return path
 }
 

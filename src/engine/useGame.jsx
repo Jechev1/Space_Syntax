@@ -7,6 +7,7 @@ const UI_DEFAULTS = {
   closed: {},
   phase0Done: false,
   phase1Done: false,
+  phase2Done: false,
   showMath: {},
   showMel: false,
 }
@@ -35,9 +36,10 @@ function sanitizeUi(raw) {
   ui.introStep = Number.isInteger(raw.introStep) ? Math.max(0, Math.min(2, raw.introStep)) : 0
   ui.phase0Done = raw.phase0Done === true
   ui.phase1Done = raw.phase1Done === true
+  ui.phase2Done = raw.phase2Done === true
   ui.showMel = raw.showMel === true
-  ui.closed = flags(raw.closed, ['f0', 'f1a', 'f1b', 'f1done'])
-  ui.showMath = flags(raw.showMath, ['density', 'rocket', 'battery'])
+  ui.closed = flags(raw.closed, ['f0', 'f1a', 'f1b', 'f1done', 'f2'])
+  ui.showMath = flags(raw.showMath, ['density', 'rocket', 'battery', 'life'])
   return ui
 }
 
@@ -69,6 +71,7 @@ function revalidate(state) {
   if (!report) {
     state.rocket = null
     state.phase1Done = false
+    state.phase2Done = false
     return null
   }
   if (state.rocket) {
@@ -85,6 +88,11 @@ function revalidate(state) {
       state.phase1Done = false
       return 'Design changed: your spacecraft needs a new check.'
     }
+  }
+  if (!state.phase1Done) state.phase2Done = false
+  if (state.phase2Done && !M.validatePhase(state, 2).ok) {
+    state.phase2Done = false
+    return 'Crew plan changed: confirm it again.'
   }
   return null
 }
@@ -135,6 +143,7 @@ function useGameState() {
         next.design.power = null
         next.rocket = null
         next.phase1Done = false
+        next.crew = null
       }
       next.missionType = id
     }),
@@ -166,6 +175,15 @@ function useGameState() {
     }),
     toggleMel: () => update((next) => { next.showMel = !next.showMel }),
     lockDesign: () => update((next) => { next.phase1Done = true }),
+    ensureCrew: () => update((next) => {
+      if (next.missionType === 'crewed' && !next.crew) next.crew = M.defaultCrew()
+    }),
+    setCrew: (patch) => update((next) => {
+      if (next.missionType !== 'crewed') return
+      next.crew = Object.assign(next.crew || M.defaultCrew(), patch)
+      next.phase2Done = false
+    }),
+    lockCrew: () => update((next) => { next.phase2Done = true }),
   }
 }
 
@@ -310,13 +328,18 @@ const PHASES = ['Goal', 'Spacecraft', 'Crew', 'Flight', 'Comms', 'Landing', 'Sci
 
 export function phaseItems(state, current) {
   return PHASES.map((label, index) => {
-    const done = (index === 0 && state.phase0Done) || (index === 1 && state.phase1Done)
+    const done = (index === 0 && state.phase0Done) || (index === 1 && state.phase1Done) || (index === 2 && state.phase2Done)
     let status = 'locked'
     if (index === current) status = 'current'
     else if (done) status = 'done'
     else if (index === 1 && state.phase0Done) status = 'open'
+    else if (index === 2 && state.phase1Done) status = 'open'
     let reason = ''
-    if (status === 'locked') reason = index === 1 && !state.phase0Done ? 'Finish the goal first' : 'Coming soon'
+    if (status === 'locked') {
+      if (index === 1 && !state.phase0Done) reason = 'Finish the goal first'
+      else if (index === 2 && !state.phase1Done) reason = 'Finish the spacecraft first'
+      else reason = 'Coming soon'
+    }
     return { id: String(index), index, label, status, reason }
   })
 }

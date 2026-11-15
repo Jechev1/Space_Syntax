@@ -1,0 +1,291 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  container-type: size;
+}
+
+/* Text and spacing follow the stage height, so the whole panel always fits without scrolling. */
+.hud,
+.speech,
+.panel,
+.dock {
+  --fs-body: clamp(10px, 2.15cqh, 17px);
+  --fs-chip: clamp(8px, 1.7cqh, 13px);
+  --fs-sub: clamp(13px, 2.8cqh, 21px);
+}
+
+.hud {
+  position: absolute;
+  top: 2.5cqh;
+  left: 1.7cqw;
+  right: calc(1.7cqw + var(--tools-reserve));
+  display: grid;
+  grid-template-columns: 0.8fr repeat(4, minmax(0, 1.2fr)) repeat(2, minmax(0, 0.9fr));
+  align-items: center;
+  min-height: 6.4cqh;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-body);
+  font-weight: var(--fw);
+}
+
+.hud span {
+  padding: calc(var(--fs-chip) / 2) calc(var(--fs-body) / 2);
+  text-align: center;
+  white-space: nowrap;
+  border-left: 1px solid var(--line);
+}
+
+.hud span:first-child {
+  border-left: 0;
+}
+
+.speech {
+  position: absolute;
+  left: 15%;
+  bottom: 44%;
+}
+
+.speech p {
+  max-width: 160px;
+}
+
+.panel {
+  position: absolute;
+  top: 11%;
+  right: 2.4%;
+  width: 26%;
+  pointer-events: auto;
+}
+
+.kicker,
+.title,
+.text,
+.note,
+.label,
+.source {
+  margin: 0;
+  font-weight: var(--fw);
+}
+
+.kicker {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  text-align: left;
+  cursor: pointer;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  font-weight: var(--fw-title);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.text {
+  color: var(--text);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+}
+
+.row,
+.toggle,
+.supply {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fs-chip);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.row b {
+  font-weight: var(--fw-title);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--fs-chip) / 1.5);
+}
+
+.stepper button {
+  width: 1.65em;
+  height: 1.65em;
+  padding: 0;
+  line-height: 1;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.note,
+.source {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  line-height: 1.35;
+}
+
+.note {
+  font-style: italic;
+}
+
+.source {
+  text-align: center;
+}
+
+.slider {
+  display: grid;
+  gap: 0.25em;
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+}
+
+.slider input {
+  width: 100%;
+  accent-color: var(--text);
+}
+
+.toggle {
+  width: 100%;
+  padding: calc(var(--fs-chip) / 2) 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+}
+
+.toggle i {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  font-style: normal;
+}
+
+.toggle[aria-pressed='true'] span:last-child {
+  color: var(--accent);
+}
+
+.supplies {
+  display: grid;
+}
+
+.supply {
+  padding: calc(var(--fs-chip) / 2) 0;
+  border-top: 1px solid var(--line);
+}
+
+.supply > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+.label {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.suits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4em;
+}
+
+.suit {
+  display: grid;
+  gap: 0.15em;
+  padding: 0.4em 0.3em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+}
+
+.suit span {
+  color: var(--text-dim);
+}
+
+.suit[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* Same place and size as the girl in F1. */
+.girl {
+  position: absolute;
+  left: 2.4%;
+  bottom: 9%;
+  height: 38%;
+  width: auto;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
+}
+
+/* Bottom bar like F1: back and help on the left, the main action on the right. */
+.dock {
+  position: absolute;
+  left: 2.4%;
+  right: 2.4%;
+  bottom: 3.2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.lock {
+  margin-left: auto;
+}
+
+.lock button,
+.nav button {
+  min-width: 132px;
+}
+
+.lock button {
+  min-width: 15cqw;
+  padding-inline: var(--fs-title);
+}
