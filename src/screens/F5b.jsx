@@ -22,7 +22,7 @@ export function F5b() {
     <StageScene
       background="/bg/bg-superficie.png"
       character={<img className={styles.girl} src="/char/nina-traje-sentada.png" alt="" />}
-      title="How far is up? — Phase 5"
+      title="How far is up? · Phase 5"
     >
       <F5bBody />
     </StageScene>

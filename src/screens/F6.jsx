@@ -44,7 +44,7 @@ export function F6() {
   const lander = ready ? <img className={styles.lander} src="/obj/lander-base.png" alt="" /> : null
 
   return (
-    <StageScene background="/bg/bg-superficie.png" character={girl} objects={lander} title="How far is up? — Phase 6">
+    <StageScene background="/bg/bg-superficie.png" character={girl} objects={lander} title="How far is up? · Phase 6">
       {ready ? (
         <F6Body step={step} setStep={setStep} poi={current ? current.id : ''} setPoi={setPoi} />
       ) : (

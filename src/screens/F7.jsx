@@ -11,7 +11,7 @@ import { useGoBack } from './goBack.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F7.module.css'
 
-const TITLE = 'How far is up? — Phase 7'
+const TITLE = 'How far is up? · Phase 7'
 // Phase 3 (flight plan) has no React screen yet. Point this at its route when it exists.
 
 const SCENES = {

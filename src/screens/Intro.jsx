@@ -19,7 +19,7 @@ export function Intro() {
   const last = step >= INTRO.length - 1
 
   useEffect(() => {
-    document.title = 'Space Syntax — Intro'
+    document.title = 'How far is up? · Intro'
   }, [])
 
   return (
