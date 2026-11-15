@@ -341,24 +341,6 @@
   cursor: pointer;
 }
 
-/* 44 px touch area around a compact chip. */
-.source {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-chip);
-  background: transparent;
-  font-family: var(--font-ui);
-  cursor: pointer;
-}
-
-.source > span {
-  min-height: 0;
-  padding: 0.25em 0.8em;
-}
-
 .help {
   position: absolute;
   left: 1.7%;

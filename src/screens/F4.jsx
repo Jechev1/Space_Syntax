@@ -3,7 +3,6 @@ import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
-import { Chip } from '../components/ui/Chip.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { useGame } from '../engine/useGame.jsx'
@@ -13,7 +12,6 @@ import { RunPanel } from './F2.jsx'
 import runStyles from './F2.module.css'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { f4Speech } from './f4Speech.mjs'
-import { usePlay } from './playContext.jsx'
 import styles from './F4.module.css'
 import { SceneHud } from './scene.jsx'
 import scene from './scene.module.css'
@@ -108,10 +106,9 @@ function F4Body() {
             <button type="button" className={styles.mathLink} aria-pressed={math} onClick={toggleMath}>
               {math ? 'Hide the math' : 'Show the math'}
             </button>
-            {/* After a run this spot changes the link; before it, it shows where the numbers come from. */}
+            {/* Shown only after a run: change the link, or keep it and go back to the result. */}
             {compact ? <button type="button" className={styles.pill} onClick={() => setEditing(true)}><span>Change link</span></button> : null}
             {editing ? <button type="button" className={styles.pill} onClick={() => setEditing(false)}><span>Keep this link</span></button> : null}
-            {play.run ? null : <SourceTag plan={plan} />}
           </div>
         </GlassPanel>
         {editing ? null : (
@@ -297,19 +294,6 @@ function LinkVerdict({ plan, model }) {
       <p className={`${scene.note} ${plan.bottleneck ? styles.warn : ''}`}>{text}</p>
       {plan.weatherRisk ? <p className={`${scene.note} ${styles.warn}`}>Clouds over the ground station can block a laser.</p> : null}
     </>
-  )
-}
-
-/* Where the numbers come from: the chosen link's source, or the Deep Space Network before a pick.
-   A game value opens the "Game value" window, a NASA source opens its page. */
-function SourceTag({ plan }) {
-  const { openSource } = usePlay()
-  const src = plan.link ? plan.link.src : (plan.dish ? plan.dish.src : 'dsn')
-  const game = !src || src === 'game'
-  return (
-    <button type="button" className={styles.source} onClick={() => openSource(game ? 'game' : src)}>
-      <Chip type={game ? 'game' : 'nasa'}>{game ? 'value' : 'source ↗'}</Chip>
-    </button>
   )
 }
 
