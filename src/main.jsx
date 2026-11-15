@@ -18,6 +18,7 @@ import { F6 } from './screens/F6.jsx'
 import { F7 } from './screens/F7.jsx'
 import { F8 } from './screens/F8.jsx'
 import { Lab } from './screens/Lab.jsx'
+import { OffCourse } from './screens/OffCourse.jsx'
 import { GameTools } from './screens/GameTools.jsx'
 import { Intro } from './screens/Intro.jsx'
 import { Start } from './screens/Start.jsx'
@@ -27,7 +28,8 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/dev/ui" element={<DevUi />} />
+        {/* The UI kit page is for building screens, not for players. */}
+        {import.meta.env.DEV ? <Route path="/dev/ui" element={<DevUi />} /> : null}
         <Route element={<GameProvider><StageOverlay.Provider value={<GameTools />}><Outlet /></StageOverlay.Provider></GameProvider>}>
           <Route path="/" element={<Navigate to="/inicio" replace />} />
           <Route path="/inicio" element={<Start />} />
@@ -46,8 +48,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/f7" element={<F7 />} />
           <Route path="/f8" element={<F8 />} />
           <Route path="/lab" element={<Lab />} />
+          <Route path="*" element={<OffCourse />} />
         </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

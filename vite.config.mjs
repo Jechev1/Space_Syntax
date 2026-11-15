@@ -3,9 +3,10 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-/** React routes. index.html on disk stays the classic game for the Python server. */
-const REACT_PAGES = new Set(['/', '/inicio', '/inicio/', '/intro', '/f0', '/f1a', '/f1b', '/f1done', '/f2', '/f3a', '/f4', '/f3b', '/f5a', '/f5b', '/f6', '/f7', '/f8', '/lab', '/dev/ui', '/dev/ui/'])
-
+/**
+ * Dev server: every page address (no file extension) gets the React app, so unknown ones like /f9 reach
+ * the "off course" screen. Vite's own paths start with /@ or /__. The classic game is at /index.html.
+ */
 function devUiRoute() {
   return {
     name: 'dev-ui-route',
@@ -15,7 +16,8 @@ function devUiRoute() {
         const q = raw.indexOf('?')
         const path = q === -1 ? raw : raw.slice(0, q)
         const search = q === -1 ? '' : raw.slice(q)
-        if (REACT_PAGES.has(path)) req.url = `/dev.html${search}`
+        const page = !path.startsWith('/@') && !path.startsWith('/__') && !path.slice(path.lastIndexOf('/')).includes('.')
+        if (page) req.url = `/dev.html${search}`
         next()
       })
     },

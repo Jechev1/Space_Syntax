@@ -125,3 +125,45 @@
   overflow: hidden;
   clip: rect(0 0 0 0);
 }
+
+/* Notice from the game (a locked page, a plan that changed). Sits under the top bar, fades on its own. */
+.toast {
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--fs-body) / 2);
+  max-width: 60%;
+}
+
+.toast:empty {
+  display: none;
+}
+
+.toast > span {
+  padding: calc(var(--fs-chip) / 2) var(--fs-body);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.toastClose {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: var(--fs-chip);
+  padding: calc(var(--fs-chip) / 3) calc(var(--fs-chip) / 1.5);
+  cursor: pointer;
+}
+
+.toastClose:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
