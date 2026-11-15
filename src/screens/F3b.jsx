@@ -39,7 +39,7 @@ export function F3b() {
       background={BACKGROUND}
       character={<img className={scene.girl} src={CHARACTER} alt="" />}
       objects={rocket}
-      title="How far is up? — Launch pad"
+      title="How far is up? · Launch pad"
     >
       <F3bBody play={play} />
     </StageScene>

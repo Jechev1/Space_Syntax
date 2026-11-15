@@ -22,7 +22,7 @@ export function DevUi() {
   const [note, setNote] = useState('Sample only. This screen is not wired to the game.')
 
   useEffect(() => {
-    document.title = 'Space Syntax — UI kit'
+    document.title = 'How far is up? · UI kit'
   }, [])
 
   return (

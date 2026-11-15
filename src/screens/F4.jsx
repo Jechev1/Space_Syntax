@@ -33,7 +33,7 @@ export function F4() {
     <StageScene
       background={BACKGROUND}
       character={<img className={styles.portrait} src={CHARACTER} alt="" />}
-      title="Space Syntax — Phase 4: Communications"
+      title="How far is up? · Phase 4: Communications"
     >
       <F4Body />
     </StageScene>
@@ -96,6 +96,12 @@ function F4Body() {
           <h2 className={scene.title}>{compact ? 'Your link' : 'Choose a link'}</h2>
           {compact ? <LinkSummary plan={plan} /> : (
             <>
+              {/* Once a link is picked, the verdict line under the list repeats this need next to what it sends. */}
+              {plan.link ? null : (
+                <p className={scene.note}>
+                  Your science makes <b>{model.fmt(model.dataNeedPerDay(state))} Gb a day</b>. Pick a link that sends at least that much.
+                </p>
+              )}
               <LinkChoices game={game} />
               <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
             </>
@@ -216,10 +222,12 @@ function LinkChoices({ game }) {
   const { state, data, model, setComms } = game
   const type = state.missionType
   const current = state.comms || {}
+  const need = model.dataNeedPerDay(state)
   return (
     <div className={styles.options}>
       {data.COMMS.links.map((link, index) => {
         const preview = model.commsPlan({ ...state, comms: { link: link.id, dish: current.dish || 'dsn34' } })
+        const enough = preview.gbPerDay >= need
         return (
           <button
             key={link.id}
@@ -232,8 +240,11 @@ function LinkChoices({ game }) {
             <span className={styles.num}>{index + 1}</span>
             <span className={styles.optionText}>
               <span>{LINK_NAMES[link.id] || link.title} · {model.fmt(preview.gbPerDay)} Gb a day</span>
-              <span className={styles.optionMeta}>
-                +{model.fmt(link[type].power)} W · +{model.fmt(link[type].mass)} kg · ${model.fmt(link[type].cost)}M
+              <span className={styles.optionRow}>
+                <span className={styles.optionMeta}>
+                  +{model.fmt(link[type].power)} W · +{model.fmt(link[type].mass)} kg · ${model.fmt(link[type].cost)}M
+                </span>
+                <span className={`${styles.fit} ${enough ? styles.fitOk : styles.fitShort}`}>{enough ? 'Enough' : 'Too slow'}</span>
               </span>
             </span>
           </button>
@@ -284,9 +295,8 @@ function LinkSummary({ plan }) {
 }
 
 function LinkVerdict({ plan, model }) {
-  if (!plan.link) {
-    return <p className={scene.note}>Your science makes {model.fmt(plan.needGbPerDay)} Gb of data a day.</p>
-  }
+  // Before a pick, the note above the list already says how much data the science makes.
+  if (!plan.link) return null
   let text = `Sends ${model.fmt(plan.gbPerDay)} Gb a day · your science makes ${model.fmt(plan.needGbPerDay)} Gb`
   if (plan.bottleneck) text = `Bottleneck: you make ${model.fmt(plan.needGbPerDay)} Gb a day but send only ${model.fmt(plan.gbPerDay)} Gb`
   return (

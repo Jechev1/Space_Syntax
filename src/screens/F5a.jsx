@@ -61,7 +61,7 @@ export function F5a() {
     <StageScene
       background="/bg/bg-portilla-luna.png"
       character={<img className={styles.girl} src="/char/nina-ventanilla.png" alt="" />}
-      title="How far is up? — Phase 5"
+      title="How far is up? · Phase 5"
     >
       <F5aBody />
     </StageScene>

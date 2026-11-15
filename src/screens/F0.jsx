@@ -28,7 +28,7 @@ export function F0() {
   const lesson = lessonFor(view, state)
 
   useEffect(() => {
-    document.title = 'Space Syntax — Phase 0: Mission Goal'
+    document.title = 'How far is up? · Phase 0: Mission Goal'
   }, [])
 
   const choices = choicesFor(view, state, data, game)
