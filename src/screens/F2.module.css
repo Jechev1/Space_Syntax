@@ -1,4 +1,53 @@
-/* F2-only pieces. Shared layout (HUD, bubble, panel, button) lives in scene.module.css. */
+/* F2-only pieces. The screen chrome (HUD, bubble, panel, dock) reuses F1.module.css
+   so the viewport anchoring matches Phase 1 exactly. */
+.crewPanel {
+  position: absolute;
+  top: 10%;
+  right: 2.4%;
+  width: 33%;
+  pointer-events: auto;
+}
+
+/* Optional supplies test: floats over the free sky area, right of the speech bubble. */
+.testPanel {
+  position: absolute;
+  top: 12%;
+  left: 27%;
+  width: 21%;
+  pointer-events: auto;
+}
+
+.testLine,
+.note,
+.text,
+.mathNote {
+  margin: 0;
+  font-weight: var(--fw);
+}
+
+.testLine {
+  color: var(--text);
+  font-size: var(--fs-chip);
+  line-height: 1.35;
+}
+
+.note {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+  line-height: 1.3;
+}
+
+.text {
+  color: var(--text);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+}
+
+.mathNote {
+  color: var(--text-dim);
+  font-size: var(--fs-body);
+  line-height: 1.35;
+}
 
 .row,
 .toggle,
@@ -119,6 +168,10 @@
   color: var(--text-dim);
 }
 
+.suit:hover {
+  border-color: var(--line-bright);
+}
+
 .suit[aria-pressed='true'] {
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent);
@@ -126,8 +179,7 @@
 
 /* Play run */
 .runPanel,
-.shelf,
-.runMath {
+.shelf {
   --fs-body: clamp(10px, 2.15cqh, 17px);
   --fs-chip: clamp(8px, 1.7cqh, 13px);
   --fs-sub: clamp(13px, 2.8cqh, 21px);
@@ -222,14 +274,6 @@
   font-size: var(--fs-chip);
   text-decoration: underline;
   cursor: pointer;
-}
-
-.runMath {
-  position: absolute;
-  top: max(11%, 72px);
-  left: 27%;
-  width: 34%;
-  pointer-events: auto;
 }
 
 /* Supplies drawn over the shelf in the scene */
