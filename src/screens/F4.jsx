@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
-import { Stage } from '../components/stage/Stage.jsx'
 import { useGame } from '../engine/useGame.jsx'
-import { usePhaseGuard } from './frame.jsx'
+import { StageScene, usePhaseGuard } from './frame.jsx'
+import { usePlay } from './playContext.jsx'
 import styles from './F4.module.css'
 import { SceneHud } from './scene.jsx'
 import scene from './scene.module.css'
@@ -24,51 +24,61 @@ const LINK_NAMES = { sband: 'Basic radio', ka: 'Ka-band', laser: 'Laser link' }
 export function F4() {
   const ready = usePhaseGuard('/f4')
   if (!ready) return null
-  return <F4Screen />
+  return (
+    <StageScene
+      background={BACKGROUND}
+      character={<img className={styles.portrait} src={CHARACTER} alt="" />}
+      title="How far is upy — Phase 4"
+    >
+      <F4Body />
+    </StageScene>
+  )
 }
 
-function F4Screen() {
+function F4Body() {
   const navigate = useNavigate()
+  const { setModal } = usePlay()
   const game = useGame()
   const { state, model } = game
   const plan = model.commsPlan(state)
-  const [help, setHelp] = useState(false)
-
-  useEffect(() => {
-    document.title = 'Space Syntax — Phase 4: Communications'
-  }, [])
+  const [math, setMath] = useState(false)
 
   return (
-    <Stage background={BACKGROUND} character={<img className={styles.portrait} src={CHARACTER} alt="" />}>
-      <div className={scene.screen}>
-        <SceneHud limits />
-        <div className={styles.left}>
-          <Globe />
-          <Ping seconds={plan.roundTrip} />
-        </div>
-        <div className={`${scene.speech} ${styles.speech}`}>
-          <Bubble tone="speech">How will anyone know what I found?</Bubble>
-        </div>
-        <div className={scene.panel}>
-          <GlassPanel>
-            <p className={scene.kicker}>Phase 4 · Communications</p>
-            <h2 className={scene.title}>Choose a link</h2>
-            <LinkChoices game={game} />
-            <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
-            <LinkVerdict plan={plan} model={model} />
+    <div className={scene.screen}>
+      <SceneHud limits />
+      <div className={styles.left}>
+        <Globe />
+        <Ping seconds={plan.roundTrip} />
+      </div>
+      <div className={`${scene.speech} ${styles.speech}`}>
+        <Bubble tone="speech">How will anyone know what I found?</Bubble>
+      </div>
+      <div className={scene.panel}>
+        <GlassPanel>
+          <p className={scene.kicker}>Phase 4 · Communications</p>
+          <h2 className={scene.title}>Choose a link</h2>
+          <LinkChoices game={game} />
+          <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
+          <LinkVerdict plan={plan} model={model} />
+          <div className={styles.panelFoot}>
+            <button type="button" className={styles.mathLink} aria-pressed={math} onClick={() => setMath(!math)}>
+              {math ? 'Hide the math' : 'Show the math'}
+            </button>
             <span className={styles.tag}>Game value</span>
-          </GlassPanel>
-        </div>
-        {help ? <HelpPanel game={game} /> : null}
-        <div className={styles.footer}>
-          <Button variant="outline" onClick={() => navigate('/f3a')}>Back</Button>
-          <Button variant="outline" aria-pressed={help} onClick={() => setHelp(!help)}>Help</Button>
+          </div>
+        </GlassPanel>
+      </div>
+      {math ? <MathPanel game={game} /> : null}
+      <div className={scene.dock}>
+        <div className={scene.nav}>
+          <Button variant="secondary" onClick={() => navigate('/f3a')}>← Flight plan</Button>
+          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
         <div className={scene.lock}>
           <ConfirmButton game={game} />
         </div>
       </div>
-    </Stage>
+    </div>
   )
 }
 
@@ -190,7 +200,7 @@ function LinkVerdict({ plan, model }) {
   )
 }
 
-function HelpPanel({ game }) {
+function MathPanel({ game }) {
   const math = game.model.commsMath(game.state)
   return (
     <div className={styles.help}>

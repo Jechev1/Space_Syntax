@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
-import { Stage } from '../components/stage/Stage.jsx'
 import { useGame } from '../engine/useGame.jsx'
-import { usePhaseGuard } from './frame.jsx'
+import { StageScene, usePhaseGuard } from './frame.jsx'
+import { usePlay } from './playContext.jsx'
 import styles from './F2.module.css'
 import { FoodIcon, OxygenIcon, SceneHud, WaterIcon } from './scene.jsx'
 import scene from './scene.module.css'
@@ -18,19 +18,24 @@ const SUIT_NAMES = { light: 'Light', lunar: 'Lunar', heavy: 'Heavy' }
 export function F2() {
   const ready = usePhaseGuard('/f2')
   if (!ready) return null
-  return <F2Screen />
+  return (
+    <StageScene
+      background={BACKGROUND}
+      character={<img className={scene.girl} src={CHARACTER} alt="" />}
+      title="How far is upy — Phase 2"
+    >
+      <F2Body />
+    </StageScene>
+  )
 }
 
-function F2Screen() {
+function F2Body() {
   const navigate = useNavigate()
   const game = useGame()
+  const { setModal } = usePlay()
   const { state, data, model, ensureCrew } = game
   const crewed = state.missionType === 'crewed'
   const life = crewed ? model.lifeSupport(state) : null
-
-  useEffect(() => {
-    document.title = 'Space Syntax — Phase 2: Crew'
-  }, [])
 
   useEffect(() => {
     if (crewed && !state.crew) ensureCrew()
@@ -39,25 +44,27 @@ function F2Screen() {
   if (crewed && !life) return null
 
   return (
-    <Stage background={BACKGROUND} character={CHARACTER}>
-      <div className={scene.screen}>
-        <SceneHud />
-        <div className={scene.speech}>
-          <Bubble tone="speech">{crewed ? 'Every day adds mass.' : 'No crew, no groceries!'}</Bubble>
-        </div>
-        <div className={scene.panel}>
-          <GlassPanel>
-            <button type="button" className={scene.kicker} onClick={() => navigate('/f1done')}>
-              Phase 2 · Crew and life support
-            </button>
-            {crewed ? <CrewPlan game={game} life={life} /> : <NoCrew data={data} model={model} />}
-          </GlassPanel>
+    <div className={scene.screen}>
+      <SceneHud />
+      <div className={scene.speech}>
+        <Bubble tone="speech">{crewed ? 'Every day adds mass.' : 'No crew, no groceries!'}</Bubble>
+      </div>
+      <div className={scene.panel}>
+        <GlassPanel>
+          <p className={scene.kicker}>Phase 2 · Crew and life support</p>
+          {crewed ? <CrewPlan game={game} life={life} /> : <NoCrew data={data} model={model} />}
+        </GlassPanel>
+      </div>
+      <div className={scene.dock}>
+        <div className={scene.nav}>
+          <Button variant="secondary" onClick={() => navigate('/f1done')}>← Phase 1</Button>
+          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
         <div className={scene.lock}>
           <ConfirmButton game={game} crewed={crewed} />
         </div>
       </div>
-    </Stage>
+    </div>
   )
 }
 

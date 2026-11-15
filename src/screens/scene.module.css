@@ -11,7 +11,6 @@
 .hud,
 .speech,
 .panel,
-.lock,
 .dock {
   --fs-body: clamp(10px, 2.15cqh, 17px);
   --fs-chip: clamp(8px, 1.7cqh, 13px);
@@ -22,7 +21,7 @@
   position: absolute;
   top: 2.5cqh;
   left: 1.7cqw;
-  right: 1.7cqw;
+  right: calc(1.7cqw + var(--tools-reserve));
   display: grid;
   grid-template-columns: 0.9fr repeat(4, minmax(0, 1.2fr)) repeat(2, minmax(0, 0.9fr));
   align-items: center;
@@ -63,7 +62,8 @@
 
 .panel {
   position: absolute;
-  top: 11%;
+  /* Never under the music and settings buttons (44 px tall, 19 px from the top). */
+  top: max(11%, 72px);
   right: 2.4%;
   width: 26%;
   pointer-events: auto;
@@ -121,11 +121,47 @@ button.kicker {
   text-align: center;
 }
 
-.lock {
+/* Same place and size as the girl in F1. */
+.girl {
   position: absolute;
+  left: 2.4%;
+  bottom: 9%;
+  height: 38%;
+  width: auto;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
+}
+
+/* Bottom bar like F1: back and help on the left, the main action on the right. */
+.dock {
+  position: absolute;
+  left: 2.4%;
   right: 2.4%;
   bottom: 3.2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.dock > * {
   pointer-events: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.lock {
+  margin-left: auto;
+}
+
+.lock button,
+.nav button {
+  min-width: 132px;
 }
 
 .lock button {

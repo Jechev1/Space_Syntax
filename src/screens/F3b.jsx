@@ -1,77 +1,84 @@
-import { useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
-import { Stage } from '../components/stage/Stage.jsx'
 import { useGame } from '../engine/useGame.jsx'
-import { usePhaseGuard } from './frame.jsx'
+import { rocketArt } from './F1b.jsx'
+import { StageScene, usePhaseGuard } from './frame.jsx'
+import { usePlay } from './playContext.jsx'
 import styles from './F3b.module.css'
 import { SceneHud } from './scene.jsx'
 import scene from './scene.module.css'
 
-/* bg-plataforma is not drawn yet: until it lands in public/bg the stage falls back to the starry sky. */
 const BACKGROUND = '/bg/bg-plataforma.png'
 const CHARACTER = '/char/nina-traje-pie.png'
 const ROWS = ['totalMass', 'deltaV', 'crew', 'missionDays', 'lifeSupport', 'comms']
+/* Short link names, same as F4. launchRows gives the full title. */
+const LINK_NAMES = { 'S-band radio': 'Basic radio', 'Ka-band high-gain antenna': 'Ka-band', 'Laser communications': 'Laser link' }
 
 export function F3b() {
   const ready = usePhaseGuard('/f3b')
+  const { state } = useGame()
   if (!ready) return null
-  return <F3bScreen />
+  return (
+    <StageScene
+      background={BACKGROUND}
+      character={<img className={scene.girl} src={CHARACTER} alt="" />}
+      objects={state.rocket ? <img className={styles.rocket} src={rocketArt(state.rocket)} alt="" /> : null}
+      title="How far is upy — Launch pad"
+    >
+      <F3bBody />
+    </StageScene>
+  )
 }
 
-function F3bScreen() {
+function F3bBody() {
   const navigate = useNavigate()
+  const { setModal } = usePlay()
   const game = useGame()
   const { state, model } = game
-  const background = useImageOrNothing(BACKGROUND)
   const summary = model.launchRows(state)
   const rows = summary.rows.filter((row) => ROWS.includes(row.key))
   const blocker = summary.G.issues.find((issue) => issue.severity === 'block')
 
-  useEffect(() => {
-    document.title = 'Space Syntax — Launch pad'
-  }, [])
-
   return (
-    <Stage background={background} character={CHARACTER}>
-      <div className={scene.screen}>
-        <SceneHud where="Earth → Ship" />
-        <div className={`${scene.speech} ${styles.speech}`}>
-          <Bubble tone="speech">{state.launched ? 'We are on our way!' : "Let's go to the Moon."}</Bubble>
+    <div className={scene.screen}>
+      <SceneHud where="Earth → Ship" />
+      <div className={`${scene.speech} ${styles.speech}`}>
+        <Bubble tone="speech">{state.launched ? 'We are on our way!' : "Let's go to the Moon."}</Bubble>
+      </div>
+      <div className={scene.panel}>
+        <GlassPanel>
+          <p className={scene.kicker}>Launch pad</p>
+          <h2 className={scene.title}>Mission summary</h2>
+          <div className={styles.rows}>
+            {rows.map((row) => (
+              <div key={row.key} className={styles.row}>
+                <span>{row.label}</span>
+                <span className={styles.value}>{valueText(row, model.fmt)}</span>
+                <span className={`${styles.go} ${row.ok ? styles.ok : styles.no}`}>{row.ok ? 'GO' : 'NO GO'}</span>
+              </div>
+            ))}
+          </div>
+          <p className={`${styles.verdict} ${summary.go ? '' : styles.notReady}`}>
+            {summary.go ? 'All systems GO' : `Not ready: ${blocker ? blocker.message : 'fix the NO GO items'}`}
+          </p>
+        </GlassPanel>
+      </div>
+      <p className={styles.warning}>After launch you cannot change Phases 0 to 4.</p>
+      <div className={scene.dock}>
+        <div className={scene.nav}>
+          {state.launched ? null : (
+            <Button variant="secondary" onClick={() => navigate('/f4')}>← Comms</Button>
+          )}
+          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
-        <div className={scene.panel}>
-          <GlassPanel>
-            {state.launched ? (
-              <p className={scene.kicker}>Launch pad</p>
-            ) : (
-              <button type="button" className={scene.kicker} onClick={() => navigate('/f4')}>
-                Launch pad · Back to comms
-              </button>
-            )}
-            <h2 className={scene.title}>Mission summary</h2>
-            <div className={styles.rows}>
-              {rows.map((row) => (
-                <div key={row.key} className={styles.row}>
-                  <span>{row.label}</span>
-                  <span className={styles.value}>{valueText(row, model.fmt)}</span>
-                  <span className={`${styles.go} ${row.ok ? styles.ok : styles.no}`}>{row.ok ? 'GO' : 'NO GO'}</span>
-                </div>
-              ))}
-            </div>
-            <p className={`${styles.verdict} ${summary.go ? '' : styles.notReady}`}>
-              {summary.go ? 'All systems GO' : `Not ready: ${blocker ? blocker.message : 'fix the NO GO items'}`}
-            </p>
-          </GlassPanel>
-        </div>
-        <p className={styles.warning}>After launch you cannot change Phases 0 to 4.</p>
         <div className={scene.lock}>
           <LaunchButton game={game} ready={summary.go} />
         </div>
       </div>
-    </Stage>
+    </div>
   )
 }
 
@@ -103,20 +110,6 @@ function valueText(row, fmt) {
   if (row.key === 'crew') return row.value == null ? 'Robots only' : String(row.value)
   if (row.key === 'missionDays') return row.value == null ? '—' : fmt(row.value)
   if (row.key === 'lifeSupport') return row.value === 'ok' ? 'OK' : 'Not needed'
-  if (row.key === 'comms') return row.value || 'Not chosen'
+  if (row.key === 'comms') return row.value ? (LINK_NAMES[row.value] || row.value) : 'Not chosen'
   return row.value == null ? '—' : String(row.value)
-}
-
-/** Returns src once the image loads, or '' when it is missing, so the stage can fall back. */
-function useImageOrNothing(src) {
-  const [ok, setOk] = useState(false)
-  useEffect(() => {
-    let alive = true
-    const img = new Image()
-    img.onload = () => { if (alive) setOk(true) }
-    img.onerror = () => { if (alive) setOk(false) }
-    img.src = src
-    return () => { alive = false }
-  }, [src])
-  return ok ? src : ''
 }

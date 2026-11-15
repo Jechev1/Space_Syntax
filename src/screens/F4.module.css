@@ -1,7 +1,6 @@
 /* F4-only pieces. Shared layout lives in scene.module.css. */
 
 .left,
-.footer,
 .help {
   --fs-body: clamp(10px, 2.15cqh, 17px);
   --fs-chip: clamp(8px, 1.7cqh, 13px);
@@ -236,28 +235,29 @@
   color: var(--warn);
 }
 
+.panelFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mathLink {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .tag {
-  justify-self: end;
-  align-self: flex-end;
   padding: 0.15em 0.7em;
   border-radius: var(--radius-btn);
   background: var(--accent);
   color: var(--bg-deep);
   font-size: var(--fs-chip);
-}
-
-/* Bottom left */
-.footer {
-  position: absolute;
-  left: 1.7%;
-  bottom: 3.2%;
-  display: flex;
-  gap: 0.8em;
-  pointer-events: auto;
-}
-
-.footer button {
-  min-width: 9cqw;
 }
 
 .help {

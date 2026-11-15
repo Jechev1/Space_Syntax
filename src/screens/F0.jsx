@@ -63,6 +63,9 @@ export function F0() {
             <p className={styles.hypothesis}>Hypothesis: The Moon is made of cheese.</p>
           </GlassPanel>
         </div>
+        <div className={styles.home}>
+          <Button variant="outline" onClick={() => navigate('/inicio')}>Back to start</Button>
+        </div>
         <div className={styles.lock}>
           <Button
             variant="outline"

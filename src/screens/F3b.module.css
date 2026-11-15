@@ -1,8 +1,21 @@
 /* F3b-only pieces. Shared layout lives in scene.module.css. */
 
 .speech {
-  left: 9%;
-  bottom: 47%;
+  left: 14%;
+  bottom: 44%;
+}
+
+/* The chosen rocket stands on the pad, same spot as in the F1 review. */
+.rocket {
+  position: absolute;
+  left: 42%;
+  bottom: 12%;
+  height: 68%;
+  width: auto;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 10px 18px rgba(10, 12, 28, .5));
+  pointer-events: none;
 }
 
 .rows {
