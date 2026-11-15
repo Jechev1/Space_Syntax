@@ -335,7 +335,7 @@
   /** Everything Phase 4 needs: delays, data rate, daily volume, bottleneck. */
   function commsPlan(state) {
     const C = D.COMMS, link = commsLink(state), dish = commsDish(state);
-    const gain = dish ? dishGain(dish.diameter) : 1;
+    const gain = dish && !(link && link.optical) ? dishGain(dish.diameter) : 1; // lasers do not use radio dishes
     const rateMbps = link ? link.rateMbps * gain : 0;
     const gbPerDay = link ? rateMbps * link.contactHours * 3.6 : 0; // Mbps × h × 3600 s / 1000 Mb per Gb
     const need = dataNeedPerDay(state);
@@ -352,7 +352,7 @@
       { eq: 't = d / c', num: `t = ${fmt(D.MOON.distanceKm)} km ÷ ${fmt(D.CONST.c)} km/s = ${c.delay.avg.toFixed(2)} s one way` },
       { eq: 'range', num: `${c.delay.min.toFixed(2)} s at the closest point, ${c.delay.max.toFixed(2)} s at the farthest` },
     ];
-    if (c.dish) steps.push({ eq: 'G ∝ D²', num: `(${c.dish.diameter} m ÷ ${D.COMMS.baseDiameter} m)² = ${c.gain.toFixed(2)}× signal` });
+    if (c.dish && !(c.link && c.link.optical)) steps.push({ eq: 'G ∝ D²', num: `(${c.dish.diameter} m ÷ ${D.COMMS.baseDiameter} m)² = ${c.gain.toFixed(2)}× signal` });
     if (c.link) steps.push({ eq: 'data = rate × time', num: `${fmt(c.rateMbps, 1)} Mbps × ${c.contactHours} h × 3,600 s ÷ 1,000 = ${fmt(c.gbPerDay)} Gb per day` });
     return { title: 'Talking to Earth: real math', steps, check: c.link ? (c.bottleneck ? `You need ${fmt(c.needGbPerDay)} Gb a day: data will pile up` : `Enough for your ${fmt(c.needGbPerDay)} Gb a day ✔`) : null, src: 'dsn' };
   }
@@ -376,9 +376,9 @@
       hoverAvailable: hoverAvailable(state), hoverTypical: site.hoverNeed * (D.LANDING.difficultyFactor[state.difficulty || 'engineer'] || 1),
     };
   }
-  /** Seconds the lander can hover: built-in reserve + descent margin ÷ lunar gravity. */
+  /** Seconds the lander can hover: built-in reserve + the usable share of the descent margin ÷ lunar gravity. */
   function hoverAvailable(state) {
-    const extraDv = D.DV.descent.value * marginOf(state);
+    const extraDv = D.DV.descent.value * marginOf(state) * D.LANDING.hoverShare;
     return D.LANDING.baseHoverSec + extraDv / D.MOON.gravity;
   }
   /** Seeded descent: compares hover seconds available with what the terrain demands. Pure. */
@@ -403,7 +403,8 @@
     const steps = [
       { eq: 'Δv = g · t', num: `hovering costs ${D.MOON.gravity} m/s of delta-v every second` },
       { eq: 'extra Δv = Δv · margin', num: `${fmt(D.DV.descent.value)} m/s × ${Math.round(m * 100)}% = ${fmt(extra)} m/s` },
-      { eq: 't = extra Δv / g', num: `${fmt(extra)} ÷ ${D.MOON.gravity} = ${fmt(extra / D.MOON.gravity)} s + ${D.LANDING.baseHoverSec} s built in = ${fmt(hoverAvailable(state))} s` },
+      { eq: 'usable = extra Δv × share', num: `${fmt(extra)} m/s × ${Math.round(D.LANDING.hoverShare * 100)}% = ${fmt(extra * D.LANDING.hoverShare)} m/s (the rest covers drift and landing errors)` },
+      { eq: 't = usable Δv / g', num: `${fmt(extra * D.LANDING.hoverShare)} ÷ ${D.MOON.gravity} = ${fmt(extra * D.LANDING.hoverShare / D.MOON.gravity)} s + ${D.LANDING.baseHoverSec} s built in = ${fmt(hoverAvailable(state))} s` },
     ];
     if (sim) steps.push({ eq: 'needed here', num: `about ${fmt(sim.hoverNeeded)} s to dodge the hazards` });
     return { title: 'Landing: why your Phase 3 margin matters', steps, src: 'nssdc' };

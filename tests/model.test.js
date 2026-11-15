@@ -581,9 +581,16 @@ test('commsPlan', async (t) => {
     for (const l of C.links) {
       const p = M.commsPlan(withComms(robotOneWay(), l.id, 'dsn34'));
       close(p.gbPerDay, l.rateMbps * l.contactHours * 3.6, 1e-9, l.id);
-      const q = M.commsPlan(withComms(robotOneWay(), l.id, 'dsn70'));
-      close(q.rateMbps, p.rateMbps * (70 / 34) ** 2, 1e-9); close(q.gbPerDay, p.gbPerDay * (70 / 34) ** 2, 1e-6);
+      const q = M.commsPlan(withComms(robotOneWay(), l.id, 'dsn70')), k = l.optical ? 1 : (70 / 34) ** 2;
+      close(q.rateMbps, p.rateMbps * k, 1e-9); close(q.gbPerDay, p.gbPerDay * k, 1e-6);
     }
+  });
+  await t.test('laser is optical: no dish gain, stays at the O2O 260 Mbps, math skips G ∝ D²', () => {
+    assert.equal(C.links.filter(l => l.optical).map(l => l.id).join(), 'laser');
+    const p = M.commsPlan(withComms(robotOneWay(), 'laser', 'dsn70'));
+    assert.equal(p.gain, 1); assert.equal(p.rateMbps, 260);
+    assert.ok(!M.commsMath(withComms(robotOneWay(), 'laser', 'dsn70')).steps.some(x => x.eq === 'G ∝ D²'));
+    assert.ok(M.commsMath(withComms(robotOneWay(), 'ka', 'dsn70')).steps.some(x => x.eq === 'G ∝ D²'));
   });
   await t.test('bottleneck when need > capacity', () => {
     const s = robotOneWay(); s.design.science = ['camera', 'spectrometer'];
@@ -672,11 +679,11 @@ test('siteReport', async (t) => {
 });
 
 test('hoverAvailable', async (t) => {
-  await t.test('= base + 2074 x margin / 1.62 and rises with margin', () => {
+  await t.test('= base + 2074 x margin x hoverShare / 1.62 and rises with margin', () => {
     let prev = -1;
     for (const m of D.FLIGHT.marginOptions) {
       const h = M.hoverAvailable(robotOneWay({ flight: { margin: m } }));
-      close(h, D.LANDING.baseHoverSec + 2074 * m / 1.62, 1e-9, 'margin ' + m);
+      close(h, D.LANDING.baseHoverSec + 2074 * m * D.LANDING.hoverShare / 1.62, 1e-9, 'margin ' + m);
       assert.ok(h > prev); prev = h;
     }
   });

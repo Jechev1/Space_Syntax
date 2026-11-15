@@ -287,7 +287,7 @@
 
   /* ---------------- PHASE 4: communications ---------------- */
   const COMMS = {
-    // Data rates are with a 34 m DSN dish. A bigger dish scales the rate by (D / 34)², like antenna gain.
+    // Data rates are with a 34 m DSN dish. A bigger dish scales the radio rate by (D / 34)², like antenna gain. Laser links ignore the dish.
     links: [
       { id: 'sband', title: 'S-band radio', rateMbps: 2, contactHours: 8, src: 'game',
         blurb: 'Simple and reliable. A trickle of data.',
@@ -295,7 +295,7 @@
       { id: 'ka', title: 'Ka-band high-gain antenna', rateMbps: 100, contactHours: 2.5, src: 'lro',
         blurb: 'Like NASA\'s LRO: 100 to 300 Mbps, up to about 900 Gb a day.',
         robotic: { mass: 30, power: 110, cost: 40 }, crewed: { mass: 120, power: 300, cost: 90, where: 'orbiter' } },
-      { id: 'laser', title: 'Laser communications', rateMbps: 260, contactHours: 2.5, weatherRisk: true, src: 'o2o',
+      { id: 'laser', title: 'Laser communications', rateMbps: 260, contactHours: 2.5, weatherRisk: true, optical: true, src: 'o2o', // optical: no radio dish, so no DSN dish gain
         blurb: 'Light instead of radio, like NASA\'s O2O on Artemis II: up to 260 Mbps. Clouds over the ground station can block it.',
         robotic: { mass: 28, power: 130, cost: 80 }, crewed: { mass: 90, power: 250, cost: 150, where: 'orbiter' } },
     ], // masses, power, costs and contact hours are game values
@@ -323,6 +323,7 @@
   ]; // hazard, hoverNeed (seconds of hovering to dodge hazards) and lightHours at the pole are game values
   const LANDING = {
     baseHoverSec: 10,            // hover time already built into the descent budget — game value
+    hoverShare: 0.3,             // share of the extra descent margin that can be spent hovering; the rest covers dispersion and landing errors — game value
     needSpread: 0.6,             // needed hover time varies ±30% around the site value — game value
     roughFraction: 0.6,          // with at least 60% of the needed hover time you land, but rough — game value
     difficultyFactor: { cadet: 0.5, engineer: 1, director: 1.2 },

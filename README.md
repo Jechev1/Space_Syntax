@@ -53,6 +53,23 @@ Open http://127.0.0.1:8080. No build step and no dependencies.
 - Reentry: direct entry runs cooler but lands less precisely; skip entry is precise but heats the shield more. Shield capacity against heat load gives the thermal margin, then a seeded splashdown has to land inside the recovery zone.
 - Hours, power, data, sample masses, heat load, shield capacity and the recovery zone are game values.
 
+## Play runs
+
+Each phase plays like Poly Bridge. You build, press Play, and watch it hold or break.
+
+`SS_SIM.simulate(state, phase, { seed })` returns frames to animate, the outcome, stars, the cause of a failure with a fix, and the real math. The result shape is in `js/sim/kit.js`.
+
+| Phase | Run | Fails when |
+|---|---|---|
+| 0 | Hypothesis card | No goal picked |
+| 1 | Upper stage TLI burn, rocket equation | Ship too heavy to reach 3,150 m/s, no power, over budget |
+| 2 | Mission days, BVAD oxygen, food and water | A supply runs out or a solar storm finds no shelter |
+| 3 | Burn by burn trip with navigation errors | The delta-v reserve runs dry |
+| 4 | DSN passes, 41 min blackout, data buffer | Too much science data is lost |
+| 5 | Powered descent at 1.62 m/s² | Hover fuel runs out before a safe spot |
+
+Runs are deterministic for a given seed. Tuning values live in a `TUNING` block at the top of each `js/sim/p*.js` and are marked as game values.
+
 ## Science
 
 Every number comes from a cited source or is marked as a game value in the UI.
