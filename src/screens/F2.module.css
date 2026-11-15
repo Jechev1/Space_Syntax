@@ -2,17 +2,28 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  container-type: size;
+}
+
+/* Text and spacing follow the stage height, so the whole panel always fits without scrolling. */
+.hud,
+.speech,
+.panel,
+.lock {
+  --fs-body: clamp(10px, 2.15cqh, 17px);
+  --fs-chip: clamp(8px, 1.7cqh, 13px);
+  --fs-sub: clamp(13px, 2.8cqh, 21px);
 }
 
 .hud {
   position: absolute;
-  top: 18px;
-  left: 22px;
-  right: 22px;
+  top: 2.5cqh;
+  left: 1.7cqw;
+  right: 1.7cqw;
   display: grid;
   grid-template-columns: 0.8fr repeat(4, minmax(0, 1.2fr)) repeat(2, minmax(0, 0.9fr));
   align-items: center;
-  min-height: 46px;
+  min-height: 6.4cqh;
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   background: var(--panel);
@@ -48,8 +59,6 @@
   top: 11%;
   right: 2.4%;
   width: 26%;
-  max-height: 74%;
-  overflow-y: auto;
   pointer-events: auto;
 }
 
@@ -110,8 +119,10 @@
 }
 
 .stepper button {
-  width: 26px;
-  height: 26px;
+  width: 1.65em;
+  height: 1.65em;
+  padding: 0;
+  line-height: 1;
   border: 1px solid var(--line-bright);
   border-radius: var(--radius-btn);
   background: transparent;
@@ -142,7 +153,7 @@
 
 .slider {
   display: grid;
-  gap: 4px;
+  gap: 0.25em;
   padding-top: calc(var(--fs-chip) / 2);
   border-top: 1px solid var(--line);
 }
@@ -182,6 +193,24 @@
   border-top: 1px solid var(--line);
 }
 
+.supply > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
 .label {
   color: var(--text-dim);
   font-size: var(--fs-chip);
@@ -190,13 +219,13 @@
 .suits {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
+  gap: 0.4em;
 }
 
 .suit {
   display: grid;
-  gap: 2px;
-  padding: 6px 4px;
+  gap: 0.15em;
+  padding: 0.4em 0.3em;
   border: 1px solid var(--line);
   border-radius: var(--radius-btn);
   background: transparent;
@@ -225,6 +254,6 @@
 }
 
 .lock button {
-  min-width: 196px;
+  min-width: 15cqw;
   padding-inline: var(--fs-title);
 }

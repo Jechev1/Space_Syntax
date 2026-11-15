@@ -149,10 +149,10 @@ function CrewPlan({ game, life }) {
       </button>
 
       <div className={styles.supplies}>
-        <div className={styles.supply}><span>🫁 Oxygen</span><span>{fmt(life.o2)} kg</span></div>
-        <div className={styles.supply}><span>🍴 Dry food</span><span>{fmt(life.food)} kg</span></div>
+        <div className={styles.supply}><span><OxygenIcon />Oxygen</span><span>{fmt(life.o2)} kg</span></div>
+        <div className={styles.supply}><span><FoodIcon />Dry food</span><span>{fmt(life.food)} kg</span></div>
         <div className={styles.supply}>
-          <span>💧 Potable water</span>
+          <span><WaterIcon />Potable water</span>
           <span>{fmt(life.water)} kg{life.recycler ? ` (−${fmt(life.waterSaved)})` : ''}</span>
         </div>
       </div>
@@ -227,4 +227,39 @@ function ConfirmButton({ game, crewed }) {
 
 function energy(watts, fmt) {
   return watts >= 1000 ? `${fmt(watts / 1000, 1)} kW` : `${fmt(watts)} W`
+}
+
+function Icon({ children }) {
+  return (
+    <svg className={styles.icon} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      {children}
+    </svg>
+  )
+}
+
+function OxygenIcon() {
+  return (
+    <Icon>
+      <path d="M10 2.5h4M12 2.5v2.5" />
+      <rect x="7.5" y="5" width="9" height="16.5" rx="3.5" />
+      <path d="M7.5 10.5h9" />
+    </Icon>
+  )
+}
+
+function FoodIcon() {
+  return (
+    <Icon>
+      <path d="M6 2.5v6.5a2.5 2.5 0 0 0 5 0V2.5M8.5 2.5v19" />
+      <path d="M17.5 21.5V2.5c-2 1.5-3 4-3 7.5v3h3" />
+    </Icon>
+  )
+}
+
+function WaterIcon() {
+  return (
+    <Icon>
+      <path d="M12 2.8c3.4 4.4 6 7.7 6 11.2a6 6 0 0 1-12 0c0-3.5 2.6-6.8 6-11.2z" />
+    </Icon>
+  )
 }
