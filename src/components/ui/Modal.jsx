@@ -12,6 +12,7 @@ const KICKERS = {
 export function Modal({ open = false, variant = 'info', title, children, onClose, hideClose = false }) {
   const titleId = useId()
   const ref = useRef(null)
+  const backdrop = useRef(null)
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
   const name = Object.prototype.hasOwnProperty.call(KICKERS, variant) ? variant : 'info'
@@ -51,17 +52,26 @@ export function Modal({ open = false, variant = 'info', title, children, onClose
     }
   }, [open])
 
+  // A press on the dimmed backdrop (not inside the window) closes it.
+  useEffect(() => {
+    if (!open) return undefined
+    const onDown = (event) => {
+      if (event.target === backdrop.current) onCloseRef.current?.()
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [open])
+
   if (!open) return null
 
   return (
-    <div className={styles.back} onMouseDown={() => onCloseRef.current?.()}>
+    <div ref={backdrop} className={styles.back}>
       <div
         ref={ref}
         className={`${styles.dialog} ${styles[name]}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        onMouseDown={(event) => event.stopPropagation()}
       >
         <p className={styles.kicker}>{KICKERS[name]}</p>
         <h2 className={styles.title} id={titleId}>{title}</h2>

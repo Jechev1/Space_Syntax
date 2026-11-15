@@ -7,6 +7,11 @@ import { sourceOrg, useGame } from '../engine/useGame.jsx'
 import { usePlay } from './playContext.jsx'
 import shell from './shell.module.css'
 
+
+/** Drop a trailing "↗" (and the spaces before it); the button adds its own. */
+function stripArrow(text) {
+  return text.endsWith('↗') ? text.slice(0, -1).trimEnd() : text
+}
 export function kgText(model, value) {
   return `${model.fmt(value)} kg`
 }
@@ -21,7 +26,7 @@ export function SourceButton({ sourceKey, label }) {
   if (!sourceKey || sourceKey === 'game') {
     return <Button variant="ghost" onClick={() => openSource('game')}>Game value</Button>
   }
-  const text = (label || `${sourceOrg(data, sourceKey)} source`).replace(/\s*↗$/, '')
+  const text = stripArrow(label || `${sourceOrg(data, sourceKey)} source`)
   return <Button variant="ghost" onClick={() => openSource(sourceKey)}>{text} ↗</Button>
 }
 

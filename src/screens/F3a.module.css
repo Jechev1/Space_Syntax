@@ -107,16 +107,25 @@
   list-style: none;
 }
 
+/* Each burn is a button (keyboard focus shows its hint) that looks like a plain row. */
 .burn {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 0.6em;
+  width: 100%;
+  margin: 0;
   padding: calc(var(--fs-chip) / 6) 0;
+  border: 0;
   border-top: 1px solid var(--line);
+  background: none;
   color: var(--text);
+  font-family: inherit;
   font-size: var(--fs-body);
+  font-weight: inherit;
   line-height: 1.15;
+  text-align: left;
+  cursor: default;
 }
 
 .num {

@@ -21,6 +21,14 @@ const BACKGROUND = '/bg/bg-preparacion.png'
 const CHARACTER = '/char/nina-chaqueta-portapapeles.png'
 const SUIT_NAMES = { light: 'Light', lunar: 'Lunar', heavy: 'Heavy' }
 
+
+/** "Cause text (detail)" -> "Cause text." Plain string work, no backtracking regex. */
+function dropTrailingNote(text) {
+  const trimmed = text.trimEnd()
+  const open = trimmed.lastIndexOf('(')
+  if (!trimmed.endsWith(')') || open < 0) return text
+  return `${trimmed.slice(0, open).trimEnd()}.`
+}
 export function F2() {
   const ready = usePhaseGuard('/f2')
   if (!ready) return null
@@ -131,7 +139,7 @@ function SuppliesTest({ play }) {
               ) : null}
             </p>
             <p className={res.failure ? styles.cause : styles.line}>
-              {res.failure ? res.failure.cause.replace(/\s*\([^)]*\)\s*$/, '.') : leftText(res)}
+              {res.failure ? dropTrailingNote(res.failure.cause) : leftText(res)}
             </p>
             {res.math ? (
               <Button variant="outline" onClick={() => setMath(true)}>Show the math</Button>

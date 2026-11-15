@@ -50,7 +50,7 @@ export function HudMeter({
         aria-valuemin={0}
         aria-valuemax={safeMax}
         aria-valuenow={locked ? 0 : safeValue}
-        aria-disabled={locked || undefined}
+        aria-valuetext={locked ? 'Locked' : undefined}
       >
         <span className={styles.bar} style={{ width: locked ? '0%' : `${bar}%` }} />
         {ghost ? <span className={styles.ghost} style={{ left: `${ghost.left}%`, width: `${ghost.width}%` }} /> : null}

@@ -111,6 +111,11 @@ export function CapsuleGuide({ difficulty, seed, glow, onDone }) {
   const retry = result && result.failed ? () => setAttempt((n) => n + 1) : null
   const retryRef = useRef(retry)
   retryRef.current = retry
+  const retryButton = useRef(null)
+  const failed = Boolean(result?.failed)
+  useEffect(() => {
+    if (failed) retryButton.current?.focus()
+  }, [failed])
   const dx = Math.abs(view.x - plan.target)
   const tone = dx <= 5 ? styles.good : dx <= 12 ? styles.close : styles.far
   const verdict = result
@@ -143,7 +148,7 @@ export function CapsuleGuide({ difficulty, seed, glow, onDone }) {
           <p className={styles.retryLine}>
             The capsule came down {Math.round(Math.abs(result.dx))}% away from the recovery ships. Fly the reentry again.
           </p>
-          <button type="button" className={styles.retryButton} onClick={retry} autoFocus>Try again</button>
+          <button ref={retryButton} type="button" className={styles.retryButton} onClick={retry}>Try again</button>
         </div>
       ) : null}
       <div className={styles.controls}>

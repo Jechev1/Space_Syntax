@@ -88,21 +88,22 @@ function F3aBody() {
           <p className={f3.line}>Each burn changes your speed. Add them up: that is how much fuel the spacecraft needs.</p>
           <ol className={f3.burns}>
             {steps.map((step, index) => (
-              <li
-                key={step.label}
-                className={`${f3.burn} ${step.tli ? f3.tliStep : ''} ${f3[stepState(step)] || ''}`}
-                tabIndex={0}
-                onMouseEnter={() => setHover(index)}
-                onMouseLeave={() => setHover(null)}
-                onFocus={() => setHover(index)}
-                onBlur={() => setHover(null)}
-              >
-                <span className={f3.num}>{index + 1}</span>
-                <span className={f3.burnName}>
-                  {step.label}
-                  {step.chip ? <span className={f3.chip}>{step.chip}</span> : null}
-                </span>
-                <span className={f3.dv}>{model.fmt(step.dv)} m/s</span>
+              <li key={step.label}>
+                <button
+                  type="button"
+                  className={`${f3.burn} ${step.tli ? f3.tliStep : ''} ${f3[stepState(step)] || ''}`}
+                  onMouseEnter={() => setHover(index)}
+                  onMouseLeave={() => setHover(null)}
+                  onFocus={() => setHover(index)}
+                  onBlur={() => setHover(null)}
+                >
+                  <span className={f3.num}>{index + 1}</span>
+                  <span className={f3.burnName}>
+                    {step.label}
+                    {step.chip ? <span className={f3.chip}>{step.chip}</span> : null}
+                  </span>
+                  <span className={f3.dv}>{model.fmt(step.dv)} m/s</span>
+                </button>
               </li>
             ))}
           </ol>
@@ -308,5 +309,9 @@ function GoButton({ game }) {
 
 /** "Lunar orbit insertion (NASA range 890–950)" → "Lunar orbit insertion". */
 function shortLabel(label) {
-  return label.replace(/\s*\(.*\)\s*$/, '').replace(/:.*$/, '')
+  let text = label
+  const open = text.indexOf('(')
+  if (open >= 0 && text.trimEnd().endsWith(')')) text = text.slice(0, open).trimEnd()
+  const colon = text.indexOf(':')
+  return colon >= 0 ? text.slice(0, colon) : text
 }
