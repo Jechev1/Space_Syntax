@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Dialog } from '../components/ui/Dialog.jsx'
 import { continuePath, missionInProgress, useGame } from '../engine/useGame.jsx'
 import { DifficultyPicker, GameTools, ResetConfirm } from './GameTools.jsx'
+import { Credits } from './dialogs.jsx'
 import styles from './Start.module.css'
-
-const NAMES = ['Laura Angel', 'Jorge Flores', 'Kevin Luna', 'Violeta Jacobo']
 
 const TITLES = {
   credits: 'Credits',
@@ -63,14 +62,7 @@ export function Start() {
       {open && open !== 'reset' ? (
         <Dialog title={TITLES[open]} onClose={() => setOpen(null)}>
           {open === 'credits' ? (
-            <>
-              <p className={styles.love}>Made with love in San Salvador, El Salvador 🇸🇻</p>
-              <p className={styles.team}>Team Space Syntax</p>
-              <ul className={styles.names}>
-                {NAMES.map((name) => <li key={name}>{name}</li>)}
-              </ul>
-              <p className={styles.challenge}>NASA Space Apps Challenge 2026 · Space Mission Design Game</p>
-            </>
+            <Credits />
           ) : (
             <>
               <p className={styles.challenge}>Sets your budget and how forgiving the mission is. You can change it later from the gear.</p>

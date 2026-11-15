@@ -1,4 +1,5 @@
 import shell from './shell.module.css'
+import start from './Start.module.css'
 
 export function HowTo() {
   return (
@@ -21,5 +22,20 @@ export function SourceList({ sources }) {
         </li>
       ))}
     </ul>
+  )
+}
+
+const NAMES = ['Laura Angel', 'Jorge Flores', 'Kevin Luna', 'Violeta Jacobo']
+
+export function Credits() {
+  return (
+    <>
+      <p className={start.love}>Made with love in San Salvador, El Salvador 🇸🇻</p>
+      <p className={start.team}>Team Space Syntax</p>
+      <ul className={start.names}>
+        {NAMES.map((name) => <li key={name}>{name}</li>)}
+      </ul>
+      <p className={start.challenge}>NASA Space Apps Challenge 2026 · Space Mission Design Game</p>
+    </>
   )
 }

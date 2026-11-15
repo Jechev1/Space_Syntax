@@ -8,7 +8,7 @@ import { Hud } from '../components/ui/Hud.jsx'
 import { HudMeter } from '../components/ui/HudMeter.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { PhaseBar } from '../components/ui/PhaseBar.jsx'
-import { hudMeters, phaseItems, useGame } from '../engine/useGame.jsx'
+import { continuePath, hudMeters, phaseItems, useGame } from '../engine/useGame.jsx'
 import { EquipmentList, RocketMath } from './bits.jsx'
 import { HowTo, SourceList } from './dialogs.jsx'
 import { PlayProvider, usePlay } from './playContext.jsx'
@@ -36,7 +36,15 @@ function screenTarget(path, state, model) {
   if (path === '/f4' && !state.phase3Done) return state.phase2Done ? '/f3a' : '/f2'
   if (path === '/f3b' && !state.phase4Done && !state.launched) return state.phase3Done ? '/f4' : '/f3a'
   if (state.launched && LOCKED_AFTER_LAUNCH.includes(path)) return '/f3b'
+  if (path === '/f8' && !missionComplete(state, model)) return continuePath(state)
   return path
+}
+
+/** Mission fully flown home: launched, surface work finished and the return trip resolved as a success. */
+function missionComplete(state, model) {
+  if (!state.launched || !state.surface || !state.surface.finished) return false
+  const sim = model.returnSim(state)
+  return Boolean(sim && sim.applicable && sim.outcome === 'success')
 }
 
 const METER_TITLES = {

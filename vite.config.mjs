@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 /** React routes. index.html on disk stays the classic game for the Python server. */
-const REACT_PAGES = new Set(['/', '/inicio', '/inicio/', '/intro', '/f0', '/f1a', '/f1b', '/f1done', '/f2', '/f3a', '/f4', '/f3b', '/f5a', '/f5b', '/f6', '/f7', '/lab', '/dev/ui', '/dev/ui/'])
+const REACT_PAGES = new Set(['/', '/inicio', '/inicio/', '/intro', '/f0', '/f1a', '/f1b', '/f1done', '/f2', '/f3a', '/f4', '/f3b', '/f5a', '/f5b', '/f6', '/f7', '/f8', '/lab', '/dev/ui', '/dev/ui/'])
 
 function devUiRoute() {
   return {
