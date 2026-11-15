@@ -34,15 +34,19 @@
 
 .speech {
   position: absolute;
-  left: 12%;
-  bottom: 47%;
+  left: 15%;
+  bottom: 44%;
+}
+
+.speech p {
+  max-width: 148px;
 }
 
 .panel {
   position: absolute;
-  top: 82px;
-  right: 28px;
-  width: 28%;
+  top: 11%;
+  right: 2.4%;
+  width: 30%;
   pointer-events: auto;
 }
 
@@ -83,8 +87,8 @@ button.kicker {
 
 .lock {
   position: absolute;
-  right: 36px;
-  bottom: 28px;
+  right: 2.4%;
+  bottom: 3.2%;
   pointer-events: auto;
 }
 

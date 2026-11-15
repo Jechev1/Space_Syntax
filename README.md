@@ -1,4 +1,4 @@
-# Space Syntax
+# How far is upy
 
 Is the Moon made of cheese? A kid thinks so, and he is going to the Moon to test his hypothesis. You help him by completing mini-missions, each one built and tested like in Poly Bridge, until he finds out the truth.
 
@@ -95,3 +95,10 @@ The full list is in `js/data.js` and in the Sources link inside the game.
 ## Security
 
 No login, no accounts, no tracking. Details in [SECURITY.md](SECURITY.md).
+
+## Developers
+
+- [Laura Angel](https://www.linkedin.com/in/laujml), Software Engineer
+- [Kevin Luna](https://www.linkedin.com/in/kevin-elías-luna-palacios), Software Engineer
+- [Jorge Flores](https://www.linkedin.com/in/jorge-echeverria2710), Software Engineer
+- [Violeta Jacobo](https://www.linkedin.com/in/violetajacobo/)

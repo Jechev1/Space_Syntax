@@ -1,10 +1,19 @@
 .viewport {
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   display: grid;
   place-items: center;
   overflow: hidden;
   background: var(--bg);
+}
+
+.frame {
+  position: relative;
+  width: min(100%, calc(100dvh * 1.68));
+  max-height: 100dvh;
+  aspect-ratio: 1.68 / 1;
+  overflow: hidden;
 }
 
 .fit {
@@ -85,13 +94,13 @@
 
 .portrait {
   position: absolute;
-  left: 3%;
-  bottom: 6%;
-  height: 45%;
+  left: 2.4%;
+  bottom: 7%;
+  height: 46%;
   width: auto;
-  max-width: 22%;
+  max-width: none;
   object-fit: contain;
-  object-position: left bottom;
+  object-position: center bottom;
 }
 
 .grainSvg {
