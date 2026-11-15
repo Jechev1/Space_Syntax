@@ -4,20 +4,23 @@ import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { ReviewList } from '../components/ui/ReviewList.jsx'
 import { missionProfile, useGame } from '../engine/useGame.jsx'
-import { EquipmentList, kgText, usdText } from './bits.jsx'
+import { kgText, usdText } from './bits.jsx'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { MissionHud } from './f1Hud.jsx'
 import { usePlay } from './playContext.jsx'
+import { rocketArt } from './F1b.jsx'
 import styles from './F1.module.css'
 import shell from './shell.module.css'
 
 export function F1Done() {
   const ready = usePhaseGuard('/f1done')
+  const { state } = useGame()
   if (!ready) return null
   return (
     <StageScene
-      background="/bg/bg-preparacion.png"
-      character="/char/nina-chaqueta-portapapeles.png"
+      background="/bg/bg-plataforma.png"
+      character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
+      objects={state.rocket ? <img className={styles.reviewRocket} src={rocketArt(state.rocket)} alt="" /> : null}
       title="How far is upy — Phase 1"
     >
       <F1DoneBody />
@@ -46,7 +49,7 @@ function F1DoneBody() {
   }
 
   return (
-    <div className={styles.screen}>
+    <div className={`${styles.screen} ${styles.review}`}>
       <MissionHud />
       <div className={styles.speech}>
         <Bubble tone="speech">Does it all fit?</Bubble>
@@ -58,7 +61,6 @@ function F1DoneBody() {
           <p className={styles.line}>{missionProfile(state)} on {report.rocket ? report.rocket.title : ''}.</p>
           <ReviewList items={items.map(([label, ok, detail]) => ({ label, ok, detail }))} />
           <p className={styles.line}>{night}</p>
-          <EquipmentList report={report} />
           <p className={styles.line}>
             {crewed
               ? 'Next: crew and life support. Each astronaut needs about 0.9 kg of oxygen, 0.8 kg of food and 3.2 kg of water per day.'

@@ -11,13 +11,17 @@ import { usePlay } from './playContext.jsx'
 import styles from './F1.module.css'
 import shell from './shell.module.css'
 
-const SHAPES = {
-  small: { w: 22, h: 140, nose: 34, booster: 0 },
-  medium: { w: 30, h: 176, nose: 40, booster: 0 },
-  heavy: { w: 34, h: 210, nose: 44, booster: 130 },
-  sls1: { w: 30, h: 190, nose: 30, booster: 150 },
-  sls1b: { w: 30, h: 205, nose: 36, booster: 150 },
-  sls2: { w: 30, h: 218, nose: 40, booster: 160 },
+const ROCKET_ART = {
+  small: '/obj/cohete-pequeno.png',
+  medium: '/obj/cohete-mediano.png',
+  heavy: '/obj/cohete-grande.png',
+  sls1: '/obj/cohete-mediano.png',
+  sls1b: '/obj/cohete-grande.png',
+  sls2: '/obj/cohete-grande.png',
+}
+
+export function rocketArt(id) {
+  return ROCKET_ART[id] || ROCKET_ART.small
 }
 
 export function F1b() {
@@ -25,13 +29,8 @@ export function F1b() {
   if (!ready) return null
   return (
     <StageScene
+      background="/bg/bg-plataforma.png"
       character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
-      objects={(
-        <>
-          <div className={styles.moon} />
-          <div className={styles.ground} />
-        </>
-      )}
       title="How far is upy — Phase 1"
     >
       <F1bBody />
@@ -132,6 +131,7 @@ function F1bBody() {
 function RocketStation({ rocket, report, selected, onPick, onLocked }) {
   const { model } = useGame()
   const fits = rocket.capacity >= report.tli
+  const fill = report.tli / rocket.capacity
   const margin = (rocket.capacity - report.tli) / rocket.capacity
   const over = fits && report.cost + rocket.cost > report.budget
   const tons = (rocket.capacity / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 })
@@ -157,7 +157,10 @@ function RocketStation({ rocket, report, selected, onPick, onLocked }) {
       aria-disabled={!fits || undefined}
       onClick={() => (fits ? onPick() : onLocked())}
     >
-      <PadRocket id={rocket.id} fill={report.tli / rocket.capacity} fits={fits} />
+      <span className={styles.rocketRow}>
+        <img className={fits ? styles.rocketArt : `${styles.rocketArt} ${styles.rocketOver}`} src={rocketArt(rocket.id)} alt="" />
+        <LoadGauge fill={fill} fits={fits} />
+      </span>
       <span className={styles.tag}>
         <span>{rocket.title} · {tons} t</span>
         <span>{usdText(model, rocket.cost)} · <b>{verdict}</b></span>
@@ -166,49 +169,14 @@ function RocketStation({ rocket, report, selected, onPick, onLocked }) {
   )
 }
 
-function PadRocket({ id, fill, fits }) {
-  const shape = SHAPES[id] || SHAPES.small
-  const cx = 50
-  const base = 276
-  const left = cx - shape.w / 2
-  const right = cx + shape.w / 2
-  const top = base - shape.h
-  const tube = 110
-  const tubeBase = 262
-  const ratio = Number.isFinite(fill) ? Math.max(0, Math.min(1, fill)) : 0
-  const level = ratio * tube
-  const sideW = 12
-  const sides = shape.booster ? [left - sideW - 1, right + 1] : []
-
+function LoadGauge({ fill, fits }) {
+  const ratio = Number.isFinite(fill) ? Math.max(0, fill) : 0
+  const height = Math.min(ratio, 1) * 100
   return (
-    <svg className={fits ? styles.rocket : `${styles.rocket} ${styles.rocketOver}`} viewBox="0 0 120 296" aria-hidden="true">
-      <path className={styles.padBase} d="M12 294 L22 282 H78 L88 294 Z" />
-      <rect className={styles.padLight} x="45" y="286" width="10" height="3" rx="1.5" />
-      {sides.map((x) => (
-        <g key={x}>
-          <rect className={styles.side} x={x} y={base - shape.booster} width={sideW} height={shape.booster} />
-          <path className={styles.side} d={`M${x} ${base - shape.booster} Q${x + sideW / 2} ${base - shape.booster - 22} ${x + sideW} ${base - shape.booster} Z`} />
-        </g>
-      ))}
-      {sides.length ? null : (
-        <path
-          className={styles.fin}
-          d={`M${left} ${base} L${left - 10} ${base} L${left} ${base - 32} Z M${right} ${base} L${right + 10} ${base} L${right} ${base - 32} Z`}
-        />
-      )}
-      <rect className={styles.hull} x={left} y={top} width={shape.w} height={shape.h} />
-      <path
-        className={styles.hull}
-        d={`M${left} ${top} Q${left} ${top - shape.nose * 0.7} ${cx} ${top - shape.nose} Q${right} ${top - shape.nose * 0.7} ${right} ${top} Z`}
-      />
-      <rect className={styles.band} x={left} y={top + 4} width={shape.w} height="5" />
-      <rect className={styles.band} x={left} y={base - 46} width={shape.w} height="5" />
-      <circle className={styles.patch} cx={cx} cy={top + 34} r={shape.w * 0.28} />
-      <path className={styles.fin} d={`M${cx - 6} ${base} L${cx - 9} ${base + 6} H${cx + 9} L${cx + 6} ${base} Z`} />
-      <rect className={styles.tube} x="96" y={tubeBase - tube} width="10" height={tube} rx="5" />
-      {level > 0 ? <rect className={styles.level} x="96" y={tubeBase - level} width="10" height={level} rx="5" /> : null}
-      {fits ? null : <path className={styles.alarm} d={`M101 ${tubeBase - tube - 6} v-7 M94 ${tubeBase - tube - 4} l-5 -5 M108 ${tubeBase - tube - 4} l5 -5`} />}
-    </svg>
+    <span className={fits ? styles.gauge : `${styles.gauge} ${styles.gaugeOver}`} aria-hidden="true">
+      <span className={styles.gaugeFill} style={{ height: `${height}%` }} />
+      {fits ? null : <span className={styles.gaugeAlarm} />}
+    </span>
   )
 }
 
