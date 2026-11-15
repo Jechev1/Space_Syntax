@@ -191,7 +191,8 @@
       failure = {
         t: he, code: 'playerAbort',
         cause: 'You chose to abort when rocks showed up, so the lander climbed back to orbit.',
-        fix: `Raise your Phase 3 margin to about ${fixMargin}% or pick an easier site, so you can afford the detour.`,
+        fix: avail >= need ? 'You had enough margin for this detour. Fly again and take it.'
+          : fixMargin > 0 ? `Raise your Phase 3 margin to about ${fixMargin}% or pick an easier site, so you can afford the detour.` : 'Pick an easier site, so you can afford the detour.',
       };
     } else {
       ok = false; out = 'fail';
@@ -199,7 +200,7 @@
       failure = {
         t: he, code: 'noHoverFuel',
         cause: `This site needed about ${K.round(need, 0)} s of hovering but your fuel gave only ${K.round(avail, 0)} s.`,
-        fix: `Raise your Phase 3 margin to about ${fixMargin}% or pick an easier site.`,
+        fix: fixMargin > 0 ? `Raise your Phase 3 margin to about ${fixMargin}% or pick an easier site.` : 'Pick an easier site or a lighter lander.',
       };
     }
     const finalFuel = fuelPct(end.dv);

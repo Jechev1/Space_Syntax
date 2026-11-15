@@ -135,19 +135,19 @@
       "id": "camera",
       "title": "High-res camera",
       "blurb": "Shape, color and texture. Inspired by LRO's LROC.",
-      "src": "lro"
+      "src": "game"
      },
      {
       "id": "spectrometer",
       "title": "Composition spectrometer",
       "blurb": "Reads which elements are in the soil. Cheese vs. rock, settled.",
-      "src": "moonfacts"
+      "src": "viperSpectrometer"
      },
      {
       "id": "neutron",
       "title": "Neutron detector",
       "blurb": "Finds hydrogen, a sign of water ice. Inspired by LRO's LEND.",
-      "src": "lro"
+      "src": "viperNeutron"
      },
      {
       "id": "sampler",
@@ -253,7 +253,7 @@
      "launchMass": 39415.00997382527,
      "hardware": 13375,
      "cost": 3200,
-     "powerNeed": 925,
+     "powerNeed": 930,
      "powerGen": 2500
     },
     {
@@ -261,7 +261,7 @@
      "launchMass": 39400.11788019003,
      "hardware": 13370,
      "cost": 3185,
-     "powerNeed": 915,
+     "powerNeed": 910,
      "powerGen": 2500
     },
     {
@@ -269,7 +269,7 @@
      "launchMass": 39534.14672290718,
      "hardware": 13415,
      "cost": 3255,
-     "powerNeed": 955,
+     "powerNeed": 942,
      "powerGen": 2500
     },
     {
@@ -399,9 +399,9 @@
      "where": "descent",
      "mass": 20,
      "cost": 40,
-     "power": 25,
+     "power": 30,
      "gen": 0,
-     "src": "moonfacts",
+     "src": "viperSpectrometer",
      "kind": "hw"
     },
     {
@@ -409,9 +409,9 @@
      "where": "descent",
      "mass": 15,
      "cost": 25,
-     "power": 15,
+     "power": 10,
      "gen": 0,
-     "src": "lro",
+     "src": "game",
      "kind": "hw"
     },
     {
@@ -425,7 +425,7 @@
      "kind": "consumable"
     },
     {
-     "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+     "label": "Sample allowance (100 kg)",
      "where": "ascent",
      "mass": 100,
      "cost": 0,
@@ -647,9 +647,9 @@
        "where": "descent",
        "mass": 20,
        "cost": 40,
-       "power": 25,
+       "power": 30,
        "gen": 0,
-       "src": "moonfacts",
+       "src": "viperSpectrometer",
        "kind": "hw"
       },
       {
@@ -657,9 +657,9 @@
        "where": "descent",
        "mass": 15,
        "cost": 25,
-       "power": 15,
+       "power": 10,
        "gen": 0,
-       "src": "lro",
+       "src": "game",
        "kind": "hw"
       },
       {
@@ -673,7 +673,7 @@
        "kind": "consumable"
       },
       {
-       "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+       "label": "Sample allowance (100 kg)",
        "where": "ascent",
        "mass": 100,
        "cost": 0,
@@ -837,9 +837,9 @@
        "where": "descent",
        "mass": 20,
        "cost": 40,
-       "power": 25,
+       "power": 30,
        "gen": 0,
-       "src": "moonfacts",
+       "src": "viperSpectrometer",
        "kind": "hw"
       },
       {
@@ -847,9 +847,9 @@
        "where": "descent",
        "mass": 15,
        "cost": 25,
-       "power": 15,
+       "power": 10,
        "gen": 0,
-       "src": "lro",
+       "src": "game",
        "kind": "hw"
       },
       {
@@ -863,7 +863,7 @@
        "kind": "consumable"
       },
       {
-       "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+       "label": "Sample allowance (100 kg)",
        "where": "ascent",
        "mass": 100,
        "cost": 0,
@@ -1028,9 +1028,9 @@
        "where": "descent",
        "mass": 20,
        "cost": 40,
-       "power": 25,
+       "power": 30,
        "gen": 0,
-       "src": "moonfacts",
+       "src": "viperSpectrometer",
        "kind": "hw"
       },
       {
@@ -1044,7 +1044,7 @@
        "kind": "consumable"
       },
       {
-       "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+       "label": "Sample allowance (100 kg)",
        "where": "ascent",
        "mass": 100,
        "cost": 0,
@@ -1067,7 +1067,7 @@
      "cost": 3200,
      "totalCost": 3200,
      "budget": 7700,
-     "powerNeed": 925,
+     "powerNeed": 930,
      "powerGen": 2500,
      "rocket": null,
      "nightHours": null,

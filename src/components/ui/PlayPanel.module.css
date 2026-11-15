@@ -1,0 +1,166 @@
+.note {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.clock {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-chip);
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px calc(var(--fs-chip) / 2);
+  font-size: var(--fs-chip);
+}
+
+.barLabel {
+  color: var(--text-dim);
+}
+
+.barValue {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: var(--radius-chip);
+  background: var(--line-strong);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-chip);
+  background: var(--accent-soft);
+}
+
+.log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-chip);
+  min-height: calc(var(--fs-chip) * 3);
+}
+
+.log li::before {
+  content: '› ';
+  color: var(--text-dim);
+}
+
+.info {
+  color: var(--text);
+}
+
+.warn {
+  color: var(--warn);
+}
+
+.fail {
+  color: var(--danger);
+}
+
+.success {
+  color: var(--accent-soft);
+}
+
+.decision {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+  padding: calc(var(--fs-chip) * .75);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-panel);
+}
+
+.prompt {
+  margin: 0;
+  color: var(--warn);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.verdict {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+  padding: calc(var(--fs-chip) * .75);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+}
+
+.okBox {
+  border-color: var(--line-bright);
+}
+
+.failBox {
+  border-color: var(--danger);
+}
+
+.verdictLine {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--fs-chip) / 2);
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+}
+
+.stars {
+  letter-spacing: 2px;
+}
+
+.starOn {
+  color: var(--math);
+}
+
+.starOff {
+  color: var(--line-strong);
+}
+
+.cause {
+  margin: 0;
+  color: var(--danger);
+  font-size: var(--fs-chip);
+}
+
+.fix {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--fs-chip);
+}
+
+.blockers {
+  margin: 0;
+  padding-left: var(--fs-body);
+  color: var(--warn);
+  font-size: var(--fs-chip);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fill {
+    transition: width 80ms linear;
+  }
+}

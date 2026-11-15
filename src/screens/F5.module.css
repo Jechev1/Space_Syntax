@@ -1,0 +1,368 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  right: calc(22px + var(--tools-reserve));
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+}
+
+.hud span {
+  padding: calc(var(--fs-chip) / 2) var(--fs-chip);
+  text-align: center;
+  border-left: 1px solid var(--line);
+}
+
+.hud span:first-child {
+  border-left: 0;
+}
+
+.girl {
+  position: absolute;
+  left: 2.4%;
+  bottom: 9%;
+  height: 38%;
+  width: auto;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
+}
+
+.speech {
+  position: absolute;
+  left: 14%;
+  bottom: 46%;
+  pointer-events: auto;
+}
+
+.speech p {
+  max-width: 150px;
+}
+
+.panel {
+  position: absolute;
+  top: 14%;
+  right: 2.4%;
+  bottom: 12%;
+  width: 29%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  pointer-events: auto;
+}
+
+.panelTall {
+  top: 12%;
+  bottom: 13%;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.dock {
+  position: absolute;
+  left: 2.4%;
+  right: 2.4%;
+  bottom: 3.2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.dock button {
+  min-width: 132px;
+}
+
+.kicker,
+.line,
+.small {
+  margin: 0;
+  font-weight: var(--fw);
+}
+
+.kicker {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.question {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  font-weight: var(--fw-title);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.line {
+  color: var(--text);
+  font-size: var(--fs-chip);
+}
+
+.small {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.rowNote {
+  flex-basis: 100%;
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
+}
+
+.warn {
+  color: var(--warn);
+}
+
+.good {
+  color: var(--accent-soft);
+}
+
+.sites {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.facts {
+  margin: 0;
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.facts div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 12px;
+}
+
+.facts dt,
+.facts dd {
+  margin: 0;
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+}
+
+.facts dt {
+  color: var(--text-dim);
+}
+
+.facts dd {
+  color: var(--text);
+  text-align: right;
+  flex: 1 1 auto;
+}
+
+.warnList {
+  margin: 0;
+  padding: 0 0 0 var(--fs-body);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--warn);
+  font-size: var(--fs-chip);
+}
+
+/* Moon pins on the porthole */
+.pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 10px 0 0;
+  transform: translate(-22px, -22px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.pinNum {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+}
+
+.pin:hover {
+  border-color: var(--line-bright);
+}
+
+.pinOn {
+  border-color: var(--line-bright);
+}
+
+.pinOn .pinNum {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.tools {
+  position: absolute;
+  top: 17%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.tool {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+}
+
+/* Descent scene */
+.gauge {
+  position: absolute;
+  top: 14%;
+  left: 2.4%;
+  bottom: 52%;
+  width: 78px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+  text-align: center;
+}
+
+.gaugeTrack {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 10px;
+  border: 1.5px solid var(--line-bright);
+  border-radius: var(--radius-chip);
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+.gaugeFill {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--accent-soft);
+}
+
+.flight {
+  position: absolute;
+  left: 20%;
+  right: 33%;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.lander {
+  position: absolute;
+  height: 28%;
+  width: auto;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 8px 14px rgba(10, 12, 28, .45));
+}
+
+.flame {
+  position: absolute;
+  width: 4.5%;
+  min-width: 26px;
+  transform: translateX(-50%);
+  transform-origin: top center;
+  border-radius: 0 0 var(--radius-chip) var(--radius-chip);
+  background: linear-gradient(180deg, var(--text), var(--accent-soft) 40%, transparent);
+  opacity: .85;
+}
+
+.dust {
+  position: absolute;
+  height: 8%;
+  width: 22%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--text-dim), transparent);
+}
+
+.banner {
+  position: absolute;
+  left: 25%;
+  right: 35%;
+  bottom: 16%;
+  text-align: center;
+  pointer-events: none;
+}
+
+.read {
+  position: absolute;
+  top: 14%;
+  left: 20%;
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flame {
+    animation: flicker 140ms steps(2, end) infinite alternate;
+  }
+}
+
+@keyframes flicker {
+  from { opacity: .7; }
+  to { opacity: .95; }
+}

@@ -135,19 +135,19 @@
       "id": "camera",
       "title": "High-res camera",
       "blurb": "Shape, color and texture. Inspired by LRO's LROC.",
-      "src": "lro"
+      "src": "game"
      },
      {
       "id": "spectrometer",
       "title": "Composition spectrometer",
       "blurb": "Reads which elements are in the soil. Cheese vs. rock, settled.",
-      "src": "moonfacts"
+      "src": "viperSpectrometer"
      },
      {
       "id": "neutron",
       "title": "Neutron detector",
       "blurb": "Finds hydrogen, a sign of water ice. Inspired by LRO's LEND.",
-      "src": "lro"
+      "src": "viperNeutron"
      },
      {
       "id": "sampler",
@@ -253,7 +253,7 @@
      "launchMass": 1567.6410566694906,
      "hardware": 526.3333333333334,
      "cost": 245,
-     "powerNeed": 125,
+     "powerNeed": 130,
      "powerGen": 450
     },
     {
@@ -261,7 +261,7 @@
      "launchMass": 1549.7705443072036,
      "hardware": 520.3333333333334,
      "cost": 230,
-     "powerNeed": 115,
+     "powerNeed": 110,
      "powerGen": 450
     },
     {
@@ -269,7 +269,7 @@
      "launchMass": 1668.9072933891155,
      "hardware": 560.3333333333334,
      "cost": 300,
-     "powerNeed": 155,
+     "powerNeed": 142,
      "powerGen": 450
     },
     {
@@ -339,9 +339,9 @@
      "where": "lander",
      "mass": 18,
      "cost": 40,
-     "power": 25,
+     "power": 30,
      "gen": 0,
-     "src": "moonfacts",
+     "src": "viperSpectrometer",
      "kind": "hw"
     },
     {
@@ -349,9 +349,9 @@
      "where": "lander",
      "mass": 12,
      "cost": 25,
-     "power": 15,
+     "power": 10,
      "gen": 0,
-     "src": "lro",
+     "src": "game",
      "kind": "hw"
     }
    ],
@@ -486,9 +486,9 @@
        "where": "lander",
        "mass": 18,
        "cost": 40,
-       "power": 25,
+       "power": 30,
        "gen": 0,
-       "src": "moonfacts",
+       "src": "viperSpectrometer",
        "kind": "hw"
       },
       {
@@ -496,9 +496,9 @@
        "where": "lander",
        "mass": 12,
        "cost": 25,
-       "power": 15,
+       "power": 10,
        "gen": 0,
-       "src": "lro",
+       "src": "game",
        "kind": "hw"
       }
      ],
@@ -593,9 +593,9 @@
        "where": "lander",
        "mass": 18,
        "cost": 40,
-       "power": 25,
+       "power": 30,
        "gen": 0,
-       "src": "moonfacts",
+       "src": "viperSpectrometer",
        "kind": "hw"
       },
       {
@@ -603,9 +603,9 @@
        "where": "lander",
        "mass": 12,
        "cost": 25,
-       "power": 15,
+       "power": 10,
        "gen": 0,
-       "src": "lro",
+       "src": "game",
        "kind": "hw"
       }
      ],
@@ -701,9 +701,9 @@
        "where": "lander",
        "mass": 18,
        "cost": 40,
-       "power": 25,
+       "power": 30,
        "gen": 0,
-       "src": "moonfacts",
+       "src": "viperSpectrometer",
        "kind": "hw"
       }
      ],
@@ -717,7 +717,7 @@
      "cost": 245,
      "totalCost": 245,
      "budget": 650,
-     "powerNeed": 125,
+     "powerNeed": 130,
      "powerGen": 450,
      "rocket": null,
      "nightHours": 100,
@@ -798,9 +798,9 @@
        "where": "lander",
        "mass": 18,
        "cost": 40,
-       "power": 25,
+       "power": 30,
        "gen": 0,
-       "src": "moonfacts",
+       "src": "viperSpectrometer",
        "kind": "hw"
       },
       {
@@ -808,9 +808,9 @@
        "where": "lander",
        "mass": 12,
        "cost": 25,
-       "power": 15,
+       "power": 10,
        "gen": 0,
-       "src": "lro",
+       "src": "game",
        "kind": "hw"
       }
      ],

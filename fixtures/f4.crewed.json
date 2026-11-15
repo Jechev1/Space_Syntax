@@ -53,7 +53,7 @@
     "rateMbps": 100,
     "contactHours": 2.5,
     "src": "lro",
-    "blurb": "Like NASA's LRO: 100 to 300 Mbps, up to about 900 Gb a day.",
+    "blurb": "Like NASA's LRO: 100 Mbps, 900 Gb a day with a 34 m dish.",
     "robotic": {
      "mass": 30,
      "power": 110,

@@ -163,9 +163,9 @@
      "where": "descent",
      "mass": 20,
      "cost": 40,
-     "power": 25,
+     "power": 30,
      "gen": 0,
-     "src": "moonfacts",
+     "src": "viperSpectrometer",
      "kind": "hw"
     },
     {
@@ -173,9 +173,9 @@
      "where": "descent",
      "mass": 15,
      "cost": 25,
-     "power": 15,
+     "power": 10,
      "gen": 0,
-     "src": "lro",
+     "src": "game",
      "kind": "hw"
     },
     {
@@ -249,7 +249,7 @@
      "kind": "consumable"
     },
     {
-     "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+     "label": "Sample allowance (100 kg)",
      "where": "ascent",
      "mass": 100,
      "cost": 0,
@@ -384,7 +384,7 @@
      "survivesNight": true,
      "nightHours": null,
      "opsHours": 72,
-     "evaHours": 48,
+     "evaHours": 64,
      "coldRisk": false,
      "earthView": "always",
      "hoverAvailable": 29.203703703703702,
@@ -392,7 +392,14 @@
     },
     "validateIfPicked": {
      "ok": true,
-     "issues": []
+     "issues": [
+      {
+       "code": "landerMass",
+       "severity": "warn",
+       "message": "Lander mass is 14,347 kg. A crewed landing is sized for 15,000–17,000 kg. You can still fly.",
+       "phase": 5
+      }
+     ]
     }
    },
    {
@@ -420,7 +427,7 @@
      "survivesNight": true,
      "nightHours": null,
      "opsHours": 72,
-     "evaHours": 48,
+     "evaHours": 64,
      "coldRisk": false,
      "earthView": "always",
      "hoverAvailable": 29.203703703703702,
@@ -428,7 +435,14 @@
     },
     "validateIfPicked": {
      "ok": true,
-     "issues": []
+     "issues": [
+      {
+       "code": "landerMass",
+       "severity": "warn",
+       "message": "Lander mass is 14,347 kg. A crewed landing is sized for 15,000–17,000 kg. You can still fly.",
+       "phase": 5
+      }
+     ]
     }
    },
    {
@@ -457,7 +471,7 @@
      "survivesNight": true,
      "nightHours": null,
      "opsHours": 72,
-     "evaHours": 48,
+     "evaHours": 64,
      "coldRisk": false,
      "earthView": "intermittent",
      "hoverAvailable": 29.203703703703702,
@@ -476,6 +490,12 @@
        "code": "earthHidden",
        "severity": "warn",
        "message": "Earth is low on the horizon here: contact comes and goes",
+       "phase": 5
+      },
+      {
+       "code": "landerMass",
+       "severity": "warn",
+       "message": "Lander mass is 14,347 kg. A crewed landing is sized for 15,000–17,000 kg. You can still fly.",
        "phase": 5
       }
      ]
