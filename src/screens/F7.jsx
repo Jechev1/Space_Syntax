@@ -2,11 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
+import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
+import { HELP_F7 } from '../data/help.mjs'
 import { sampleMission } from '../engine/sampleMission.mjs'
 import { useGame } from '../engine/useGame.jsx'
+import { HelpWindow } from './F5a.jsx'
 import { StageScene } from './frame.jsx'
+import { TimingRing } from './TimingRing.jsx'
+import { CapsuleGuide } from './CapsuleGuide.jsx'
 import { useGoBack } from './goBack.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F7.module.css'
@@ -72,6 +77,45 @@ export function F7() {
     setSeeded(true)
   }, [ready, seeded, state.returnTrip, update])
 
+  // A one-way robot that finished its surface work still gets Phase 7: it learns why it stays and can
+  // fly a return trip with a sample mission instead of skipping straight to the lab.
+  if (!applies && finished && state.landing) {
+    return (
+      <StageScene
+        background="/bg/bg-orbita-lunar.png"
+        character={<img className={styles.girl} src="/char/nina-ventanilla.png" alt="" />}
+        title={TITLE}
+      >
+        <div className={styles.screen}>
+          <div className={styles.panel}>
+            <GlassPanel eyebrow="Phase 7 · Return" title="Your lander stays on the Moon">
+              <p className={styles.line}>
+                You built a one-way robot: it has no ascent stage and no return capsule, so it cannot fly home.
+                Its job ends on the Moon, and its data reaches Earth by radio in about 1.3 seconds.
+              </p>
+              <p className={styles.line}>
+                To fly the trip home (launch from the Moon, reentry and splashdown), a mission must carry a crew or
+                bring back a sample. You can try it now with a sample crewed mission.
+              </p>
+            </GlassPanel>
+          </div>
+          {/* Bottom bar like Phase 1: back and tools on the left, the main action alone on the right. */}
+          <div className={styles.dock}>
+            <div className={styles.nav}>
+              <Button variant="secondary" onClick={() => navigate('/f6')}>← Moon surface</Button>
+              <Button variant="secondary" onClick={() => update((next) => { const level = next.difficulty; Object.assign(next, sampleMission('crewed', 'f7')); next.difficulty = level })}>
+                Fly home with a sample mission
+              </Button>
+            </div>
+            <div className={styles.main}>
+              <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
+            </div>
+          </div>
+        </div>
+      </StageScene>
+    )
+  }
+
   if (!ready) {
     return (
       <StageScene
@@ -89,7 +133,7 @@ export function F7() {
               </p>
               <div className={styles.actions}>
                 <Button variant="outline" onClick={() => navigate('/f6')}>Back to the Moon surface</Button>
-                <Button variant="secondary" onClick={() => update((next) => { Object.assign(next, sampleMission('crewed', 'f7')) })}>
+                <Button variant="secondary" onClick={() => update((next) => { const level = next.difficulty; Object.assign(next, sampleMission('crewed', 'f7')); next.difficulty = level })}>
                   Load a sample mission
                 </Button>
               </div>
@@ -141,14 +185,7 @@ function Objects({ step, running, sim, glow }) {
   if (step === 'shield') {
     return <img className={styles.shieldCapsule} style={{ '--glow': glow }} src="/obj/capsula.png" alt="" />
   }
-  if (step === 'reentry') {
-    return (
-      <div className={styles.fall} style={{ '--glow': glow }}>
-        <span className={styles.plasma} aria-hidden="true" />
-        <img src="/obj/capsula.png" alt="" />
-      </div>
-    )
-  }
+  // During reentry the capsule belongs to the steering game (CapsuleGuide), drawn by F7Body.
   if (step === 'splash') {
     return <Splash splash={sim.splash} />
   }
@@ -198,11 +235,6 @@ function ReturnHud({ place, sim, step }) {
 
 /* ---------- body ---------- */
 
-function Source({ id }) {
-  const { openSource } = usePlay()
-  return <Button variant="ghost" onClick={() => openSource(id)}>NASA source ↗</Button>
-}
-
 function Kicker({ children }) {
   return <p className={styles.kicker}>{children}</p>
 }
@@ -230,17 +262,24 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
     const nextStep = isLast ? afterBurns : burnSteps[burnIndex + 1]
     goto(nextStep)
   })
-  useTimer(running && step === 'reentry', 7000, () => goto('splash'))
 
+  const [help, setHelp] = useState(false)
+  // Lift off is a timing game: the ring shows until the player hits it, then the burn runs.
+  const [timing, setTiming] = useState(false)
+  const [ignition, setIgnition] = useState('')
+  // Bottom bar like Phase 1: back, help and the tools on the left, the main action alone on the right.
   const dock = (nav, main) => (
-    <div className={styles.dock}>
-      <div className={styles.nav}>{nav}</div>
-      <div className={styles.main}>{main}</div>
-    </div>
+    <>
+      <div className={styles.dock}>
+        <div className={styles.nav}>{nav}</div>
+        <div className={styles.main}>{main}</div>
+      </div>
+      <HelpWindow help={HELP_F7} open={help} onClose={() => setHelp(false)} />
+    </>
   )
-  const helpBtn = <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+  const helpBtn = <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
   const hud = <ReturnHud place={scene.place} sim={sim} step={step === 'fail' ? failFrom : step} />
-  const speech = (text) => <div className={styles.speech}><Bubble tone="speech">{text}</Bubble></div>
+  const speech = (text) => <div className={`${styles.speech} ${scene.girl === 'seat' ? styles.speechSeat : ''}`}><Bubble tone="speech">{text}</Bubble></div>
 
   if (step === 'intro') {
     const labels = [...fuel.burns.map((b) => b.label), 'Reentry', 'Splashdown']
@@ -291,7 +330,15 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
     return (
       <div className={styles.screen}>
         {hud}
-        {speech(running ? (first ? 'Here we go!' : 'Steady, steady.') : say)}
+        {speech(timing
+          ? 'Preparing the ship! Hit every ring.'
+          : running ? (first ? (ignition === 'perfect' ? 'Perfect ignition! Here we go!' : 'Here we go!') : 'Steady, steady.') : say)}
+        {timing ? (
+          <TimingRing
+            difficulty={state.difficulty}
+            onDone={(grades) => { setIgnition(grades.every((g) => g === 'perfect') ? 'perfect' : 'good'); setTiming(false); setRunning(true) }}
+          />
+        ) : null}
         <div className={styles.panel}>
           <GlassPanel>
             <Kicker>Phase 7 · Return</Kicker>
@@ -309,25 +356,26 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
               <div className={styles.total}><dt>Left after</dt><dd>{model.fmt(Math.max(0, burn.after))} m/s</dd></div>
             </dl>
             <ShowMath math={math} />
-            <Source id={burn.src} />
           </GlassPanel>
         </div>
         {dock(
           <>
-            <Button variant="secondary" disabled={running} onClick={() => goto(first ? 'intro' : 'burn0')}>← Back</Button>
+            <Button variant="secondary" disabled={running} onClick={() => { setTiming(false); goto(first ? 'intro' : 'burn0') }}>← Back</Button>
             {helpBtn}
+            {blocked ? <Button variant="secondary" onClick={fail}>See what went wrong</Button> : null}
           </>,
-          <>
-            {blocked ? <Button variant="ghost" onClick={fail}>See what went wrong</Button> : null}
-            <Button
-              variant="outline"
-              disabled={running}
-              disabledReason={reason}
-              onClick={() => setRunning(true)}
-            >
-              {running ? 'Burning...' : first ? 'Lift off' : 'Start Earth return burn'}
-            </Button>
-          </>,
+          <Button
+            variant="outline"
+            disabled={running || timing}
+            disabledReason={reason}
+            onClick={() => {
+              // The countdown is the game itself, so it runs even with reduced motion (only its pop-in is off).
+              if (first) setTiming(true)
+              else setRunning(true)
+            }}
+          >
+            {running ? 'Burning...' : timing ? 'Counting down...' : first ? 'Lift off' : 'Start Earth return burn'}
+          </Button>,
         )}
       </div>
     )
@@ -358,7 +406,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
                 <span className={styles.cardLine}><b>Trade-off:</b> {entry.con}</span>
                 <span className={styles.chips}>
                   <span className={styles.chip}>Precision: {entry.precision}</span>
-                  <span className={styles.chip}>{entry.src === 'game' ? 'Game value' : 'NASA source'}</span>
+                  {entry.src === 'game' ? <span className={styles.chip}>Game value</span> : null}
                 </span>
               </button>
             )
@@ -371,7 +419,6 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             <p className={styles.line}>{facts.skipRange.text}</p>
             <p className={styles.line}>{facts.entrySpeed.text}</p>
             <div className={styles.actions}>
-              <Source id="skipEntry" />
               <Button variant="ghost" onClick={() => setModal('game')}>What is a game value?</Button>
             </div>
           </GlassPanel>
@@ -435,24 +482,21 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             ) : <p className={styles.line}>Pick a thickness to see its margin.</p>}
             <p className={styles.line}>{data.FACTS.avcoatHeat.text}</p>
             <p className={styles.line}>{data.FACTS.artemis2Shield.text}</p>
-            <Source id="avcoat" />
           </GlassPanel>
         </div>
         {dock(
           <>
             <Button variant="secondary" onClick={() => goto('entry')}>← Back</Button>
             {helpBtn}
+            {blocked ? <Button variant="secondary" onClick={fail}>See what went wrong</Button> : null}
           </>,
-          <>
-            {blocked ? <Button variant="ghost" onClick={fail}>See what went wrong</Button> : null}
-            <Button
-              variant="outline"
-              disabledReason={!chosen ? 'Pick a shield thickness' : blocked ? 'Thermal margin too low' : ''}
-              onClick={() => { goto('reentry'); setRunning(true) }}
-            >
-              Reenter
-            </Button>
-          </>,
+          <Button
+            variant="outline"
+            disabledReason={!chosen ? 'Pick a shield thickness' : blocked ? 'Thermal margin too low' : ''}
+            onClick={() => { goto('reentry'); setRunning(true) }}
+          >
+            Reenter
+          </Button>,
         )}
       </div>
     )
@@ -468,11 +512,21 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
           <span className={styles.meter} aria-hidden="true"><span className={styles.gaugeFill} /></span>
           <p className={styles.gaugeNote}>{pct}% of what the shield can take</p>
         </div>
+        <CapsuleGuide
+          difficulty={state.difficulty}
+          seed={rt.seed}
+          glow={glow}
+          onDone={(guide) => { setRt({ guide }); goto('splash') }}
+        />
         <div className={styles.panel}>
           <GlassPanel>
             <Kicker>Phase 7 · Return</Kicker>
             <h2 className={styles.title}>Reentry</h2>
             <p className={styles.line}>The capsule is heating up. The shield does the work now.</p>
+            <p className={styles.line}>
+              Orion steers by rolling its lift. Guide the capsule over the recovery ships: the closer you get,
+              the closer the splashdown.
+            </p>
             <p className={styles.line} role="status">{running ? 'Hold on...' : 'Through the heat.'}</p>
           </GlassPanel>
         </div>
@@ -507,13 +561,15 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             ) : null}
             <p className={styles.line}>{data.FACTS.artemis1Landing.text}</p>
             <p className={styles.line}>{data.FACTS.artemis2Landing.text}</p>
-            <Source id="artemis1Entry" />
           </GlassPanel>
         </div>
         {dock(
-          <>{helpBtn}</>,
+          <>
+            <Button variant="secondary" onClick={() => goto('shield')}>← Heat shield</Button>
+            {helpBtn}
+          </>,
           ok
-            ? <Button variant="outline" onClick={() => navigate('/f8')}>Finish the mission →</Button>
+            ? <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
             : <Button variant="outline" onClick={fail}>See what happened →</Button>,
         )}
       </div>
@@ -551,14 +607,13 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             <div className={styles.nasa}>
               <p className={styles.nasaTitle}>NASA recommendation</p>
               <p className={styles.line}>{f.descope.text}</p>
-              <Source id={f.descope.src} />
             </div>
           ) : null}
         </GlassPanel>
       </div>
       <div className={styles.dock}>
         <div className={styles.nav}>
-          <Button variant="ghost" onClick={() => navigate('/')}>Home</Button>
+          <Button variant="secondary" onClick={() => navigate('/')}>Home</Button>
         </div>
         <div className={styles.main}>
           <Button variant="outline" onClick={toPhase}>
@@ -572,20 +627,18 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
 
 /* ---------- small pieces ---------- */
 
+/** "Show the math" opens the rocket equation in a popup, like Phases 1, 4 and 5. */
 function ShowMath({ math }) {
-  const { state, update } = useGame()
-  const open = Boolean(state.showMath && state.showMath.returnTrip)
+  const [open, setOpen] = useState(false)
   if (!math) return null
   return (
     <div className={styles.mathWrap}>
-      <Button
-        variant="ghost"
-        aria-expanded={open}
-        onClick={() => update((next) => { next.showMath = Object.assign({}, next.showMath, { returnTrip: !open }) })}
-      >
-        {open ? '▾ Hide the math' : '▸ Show the math'}
-      </Button>
-      {open ? <MathBlock math={math} /> : null}
+      <Button variant="outline" onClick={() => setOpen(true)}>Show the math</Button>
+      {open ? (
+        <Dialog title={math.title || 'The math'} onClose={() => setOpen(false)}>
+          <MathBlock math={{ ...math, title: null }} />
+        </Dialog>
+      ) : null}
     </div>
   )
 }

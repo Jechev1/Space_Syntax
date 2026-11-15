@@ -735,7 +735,10 @@
     const entry = findEntry(entryId || (state.returnTrip && state.returnTrip.entry)); if (!entry) return null;
     const R = D.RETURN, r = rng(((seed >>> 0) ^ 0x5a1) + 13);
     const maxMiss = entry.missKm * (R.missFactor[state.difficulty || 'engineer'] || 1);
-    const missKm = R.minMissKm + Math.max(0, maxMiss - R.minMissKm) * r();
+    // Guidance from the steering game (0 to 1, none if never played) shrinks the random part of the miss.
+    const rawGuide = Number(state.returnTrip && state.returnTrip.guide);
+    const guide = Number.isFinite(rawGuide) ? Math.max(0, Math.min(1, rawGuide)) : 0;
+    const missKm = R.minMissKm + Math.max(0, maxMiss - R.minMissKm) * r() * (1 - (R.guideWeight || 0) * guide);
     const inZone = missKm <= R.recoveryZoneKm + 1e-9;
     return { entry, missKm, zoneKm: R.recoveryZoneKm, inZone, score: inZone ? Math.round(100 * (1 - missKm / R.recoveryZoneKm)) : 0 };
   }
@@ -1074,6 +1077,7 @@
         entry: oneOf(rt.entry, D.RETURN.entries.map(x => x.id)),
         shield: oneOf(rt.shield, D.RETURN.shields.map(x => x.id)),
       };
+      if (Number.isFinite(rt.guide)) s.returnTrip.guide = Math.max(0, Math.min(1, rt.guide));
     }
     return s;
   }

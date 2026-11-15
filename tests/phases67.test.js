@@ -404,6 +404,17 @@ test('return: reentry and splashdown', async (t) => {
     for (let seed = 0; seed < 100; seed++) if (!M.splashdown(crew({ difficulty: 'director' }), seed, 'direct').inZone) miss++;
     assert.ok(miss > 0 && miss < 100, 'miss ' + miss);
   });
+  await t.test('splashdown: steering guidance shrinks the miss, never below the minimum', () => {
+    for (let seed = 0; seed < 50; seed++) {
+      const none = M.splashdown(crew({ difficulty: 'director' }), seed, 'direct');
+      const half = M.splashdown(crew({ difficulty: 'director', returnTrip: { seed, guide: 0.5 } }), seed, 'direct');
+      const full = M.splashdown(crew({ difficulty: 'director', returnTrip: { seed, guide: 1 } }), seed, 'direct');
+      assert.ok(full.missKm <= half.missKm && half.missKm <= none.missKm);
+      assert.ok(full.missKm >= D.RETURN.minMissKm);
+    }
+    const kept = M.sanitizeState(Object.assign(crew(), { returnTrip: { seed: 3, entry: 'skip', shield: null, guide: 2 } }));
+    assert.equal(kept.returnTrip.guide, 1);
+  });
   await t.test('returnSim: pending until both choices, then success or a zone failure', () => {
     const s = crew({ flight: { margin: 0.2 }, returnTrip: { seed: 1, entry: 'skip', shield: null } });
     assert.equal(M.returnSim(s).outcome, 'pending');

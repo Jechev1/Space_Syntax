@@ -240,3 +240,25 @@ export const HELP_LAB = {
     },
   ],
 }
+
+export const HELP_F7 = {
+  title: 'Phase 7: Return',
+  blocks: [
+    {
+      heading: 'Fuel for the trip home',
+      text: 'The fuel to come home was set aside in Phase 3. A crewed mission burns twice: once to climb from the Moon to lunar orbit, and once to leave orbit for Earth. A robot capsule climbs off the Moon and heads straight home in one burn.',
+    },
+    {
+      heading: 'The reentry path',
+      text: 'A direct entry dives straight into the air. A skip entry dips in, bounces out and dips in again, like Artemis I: it spreads the heat and lands closer to the ships.',
+    },
+    {
+      heading: 'The heat shield',
+      text: 'Coming back from the Moon the capsule hits the air at about 11 km/s and the shield faces about 2,760 °C. A thicker shield is safer but heavier, and every kilogram is taken from somewhere else.',
+    },
+    {
+      heading: 'Splashdown',
+      text: 'Parachutes slow the capsule to about 27 km/h before it lands in the ocean. Recovery ships wait in a zone around the target; landing inside it means a safe pick-up.',
+    },
+  ],
+}

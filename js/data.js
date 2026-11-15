@@ -477,6 +477,8 @@
     ], // capacity (in heat-load units) and added kg are game values
     thermal: { okRatio: 1.4, lowRatio: 1.15, loadFactor: { cadet: 0.9, engineer: 1, director: 1.15 } }, // game values
     recoveryZoneKm: 10, minMissKm: 0.5, missFactor: { cadet: 0.6, engineer: 1, director: 1.2 }, // game values
+    // Guided reentry: Orion steers by rolling its lift. Perfect steering (guide 1) cuts the random miss by this share. Game value.
+    guideWeight: 0.6,
     descope: { text: 'Descope: plan fewer days or a smaller crew, or pick a bigger rocket.', src: 'seHandbook' },
   };
 
