@@ -70,7 +70,7 @@
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .diff {
@@ -79,8 +79,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
-  padding: 10px 14px;
+  gap: 1px;
+  padding: 7px 12px;
   border-radius: var(--radius-btn);
   border: 1.5px solid var(--line-strong);
   background: transparent;
@@ -96,8 +96,13 @@
 
 .diff span {
   color: var(--text-dim);
-  font-size: var(--fs-chip);
+  font-size: 12px;
   font-weight: 400;
+  line-height: 1.25;
+}
+
+.fact {
+  letter-spacing: 0.01em;
 }
 
 .diff:hover {
@@ -172,4 +177,30 @@
 .go:hover {
   border-color: var(--accent);
   box-shadow: 0 0 18px rgb(166 224 95 / 45%);
+}
+
+.confirmCopy {
+  margin: 0;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.confirm {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm .wide {
+  width: auto;
+  flex: 1;
+}
+
+.reset {
+  border-color: rgb(239 123 123 / 72%);
+  color: #f0c4c4;
+}
+
+.reset:hover {
+  border-color: var(--danger);
+  box-shadow: 0 0 16px rgb(239 123 123 / 32%);
 }

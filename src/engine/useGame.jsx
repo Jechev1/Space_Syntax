@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 
 const SAVE_KEY = 'ss-save-v1'
+const DIFF_KEY = 'ss-difficulty'
 const UI_DEFAULTS = {
   activeSub: 'structure',
   introStep: 0,
@@ -49,8 +50,32 @@ function sanitizeUi(raw) {
   return ui
 }
 
+function knownDifficulty(id) {
+  return engine().D.DIFFICULTIES.some((item) => item.id === id)
+}
+
+function readDifficulty() {
+  try {
+    const id = localStorage.getItem(DIFF_KEY)
+    return knownDifficulty(id) ? id : null
+  } catch {
+    return null
+  }
+}
+
+function writeDifficulty(id) {
+  try {
+    if (knownDifficulty(id)) localStorage.setItem(DIFF_KEY, id)
+  } catch {
+    /* private mode */
+  }
+}
+
 function fresh() {
-  return Object.assign(engine().M.newState(), clone(UI_DEFAULTS))
+  const state = Object.assign(engine().M.newState(), clone(UI_DEFAULTS))
+  const chosen = readDifficulty()
+  if (chosen) state.difficulty = chosen
+  return state
 }
 
 function loadSaved() {
@@ -61,6 +86,11 @@ function loadSaved() {
     const { M } = engine()
     const state = Object.assign(M.sanitizeState(parsed), sanitizeUi(parsed))
     M.evaluate(state)
+    writeDifficulty(state.difficulty)
+    if (!missionInProgress(state)) {
+      clearSave()
+      return null
+    }
     return state
   } catch {
     return null
@@ -69,6 +99,32 @@ function loadSaved() {
 
 function save(state) {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)) } catch { /* private mode */ }
+}
+
+function clearSave() {
+  try { localStorage.removeItem(SAVE_KEY) } catch { /* private mode */ }
+}
+
+function saveExists() {
+  try { return localStorage.getItem(SAVE_KEY) != null } catch { return false }
+}
+
+export function missionInProgress(state) {
+  if (!state) return false
+  if (state.phase0Done || state.phase1Done || state.phase2Done || state.phase3Done || state.phase4Done || state.launched) return true
+  if (state.question || state.measure || state.missionType || state.rocket || state.site) return true
+  if (state.introStep > 0 || state.showMel || state.crew || state.landing || state.surface || state.returnTrip) return true
+  const design = state.design || {}
+  if (design.structure || design.shield || design.thermal || design.power) return true
+  if (Array.isArray(design.science) && design.science.length) return true
+  if (state.comms && (state.comms.link || state.comms.dish)) return true
+  if (state.flight && typeof state.flight.margin === 'number' && state.flight.margin !== 0) return true
+  if (state.closed && Object.keys(state.closed).some((key) => state.closed[key])) return true
+  if (state.showMath && Object.keys(state.showMath).some((key) => state.showMath[key])) return true
+  const events = state.events
+  if (events && (events.massGrowth || events.extraCost || events.risk || events.extraDays)) return true
+  if (events && Array.isArray(events.log) && events.log.length) return true
+  return false
 }
 
 function revalidate(state) {
@@ -127,17 +183,19 @@ function useGameState() {
       const next = clone(prev)
       const extra = mutator(next)
       const note = revalidate(next) || (typeof extra === 'string' ? extra : null)
-      save(next)
+      if (missionInProgress(next) || saveExists()) save(next)
       if (note) queueMicrotask(() => setNotice(note))
       return next
     })
   }, [])
 
   const reset = useCallback(() => {
-    const next = fresh()
-    save(next)
+    setState((prev) => {
+      writeDifficulty(prev.difficulty)
+      clearSave()
+      return fresh()
+    })
     setNotice('')
-    setState(next)
   }, [])
 
   return {
@@ -148,7 +206,10 @@ function useGameState() {
     model: M,
     update,
     reset,
-    setDifficulty: (id) => update((next) => { next.difficulty = id }),
+    setDifficulty: (id) => {
+      writeDifficulty(id)
+      update((next) => { next.difficulty = id })
+    },
     startIntro: () => update((next) => { next.introStep = 0 }),
     setIntroStep: (step) => update((next) => { next.introStep = step }),
     closeBubble: (id) => update((next) => { next.closed[id] = true }),
@@ -356,8 +417,22 @@ export function descopeMode(state) {
 }
 
 export function continuePath(state) {
-  if (state.phase1Done) return '/f1done'
-  return '/f1a'
+  if (state.launched) {
+    const outcome = state.landing && state.landing.outcome
+    const landed = outcome === 'clean' || outcome === 'rough'
+    const finished = Boolean(state.surface && state.surface.finished)
+    const returns = state.missionType === 'crewed' || state.measure === 'sample'
+    if (landed && finished && returns) return '/f7'
+    if (landed) return '/f6'
+    if (state.site) return '/f5b'
+    return '/f5a'
+  }
+  if (!state.phase0Done) return '/f0'
+  if (!state.phase1Done) return '/f1a'
+  if (!state.phase2Done) return '/f2'
+  if (!state.phase3Done) return '/f3a'
+  if (!state.phase4Done) return '/f4'
+  return '/f3b'
 }
 
 const PHASES = ['Goal', 'Spacecraft', 'Crew', 'Flight', 'Comms', 'Landing', 'Science', 'Return']

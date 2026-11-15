@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMusic } from '../audio/useMusic.jsx'
 import { Dialog } from '../components/ui/Dialog.jsx'
-import { continuePath, useGame } from '../engine/useGame.jsx'
+import { continuePath, missionInProgress, useGame } from '../engine/useGame.jsx'
 import { HowTo, SourceList } from './dialogs.jsx'
 import styles from './GameTools.module.css'
 
@@ -15,6 +15,7 @@ const TITLES = {
 export function GameTools({ cover = false }) {
   const navigate = useNavigate()
   const { state, data } = useGame()
+  const playing = missionInProgress(state)
   const music = useMusic()
   const [open, setOpen] = useState(null)
 
@@ -38,7 +39,8 @@ export function GameTools({ cover = false }) {
       <button type="button" className={styles.icon} aria-label="Settings" onClick={() => setOpen('settings')}>
         <GearIcon />
       </button>
-      {open ? (
+      {open === 'reset' ? <ResetConfirm onClose={() => setOpen(null)} /> : null}
+      {open && open !== 'reset' ? (
         <Dialog title={TITLES[open]} onClose={() => setOpen(null)}>
           {open === 'settings' ? (
             <>
@@ -49,7 +51,7 @@ export function GameTools({ cover = false }) {
                 <button type="button" className={styles.link} onClick={() => setOpen('sources')}>Sources</button>
               </div>
               <p className={styles.kicker}>Your mission saves automatically in this browser.</p>
-              {cover && state.phase0Done ? (
+              {cover && playing ? (
                 <button type="button" className={`${styles.wide} ${styles.go}`} onClick={() => leave(continuePath(state))}>
                   Continue mission
                 </button>
@@ -59,6 +61,7 @@ export function GameTools({ cover = false }) {
                   Back to start
                 </button>
               )}
+              <button type="button" className={styles.wide} onClick={() => setOpen('reset')}>Reset game</button>
             </>
           ) : null}
           {open === 'howto' ? (
@@ -79,23 +82,93 @@ export function GameTools({ cover = false }) {
   )
 }
 
+const AUDIENCE = {
+  cadet: 'For your first mission.',
+  engineer: 'The real challenge.',
+  director: 'Every dollar counts.',
+}
+
+function money(value) {
+  return `$${Math.round(value).toLocaleString('en-US')}M`
+}
+
+function percent(value) {
+  return `${Math.round(value * 100)}%`
+}
+
+function times(value) {
+  return `×${Math.round(value * 100) / 100}`
+}
+
+function difficultyFacts(data, id) {
+  const lines = []
+  const robotic = data.BUDGET && data.BUDGET.robotic ? data.BUDGET.robotic[id] : undefined
+  const crewed = data.BUDGET && data.BUDGET.crewed ? data.BUDGET.crewed[id] : undefined
+  if (robotic != null && crewed != null) lines.push(`Budget: ${money(robotic)} robotic · ${money(crewed)} crewed`)
+
+  const margin = data.FLIGHT && data.FLIGHT.minMargin ? data.FLIGHT.minMargin[id] : undefined
+  const flight = data.EVENT_CHANCE ? data.EVENT_CHANCE[id] : undefined
+  const surface = data.SURFACE_EVENT_CHANCE ? data.SURFACE_EVENT_CHANCE[id] : undefined
+  const middle = []
+  if (margin != null) middle.push(`Fuel margin: ${percent(margin)}`)
+  if (flight != null && surface != null) middle.push(`Events: ${percent(flight)} flight, ${percent(surface)} surface`)
+  else if (flight != null) middle.push(`Events: ${percent(flight)} per phase`)
+  else if (surface != null) middle.push(`Surface events: ${percent(surface)}`)
+  if (middle.length) lines.push(middle.join(' · '))
+
+  const hover = data.LANDING && data.LANDING.difficultyFactor ? data.LANDING.difficultyFactor[id] : undefined
+  const burn = data.RETURN && data.RETURN.dispersion ? data.RETURN.dispersion[id] : undefined
+  const heat = data.RETURN && data.RETURN.thermal && data.RETURN.thermal.loadFactor ? data.RETURN.thermal.loadFactor[id] : undefined
+  const miss = data.RETURN && data.RETURN.missFactor ? data.RETURN.missFactor[id] : undefined
+  const tail = []
+  if (hover != null) tail.push(`Hover ${times(hover)}`)
+  if (burn != null) tail.push(`Burns +${percent(burn)}`)
+  if (heat != null) tail.push(`Heat ${times(heat)}`)
+  if (miss != null) tail.push(`Miss ${times(miss)}`)
+  if (tail.length) lines.push(tail.join(' · '))
+  return lines
+}
+
 export function DifficultyPicker() {
   const { state, data, setDifficulty } = useGame()
   return (
     <div className={styles.stack} role="group" aria-label="Difficulty">
-      {data.DIFFICULTIES.map((item) => (
-        <button
-          key={item.id}
-          type="button"
-          className={styles.diff}
-          aria-pressed={state.difficulty === item.id}
-          onClick={() => setDifficulty(item.id)}
-        >
-          <strong>{item.title}</strong>
-          <span>{item.blurb}</span>
-        </button>
-      ))}
+      {data.DIFFICULTIES.map((item) => {
+        const facts = difficultyFacts(data, item.id)
+        return (
+          <button
+            key={item.id}
+            type="button"
+            className={styles.diff}
+            aria-pressed={state.difficulty === item.id}
+            onClick={() => setDifficulty(item.id)}
+          >
+            <strong>{item.title}</strong>
+            <span>{AUDIENCE[item.id] || item.blurb}</span>
+            {facts.map((line) => <span key={line} className={styles.fact}>{line}</span>)}
+          </button>
+        )
+      })}
     </div>
+  )
+}
+
+export function ResetConfirm({ onClose }) {
+  const navigate = useNavigate()
+  const { reset } = useGame()
+  const wipe = () => {
+    reset()
+    onClose()
+    navigate('/inicio')
+  }
+  return (
+    <Dialog title="Start a new game?" onClose={onClose}>
+      <p className={styles.confirmCopy}>Your current progress will be lost.</p>
+      <div className={styles.confirm}>
+        <button type="button" className={styles.wide} onClick={onClose}>Cancel</button>
+        <button type="button" className={`${styles.wide} ${styles.reset}`} onClick={wipe}>Reset</button>
+      </div>
+    </Dialog>
   )
 }
 
