@@ -288,9 +288,9 @@
      "where": "descent",
      "mass": 20,
      "cost": 40,
-     "power": 25,
+     "power": 30,
      "gen": 0,
-     "src": "moonfacts",
+     "src": "viperSpectrometer",
      "kind": "hw"
     },
     {
@@ -298,9 +298,9 @@
      "where": "descent",
      "mass": 15,
      "cost": 25,
-     "power": 15,
+     "power": 10,
      "gen": 0,
-     "src": "lro",
+     "src": "game",
      "kind": "hw"
     },
     {
@@ -374,7 +374,7 @@
      "kind": "consumable"
     },
     {
-     "label": "Sample allowance (Apollo 17 brought ~110 kg)",
+     "label": "Sample allowance (100 kg)",
      "where": "ascent",
      "mass": 100,
      "cost": 0,

@@ -47,7 +47,7 @@
     "rateMbps": 100,
     "contactHours": 2.5,
     "src": "lro",
-    "blurb": "Like NASA's LRO: 100 to 300 Mbps, up to about 900 Gb a day.",
+    "blurb": "Like NASA's LRO: 100 Mbps, 900 Gb a day with a 34 m dish.",
     "robotic": {
      "mass": 30,
      "power": 110,
@@ -223,6 +223,1816 @@
  },
  "sim": {
   "success": {
+   "label": "ka + dsn34",
+   "seed": 1,
+   "state": {
+    "difficulty": "cadet",
+    "question": "made",
+    "measure": "chem",
+    "missionType": "robotic",
+    "design": {
+     "structure": "aluminum",
+     "shield": "whipple",
+     "thermal": "passive",
+     "power": "solarBig",
+     "science": [
+      "spectrometer",
+      "camera"
+     ]
+    },
+    "rocket": "medium",
+    "crew": null,
+    "flight": {
+     "margin": 0.15
+    },
+    "comms": {
+     "link": "ka",
+     "dish": "dsn34"
+    },
+    "site": null,
+    "landing": null,
+    "events": {
+     "massGrowth": 0,
+     "extraCost": 0,
+     "risk": 0,
+     "extraDays": 0,
+     "log": []
+    },
+    "surface": null,
+    "returnTrip": null
+   },
+   "result": {
+    "phase": 4,
+    "title": "Mission timeline",
+    "ready": true,
+    "seed": 1,
+    "ok": true,
+    "outcome": "success",
+    "stars": 3,
+    "time": {
+     "unit": "h",
+     "total": 450
+    },
+    "fields": [
+     {
+      "key": "generated",
+      "label": "Data made",
+      "unit": "Gb",
+      "max": 5015
+     },
+     {
+      "key": "delivered",
+      "label": "Data sent to Earth",
+      "unit": "Gb",
+      "max": 5015
+     },
+     {
+      "key": "buffer",
+      "label": "Onboard buffer",
+      "unit": "Gb",
+      "max": 150
+     },
+     {
+      "key": "lost",
+      "label": "Data lost",
+      "unit": "Gb",
+      "max": 5015
+     },
+     {
+      "key": "linkUp",
+      "label": "Link up",
+      "unit": "",
+      "max": 1
+     },
+     {
+      "key": "station",
+      "label": "Station pass (0, 1, 2 take turns, -1 none)",
+      "unit": "",
+      "max": 2
+     }
+    ],
+    "frames": [
+     {
+      "t": 0,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 2.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 7.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 10,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 12.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 15,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 17.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 20,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 22.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 25,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 27.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 30,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 32.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 35,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 37.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 40,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 42.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 45,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 47.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 50,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 52.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 55,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 57.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 60,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 62.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 65,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 67.5,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 70,
+      "generated": 0,
+      "delivered": 0,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 72.5,
+      "generated": 7.083,
+      "delivered": 0,
+      "buffer": 7.083,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 75,
+      "generated": 42.5,
+      "delivered": 0,
+      "buffer": 42.5,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 77.5,
+      "generated": 77.917,
+      "delivered": 0,
+      "buffer": 77.917,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 80,
+      "generated": 113.333,
+      "delivered": 103.889,
+      "buffer": 9.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 82.5,
+      "generated": 148.75,
+      "delivered": 103.889,
+      "buffer": 44.861,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 85,
+      "generated": 184.167,
+      "delivered": 184.167,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 87.5,
+      "generated": 219.583,
+      "delivered": 192.431,
+      "buffer": 27.153,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 90,
+      "generated": 255,
+      "delivered": 192.431,
+      "buffer": 62.569,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 92.5,
+      "generated": 290.417,
+      "delivered": 192.431,
+      "buffer": 97.986,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 95,
+      "generated": 325.833,
+      "delivered": 192.431,
+      "buffer": 133.403,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 97.5,
+      "generated": 361.25,
+      "delivered": 337.639,
+      "buffer": 23.611,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 100,
+      "generated": 396.667,
+      "delivered": 337.639,
+      "buffer": 59.028,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 102.5,
+      "generated": 432.083,
+      "delivered": 337.639,
+      "buffer": 94.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 105,
+      "generated": 467.5,
+      "delivered": 443.889,
+      "buffer": 23.611,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 107.5,
+      "generated": 502.917,
+      "delivered": 443.889,
+      "buffer": 59.028,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 110,
+      "generated": 538.333,
+      "delivered": 532.431,
+      "buffer": 5.903,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 112.5,
+      "generated": 573.75,
+      "delivered": 532.431,
+      "buffer": 41.319,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 115,
+      "generated": 609.167,
+      "delivered": 532.431,
+      "buffer": 76.736,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 117.5,
+      "generated": 644.583,
+      "delivered": 532.431,
+      "buffer": 112.153,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 120,
+      "generated": 680,
+      "delivered": 677.639,
+      "buffer": 2.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 122.5,
+      "generated": 715.417,
+      "delivered": 677.639,
+      "buffer": 37.778,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 125,
+      "generated": 750.833,
+      "delivered": 677.639,
+      "buffer": 73.194,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 127.5,
+      "generated": 786.25,
+      "delivered": 783.889,
+      "buffer": 2.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 130,
+      "generated": 821.667,
+      "delivered": 783.889,
+      "buffer": 37.778,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 132.5,
+      "generated": 857.083,
+      "delivered": 783.889,
+      "buffer": 73.194,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 135,
+      "generated": 892.5,
+      "delivered": 872.431,
+      "buffer": 20.069,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 137.5,
+      "generated": 927.917,
+      "delivered": 872.431,
+      "buffer": 55.486,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 140,
+      "generated": 963.333,
+      "delivered": 872.431,
+      "buffer": 90.903,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 142.5,
+      "generated": 998.75,
+      "delivered": 872.431,
+      "buffer": 126.319,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 145,
+      "generated": 1034.167,
+      "delivered": 1017.639,
+      "buffer": 16.528,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 147.5,
+      "generated": 1069.583,
+      "delivered": 1017.639,
+      "buffer": 51.944,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 150,
+      "generated": 1105,
+      "delivered": 1017.639,
+      "buffer": 87.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 152.5,
+      "generated": 1140.417,
+      "delivered": 1123.889,
+      "buffer": 16.528,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 155,
+      "generated": 1175.833,
+      "delivered": 1123.889,
+      "buffer": 51.944,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 157.5,
+      "generated": 1211.25,
+      "delivered": 1211.25,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 160,
+      "generated": 1246.667,
+      "delivered": 1212.431,
+      "buffer": 34.236,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 162.5,
+      "generated": 1282.083,
+      "delivered": 1212.431,
+      "buffer": 69.653,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 165,
+      "generated": 1317.5,
+      "delivered": 1212.431,
+      "buffer": 105.069,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 167.5,
+      "generated": 1352.917,
+      "delivered": 1352.917,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 170,
+      "generated": 1388.333,
+      "delivered": 1357.639,
+      "buffer": 30.694,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 172.5,
+      "generated": 1423.75,
+      "delivered": 1357.639,
+      "buffer": 66.111,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 175,
+      "generated": 1459.167,
+      "delivered": 1459.167,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 177.5,
+      "generated": 1494.583,
+      "delivered": 1463.889,
+      "buffer": 30.694,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 180,
+      "generated": 1530,
+      "delivered": 1463.889,
+      "buffer": 66.111,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 182.5,
+      "generated": 1565.417,
+      "delivered": 1552.431,
+      "buffer": 12.986,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 185,
+      "generated": 1600.833,
+      "delivered": 1552.431,
+      "buffer": 48.403,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 187.5,
+      "generated": 1636.25,
+      "delivered": 1552.431,
+      "buffer": 83.819,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 190,
+      "generated": 1671.667,
+      "delivered": 1552.431,
+      "buffer": 119.236,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 192.5,
+      "generated": 1707.083,
+      "delivered": 1697.639,
+      "buffer": 9.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 195,
+      "generated": 1742.5,
+      "delivered": 1697.639,
+      "buffer": 44.861,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 197.5,
+      "generated": 1777.917,
+      "delivered": 1697.639,
+      "buffer": 80.278,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 200,
+      "generated": 1813.333,
+      "delivered": 1803.889,
+      "buffer": 9.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 202.5,
+      "generated": 1848.75,
+      "delivered": 1803.889,
+      "buffer": 44.861,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 205,
+      "generated": 1884.167,
+      "delivered": 1884.167,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 207.5,
+      "generated": 1919.583,
+      "delivered": 1892.431,
+      "buffer": 27.153,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 210,
+      "generated": 1955,
+      "delivered": 1892.431,
+      "buffer": 62.569,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 212.5,
+      "generated": 1990.417,
+      "delivered": 1892.431,
+      "buffer": 97.986,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 215,
+      "generated": 2025.833,
+      "delivered": 1892.431,
+      "buffer": 133.403,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 217.5,
+      "generated": 2061.25,
+      "delivered": 2037.639,
+      "buffer": 23.611,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 220,
+      "generated": 2096.667,
+      "delivered": 2037.639,
+      "buffer": 59.028,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 222.5,
+      "generated": 2132.083,
+      "delivered": 2037.639,
+      "buffer": 94.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 225,
+      "generated": 2167.5,
+      "delivered": 2143.889,
+      "buffer": 23.611,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 227.5,
+      "generated": 2202.917,
+      "delivered": 2143.889,
+      "buffer": 59.028,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 230,
+      "generated": 2238.333,
+      "delivered": 2232.431,
+      "buffer": 5.903,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 232.5,
+      "generated": 2273.75,
+      "delivered": 2232.431,
+      "buffer": 41.319,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 235,
+      "generated": 2309.167,
+      "delivered": 2232.431,
+      "buffer": 76.736,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 237.5,
+      "generated": 2344.583,
+      "delivered": 2232.431,
+      "buffer": 112.153,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 240,
+      "generated": 2380,
+      "delivered": 2377.639,
+      "buffer": 2.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 242.5,
+      "generated": 2415.417,
+      "delivered": 2377.639,
+      "buffer": 37.778,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 245,
+      "generated": 2450.833,
+      "delivered": 2377.639,
+      "buffer": 73.194,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 247.5,
+      "generated": 2486.25,
+      "delivered": 2483.889,
+      "buffer": 2.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 250,
+      "generated": 2521.667,
+      "delivered": 2483.889,
+      "buffer": 37.778,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 252.5,
+      "generated": 2557.083,
+      "delivered": 2483.889,
+      "buffer": 73.194,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 255,
+      "generated": 2592.5,
+      "delivered": 2572.431,
+      "buffer": 20.069,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 257.5,
+      "generated": 2627.917,
+      "delivered": 2572.431,
+      "buffer": 55.486,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 260,
+      "generated": 2663.333,
+      "delivered": 2572.431,
+      "buffer": 90.903,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 262.5,
+      "generated": 2698.75,
+      "delivered": 2572.431,
+      "buffer": 126.319,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 265,
+      "generated": 2734.167,
+      "delivered": 2717.639,
+      "buffer": 16.528,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 267.5,
+      "generated": 2769.583,
+      "delivered": 2717.639,
+      "buffer": 51.944,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 270,
+      "generated": 2805,
+      "delivered": 2717.639,
+      "buffer": 87.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 272.5,
+      "generated": 2840.417,
+      "delivered": 2823.889,
+      "buffer": 16.528,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 275,
+      "generated": 2875.833,
+      "delivered": 2823.889,
+      "buffer": 51.944,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 277.5,
+      "generated": 2911.25,
+      "delivered": 2911.25,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 280,
+      "generated": 2946.667,
+      "delivered": 2912.431,
+      "buffer": 34.236,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 282.5,
+      "generated": 2982.083,
+      "delivered": 2912.431,
+      "buffer": 69.653,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 285,
+      "generated": 3017.5,
+      "delivered": 2912.431,
+      "buffer": 105.069,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 287.5,
+      "generated": 3052.917,
+      "delivered": 3052.917,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 290,
+      "generated": 3088.333,
+      "delivered": 3057.639,
+      "buffer": 30.694,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 292.5,
+      "generated": 3123.75,
+      "delivered": 3057.639,
+      "buffer": 66.111,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 295,
+      "generated": 3159.167,
+      "delivered": 3159.167,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 297.5,
+      "generated": 3194.583,
+      "delivered": 3163.889,
+      "buffer": 30.694,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 300,
+      "generated": 3230,
+      "delivered": 3163.889,
+      "buffer": 66.111,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 302.5,
+      "generated": 3265.417,
+      "delivered": 3252.431,
+      "buffer": 12.986,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 305,
+      "generated": 3300.833,
+      "delivered": 3252.431,
+      "buffer": 48.403,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 307.5,
+      "generated": 3336.25,
+      "delivered": 3252.431,
+      "buffer": 83.819,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 310,
+      "generated": 3371.667,
+      "delivered": 3252.431,
+      "buffer": 119.236,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 312.5,
+      "generated": 3407.083,
+      "delivered": 3397.639,
+      "buffer": 9.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 315,
+      "generated": 3442.5,
+      "delivered": 3397.639,
+      "buffer": 44.861,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 317.5,
+      "generated": 3477.917,
+      "delivered": 3397.639,
+      "buffer": 80.278,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 320,
+      "generated": 3513.333,
+      "delivered": 3503.889,
+      "buffer": 9.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 322.5,
+      "generated": 3548.75,
+      "delivered": 3503.889,
+      "buffer": 44.861,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 325,
+      "generated": 3584.167,
+      "delivered": 3584.167,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 327.5,
+      "generated": 3619.583,
+      "delivered": 3592.431,
+      "buffer": 27.153,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 330,
+      "generated": 3655,
+      "delivered": 3592.431,
+      "buffer": 62.569,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 332.5,
+      "generated": 3690.417,
+      "delivered": 3592.431,
+      "buffer": 97.986,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 335,
+      "generated": 3725.833,
+      "delivered": 3592.431,
+      "buffer": 133.403,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 337.5,
+      "generated": 3761.25,
+      "delivered": 3737.639,
+      "buffer": 23.611,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 340,
+      "generated": 3796.667,
+      "delivered": 3737.639,
+      "buffer": 59.028,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 342.5,
+      "generated": 3832.083,
+      "delivered": 3737.639,
+      "buffer": 94.444,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 345,
+      "generated": 3867.5,
+      "delivered": 3843.889,
+      "buffer": 23.611,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 347.5,
+      "generated": 3902.917,
+      "delivered": 3843.889,
+      "buffer": 59.028,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 350,
+      "generated": 3938.333,
+      "delivered": 3932.431,
+      "buffer": 5.903,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 352.5,
+      "generated": 3973.75,
+      "delivered": 3932.431,
+      "buffer": 41.319,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 355,
+      "generated": 4009.167,
+      "delivered": 3932.431,
+      "buffer": 76.736,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 357.5,
+      "generated": 4044.583,
+      "delivered": 3932.431,
+      "buffer": 112.153,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 360,
+      "generated": 4080,
+      "delivered": 4077.639,
+      "buffer": 2.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 362.5,
+      "generated": 4115.417,
+      "delivered": 4077.639,
+      "buffer": 37.778,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 365,
+      "generated": 4150.833,
+      "delivered": 4077.639,
+      "buffer": 73.194,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 367.5,
+      "generated": 4186.25,
+      "delivered": 4183.889,
+      "buffer": 2.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 370,
+      "generated": 4221.667,
+      "delivered": 4183.889,
+      "buffer": 37.778,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 372.5,
+      "generated": 4257.083,
+      "delivered": 4183.889,
+      "buffer": 73.194,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 375,
+      "generated": 4292.5,
+      "delivered": 4272.431,
+      "buffer": 20.069,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 377.5,
+      "generated": 4327.917,
+      "delivered": 4272.431,
+      "buffer": 55.486,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 380,
+      "generated": 4363.333,
+      "delivered": 4272.431,
+      "buffer": 90.903,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 382.5,
+      "generated": 4398.75,
+      "delivered": 4272.431,
+      "buffer": 126.319,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 385,
+      "generated": 4434.167,
+      "delivered": 4417.639,
+      "buffer": 16.528,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 387.5,
+      "generated": 4469.583,
+      "delivered": 4417.639,
+      "buffer": 51.944,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 390,
+      "generated": 4505,
+      "delivered": 4417.639,
+      "buffer": 87.361,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 392.5,
+      "generated": 4540.417,
+      "delivered": 4523.889,
+      "buffer": 16.528,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 395,
+      "generated": 4575.833,
+      "delivered": 4523.889,
+      "buffer": 51.944,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 397.5,
+      "generated": 4611.25,
+      "delivered": 4611.25,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 400,
+      "generated": 4646.667,
+      "delivered": 4612.431,
+      "buffer": 34.236,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 402.5,
+      "generated": 4682.083,
+      "delivered": 4612.431,
+      "buffer": 69.653,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 405,
+      "generated": 4717.5,
+      "delivered": 4612.431,
+      "buffer": 105.069,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 407.5,
+      "generated": 4752.917,
+      "delivered": 4752.917,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 410,
+      "generated": 4788.333,
+      "delivered": 4757.639,
+      "buffer": 30.694,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 412.5,
+      "generated": 4823.75,
+      "delivered": 4757.639,
+      "buffer": 66.111,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 415,
+      "generated": 4859.167,
+      "delivered": 4859.167,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 417.5,
+      "generated": 4894.583,
+      "delivered": 4863.889,
+      "buffer": 30.694,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 420,
+      "generated": 4930,
+      "delivered": 4863.889,
+      "buffer": 66.111,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 422.5,
+      "generated": 4965.417,
+      "delivered": 4952.431,
+      "buffer": 12.986,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 425,
+      "generated": 5000.833,
+      "delivered": 4952.431,
+      "buffer": 48.403,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 427.5,
+      "generated": 5015,
+      "delivered": 4952.431,
+      "buffer": 62.569,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 430,
+      "generated": 5015,
+      "delivered": 4952.431,
+      "buffer": 62.569,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 432.5,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 435,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 437.5,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 440,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 442.5,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 445,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 447.5,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 450,
+      "generated": 5015,
+      "delivered": 5015,
+      "buffer": 0,
+      "lost": 0,
+      "linkUp": 0,
+      "station": -1
+     }
+    ],
+    "events": [
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Three Deep Space Network sites (California, Spain, Australia) take turns as Earth spins."
+     },
+     {
+      "t": 0,
+      "kind": "info",
+      "text": "Radio and laser travel at light speed. One way to the Moon takes 1.28 s on average, so a chat has a 2.6 s pause."
+     },
+     {
+      "t": 6.5,
+      "kind": "info",
+      "text": "Link up with Goldstone. Sending at 100 Mbps."
+     },
+     {
+      "t": 12.75,
+      "kind": "info",
+      "text": "Link up with Canberra. Sending at 100 Mbps."
+     },
+     {
+      "t": 23,
+      "kind": "info",
+      "text": "Link up with Madrid. Sending at 100 Mbps."
+     },
+     {
+      "t": 72,
+      "kind": "warn",
+      "text": "Behind the Moon: no contact for 41 minutes, like Artemis II. The buffer keeps filling."
+     },
+     {
+      "t": 94,
+      "kind": "warn",
+      "text": "Buffer is 80% full. Data comes in faster than you can send it."
+     },
+     {
+      "t": 450,
+      "kind": "success",
+      "text": "All science data delivered to Earth."
+     }
+    ],
+    "failure": null,
+    "score": {
+     "label": "Data delivered",
+     "value": 100,
+     "unit": "%",
+     "thresholds": [
+      60,
+      90,
+      99
+     ],
+     "higherIsBetter": true
+    },
+    "math": {
+     "title": "Talking to Earth: real math",
+     "steps": [
+      {
+       "eq": "t = d / c",
+       "num": "t = 384,400 km ÷ 299,792 km/s = 1.28 s one way"
+      },
+      {
+       "eq": "range",
+       "num": "1.21 s at the closest point, 1.35 s at the farthest"
+      },
+      {
+       "eq": "G ∝ D²",
+       "num": "(34 m ÷ 34 m)² = 1.00× signal"
+      },
+      {
+       "eq": "data = rate × time",
+       "num": "100.0 Mbps × 2.5 h × 3,600 s ÷ 1,000 = 900 Gb per day"
+      },
+      {
+       "eq": "daily volume",
+       "num": "100.0 Mbps x 2.5 h x 3.6 = 900.0 Gb per day"
+      },
+      {
+       "eq": "passes = 3 stations x contact / 3",
+       "num": "3 passes a day of 0.8 h each = 2.5 h of contact"
+      },
+      {
+       "eq": "buffer = made - sent",
+       "num": "5,015 Gb made - 5,015 Gb sent - 0 Gb lost = 0 Gb onboard"
+      }
+     ],
+     "src": "dsn"
+    }
+   }
+  },
+  "partial": {
    "label": "sband + dsn70",
    "seed": 1,
    "state": {
@@ -267,24 +2077,24 @@
     "ready": true,
     "seed": 1,
     "ok": true,
-    "outcome": "success",
-    "stars": 3,
+    "outcome": "partial",
+    "stars": 1,
     "time": {
      "unit": "h",
-     "total": 102
+     "total": 450
     },
     "fields": [
      {
       "key": "generated",
       "label": "Data made",
       "unit": "Gb",
-      "max": 85
+      "max": 5015
      },
      {
       "key": "delivered",
       "label": "Data sent to Earth",
       "unit": "Gb",
-      "max": 85
+      "max": 5015
      },
      {
       "key": "buffer",
@@ -296,7 +2106,7 @@
       "key": "lost",
       "label": "Data lost",
       "unit": "Gb",
-      "max": 85
+      "max": 5015
      },
      {
       "key": "linkUp",
@@ -322,16 +2132,7 @@
       "station": -1
      },
      {
-      "t": 0.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 1.167,
+      "t": 2.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -340,7 +2141,7 @@
       "station": -1
      },
      {
-      "t": 1.75,
+      "t": 5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -349,61 +2150,7 @@
       "station": -1
      },
      {
-      "t": 2.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 2.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 3.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 4.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 4.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 5.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 5.833,
+      "t": 7.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -412,43 +2159,7 @@
       "station": 0
      },
      {
-      "t": 6.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 7,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 7.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 8.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 8.75,
+      "t": 10,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -457,52 +2168,7 @@
       "station": -1
      },
      {
-      "t": 9.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 9.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 10.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 11.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 11.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 12.25,
+      "t": 12.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -511,70 +2177,7 @@
       "station": 2
      },
      {
-      "t": 12.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 13.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 14,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 14.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 15.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 15.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 16.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 16.917,
+      "t": 15,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -592,7 +2195,7 @@
       "station": -1
      },
      {
-      "t": 18.083,
+      "t": 20,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -601,61 +2204,7 @@
       "station": -1
      },
      {
-      "t": 18.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 19.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 19.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 20.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 21,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 21.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 22.167,
+      "t": 22.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -664,43 +2213,7 @@
       "station": 1
      },
      {
-      "t": 22.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 23.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 23.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 24.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 25.083,
+      "t": 25,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -709,7 +2222,7 @@
       "station": -1
      },
      {
-      "t": 25.667,
+      "t": 27.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -718,61 +2231,7 @@
       "station": -1
      },
      {
-      "t": 26.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 26.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 27.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 28,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 28.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 29.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 29.75,
+      "t": 30,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -781,70 +2240,7 @@
       "station": 0
      },
      {
-      "t": 30.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 30.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 31.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 32.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 32.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 33.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 33.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 34.417,
+      "t": 32.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -862,16 +2258,7 @@
       "station": -1
      },
      {
-      "t": 35.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 36.167,
+      "t": 37.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -880,43 +2267,7 @@
       "station": 2
      },
      {
-      "t": 36.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 37.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 37.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 38.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 39.083,
+      "t": 40,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -925,7 +2276,7 @@
       "station": -1
      },
      {
-      "t": 39.667,
+      "t": 42.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -934,7 +2285,7 @@
       "station": -1
      },
      {
-      "t": 40.25,
+      "t": 45,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -943,97 +2294,7 @@
       "station": -1
      },
      {
-      "t": 40.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 41.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 42,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 42.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 43.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 43.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 44.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 44.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 45.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 46.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 46.667,
+      "t": 47.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1042,79 +2303,7 @@
       "station": 1
      },
      {
-      "t": 47.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 47.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 48.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 49,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 49.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 50.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 50.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 51.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 51.917,
+      "t": 50,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1132,16 +2321,7 @@
       "station": -1
      },
      {
-      "t": 53.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 53.667,
+      "t": 55,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1150,43 +2330,7 @@
       "station": 0
      },
      {
-      "t": 54.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 54.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 55.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 56,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 56.583,
+      "t": 57.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1195,52 +2339,7 @@
       "station": -1
      },
      {
-      "t": 57.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 57.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 58.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 58.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 59.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 60.083,
+      "t": 60,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1249,7 +2348,7 @@
       "station": 2
      },
      {
-      "t": 60.667,
+      "t": 62.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1258,34 +2357,7 @@
       "station": 2
      },
      {
-      "t": 61.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 61.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 62.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 63,
+      "t": 65,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1294,97 +2366,7 @@
       "station": -1
      },
      {
-      "t": 63.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 64.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 64.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 65.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 65.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 66.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 67.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 67.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 68.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 68.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 69.417,
+      "t": 67.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -1402,499 +2384,1372 @@
       "station": -1
      },
      {
-      "t": 70.583,
-      "generated": 0,
+      "t": 72.5,
+      "generated": 7.083,
       "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 71.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 71.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 72.333,
-      "generated": 4.722,
-      "delivered": 0,
-      "buffer": 4.722,
+      "buffer": 7.083,
       "lost": 0,
       "linkUp": 0,
       "station": 1
      },
      {
-      "t": 72.917,
-      "generated": 12.986,
+      "t": 75,
+      "generated": 42.5,
       "delivered": 2.543,
-      "buffer": 10.443,
+      "buffer": 39.957,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 73.5,
-      "generated": 21.25,
+      "t": 77.5,
+      "generated": 77.917,
       "delivered": 2.543,
-      "buffer": 18.707,
+      "buffer": 75.373,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 74.083,
-      "generated": 29.514,
-      "delivered": 2.543,
-      "buffer": 26.971,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 74.667,
-      "generated": 37.778,
-      "delivered": 2.543,
-      "buffer": 35.235,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 75.25,
-      "generated": 46.042,
-      "delivered": 2.543,
-      "buffer": 43.498,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 75.833,
-      "generated": 54.306,
-      "delivered": 2.543,
-      "buffer": 51.762,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 76.417,
-      "generated": 62.569,
-      "delivered": 2.543,
-      "buffer": 60.026,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 77,
-      "generated": 70.833,
-      "delivered": 2.543,
-      "buffer": 68.29,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 77.583,
-      "generated": 79.097,
-      "delivered": 2.543,
-      "buffer": 76.554,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 78.167,
-      "generated": 85,
-      "delivered": 20.346,
-      "buffer": 64.654,
+      "t": 80,
+      "generated": 113.333,
+      "delivered": 76.298,
+      "buffer": 37.036,
       "lost": 0,
       "linkUp": 1,
       "station": 0
      },
      {
-      "t": 78.75,
-      "generated": 85,
-      "delivered": 38.149,
-      "buffer": 46.851,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 79.333,
-      "generated": 85,
-      "delivered": 55.952,
-      "buffer": 29.048,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 79.917,
-      "generated": 85,
-      "delivered": 73.754,
-      "buffer": 11.246,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 80.5,
-      "generated": 85,
+      "t": 82.5,
+      "generated": 148.75,
       "delivered": 83.927,
-      "buffer": 1.073,
+      "buffer": 64.823,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 81.083,
-      "generated": 85,
-      "delivered": 83.927,
-      "buffer": 1.073,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 81.667,
-      "generated": 85,
-      "delivered": 83.927,
-      "buffer": 1.073,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 82.25,
-      "generated": 85,
-      "delivered": 83.927,
-      "buffer": 1.073,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 82.833,
-      "generated": 85,
-      "delivered": 83.927,
-      "buffer": 1.073,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 83.417,
-      "generated": 85,
-      "delivered": 83.927,
-      "buffer": 1.073,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 84,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
+      "t": 85,
+      "generated": 184.167,
+      "delivered": 119.533,
+      "buffer": 64.634,
       "lost": 0,
       "linkUp": 1,
       "station": 2
-     },
-     {
-      "t": 84.583,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 85.167,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 85.75,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 86.333,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 86.917,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
      },
      {
       "t": 87.5,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
+      "generated": 219.583,
+      "delivered": 165.311,
+      "buffer": 54.272,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 88.083,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
+      "t": 90,
+      "generated": 255,
+      "delivered": 165.311,
+      "buffer": 89.689,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 88.667,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
+      "t": 92.5,
+      "generated": 290.417,
+      "delivered": 165.311,
+      "buffer": 125.105,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 89.25,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 89.833,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 90.417,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 91,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 91.583,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 92.167,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 92.75,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 93.333,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 93.917,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 94.5,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
+      "t": 95,
+      "generated": 325.833,
+      "delivered": 193.287,
+      "buffer": 132.546,
       "lost": 0,
       "linkUp": 1,
       "station": 1
      },
      {
-      "t": 95.083,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 95.667,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 96.25,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 96.833,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
+      "t": 97.5,
+      "generated": 361.25,
+      "delivered": 246.696,
+      "buffer": 114.554,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 97.417,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
+      "t": 100,
+      "generated": 396.667,
+      "delivered": 246.696,
+      "buffer": 149.971,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 98,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 98.583,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 99.167,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 99.75,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 100.333,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 100.917,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 101.5,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 102,
-      "generated": 85,
-      "delivered": 85,
-      "buffer": 0,
-      "lost": 0,
+      "t": 102.5,
+      "generated": 432.083,
+      "delivered": 274.671,
+      "buffer": 135.01,
+      "lost": 22.402,
       "linkUp": 1,
       "station": 0
+     },
+     {
+      "t": 105,
+      "generated": 467.5,
+      "delivered": 328.08,
+      "buffer": 117.019,
+      "lost": 22.402,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 107.5,
+      "generated": 502.917,
+      "delivered": 328.08,
+      "buffer": 150,
+      "lost": 24.837,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 110,
+      "generated": 538.333,
+      "delivered": 394.204,
+      "buffer": 114.57,
+      "lost": 29.559,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 112.5,
+      "generated": 573.75,
+      "delivered": 409.464,
+      "buffer": 134.727,
+      "lost": 29.559,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 115,
+      "generated": 609.167,
+      "delivered": 409.464,
+      "buffer": 150,
+      "lost": 49.703,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 117.5,
+      "generated": 644.583,
+      "delivered": 409.464,
+      "buffer": 150,
+      "lost": 85.12,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 120,
+      "generated": 680,
+      "delivered": 467.958,
+      "buffer": 118.658,
+      "lost": 93.384,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 122.5,
+      "generated": 715.417,
+      "delivered": 490.848,
+      "buffer": 131.185,
+      "lost": 93.384,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 125,
+      "generated": 750.833,
+      "delivered": 490.848,
+      "buffer": 150,
+      "lost": 109.986,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 127.5,
+      "generated": 786.25,
+      "delivered": 549.343,
+      "buffer": 118.658,
+      "lost": 118.249,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 130,
+      "generated": 821.667,
+      "delivered": 572.232,
+      "buffer": 131.185,
+      "lost": 118.249,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 132.5,
+      "generated": 857.083,
+      "delivered": 592.578,
+      "buffer": 139.098,
+      "lost": 125.407,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 135,
+      "generated": 892.5,
+      "delivered": 653.616,
+      "buffer": 113.477,
+      "lost": 125.407,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 137.5,
+      "generated": 927.917,
+      "delivered": 653.616,
+      "buffer": 148.894,
+      "lost": 125.407,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 140,
+      "generated": 963.333,
+      "delivered": 653.616,
+      "buffer": 150,
+      "lost": 159.717,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 142.5,
+      "generated": 998.75,
+      "delivered": 666.332,
+      "buffer": 143.187,
+      "lost": 189.231,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 145,
+      "generated": 1034.167,
+      "delivered": 735,
+      "buffer": 109.935,
+      "lost": 189.231,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 147.5,
+      "generated": 1069.583,
+      "delivered": 735,
+      "buffer": 145.352,
+      "lost": 189.231,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 150,
+      "generated": 1105,
+      "delivered": 747.716,
+      "buffer": 143.187,
+      "lost": 214.097,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 152.5,
+      "generated": 1140.417,
+      "delivered": 816.384,
+      "buffer": 109.935,
+      "lost": 214.097,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 155,
+      "generated": 1175.833,
+      "delivered": 816.384,
+      "buffer": 145.352,
+      "lost": 214.097,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 157.5,
+      "generated": 1211.25,
+      "delivered": 867.249,
+      "buffer": 122.746,
+      "lost": 221.255,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 160,
+      "generated": 1246.667,
+      "delivered": 897.768,
+      "buffer": 127.644,
+      "lost": 221.255,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 162.5,
+      "generated": 1282.083,
+      "delivered": 897.768,
+      "buffer": 150,
+      "lost": 234.315,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 165,
+      "generated": 1317.5,
+      "delivered": 897.768,
+      "buffer": 150,
+      "lost": 269.732,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 167.5,
+      "generated": 1352.917,
+      "delivered": 941.003,
+      "buffer": 126.834,
+      "lost": 285.079,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 170,
+      "generated": 1388.333,
+      "delivered": 979.152,
+      "buffer": 124.102,
+      "lost": 285.079,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 172.5,
+      "generated": 1423.75,
+      "delivered": 979.152,
+      "buffer": 150,
+      "lost": 294.598,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 175,
+      "generated": 1459.167,
+      "delivered": 1022.388,
+      "buffer": 126.834,
+      "lost": 309.945,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 177.5,
+      "generated": 1494.583,
+      "delivered": 1060.536,
+      "buffer": 124.102,
+      "lost": 309.945,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 180,
+      "generated": 1530,
+      "delivered": 1065.623,
+      "buffer": 147.275,
+      "lost": 317.103,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 182.5,
+      "generated": 1565.417,
+      "delivered": 1141.92,
+      "buffer": 106.394,
+      "lost": 317.103,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 185,
+      "generated": 1600.833,
+      "delivered": 1141.92,
+      "buffer": 141.81,
+      "lost": 317.103,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 187.5,
+      "generated": 1636.25,
+      "delivered": 1141.92,
+      "buffer": 150,
+      "lost": 344.33,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 190,
+      "generated": 1671.667,
+      "delivered": 1141.92,
+      "buffer": 150,
+      "lost": 379.746,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 192.5,
+      "generated": 1707.083,
+      "delivered": 1215.675,
+      "buffer": 110.482,
+      "lost": 380.927,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 195,
+      "generated": 1742.5,
+      "delivered": 1223.304,
+      "buffer": 138.269,
+      "lost": 380.927,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 197.5,
+      "generated": 1777.917,
+      "delivered": 1223.304,
+      "buffer": 150,
+      "lost": 404.612,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 200,
+      "generated": 1813.333,
+      "delivered": 1297.059,
+      "buffer": 110.482,
+      "lost": 405.793,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 202.5,
+      "generated": 1848.75,
+      "delivered": 1304.689,
+      "buffer": 138.269,
+      "lost": 405.793,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 205,
+      "generated": 1884.167,
+      "delivered": 1340.294,
+      "buffer": 130.922,
+      "lost": 412.95,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 207.5,
+      "generated": 1919.583,
+      "delivered": 1386.073,
+      "buffer": 120.56,
+      "lost": 412.95,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 210,
+      "generated": 1955,
+      "delivered": 1386.073,
+      "buffer": 150,
+      "lost": 418.927,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 212.5,
+      "generated": 1990.417,
+      "delivered": 1386.073,
+      "buffer": 150,
+      "lost": 454.344,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 215,
+      "generated": 2025.833,
+      "delivered": 1414.048,
+      "buffer": 135.01,
+      "lost": 476.775,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 217.5,
+      "generated": 2061.25,
+      "delivered": 1467.457,
+      "buffer": 117.019,
+      "lost": 476.775,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 220,
+      "generated": 2096.667,
+      "delivered": 1467.457,
+      "buffer": 150,
+      "lost": 479.21,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 222.5,
+      "generated": 2132.083,
+      "delivered": 1495.433,
+      "buffer": 135.01,
+      "lost": 501.64,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 225,
+      "generated": 2167.5,
+      "delivered": 1548.841,
+      "buffer": 117.019,
+      "lost": 501.64,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 227.5,
+      "generated": 2202.917,
+      "delivered": 1548.841,
+      "buffer": 150,
+      "lost": 504.076,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 230,
+      "generated": 2238.333,
+      "delivered": 1614.965,
+      "buffer": 114.57,
+      "lost": 508.798,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 232.5,
+      "generated": 2273.75,
+      "delivered": 1630.225,
+      "buffer": 134.727,
+      "lost": 508.798,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 235,
+      "generated": 2309.167,
+      "delivered": 1630.225,
+      "buffer": 150,
+      "lost": 528.942,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 237.5,
+      "generated": 2344.583,
+      "delivered": 1630.225,
+      "buffer": 150,
+      "lost": 564.358,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 240,
+      "generated": 2380,
+      "delivered": 1688.72,
+      "buffer": 118.658,
+      "lost": 572.622,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 242.5,
+      "generated": 2415.417,
+      "delivered": 1711.609,
+      "buffer": 131.185,
+      "lost": 572.622,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 245,
+      "generated": 2450.833,
+      "delivered": 1711.609,
+      "buffer": 150,
+      "lost": 589.224,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 247.5,
+      "generated": 2486.25,
+      "delivered": 1770.104,
+      "buffer": 118.658,
+      "lost": 597.488,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 250,
+      "generated": 2521.667,
+      "delivered": 1792.993,
+      "buffer": 131.185,
+      "lost": 597.488,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 252.5,
+      "generated": 2557.083,
+      "delivered": 1813.339,
+      "buffer": 139.098,
+      "lost": 604.646,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 255,
+      "generated": 2592.5,
+      "delivered": 1874.377,
+      "buffer": 113.477,
+      "lost": 604.646,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 257.5,
+      "generated": 2627.917,
+      "delivered": 1874.377,
+      "buffer": 148.894,
+      "lost": 604.646,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 260,
+      "generated": 2663.333,
+      "delivered": 1874.377,
+      "buffer": 150,
+      "lost": 638.956,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 262.5,
+      "generated": 2698.75,
+      "delivered": 1887.093,
+      "buffer": 143.187,
+      "lost": 668.47,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 265,
+      "generated": 2734.167,
+      "delivered": 1955.761,
+      "buffer": 109.935,
+      "lost": 668.47,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 267.5,
+      "generated": 2769.583,
+      "delivered": 1955.761,
+      "buffer": 145.352,
+      "lost": 668.47,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 270,
+      "generated": 2805,
+      "delivered": 1968.478,
+      "buffer": 143.187,
+      "lost": 693.336,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 272.5,
+      "generated": 2840.417,
+      "delivered": 2037.145,
+      "buffer": 109.935,
+      "lost": 693.336,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 275,
+      "generated": 2875.833,
+      "delivered": 2037.145,
+      "buffer": 145.352,
+      "lost": 693.336,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 277.5,
+      "generated": 2911.25,
+      "delivered": 2088.01,
+      "buffer": 122.746,
+      "lost": 700.494,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 280,
+      "generated": 2946.667,
+      "delivered": 2118.529,
+      "buffer": 127.644,
+      "lost": 700.494,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 282.5,
+      "generated": 2982.083,
+      "delivered": 2118.529,
+      "buffer": 150,
+      "lost": 713.554,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 285,
+      "generated": 3017.5,
+      "delivered": 2118.529,
+      "buffer": 150,
+      "lost": 748.971,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 287.5,
+      "generated": 3052.917,
+      "delivered": 2161.765,
+      "buffer": 126.834,
+      "lost": 764.318,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 290,
+      "generated": 3088.333,
+      "delivered": 2199.913,
+      "buffer": 124.102,
+      "lost": 764.318,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 292.5,
+      "generated": 3123.75,
+      "delivered": 2199.913,
+      "buffer": 150,
+      "lost": 773.837,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 295,
+      "generated": 3159.167,
+      "delivered": 2243.149,
+      "buffer": 126.834,
+      "lost": 789.184,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 297.5,
+      "generated": 3194.583,
+      "delivered": 2281.298,
+      "buffer": 124.102,
+      "lost": 789.184,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 300,
+      "generated": 3230,
+      "delivered": 2286.384,
+      "buffer": 147.275,
+      "lost": 796.341,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 302.5,
+      "generated": 3265.417,
+      "delivered": 2362.682,
+      "buffer": 106.394,
+      "lost": 796.341,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 305,
+      "generated": 3300.833,
+      "delivered": 2362.682,
+      "buffer": 141.81,
+      "lost": 796.341,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 307.5,
+      "generated": 3336.25,
+      "delivered": 2362.682,
+      "buffer": 150,
+      "lost": 823.568,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 310,
+      "generated": 3371.667,
+      "delivered": 2362.682,
+      "buffer": 150,
+      "lost": 858.985,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 312.5,
+      "generated": 3407.083,
+      "delivered": 2436.436,
+      "buffer": 110.482,
+      "lost": 860.166,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 315,
+      "generated": 3442.5,
+      "delivered": 2444.066,
+      "buffer": 138.269,
+      "lost": 860.166,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 317.5,
+      "generated": 3477.917,
+      "delivered": 2444.066,
+      "buffer": 150,
+      "lost": 883.851,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 320,
+      "generated": 3513.333,
+      "delivered": 2517.82,
+      "buffer": 110.482,
+      "lost": 885.031,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 322.5,
+      "generated": 3548.75,
+      "delivered": 2525.45,
+      "buffer": 138.269,
+      "lost": 885.031,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 325,
+      "generated": 3584.167,
+      "delivered": 2561.055,
+      "buffer": 130.922,
+      "lost": 892.189,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 327.5,
+      "generated": 3619.583,
+      "delivered": 2606.834,
+      "buffer": 120.56,
+      "lost": 892.189,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 330,
+      "generated": 3655,
+      "delivered": 2606.834,
+      "buffer": 150,
+      "lost": 898.166,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 332.5,
+      "generated": 3690.417,
+      "delivered": 2606.834,
+      "buffer": 150,
+      "lost": 933.583,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 335,
+      "generated": 3725.833,
+      "delivered": 2634.81,
+      "buffer": 135.01,
+      "lost": 956.013,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 337.5,
+      "generated": 3761.25,
+      "delivered": 2688.218,
+      "buffer": 117.019,
+      "lost": 956.013,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 340,
+      "generated": 3796.667,
+      "delivered": 2688.218,
+      "buffer": 150,
+      "lost": 958.449,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 342.5,
+      "generated": 3832.083,
+      "delivered": 2716.194,
+      "buffer": 135.01,
+      "lost": 980.879,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 345,
+      "generated": 3867.5,
+      "delivered": 2769.602,
+      "buffer": 117.019,
+      "lost": 980.879,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 347.5,
+      "generated": 3902.917,
+      "delivered": 2769.602,
+      "buffer": 150,
+      "lost": 983.315,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 350,
+      "generated": 3938.333,
+      "delivered": 2835.727,
+      "buffer": 114.57,
+      "lost": 988.037,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 352.5,
+      "generated": 3973.75,
+      "delivered": 2850.986,
+      "buffer": 134.727,
+      "lost": 988.037,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 355,
+      "generated": 4009.167,
+      "delivered": 2850.986,
+      "buffer": 150,
+      "lost": 1008.181,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 357.5,
+      "generated": 4044.583,
+      "delivered": 2850.986,
+      "buffer": 150,
+      "lost": 1043.597,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 360,
+      "generated": 4080,
+      "delivered": 2909.481,
+      "buffer": 118.658,
+      "lost": 1051.861,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 362.5,
+      "generated": 4115.417,
+      "delivered": 2932.37,
+      "buffer": 131.185,
+      "lost": 1051.861,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 365,
+      "generated": 4150.833,
+      "delivered": 2932.37,
+      "buffer": 150,
+      "lost": 1068.463,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 367.5,
+      "generated": 4186.25,
+      "delivered": 2990.865,
+      "buffer": 118.658,
+      "lost": 1076.727,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 370,
+      "generated": 4221.667,
+      "delivered": 3013.754,
+      "buffer": 131.185,
+      "lost": 1076.727,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 372.5,
+      "generated": 4257.083,
+      "delivered": 3034.1,
+      "buffer": 139.098,
+      "lost": 1083.885,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 375,
+      "generated": 4292.5,
+      "delivered": 3095.138,
+      "buffer": 113.477,
+      "lost": 1083.885,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 377.5,
+      "generated": 4327.917,
+      "delivered": 3095.138,
+      "buffer": 148.894,
+      "lost": 1083.885,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 380,
+      "generated": 4363.333,
+      "delivered": 3095.138,
+      "buffer": 150,
+      "lost": 1118.195,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 382.5,
+      "generated": 4398.75,
+      "delivered": 3107.855,
+      "buffer": 143.187,
+      "lost": 1147.709,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 385,
+      "generated": 4434.167,
+      "delivered": 3176.522,
+      "buffer": 109.935,
+      "lost": 1147.709,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 387.5,
+      "generated": 4469.583,
+      "delivered": 3176.522,
+      "buffer": 145.352,
+      "lost": 1147.709,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 390,
+      "generated": 4505,
+      "delivered": 3189.239,
+      "buffer": 143.187,
+      "lost": 1172.575,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 392.5,
+      "generated": 4540.417,
+      "delivered": 3257.907,
+      "buffer": 109.935,
+      "lost": 1172.575,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 395,
+      "generated": 4575.833,
+      "delivered": 3257.907,
+      "buffer": 145.352,
+      "lost": 1172.575,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 397.5,
+      "generated": 4611.25,
+      "delivered": 3308.772,
+      "buffer": 122.746,
+      "lost": 1179.732,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 400,
+      "generated": 4646.667,
+      "delivered": 3339.291,
+      "buffer": 127.644,
+      "lost": 1179.732,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 402.5,
+      "generated": 4682.083,
+      "delivered": 3339.291,
+      "buffer": 150,
+      "lost": 1192.793,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 405,
+      "generated": 4717.5,
+      "delivered": 3339.291,
+      "buffer": 150,
+      "lost": 1228.209,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 407.5,
+      "generated": 4752.917,
+      "delivered": 3382.526,
+      "buffer": 126.834,
+      "lost": 1243.557,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 410,
+      "generated": 4788.333,
+      "delivered": 3420.675,
+      "buffer": 124.102,
+      "lost": 1243.557,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 412.5,
+      "generated": 4823.75,
+      "delivered": 3420.675,
+      "buffer": 150,
+      "lost": 1253.075,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 415,
+      "generated": 4859.167,
+      "delivered": 3463.91,
+      "buffer": 126.834,
+      "lost": 1268.422,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 417.5,
+      "generated": 4894.583,
+      "delivered": 3502.059,
+      "buffer": 124.102,
+      "lost": 1268.422,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 420,
+      "generated": 4930,
+      "delivered": 3507.145,
+      "buffer": 147.275,
+      "lost": 1275.58,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 422.5,
+      "generated": 4965.417,
+      "delivered": 3583.443,
+      "buffer": 106.394,
+      "lost": 1275.58,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 425,
+      "generated": 5000.833,
+      "delivered": 3583.443,
+      "buffer": 141.81,
+      "lost": 1275.58,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 427.5,
+      "generated": 5015,
+      "delivered": 3583.443,
+      "buffer": 150,
+      "lost": 1281.557,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 430,
+      "generated": 5015,
+      "delivered": 3583.443,
+      "buffer": 150,
+      "lost": 1281.557,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 432.5,
+      "generated": 5015,
+      "delivered": 3657.197,
+      "buffer": 76.246,
+      "lost": 1281.557,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 435,
+      "generated": 5015,
+      "delivered": 3664.827,
+      "buffer": 68.616,
+      "lost": 1281.557,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 437.5,
+      "generated": 5015,
+      "delivered": 3664.827,
+      "buffer": 68.616,
+      "lost": 1281.557,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 440,
+      "generated": 5015,
+      "delivered": 3733.443,
+      "buffer": 0,
+      "lost": 1281.557,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 442.5,
+      "generated": 5015,
+      "delivered": 3733.443,
+      "buffer": 0,
+      "lost": 1281.557,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 445,
+      "generated": 5015,
+      "delivered": 3733.443,
+      "buffer": 0,
+      "lost": 1281.557,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 447.5,
+      "generated": 5015,
+      "delivered": 3733.443,
+      "buffer": 0,
+      "lost": 1281.557,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 450,
+      "generated": 5015,
+      "delivered": 3733.443,
+      "buffer": 0,
+      "lost": 1281.557,
+      "linkUp": 0,
+      "station": -1
      }
     ],
     "events": [
@@ -1929,15 +3784,25 @@
       "text": "Behind the Moon: no contact for 41 minutes, like Artemis II. The buffer keeps filling."
      },
      {
-      "t": 102,
-      "kind": "success",
-      "text": "All science data delivered to Earth."
+      "t": 92.08333333333333,
+      "kind": "warn",
+      "text": "Buffer is 80% full. Data comes in faster than you can send it."
+     },
+     {
+      "t": 100,
+      "kind": "fail",
+      "text": "Storage full at 150 Gb. New data is being thrown away."
+     },
+     {
+      "t": 450,
+      "kind": "warn",
+      "text": "74% of the data got home. Some was lost or is still onboard."
      }
     ],
     "failure": null,
     "score": {
      "label": "Data delivered",
-     "value": 100,
+     "value": 74.4,
      "unit": "%",
      "thresholds": [
       60,
@@ -1975,14 +3840,14 @@
       },
       {
        "eq": "buffer = made - sent",
-       "num": "85 Gb made - 85 Gb sent - 0 Gb lost = 0 Gb onboard"
+       "num": "5,015 Gb made - 3,733 Gb sent - 1,282 Gb lost = 0 Gb onboard"
       }
      ],
      "src": "dsn"
     }
    }
   },
-  "partial": {
+  "fail": {
    "label": "sband + dsn34",
    "seed": 1,
    "state": {
@@ -2026,25 +3891,25 @@
     "title": "Mission timeline",
     "ready": true,
     "seed": 1,
-    "ok": true,
-    "outcome": "partial",
-    "stars": 1,
+    "ok": false,
+    "outcome": "fail",
+    "stars": 0,
     "time": {
      "unit": "h",
-     "total": 102
+     "total": 450
     },
     "fields": [
      {
       "key": "generated",
       "label": "Data made",
       "unit": "Gb",
-      "max": 85
+      "max": 5015
      },
      {
       "key": "delivered",
       "label": "Data sent to Earth",
       "unit": "Gb",
-      "max": 85
+      "max": 5015
      },
      {
       "key": "buffer",
@@ -2056,7 +3921,7 @@
       "key": "lost",
       "label": "Data lost",
       "unit": "Gb",
-      "max": 85
+      "max": 5015
      },
      {
       "key": "linkUp",
@@ -2082,16 +3947,7 @@
       "station": -1
      },
      {
-      "t": 0.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 1.167,
+      "t": 2.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2100,7 +3956,7 @@
       "station": -1
      },
      {
-      "t": 1.75,
+      "t": 5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2109,61 +3965,7 @@
       "station": -1
      },
      {
-      "t": 2.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 2.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 3.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 4.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 4.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 5.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 5.833,
+      "t": 7.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2172,43 +3974,7 @@
       "station": 0
      },
      {
-      "t": 6.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 7,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 7.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 8.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 8.75,
+      "t": 10,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2217,52 +3983,7 @@
       "station": -1
      },
      {
-      "t": 9.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 9.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 10.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 11.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 11.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 12.25,
+      "t": 12.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2271,70 +3992,7 @@
       "station": 2
      },
      {
-      "t": 12.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 13.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 14,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 14.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 15.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 15.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 16.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 16.917,
+      "t": 15,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2352,7 +4010,7 @@
       "station": -1
      },
      {
-      "t": 18.083,
+      "t": 20,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2361,61 +4019,7 @@
       "station": -1
      },
      {
-      "t": 18.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 19.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 19.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 20.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 21,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 21.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 22.167,
+      "t": 22.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2424,43 +4028,7 @@
       "station": 1
      },
      {
-      "t": 22.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 23.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 23.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 24.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 25.083,
+      "t": 25,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2469,7 +4037,7 @@
       "station": -1
      },
      {
-      "t": 25.667,
+      "t": 27.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2478,61 +4046,7 @@
       "station": -1
      },
      {
-      "t": 26.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 26.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 27.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 28,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 28.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 29.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 29.75,
+      "t": 30,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2541,70 +4055,7 @@
       "station": 0
      },
      {
-      "t": 30.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 30.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 31.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 32.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 32.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 33.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 33.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 34.417,
+      "t": 32.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2622,16 +4073,7 @@
       "station": -1
      },
      {
-      "t": 35.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 36.167,
+      "t": 37.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2640,43 +4082,7 @@
       "station": 2
      },
      {
-      "t": 36.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 37.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 37.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 38.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 39.083,
+      "t": 40,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2685,7 +4091,7 @@
       "station": -1
      },
      {
-      "t": 39.667,
+      "t": 42.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2694,7 +4100,7 @@
       "station": -1
      },
      {
-      "t": 40.25,
+      "t": 45,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2703,97 +4109,7 @@
       "station": -1
      },
      {
-      "t": 40.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 41.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 42,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 42.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 43.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 43.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 44.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 44.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 45.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 46.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 46.667,
+      "t": 47.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2802,79 +4118,7 @@
       "station": 1
      },
      {
-      "t": 47.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 47.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 48.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 49,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 49.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 50.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 50.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 51.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 51.917,
+      "t": 50,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2892,16 +4136,7 @@
       "station": -1
      },
      {
-      "t": 53.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 53.667,
+      "t": 55,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2910,43 +4145,7 @@
       "station": 0
      },
      {
-      "t": 54.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 54.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 55.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 56,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 56.583,
+      "t": 57.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -2955,52 +4154,7 @@
       "station": -1
      },
      {
-      "t": 57.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 57.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 58.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 58.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 59.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 60.083,
+      "t": 60,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -3009,7 +4163,7 @@
       "station": 2
      },
      {
-      "t": 60.667,
+      "t": 62.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -3018,34 +4172,7 @@
       "station": 2
      },
      {
-      "t": 61.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 61.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 62.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 63,
+      "t": 65,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -3054,97 +4181,7 @@
       "station": -1
      },
      {
-      "t": 63.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 64.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 64.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 65.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 65.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 66.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 67.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 67.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 68.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 68.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 69.417,
+      "t": 67.5,
       "generated": 0,
       "delivered": 0,
       "buffer": 0,
@@ -3162,499 +4199,1372 @@
       "station": -1
      },
      {
-      "t": 70.583,
-      "generated": 0,
+      "t": 72.5,
+      "generated": 7.083,
       "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 71.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 71.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 72.333,
-      "generated": 4.722,
-      "delivered": 0,
-      "buffer": 4.722,
+      "buffer": 7.083,
       "lost": 0,
       "linkUp": 0,
       "station": 1
      },
      {
-      "t": 72.917,
-      "generated": 12.986,
+      "t": 75,
+      "generated": 42.5,
       "delivered": 0.6,
-      "buffer": 12.386,
+      "buffer": 41.9,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 73.5,
-      "generated": 21.25,
+      "t": 77.5,
+      "generated": 77.917,
       "delivered": 0.6,
-      "buffer": 20.65,
+      "buffer": 77.317,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 74.083,
-      "generated": 29.514,
-      "delivered": 0.6,
-      "buffer": 28.914,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 74.667,
-      "generated": 37.778,
-      "delivered": 0.6,
-      "buffer": 37.178,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 75.25,
-      "generated": 46.042,
-      "delivered": 0.6,
-      "buffer": 45.442,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 75.833,
-      "generated": 54.306,
-      "delivered": 0.6,
-      "buffer": 53.706,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 76.417,
-      "generated": 62.569,
-      "delivered": 0.6,
-      "buffer": 61.969,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 77,
-      "generated": 70.833,
-      "delivered": 0.6,
-      "buffer": 70.233,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 77.583,
-      "generated": 79.097,
-      "delivered": 0.6,
-      "buffer": 78.497,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 78.167,
-      "generated": 85,
-      "delivered": 4.8,
-      "buffer": 80.2,
+      "t": 80,
+      "generated": 113.333,
+      "delivered": 18,
+      "buffer": 95.333,
       "lost": 0,
       "linkUp": 1,
       "station": 0
      },
      {
-      "t": 78.75,
-      "generated": 85,
-      "delivered": 9,
-      "buffer": 76,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 79.333,
-      "generated": 85,
-      "delivered": 13.2,
-      "buffer": 71.8,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 79.917,
-      "generated": 85,
-      "delivered": 17.4,
-      "buffer": 67.6,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 80.5,
-      "generated": 85,
+      "t": 82.5,
+      "generated": 148.75,
       "delivered": 19.8,
-      "buffer": 65.2,
+      "buffer": 128.95,
       "lost": 0,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 81.083,
-      "generated": 85,
-      "delivered": 19.8,
-      "buffer": 65.2,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 81.667,
-      "generated": 85,
-      "delivered": 19.8,
-      "buffer": 65.2,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 82.25,
-      "generated": 85,
-      "delivered": 19.8,
-      "buffer": 65.2,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 82.833,
-      "generated": 85,
-      "delivered": 19.8,
-      "buffer": 65.2,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 83.417,
-      "generated": 85,
-      "delivered": 19.8,
-      "buffer": 65.2,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 84,
-      "generated": 85,
-      "delivered": 21,
-      "buffer": 64,
-      "lost": 0,
+      "t": 85,
+      "generated": 184.167,
+      "delivered": 28.2,
+      "buffer": 150,
+      "lost": 5.967,
       "linkUp": 1,
       "station": 2
-     },
-     {
-      "t": 84.583,
-      "generated": 85,
-      "delivered": 25.2,
-      "buffer": 59.8,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 85.167,
-      "generated": 85,
-      "delivered": 29.4,
-      "buffer": 55.6,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 85.75,
-      "generated": 85,
-      "delivered": 33.6,
-      "buffer": 51.4,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 86.333,
-      "generated": 85,
-      "delivered": 37.8,
-      "buffer": 47.2,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 86.917,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
      },
      {
       "t": 87.5,
-      "generated": 85,
+      "generated": 219.583,
       "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
+      "buffer": 150,
+      "lost": 30.583,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 88.083,
-      "generated": 85,
+      "t": 90,
+      "generated": 255,
       "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
+      "buffer": 150,
+      "lost": 66,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 88.667,
-      "generated": 85,
+      "t": 92.5,
+      "generated": 290.417,
       "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
+      "buffer": 150,
+      "lost": 101.417,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 89.25,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 89.833,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 90.417,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 91,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 91.583,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 92.167,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 92.75,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 93.333,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 93.917,
-      "generated": 85,
-      "delivered": 39,
-      "buffer": 46,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 94.5,
-      "generated": 85,
-      "delivered": 42,
-      "buffer": 43,
-      "lost": 0,
+      "t": 95,
+      "generated": 325.833,
+      "delivered": 45.6,
+      "buffer": 150,
+      "lost": 130.233,
       "linkUp": 1,
       "station": 1
      },
      {
-      "t": 95.083,
-      "generated": 85,
-      "delivered": 46.2,
-      "buffer": 38.8,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 95.667,
-      "generated": 85,
-      "delivered": 50.4,
-      "buffer": 34.6,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 96.25,
-      "generated": 85,
-      "delivered": 54.6,
-      "buffer": 30.4,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 96.833,
-      "generated": 85,
+      "t": 97.5,
+      "generated": 361.25,
       "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
+      "buffer": 150,
+      "lost": 153.05,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 97.417,
-      "generated": 85,
+      "t": 100,
+      "generated": 396.667,
       "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
+      "buffer": 150,
+      "lost": 188.467,
       "linkUp": 0,
       "station": -1
      },
      {
-      "t": 98,
-      "generated": 85,
-      "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 98.583,
-      "generated": 85,
-      "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 99.167,
-      "generated": 85,
-      "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 99.75,
-      "generated": 85,
-      "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 100.333,
-      "generated": 85,
-      "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 100.917,
-      "generated": 85,
-      "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 101.5,
-      "generated": 85,
-      "delivered": 58.2,
-      "buffer": 26.8,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 102,
-      "generated": 85,
-      "delivered": 61.2,
-      "buffer": 23.8,
-      "lost": 0,
+      "t": 102.5,
+      "generated": 432.083,
+      "delivered": 64.8,
+      "buffer": 150,
+      "lost": 217.283,
       "linkUp": 1,
       "station": 0
+     },
+     {
+      "t": 105,
+      "generated": 467.5,
+      "delivered": 77.4,
+      "buffer": 150,
+      "lost": 240.1,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 107.5,
+      "generated": 502.917,
+      "delivered": 77.4,
+      "buffer": 150,
+      "lost": 275.517,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 110,
+      "generated": 538.333,
+      "delivered": 93,
+      "buffer": 150,
+      "lost": 295.333,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 112.5,
+      "generated": 573.75,
+      "delivered": 96.6,
+      "buffer": 150,
+      "lost": 327.15,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 115,
+      "generated": 609.167,
+      "delivered": 96.6,
+      "buffer": 150,
+      "lost": 362.567,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 117.5,
+      "generated": 644.583,
+      "delivered": 96.6,
+      "buffer": 150,
+      "lost": 397.983,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 120,
+      "generated": 680,
+      "delivered": 110.4,
+      "buffer": 150,
+      "lost": 419.6,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 122.5,
+      "generated": 715.417,
+      "delivered": 115.8,
+      "buffer": 150,
+      "lost": 449.617,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 125,
+      "generated": 750.833,
+      "delivered": 115.8,
+      "buffer": 150,
+      "lost": 485.033,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 127.5,
+      "generated": 786.25,
+      "delivered": 129.6,
+      "buffer": 150,
+      "lost": 506.65,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 130,
+      "generated": 821.667,
+      "delivered": 135,
+      "buffer": 150,
+      "lost": 536.667,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 132.5,
+      "generated": 857.083,
+      "delivered": 139.8,
+      "buffer": 150,
+      "lost": 567.283,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 135,
+      "generated": 892.5,
+      "delivered": 154.2,
+      "buffer": 150,
+      "lost": 588.3,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 137.5,
+      "generated": 927.917,
+      "delivered": 154.2,
+      "buffer": 150,
+      "lost": 623.717,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 140,
+      "generated": 963.333,
+      "delivered": 154.2,
+      "buffer": 150,
+      "lost": 659.133,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 142.5,
+      "generated": 998.75,
+      "delivered": 157.2,
+      "buffer": 150,
+      "lost": 691.55,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 145,
+      "generated": 1034.167,
+      "delivered": 173.4,
+      "buffer": 150,
+      "lost": 710.767,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 147.5,
+      "generated": 1069.583,
+      "delivered": 173.4,
+      "buffer": 150,
+      "lost": 746.183,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 150,
+      "generated": 1105,
+      "delivered": 176.4,
+      "buffer": 150,
+      "lost": 778.6,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 152.5,
+      "generated": 1140.417,
+      "delivered": 192.6,
+      "buffer": 150,
+      "lost": 797.817,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 155,
+      "generated": 1175.833,
+      "delivered": 192.6,
+      "buffer": 150,
+      "lost": 833.233,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 157.5,
+      "generated": 1211.25,
+      "delivered": 204.6,
+      "buffer": 150,
+      "lost": 856.65,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 160,
+      "generated": 1246.667,
+      "delivered": 211.8,
+      "buffer": 150,
+      "lost": 884.867,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 162.5,
+      "generated": 1282.083,
+      "delivered": 211.8,
+      "buffer": 150,
+      "lost": 920.283,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 165,
+      "generated": 1317.5,
+      "delivered": 211.8,
+      "buffer": 150,
+      "lost": 955.7,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 167.5,
+      "generated": 1352.917,
+      "delivered": 222,
+      "buffer": 150,
+      "lost": 980.917,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 170,
+      "generated": 1388.333,
+      "delivered": 231,
+      "buffer": 150,
+      "lost": 1007.333,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 172.5,
+      "generated": 1423.75,
+      "delivered": 231,
+      "buffer": 150,
+      "lost": 1042.75,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 175,
+      "generated": 1459.167,
+      "delivered": 241.2,
+      "buffer": 150,
+      "lost": 1067.967,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 177.5,
+      "generated": 1494.583,
+      "delivered": 250.2,
+      "buffer": 150,
+      "lost": 1094.383,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 180,
+      "generated": 1530,
+      "delivered": 251.4,
+      "buffer": 150,
+      "lost": 1128.6,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 182.5,
+      "generated": 1565.417,
+      "delivered": 269.4,
+      "buffer": 150,
+      "lost": 1146.017,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 185,
+      "generated": 1600.833,
+      "delivered": 269.4,
+      "buffer": 150,
+      "lost": 1181.433,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 187.5,
+      "generated": 1636.25,
+      "delivered": 269.4,
+      "buffer": 150,
+      "lost": 1216.85,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 190,
+      "generated": 1671.667,
+      "delivered": 269.4,
+      "buffer": 150,
+      "lost": 1252.267,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 192.5,
+      "generated": 1707.083,
+      "delivered": 286.8,
+      "buffer": 150,
+      "lost": 1270.283,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 195,
+      "generated": 1742.5,
+      "delivered": 288.6,
+      "buffer": 150,
+      "lost": 1303.9,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 197.5,
+      "generated": 1777.917,
+      "delivered": 288.6,
+      "buffer": 150,
+      "lost": 1339.317,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 200,
+      "generated": 1813.333,
+      "delivered": 306,
+      "buffer": 150,
+      "lost": 1357.333,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 202.5,
+      "generated": 1848.75,
+      "delivered": 307.8,
+      "buffer": 150,
+      "lost": 1390.95,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 205,
+      "generated": 1884.167,
+      "delivered": 316.2,
+      "buffer": 150,
+      "lost": 1417.967,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 207.5,
+      "generated": 1919.583,
+      "delivered": 327,
+      "buffer": 150,
+      "lost": 1442.583,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 210,
+      "generated": 1955,
+      "delivered": 327,
+      "buffer": 150,
+      "lost": 1478,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 212.5,
+      "generated": 1990.417,
+      "delivered": 327,
+      "buffer": 150,
+      "lost": 1513.417,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 215,
+      "generated": 2025.833,
+      "delivered": 333.6,
+      "buffer": 150,
+      "lost": 1542.233,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 217.5,
+      "generated": 2061.25,
+      "delivered": 346.2,
+      "buffer": 150,
+      "lost": 1565.05,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 220,
+      "generated": 2096.667,
+      "delivered": 346.2,
+      "buffer": 150,
+      "lost": 1600.467,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 222.5,
+      "generated": 2132.083,
+      "delivered": 352.8,
+      "buffer": 150,
+      "lost": 1629.283,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 225,
+      "generated": 2167.5,
+      "delivered": 365.4,
+      "buffer": 150,
+      "lost": 1652.1,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 227.5,
+      "generated": 2202.917,
+      "delivered": 365.4,
+      "buffer": 150,
+      "lost": 1687.517,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 230,
+      "generated": 2238.333,
+      "delivered": 381,
+      "buffer": 150,
+      "lost": 1707.333,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 232.5,
+      "generated": 2273.75,
+      "delivered": 384.6,
+      "buffer": 150,
+      "lost": 1739.15,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 235,
+      "generated": 2309.167,
+      "delivered": 384.6,
+      "buffer": 150,
+      "lost": 1774.567,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 237.5,
+      "generated": 2344.583,
+      "delivered": 384.6,
+      "buffer": 150,
+      "lost": 1809.983,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 240,
+      "generated": 2380,
+      "delivered": 398.4,
+      "buffer": 150,
+      "lost": 1831.6,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 242.5,
+      "generated": 2415.417,
+      "delivered": 403.8,
+      "buffer": 150,
+      "lost": 1861.617,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 245,
+      "generated": 2450.833,
+      "delivered": 403.8,
+      "buffer": 150,
+      "lost": 1897.033,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 247.5,
+      "generated": 2486.25,
+      "delivered": 417.6,
+      "buffer": 150,
+      "lost": 1918.65,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 250,
+      "generated": 2521.667,
+      "delivered": 423,
+      "buffer": 150,
+      "lost": 1948.667,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 252.5,
+      "generated": 2557.083,
+      "delivered": 427.8,
+      "buffer": 150,
+      "lost": 1979.283,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 255,
+      "generated": 2592.5,
+      "delivered": 442.2,
+      "buffer": 150,
+      "lost": 2000.3,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 257.5,
+      "generated": 2627.917,
+      "delivered": 442.2,
+      "buffer": 150,
+      "lost": 2035.717,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 260,
+      "generated": 2663.333,
+      "delivered": 442.2,
+      "buffer": 150,
+      "lost": 2071.133,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 262.5,
+      "generated": 2698.75,
+      "delivered": 445.2,
+      "buffer": 150,
+      "lost": 2103.55,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 265,
+      "generated": 2734.167,
+      "delivered": 461.4,
+      "buffer": 150,
+      "lost": 2122.767,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 267.5,
+      "generated": 2769.583,
+      "delivered": 461.4,
+      "buffer": 150,
+      "lost": 2158.183,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 270,
+      "generated": 2805,
+      "delivered": 464.4,
+      "buffer": 150,
+      "lost": 2190.6,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 272.5,
+      "generated": 2840.417,
+      "delivered": 480.6,
+      "buffer": 150,
+      "lost": 2209.817,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 275,
+      "generated": 2875.833,
+      "delivered": 480.6,
+      "buffer": 150,
+      "lost": 2245.233,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 277.5,
+      "generated": 2911.25,
+      "delivered": 492.6,
+      "buffer": 150,
+      "lost": 2268.65,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 280,
+      "generated": 2946.667,
+      "delivered": 499.8,
+      "buffer": 150,
+      "lost": 2296.867,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 282.5,
+      "generated": 2982.083,
+      "delivered": 499.8,
+      "buffer": 150,
+      "lost": 2332.283,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 285,
+      "generated": 3017.5,
+      "delivered": 499.8,
+      "buffer": 150,
+      "lost": 2367.7,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 287.5,
+      "generated": 3052.917,
+      "delivered": 510,
+      "buffer": 150,
+      "lost": 2392.917,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 290,
+      "generated": 3088.333,
+      "delivered": 519,
+      "buffer": 150,
+      "lost": 2419.333,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 292.5,
+      "generated": 3123.75,
+      "delivered": 519,
+      "buffer": 150,
+      "lost": 2454.75,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 295,
+      "generated": 3159.167,
+      "delivered": 529.2,
+      "buffer": 150,
+      "lost": 2479.967,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 297.5,
+      "generated": 3194.583,
+      "delivered": 538.2,
+      "buffer": 150,
+      "lost": 2506.383,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 300,
+      "generated": 3230,
+      "delivered": 539.4,
+      "buffer": 150,
+      "lost": 2540.6,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 302.5,
+      "generated": 3265.417,
+      "delivered": 557.4,
+      "buffer": 150,
+      "lost": 2558.017,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 305,
+      "generated": 3300.833,
+      "delivered": 557.4,
+      "buffer": 150,
+      "lost": 2593.433,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 307.5,
+      "generated": 3336.25,
+      "delivered": 557.4,
+      "buffer": 150,
+      "lost": 2628.85,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 310,
+      "generated": 3371.667,
+      "delivered": 557.4,
+      "buffer": 150,
+      "lost": 2664.267,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 312.5,
+      "generated": 3407.083,
+      "delivered": 574.8,
+      "buffer": 150,
+      "lost": 2682.283,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 315,
+      "generated": 3442.5,
+      "delivered": 576.6,
+      "buffer": 150,
+      "lost": 2715.9,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 317.5,
+      "generated": 3477.917,
+      "delivered": 576.6,
+      "buffer": 150,
+      "lost": 2751.317,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 320,
+      "generated": 3513.333,
+      "delivered": 594,
+      "buffer": 150,
+      "lost": 2769.333,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 322.5,
+      "generated": 3548.75,
+      "delivered": 595.8,
+      "buffer": 150,
+      "lost": 2802.95,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 325,
+      "generated": 3584.167,
+      "delivered": 604.2,
+      "buffer": 150,
+      "lost": 2829.967,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 327.5,
+      "generated": 3619.583,
+      "delivered": 615,
+      "buffer": 150,
+      "lost": 2854.583,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 330,
+      "generated": 3655,
+      "delivered": 615,
+      "buffer": 150,
+      "lost": 2890,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 332.5,
+      "generated": 3690.417,
+      "delivered": 615,
+      "buffer": 150,
+      "lost": 2925.417,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 335,
+      "generated": 3725.833,
+      "delivered": 621.6,
+      "buffer": 150,
+      "lost": 2954.233,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 337.5,
+      "generated": 3761.25,
+      "delivered": 634.2,
+      "buffer": 150,
+      "lost": 2977.05,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 340,
+      "generated": 3796.667,
+      "delivered": 634.2,
+      "buffer": 150,
+      "lost": 3012.467,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 342.5,
+      "generated": 3832.083,
+      "delivered": 640.8,
+      "buffer": 150,
+      "lost": 3041.283,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 345,
+      "generated": 3867.5,
+      "delivered": 653.4,
+      "buffer": 150,
+      "lost": 3064.1,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 347.5,
+      "generated": 3902.917,
+      "delivered": 653.4,
+      "buffer": 150,
+      "lost": 3099.517,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 350,
+      "generated": 3938.333,
+      "delivered": 669,
+      "buffer": 150,
+      "lost": 3119.333,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 352.5,
+      "generated": 3973.75,
+      "delivered": 672.6,
+      "buffer": 150,
+      "lost": 3151.15,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 355,
+      "generated": 4009.167,
+      "delivered": 672.6,
+      "buffer": 150,
+      "lost": 3186.567,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 357.5,
+      "generated": 4044.583,
+      "delivered": 672.6,
+      "buffer": 150,
+      "lost": 3221.983,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 360,
+      "generated": 4080,
+      "delivered": 686.4,
+      "buffer": 150,
+      "lost": 3243.6,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 362.5,
+      "generated": 4115.417,
+      "delivered": 691.8,
+      "buffer": 150,
+      "lost": 3273.617,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 365,
+      "generated": 4150.833,
+      "delivered": 691.8,
+      "buffer": 150,
+      "lost": 3309.033,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 367.5,
+      "generated": 4186.25,
+      "delivered": 705.6,
+      "buffer": 150,
+      "lost": 3330.65,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 370,
+      "generated": 4221.667,
+      "delivered": 711,
+      "buffer": 150,
+      "lost": 3360.667,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 372.5,
+      "generated": 4257.083,
+      "delivered": 715.8,
+      "buffer": 150,
+      "lost": 3391.283,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 375,
+      "generated": 4292.5,
+      "delivered": 730.2,
+      "buffer": 150,
+      "lost": 3412.3,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 377.5,
+      "generated": 4327.917,
+      "delivered": 730.2,
+      "buffer": 150,
+      "lost": 3447.717,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 380,
+      "generated": 4363.333,
+      "delivered": 730.2,
+      "buffer": 150,
+      "lost": 3483.133,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 382.5,
+      "generated": 4398.75,
+      "delivered": 733.2,
+      "buffer": 150,
+      "lost": 3515.55,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 385,
+      "generated": 4434.167,
+      "delivered": 749.4,
+      "buffer": 150,
+      "lost": 3534.767,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 387.5,
+      "generated": 4469.583,
+      "delivered": 749.4,
+      "buffer": 150,
+      "lost": 3570.183,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 390,
+      "generated": 4505,
+      "delivered": 752.4,
+      "buffer": 150,
+      "lost": 3602.6,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 392.5,
+      "generated": 4540.417,
+      "delivered": 768.6,
+      "buffer": 150,
+      "lost": 3621.817,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 395,
+      "generated": 4575.833,
+      "delivered": 768.6,
+      "buffer": 150,
+      "lost": 3657.233,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 397.5,
+      "generated": 4611.25,
+      "delivered": 780.6,
+      "buffer": 150,
+      "lost": 3680.65,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 400,
+      "generated": 4646.667,
+      "delivered": 787.8,
+      "buffer": 150,
+      "lost": 3708.867,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 402.5,
+      "generated": 4682.083,
+      "delivered": 787.8,
+      "buffer": 150,
+      "lost": 3744.283,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 405,
+      "generated": 4717.5,
+      "delivered": 787.8,
+      "buffer": 150,
+      "lost": 3779.7,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 407.5,
+      "generated": 4752.917,
+      "delivered": 798,
+      "buffer": 150,
+      "lost": 3804.917,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 410,
+      "generated": 4788.333,
+      "delivered": 807,
+      "buffer": 150,
+      "lost": 3831.333,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 412.5,
+      "generated": 4823.75,
+      "delivered": 807,
+      "buffer": 150,
+      "lost": 3866.75,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 415,
+      "generated": 4859.167,
+      "delivered": 817.2,
+      "buffer": 150,
+      "lost": 3891.967,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 417.5,
+      "generated": 4894.583,
+      "delivered": 826.2,
+      "buffer": 150,
+      "lost": 3918.383,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 420,
+      "generated": 4930,
+      "delivered": 827.4,
+      "buffer": 150,
+      "lost": 3952.6,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 422.5,
+      "generated": 4965.417,
+      "delivered": 845.4,
+      "buffer": 150,
+      "lost": 3970.017,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 425,
+      "generated": 5000.833,
+      "delivered": 845.4,
+      "buffer": 150,
+      "lost": 4005.433,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 427.5,
+      "generated": 5015,
+      "delivered": 845.4,
+      "buffer": 150,
+      "lost": 4019.6,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 430,
+      "generated": 5015,
+      "delivered": 845.4,
+      "buffer": 150,
+      "lost": 4019.6,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 432.5,
+      "generated": 5015,
+      "delivered": 862.8,
+      "buffer": 132.6,
+      "lost": 4019.6,
+      "linkUp": 1,
+      "station": 1
+     },
+     {
+      "t": 435,
+      "generated": 5015,
+      "delivered": 864.6,
+      "buffer": 130.8,
+      "lost": 4019.6,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 437.5,
+      "generated": 5015,
+      "delivered": 864.6,
+      "buffer": 130.8,
+      "lost": 4019.6,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 440,
+      "generated": 5015,
+      "delivered": 882,
+      "buffer": 113.4,
+      "lost": 4019.6,
+      "linkUp": 1,
+      "station": 0
+     },
+     {
+      "t": 442.5,
+      "generated": 5015,
+      "delivered": 883.8,
+      "buffer": 111.6,
+      "lost": 4019.6,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 445,
+      "generated": 5015,
+      "delivered": 892.2,
+      "buffer": 103.2,
+      "lost": 4019.6,
+      "linkUp": 1,
+      "station": 2
+     },
+     {
+      "t": 447.5,
+      "generated": 5015,
+      "delivered": 903,
+      "buffer": 92.4,
+      "lost": 4019.6,
+      "linkUp": 0,
+      "station": -1
+     },
+     {
+      "t": 450,
+      "generated": 5015,
+      "delivered": 903,
+      "buffer": 92.4,
+      "lost": 4019.6,
+      "linkUp": 0,
+      "station": -1
      }
     ],
     "events": [
@@ -3689,15 +5599,30 @@
       "text": "Behind the Moon: no contact for 41 minutes, like Artemis II. The buffer keeps filling."
      },
      {
-      "t": 102,
+      "t": 81.83333333333333,
       "kind": "warn",
-      "text": "72% of the data got home. Some was lost or is still onboard."
+      "text": "Buffer is 80% full. Data comes in faster than you can send it."
+     },
+     {
+      "t": 84.08333333333333,
+      "kind": "fail",
+      "text": "Storage full at 150 Gb. New data is being thrown away."
+     },
+     {
+      "t": 450,
+      "kind": "fail",
+      "text": "Mission data lost: only 18% delivered."
      }
     ],
-    "failure": null,
+    "failure": {
+     "t": 84.08333333333333,
+     "code": "dataLost",
+     "cause": "Only 18% of your data reached Earth. Your instruments make 340 Gb a day but the link sends 58 Gb, so the buffer filled up.",
+     "fix": "Use Ka-band high-gain antenna, which sends 900 Gb a day."
+    },
     "score": {
      "label": "Data delivered",
-     "value": 72,
+     "value": 18,
      "unit": "%",
      "thresholds": [
       60,
@@ -3735,1803 +5660,7 @@
       },
       {
        "eq": "buffer = made - sent",
-       "num": "85 Gb made - 61 Gb sent - 0 Gb lost = 24 Gb onboard"
-      }
-     ],
-     "src": "dsn"
-    }
-   }
-  },
-  "fail": {
-   "label": "laser + dsn34",
-   "seed": 9,
-   "state": {
-    "difficulty": "cadet",
-    "question": "made",
-    "measure": "chem",
-    "missionType": "robotic",
-    "design": {
-     "structure": "aluminum",
-     "shield": "whipple",
-     "thermal": "passive",
-     "power": "solarBig",
-     "science": [
-      "spectrometer",
-      "camera"
-     ]
-    },
-    "rocket": "medium",
-    "crew": null,
-    "flight": {
-     "margin": 0.15
-    },
-    "comms": {
-     "link": "laser",
-     "dish": "dsn34"
-    },
-    "site": null,
-    "landing": null,
-    "events": {
-     "massGrowth": 0,
-     "extraCost": 0,
-     "risk": 0,
-     "extraDays": 0,
-     "log": []
-    },
-    "surface": null,
-    "returnTrip": null
-   },
-   "result": {
-    "phase": 4,
-    "title": "Mission timeline",
-    "ready": true,
-    "seed": 9,
-    "ok": false,
-    "outcome": "fail",
-    "stars": 0,
-    "time": {
-     "unit": "h",
-     "total": 102
-    },
-    "fields": [
-     {
-      "key": "generated",
-      "label": "Data made",
-      "unit": "Gb",
-      "max": 85
-     },
-     {
-      "key": "delivered",
-      "label": "Data sent to Earth",
-      "unit": "Gb",
-      "max": 85
-     },
-     {
-      "key": "buffer",
-      "label": "Onboard buffer",
-      "unit": "Gb",
-      "max": 150
-     },
-     {
-      "key": "lost",
-      "label": "Data lost",
-      "unit": "Gb",
-      "max": 85
-     },
-     {
-      "key": "linkUp",
-      "label": "Link up",
-      "unit": "",
-      "max": 1
-     },
-     {
-      "key": "station",
-      "label": "Station pass (0, 1, 2 take turns, -1 none)",
-      "unit": "",
-      "max": 2
-     }
-    ],
-    "frames": [
-     {
-      "t": 0,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 0.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 1.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 1.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 2.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 2.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 3.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 4.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 4.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 5.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 5.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 6.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 7,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 2
-     },
-     {
-      "t": 7.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 2
-     },
-     {
-      "t": 8.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 8.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 9.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 9.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 10.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 11.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 11.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 12.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 12.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 13.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 14,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 14.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 15.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 15.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 16.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 16.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 17.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 1
-     },
-     {
-      "t": 18.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 18.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 19.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 19.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 20.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 21,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 21.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 22.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 22.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 23.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 23.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 24.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 25.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 25.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 26.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 26.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 27.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 28,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 28.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 29.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 29.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 30.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 30.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 31.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 32.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 32.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 33.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 33.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 34.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 35,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 35.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 36.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 36.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 37.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 37.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 38.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 39.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 39.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 40.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 40.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 41.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 1
-     },
-     {
-      "t": 42,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 42.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 43.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 43.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 44.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 44.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 45.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 46.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 46.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 47.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 47.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 48.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 49,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 0
-     },
-     {
-      "t": 49.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 50.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 50.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 51.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 51.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 52.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 53.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 53.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 54.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 54.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 55.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 2
-     },
-     {
-      "t": 56,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 56.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 57.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 57.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 58.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 58.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 59.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 60.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 60.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 61.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 61.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 62.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 63,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 63.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 64.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 64.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 65.333,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 65.917,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 1
-     },
-     {
-      "t": 66.5,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 67.083,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 67.667,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 68.25,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 68.833,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 69.417,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 70,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 70.583,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 71.167,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 71.75,
-      "generated": 0,
-      "delivered": 0,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 72.333,
-      "generated": 4.722,
-      "delivered": 0,
-      "buffer": 4.722,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 72.917,
-      "generated": 12.986,
-      "delivered": 12.986,
-      "buffer": 0,
-      "lost": 0,
-      "linkUp": 1,
-      "station": 0
-     },
-     {
-      "t": 73.5,
-      "generated": 21.25,
-      "delivered": 20.069,
-      "buffer": 1.181,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 74.083,
-      "generated": 29.514,
-      "delivered": 20.069,
-      "buffer": 9.444,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 74.667,
-      "generated": 37.778,
-      "delivered": 20.069,
-      "buffer": 17.708,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 75.25,
-      "generated": 46.042,
-      "delivered": 20.069,
-      "buffer": 25.972,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 75.833,
-      "generated": 54.306,
-      "delivered": 20.069,
-      "buffer": 34.236,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 76.417,
-      "generated": 62.569,
-      "delivered": 20.069,
-      "buffer": 42.5,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 77,
-      "generated": 70.833,
-      "delivered": 20.069,
-      "buffer": 50.764,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 77.583,
-      "generated": 79.097,
-      "delivered": 20.069,
-      "buffer": 59.028,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 78.167,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 78.75,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 79.333,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 2
-     },
-     {
-      "t": 79.917,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 80.5,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 81.083,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 81.667,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 82.25,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 82.833,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 83.417,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 84,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 84.583,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 85.167,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 85.75,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 86.333,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 86.917,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 87.5,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 88.083,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 88.667,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 89.25,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 1
-     },
-     {
-      "t": 89.833,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 1
-     },
-     {
-      "t": 90.417,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 91,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 91.583,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 92.167,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 92.75,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 93.333,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 93.917,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 94.5,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 95.083,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 95.667,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 96.25,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 96.833,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 0
-     },
-     {
-      "t": 97.417,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": 0
-     },
-     {
-      "t": 98,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 98.583,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 99.167,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 99.75,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 100.333,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 100.917,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 101.5,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     },
-     {
-      "t": 102,
-      "generated": 85,
-      "delivered": 20.069,
-      "buffer": 64.931,
-      "lost": 0,
-      "linkUp": 0,
-      "station": -1
-     }
-    ],
-    "events": [
-     {
-      "t": 0,
-      "kind": "info",
-      "text": "The laser talks to optical ground stations. Clouds can block them, so it passes when the sky is clear."
-     },
-     {
-      "t": 0,
-      "kind": "info",
-      "text": "Radio and laser travel at light speed. One way to the Moon takes 1.28 s on average, so a chat has a 2.6 s pause."
-     },
-     {
-      "t": 0.5833333333333333,
-      "kind": "info",
-      "text": "Link up with the optical ground station. Sending at 260 Mbps."
-     },
-     {
-      "t": 6.833333333333333,
-      "kind": "warn",
-      "text": "Clouds over the optical ground station block the laser. This pass is lost."
-     },
-     {
-      "t": 17.083333333333332,
-      "kind": "warn",
-      "text": "Clouds over the optical ground station block the laser. This pass is lost."
-     },
-     {
-      "t": 24.583333333333332,
-      "kind": "info",
-      "text": "Link up with the optical ground station. Sending at 260 Mbps."
-     },
-     {
-      "t": 30.833333333333332,
-      "kind": "info",
-      "text": "Link up with the optical ground station. Sending at 260 Mbps."
-     },
-     {
-      "t": 41.08333333333333,
-      "kind": "warn",
-      "text": "Clouds over the optical ground station block the laser. This pass is lost."
-     },
-     {
-      "t": 48.58333333333333,
-      "kind": "warn",
-      "text": "Clouds over the optical ground station block the laser. This pass is lost."
-     },
-     {
-      "t": 72,
-      "kind": "warn",
-      "text": "Behind the Moon: no contact for 41 minutes, like Artemis II. The buffer keeps filling."
-     },
-     {
-      "t": 78.83333333333333,
-      "kind": "warn",
-      "text": "Clouds over the optical ground station block the laser. This pass is lost."
-     },
-     {
-      "t": 89.08333333333333,
-      "kind": "warn",
-      "text": "Clouds over the optical ground station block the laser. This pass is lost."
-     },
-     {
-      "t": 96.58333333333333,
-      "kind": "warn",
-      "text": "Clouds over the optical ground station block the laser. This pass is lost."
-     },
-     {
-      "t": 102,
-      "kind": "fail",
-      "text": "Mission data lost: only 24% delivered."
-     }
-    ],
-    "failure": {
-     "t": 102,
-     "code": "dataLost",
-     "cause": "Only 24% of your data reached Earth. Your instruments make 340 Gb a day but the link sends 2,340 Gb, so the buffer filled up.",
-     "fix": "Use Ka-band high-gain antenna, which sends 900 Gb a day."
-    },
-    "score": {
-     "label": "Data delivered",
-     "value": 23.6,
-     "unit": "%",
-     "thresholds": [
-      60,
-      90,
-      99
-     ],
-     "higherIsBetter": true
-    },
-    "math": {
-     "title": "Talking to Earth: real math",
-     "steps": [
-      {
-       "eq": "t = d / c",
-       "num": "t = 384,400 km ÷ 299,792 km/s = 1.28 s one way"
-      },
-      {
-       "eq": "range",
-       "num": "1.21 s at the closest point, 1.35 s at the farthest"
-      },
-      {
-       "eq": "data = rate × time",
-       "num": "260.0 Mbps × 2.5 h × 3,600 s ÷ 1,000 = 2,340 Gb per day"
-      },
-      {
-       "eq": "daily volume",
-       "num": "260.0 Mbps x 2.5 h x 3.6 = 2,340.0 Gb per day"
-      },
-      {
-       "eq": "passes = 3 stations x contact / 3",
-       "num": "3 passes a day of 0.8 h each = 2.5 h of contact"
-      },
-      {
-       "eq": "buffer = made - sent",
-       "num": "85 Gb made - 20 Gb sent - 0 Gb lost = 65 Gb onboard"
+       "num": "5,015 Gb made - 903 Gb sent - 4,020 Gb lost = 92 Gb onboard"
       }
      ],
      "src": "dsn"

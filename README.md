@@ -1,4 +1,4 @@
-# How far is upy
+# How far is up?
 
 Is the Moon made of cheese? A kid thinks so, and he is going to the Moon to test his hypothesis. You help him by completing mini-missions, each one built and tested like in Poly Bridge, until he finds out the truth.
 

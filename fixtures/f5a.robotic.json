@@ -97,9 +97,9 @@
      "where": "lander",
      "mass": 18,
      "cost": 40,
-     "power": 25,
+     "power": 30,
      "gen": 0,
-     "src": "moonfacts",
+     "src": "viperSpectrometer",
      "kind": "hw"
     },
     {
@@ -107,9 +107,9 @@
      "where": "lander",
      "mass": 12,
      "cost": 25,
-     "power": 15,
+     "power": 10,
      "gen": 0,
-     "src": "lro",
+     "src": "game",
      "kind": "hw"
     },
     {
@@ -185,7 +185,7 @@
    },
    "dataNeedGbPerDay": 340,
    "dataSentGb": 0,
-   "days": 4
+   "days": 19
   },
   "dvRemainingAfterLoi": {
    "planned": 2385.1,
@@ -304,7 +304,7 @@
      "scienceMatch": false,
      "survivesNight": true,
      "nightHours": 100,
-     "opsHours": 700,
+     "opsHours": 600,
      "evaHours": null,
      "coldRisk": false,
      "earthView": "intermittent",

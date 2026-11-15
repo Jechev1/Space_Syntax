@@ -12,6 +12,10 @@ import { F2 } from './screens/F2.jsx'
 import { F3a } from './screens/F3a.jsx'
 import { F3b } from './screens/F3b.jsx'
 import { F4 } from './screens/F4.jsx'
+import { F5a } from './screens/F5a.jsx'
+import { F5b } from './screens/F5b.jsx'
+import { F6 } from './screens/F6.jsx'
+import { F7 } from './screens/F7.jsx'
 import { GameTools } from './screens/GameTools.jsx'
 import { Intro } from './screens/Intro.jsx'
 import { Start } from './screens/Start.jsx'
@@ -34,6 +38,10 @@ createRoot(document.getElementById('root')).render(
           <Route path="/f3a" element={<F3a />} />
           <Route path="/f4" element={<F4 />} />
           <Route path="/f3b" element={<F3b />} />
+          <Route path="/f5a" element={<F5a />} />
+          <Route path="/f5b" element={<F5b />} />
+          <Route path="/f6" element={<F6 />} />
+          <Route path="/f7" element={<F7 />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

@@ -20,7 +20,7 @@ export function F3a() {
     <StageScene
       background={BACKGROUND}
       character={<img className={scene.girl} src={CHARACTER} alt="" />}
-      title="How far is upy — Phase 3"
+      title="How far is up? — Phase 3"
     >
       <F3aBody />
     </StageScene>

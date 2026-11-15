@@ -774,7 +774,8 @@
     if (kind === 'thermal') {
       const t = sim.thermal;
       return {
-        code: 'thermalTooLow', step: 'reentry', backTo: 7, descope,
+        code: 'thermalTooLow', step: 'reentry', backTo: 7,
+        descope: { text: 'Pick a thicker heat shield, or a direct entry, which heats the shield less.', src: 'avcoat' },
         title: 'The heat shield could not take the heat',
         sub: t.message,
         chain: [
@@ -786,7 +787,8 @@
     }
     const s = sim.splash;
     return {
-      code: 'missedZone', step: 'splashdown', backTo: 7, descope,
+      code: 'missedZone', step: 'splashdown', backTo: 7,
+      descope: { text: 'Pick skip entry: it steers the capsule and lands closer to the ships.', src: 'skipEntry' },
       title: 'Splashdown outside the recovery zone',
       sub: `The capsule came down ${fmt(s.missKm, 1)} km from the target. Recovery ships cover ${fmt(s.zoneKm)} km.`,
       chain: [

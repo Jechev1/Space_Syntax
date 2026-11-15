@@ -26,7 +26,7 @@ export function F3b() {
       background={BACKGROUND}
       character={<img className={scene.girl} src={CHARACTER} alt="" />}
       objects={state.rocket ? <img className={styles.rocket} src={rocketArt(state.rocket)} alt="" /> : null}
-      title="How far is upy — Launch pad"
+      title="How far is up? — Launch pad"
     >
       <F3bBody />
     </StageScene>
@@ -83,9 +83,10 @@ function F3bBody() {
 }
 
 function LaunchButton({ game, ready }) {
+  const navigate = useNavigate()
   const { state, launch, setNotice } = game
   if (state.launched) {
-    return <Button variant="outline" disabledReason="Phase 5 is being built">Launched ✓</Button>
+    return <Button variant="outline" onClick={() => navigate('/f5a')}>Fly to the Moon →</Button>
   }
   return (
     <Button

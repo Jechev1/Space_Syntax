@@ -167,6 +167,6 @@ test('choosing abort ends the run with playerAbort', () => {
   const a = P.simulate(s, { seed, choice: 'abort' });
   checkResult(a, 5);
   assert.equal(a.outcome, 'fail'); assert.equal(a.failure.code, 'playerAbort');
-  assert.match(a.failure.fix, /Phase 3/);
+  assert.match(a.failure.fix, /enough margin.*take it/); // a clean run could afford the detour
   assert.ok(a.frames[a.frames.length - 1].vz > 0);
 });

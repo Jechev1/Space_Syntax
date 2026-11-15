@@ -94,9 +94,9 @@
      "where": "lander",
      "mass": 18,
      "cost": 40,
-     "power": 25,
+     "power": 30,
      "gen": 0,
-     "src": "moonfacts",
+     "src": "viperSpectrometer",
      "kind": "hw"
     },
     {
@@ -104,9 +104,9 @@
      "where": "lander",
      "mass": 12,
      "cost": 25,
-     "power": 15,
+     "power": 10,
      "gen": 0,
-     "src": "lro",
+     "src": "game",
      "kind": "hw"
     }
    ],
