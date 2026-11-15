@@ -141,7 +141,7 @@ export function MissionFrame({ phase, title, footer = null, children }) {
   )
 }
 
-export function StageScene({ background, character, objects = null, title, children }) {
+export function StageScene({ background = '', character, objects = null, title, children }) {
   const navigate = useNavigate()
   const game = useGame()
   const { data } = game
@@ -168,7 +168,7 @@ export function StageScene({ background, character, objects = null, title, child
 
   return (
     <PlayProvider value={play}>
-      <Stage background={background} character={character} objects={objects}>
+      <Stage background={background} framed character={character} objects={objects}>
         {children}
         <Modal open={modal === 'howto'} variant="info" title="How to play" onClose={() => setModal(null)}><HowTo /></Modal>
         <Modal open={modal === 'sources'} variant="info" title="Sources" onClose={() => setModal(null)}>

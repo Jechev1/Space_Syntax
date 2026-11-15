@@ -21,7 +21,7 @@ function starImage(points, color) {
     .join(', ')
 }
 
-export function Stage({ background = '', objects = null, character = null, children }) {
+export function Stage({ background = '', framed = false, objects = null, character = null, children }) {
   const grainId = useId().replace(/:/g, '')
   const frameRef = useRef(null)
   const photo = Boolean(background)
@@ -40,11 +40,17 @@ export function Stage({ background = '', objects = null, character = null, child
     </>
   )
 
-  if (photo) {
+  if (photo || framed) {
     return (
       <div className={`${styles.viewport} ${styles.photoStage}`} ref={frameRef}>
         <div className={styles.frame}>
-          <img className={styles.photo} src={background} alt="" />
+          {photo ? <img className={styles.photo} src={background} alt="" /> : (
+            <>
+              <div className={styles.sky} aria-hidden="true" />
+              <div className={styles.stars} style={{ backgroundImage: starImage(STAR_NEAR, 'var(--text)') }} aria-hidden="true" />
+              <div className={`${styles.stars} ${styles.starsFar}`} style={{ backgroundImage: starImage(STAR_FAR, 'var(--text-dim)') }} aria-hidden="true" />
+            </>
+          )}
           {grain}
           <div className={styles.objects}>{objects}</div>
           <div className={styles.character}>{portrait}</div>

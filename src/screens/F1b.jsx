@@ -2,25 +2,36 @@ import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
-import { Chip } from '../components/ui/Chip.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
-import { OptionRow } from '../components/ui/OptionRow.jsx'
-import { RocketGauge } from '../components/ui/RocketGauge.jsx'
 import { descopeMode, useGame } from '../engine/useGame.jsx'
-import { FactLine, kgText, SourceButton, usdText } from './bits.jsx'
+import { kgText, usdText } from './bits.jsx'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { MissionHud } from './f1Hud.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F1.module.css'
 import shell from './shell.module.css'
 
+const SHAPES = {
+  small: { w: 22, h: 140, nose: 34, booster: 0 },
+  medium: { w: 30, h: 176, nose: 40, booster: 0 },
+  heavy: { w: 34, h: 210, nose: 44, booster: 130 },
+  sls1: { w: 30, h: 190, nose: 30, booster: 150 },
+  sls1b: { w: 30, h: 205, nose: 36, booster: 150 },
+  sls2: { w: 30, h: 218, nose: 40, booster: 160 },
+}
+
 export function F1b() {
   const ready = usePhaseGuard('/f1b')
   if (!ready) return null
   return (
     <StageScene
-      background="/bg/bg-preparacion.png"
-      character="/char/nina-chaqueta-portapapeles.png"
+      character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
+      objects={(
+        <>
+          <div className={styles.moon} />
+          <div className={styles.ground} />
+        </>
+      )}
       title="How far is upy — Phase 1"
     >
       <F1bBody />
@@ -50,55 +61,46 @@ function F1bBody() {
   const reason = confirmReason(state, report, data, model)
 
   return (
-    <div className={styles.screen}>
+    <div className={`${styles.screen} ${styles.pad}`}>
       <MissionHud />
       <div className={styles.speech}>
         <Bubble tone="speech">Which one can lift us?</Bubble>
+      </div>
+      <div className={styles.pads} role="group" aria-label="Rockets">
+        {rockets.map((rocket) => (
+          <RocketStation
+            key={rocket.id}
+            rocket={rocket}
+            report={report}
+            selected={state.rocket === rocket.id}
+            onPick={() => pickRocket(rocket.id)}
+            onLocked={() => setNotice('Too heavy for this rocket. Make your spacecraft lighter or pick a bigger one.')}
+          />
+        ))}
       </div>
       <div className={styles.panel}>
         <GlassPanel>
           <p className={styles.kicker}>Phase 1 · Launch pad</p>
           <h2 className={styles.question}>Pick your rocket</h2>
-          <p className={styles.line}>Hardware <b>{kgText(model, report.dry)}</b></p>
-          <p className={styles.line}>Fuel <b>+ {kgText(model, report.propellant)}</b></p>
-          <p className={styles.line}>Rocket must lift <b>{kgText(model, report.tli)}</b></p>
-          {rockets.map((rocket, index) => (
-            <RocketChoice
-              key={rocket.id}
-              index={index}
-              rocket={rocket}
-              report={report}
-              selected={state.rocket === rocket.id}
-              onPick={() => pickRocket(rocket.id)}
-              onLocked={() => setNotice('Too heavy for this rocket. Make your spacecraft lighter or pick a bigger one.')}
-            />
-          ))}
-          <p className={styles.line}>Spacecraft <b>{usdText(model, report.cost)}</b></p>
-          <p className={styles.line}>Rocket <b>{report.rocket ? usdText(model, report.rocket.cost) : '—'}</b></p>
-          <p className={styles.line}>
-            Total budget <b>{usdText(model, report.totalCost)} / {usdText(model, report.budget)}</b>
-          </p>
-          <FactLine factKey={state.missionType === 'crewed' ? 'apolloStack' : 'lro'} />
-          <FactLine factKey="slsCap" />
+          <p className={styles.line}>Hardware + Fuel = Rocket must lift</p>
+          <dl className={styles.stats}>
+            <div><dt>Spacecraft</dt><dd>{usdText(model, report.cost)}</dd></div>
+            <div><dt>Rocket</dt><dd>{report.rocket ? usdText(model, report.rocket.cost) : '—'}</dd></div>
+            <div className={styles.total}>
+              <dt>Total</dt>
+              <dd>{usdText(model, report.totalCost)} / {usdText(model, report.budget)}</dd>
+            </div>
+          </dl>
           {needDescope ? (
-            <>
-              <p className={styles.line}>
-                Trim the design. Biggest {mode === 'cost' ? 'money' : 'launch-mass'} savings first.
-              </p>
-              <SourceButton sourceKey="seHandbook" />
-              <ul className={shell.list}>
-                {suggestions.map((item, index) => (
-                  <li key={`${item.label}-${index}`}>
-                    <span>{item.label} </span>
-                    {item.saves > 0.5 ? <Chip type="evidence" label="Mass">−{kgText(model, item.saves)}</Chip> : null}
-                    {item.costSaves > 0 ? <Chip type="evidence" label="Cost">−{usdText(model, item.costSaves)}</Chip> : null}
-                    {item.costSaves < 0 ? <Chip type="cost" tone="warn" label="Cost">+{usdText(model, -item.costSaves)}</Chip> : null}
-                    <DescopeVerdict suggestion={item} mode={mode} budget={report.budget} rockets={rockets} />
-                    <Button variant="secondary" onClick={() => applyDescope(index)}>Apply</Button>
-                  </li>
-                ))}
-              </ul>
-            </>
+            <div className={styles.trim}>
+              <p className={styles.trimTitle}>{mode === 'cost' ? 'Over budget? Trim the design' : 'Too heavy? Trim the design'}</p>
+              {suggestions.map((item, index) => (
+                <button key={`${item.label}-${index}`} type="button" className={styles.trimRow} onClick={() => applyDescope(index)}>
+                  <span>{item.label}</span>
+                  <span className={styles.trimNote}>{trimNote(item, mode, report.budget, rockets, model)}</span>
+                </button>
+              ))}
+            </div>
           ) : null}
         </GlassPanel>
       </div>
@@ -127,56 +129,100 @@ function F1bBody() {
   )
 }
 
-function RocketChoice({ index, rocket, report, selected, onPick, onLocked }) {
-  const { data, model } = useGame()
+function RocketStation({ rocket, report, selected, onPick, onLocked }) {
+  const { model } = useGame()
   const fits = rocket.capacity >= report.tli
   const margin = (rocket.capacity - report.tli) / rocket.capacity
-  const over = report.cost + rocket.cost > report.budget
-  const verdict = !fits
-    ? `Too heavy by ${kgText(model, report.tli - rocket.capacity)}`
-    : margin < 0.1
-      ? `Fits, only ${model.fmt(margin * 100)}% margin`
-      : `Fits with ${model.fmt(margin * 100)}% margin`
+  const over = fits && report.cost + rocket.cost > report.budget
+  const tons = (rocket.capacity / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 })
+  let verdict = `Fits · ${model.fmt(margin * 100)}% margin`
+  let tone = styles.good
+  if (!fits) {
+    verdict = `Too heavy by ${kgText(model, report.tli - rocket.capacity)}`
+    tone = styles.bad
+  } else if (over) {
+    verdict = 'Fits · over budget'
+    tone = styles.tight
+  } else if (margin < 0.1) {
+    verdict = `Fits, only ${model.fmt(margin * 100)}% margin`
+    tone = styles.tight
+  }
+  const cls = [styles.station, tone, selected ? styles.stationOn : ''].filter(Boolean).join(' ')
+
   return (
-    <div className={shell.choice}>
-      <RocketGauge fill={report.tli / rocket.capacity} fits={fits} />
-      <OptionRow
-        number={index + 1}
-        text={`${rocket.title} · ${model.fmt(rocket.capacity / 1000)} t`}
-        detail={`${rocket.blurb} ${verdict}`}
-        selected={selected}
-        locked={!fits}
-        lockedReason={fits ? '' : verdict}
-        onSelect={onPick}
-        onLocked={onLocked}
-        chips={(
-          <>
-            <Chip type="cost" tone={over ? 'danger' : ''} label="Cost">
-              💰 {usdText(model, rocket.cost)}{over ? ' over budget' : ''}
-            </Chip>
-            <Chip type={rocket.capSrc === 'game' ? 'game' : 'nasa'} label={rocket.capSrc === 'game' ? 'Game' : 'Capacity'}>
-              {rocket.capSrc === 'game' ? 'Tuned for gameplay' : 'NASA'}
-            </Chip>
-          </>
-        )}
-      />
-      <SourceButton sourceKey={rocket.capSrc} label={rocket.capSrc === 'game' ? '' : 'Capacity: NASA'} />
-      {rocket.costSrc !== rocket.capSrc ? (
-        <SourceButton sourceKey={rocket.costSrc} label={rocket.costSrc === 'game' ? '' : 'Cost: NASA OIG'} />
-      ) : null}
-    </div>
+    <button
+      type="button"
+      className={cls}
+      aria-pressed={selected}
+      aria-disabled={!fits || undefined}
+      onClick={() => (fits ? onPick() : onLocked())}
+    >
+      <PadRocket id={rocket.id} fill={report.tli / rocket.capacity} fits={fits} />
+      <span className={styles.tag}>
+        <span>{rocket.title} · {tons} t</span>
+        <span>{usdText(model, rocket.cost)} · <b>{verdict}</b></span>
+      </span>
+    </button>
   )
 }
 
-function DescopeVerdict({ suggestion, mode, budget, rockets }) {
-  const { model } = useGame()
-  if (mode === 'cost') {
-    const left = suggestion.after.totalCost - budget
-    if (left <= 0) return <Chip type="evidence" label="Budget">fixes the budget</Chip>
-    return <Chip type="cost" tone="warn" label="Budget">still {usdText(model, left)} over</Chip>
-  }
-  const maxCap = Math.max(...rockets.map((item) => item.capacity))
-  if (suggestion.after.tli <= maxCap) return <Chip type="evidence" label="Mass">fits a rocket</Chip>
-  return <Chip type="cost" tone="warn" label="Mass">still {kgText(model, suggestion.after.tli - maxCap)} too heavy</Chip>
+function PadRocket({ id, fill, fits }) {
+  const shape = SHAPES[id] || SHAPES.small
+  const cx = 50
+  const base = 276
+  const left = cx - shape.w / 2
+  const right = cx + shape.w / 2
+  const top = base - shape.h
+  const tube = 110
+  const tubeBase = 262
+  const ratio = Number.isFinite(fill) ? Math.max(0, Math.min(1, fill)) : 0
+  const level = ratio * tube
+  const sideW = 12
+  const sides = shape.booster ? [left - sideW - 1, right + 1] : []
+
+  return (
+    <svg className={fits ? styles.rocket : `${styles.rocket} ${styles.rocketOver}`} viewBox="0 0 120 296" aria-hidden="true">
+      <path className={styles.padBase} d="M12 294 L22 282 H78 L88 294 Z" />
+      <rect className={styles.padLight} x="45" y="286" width="10" height="3" rx="1.5" />
+      {sides.map((x) => (
+        <g key={x}>
+          <rect className={styles.side} x={x} y={base - shape.booster} width={sideW} height={shape.booster} />
+          <path className={styles.side} d={`M${x} ${base - shape.booster} Q${x + sideW / 2} ${base - shape.booster - 22} ${x + sideW} ${base - shape.booster} Z`} />
+        </g>
+      ))}
+      {sides.length ? null : (
+        <path
+          className={styles.fin}
+          d={`M${left} ${base} L${left - 10} ${base} L${left} ${base - 32} Z M${right} ${base} L${right + 10} ${base} L${right} ${base - 32} Z`}
+        />
+      )}
+      <rect className={styles.hull} x={left} y={top} width={shape.w} height={shape.h} />
+      <path
+        className={styles.hull}
+        d={`M${left} ${top} Q${left} ${top - shape.nose * 0.7} ${cx} ${top - shape.nose} Q${right} ${top - shape.nose * 0.7} ${right} ${top} Z`}
+      />
+      <rect className={styles.band} x={left} y={top + 4} width={shape.w} height="5" />
+      <rect className={styles.band} x={left} y={base - 46} width={shape.w} height="5" />
+      <circle className={styles.patch} cx={cx} cy={top + 34} r={shape.w * 0.28} />
+      <path className={styles.fin} d={`M${cx - 6} ${base} L${cx - 9} ${base + 6} H${cx + 9} L${cx + 6} ${base} Z`} />
+      <rect className={styles.tube} x="96" y={tubeBase - tube} width="10" height={tube} rx="5" />
+      {level > 0 ? <rect className={styles.level} x="96" y={tubeBase - level} width="10" height={level} rx="5" /> : null}
+      {fits ? null : <path className={styles.alarm} d={`M101 ${tubeBase - tube - 6} v-7 M94 ${tubeBase - tube - 4} l-5 -5 M108 ${tubeBase - tube - 4} l5 -5`} />}
+    </svg>
+  )
 }
 
+function trimNote(item, mode, budget, rockets, model) {
+  const parts = []
+  if (item.saves > 0.5) parts.push(`−${kgText(model, item.saves)}`)
+  if (item.costSaves > 0) parts.push(`−${usdText(model, item.costSaves)}`)
+  if (item.costSaves < 0) parts.push(`+${usdText(model, -item.costSaves)}`)
+  if (mode === 'cost') {
+    const left = item.after.totalCost - budget
+    parts.push(left <= 0 ? 'fixes the budget' : `still ${usdText(model, left)} over`)
+  } else {
+    const maxCap = Math.max(...rockets.map((rocket) => rocket.capacity))
+    parts.push(item.after.tli <= maxCap ? 'fits a rocket' : `still ${kgText(model, item.after.tli - maxCap)} too heavy`)
+  }
+  return parts.join(' · ')
+}
