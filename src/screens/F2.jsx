@@ -142,7 +142,7 @@ function SuppliesTest({ play }) {
       {math && res && res.math ? (
         <Dialog title={res.math.title || 'The math'} onClose={() => setMath(false)}>
           <p className={f2.mathNote}>Each astronaut uses oxygen, food and water every day — crew × days sets the totals.</p>
-          <MathBlock math={{ ...res.math, check: null }} />
+          <MathBlock math={{ ...res.math, check: null }} hideTitle />
         </Dialog>
       ) : null}
     </div>

@@ -275,7 +275,7 @@ function FlyPlan({ plan, play }) {
             Isp is the engine's efficiency rating; exhaust velocity is how fast the exhaust shoots out.
             The rocket equation turns those and your total delta-v into the fuel you must load.
           </p>
-          <MathBlock math={res.math} />
+          <MathBlock math={res.math} hideTitle />
         </Dialog>
       ) : null}
     </div>

@@ -2,7 +2,7 @@
    so the viewport anchoring matches Phases 1 and 2 exactly. */
 .panel {
   position: absolute;
-  top: 8%;
+  top: 10%;
   right: 2.4%;
   width: 30%;
   pointer-events: auto;
