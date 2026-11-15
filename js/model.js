@@ -983,7 +983,7 @@
   /* ======================= Seeded random events ======================= */
   function rng(seed) { // mulberry32
     let a = seed >>> 0;
-    return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    return function () { a = (a + 0x6D2B79F5) >>> 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
   }
   /** Maybe one event for this phase. Deterministic for (seed, phase). Already-seen events never repeat. */
   function rollEvent(state, phase, seed) {
@@ -1019,7 +1019,7 @@
     const s = newState();
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return s;
     const oneOf = (v, list) => (typeof v === 'string' && list.includes(v)) ? v : null;
-    const num = (v, a, b, d) => (typeof v === 'number' && isFinite(v)) ? clamp(v, a, b) : d;
+    const num = (v, a, b, d) => (typeof v === 'number' && Number.isFinite(v)) ? clamp(v, a, b) : d;
     const bool = (v) => v === true;
     s.difficulty = oneOf(raw.difficulty, D.DIFFICULTIES.map(d => d.id)) || 'engineer';
     s.question = oneOf(raw.question, D.QUESTIONS.map(q => q.id));

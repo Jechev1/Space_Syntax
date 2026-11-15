@@ -74,12 +74,12 @@
   width: 1.65em;
   height: 1.65em;
   padding: 0;
-  line-height: 1;
   border: 1px solid var(--line-bright);
   border-radius: var(--radius-btn);
   background: transparent;
   color: var(--text);
   font: inherit;
+  line-height: 1;
   cursor: pointer;
 }
 

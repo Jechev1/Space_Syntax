@@ -1,6 +1,7 @@
 // Static checks run in CI: JS syntax, no private files, no inline handlers, CSP present.
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const root = path.join(__dirname, '..');
 let failed = 0;
 const fail = (msg) => { console.error('✗ ' + msg); failed++; };
@@ -15,7 +16,8 @@ const files = walk(root);
 
 // 1. syntax of every browser script
 for (const f of files.filter(f => f.includes(path.join('js', '')) && f.endsWith('.js'))) {
-  try { new Function(fs.readFileSync(f, 'utf8')); } catch (e) { fail(`syntax error in ${path.relative(root, f)}: ${e.message}`); }
+  // vm.Script compiles the file to catch syntax errors but never runs it.
+  try { new vm.Script(fs.readFileSync(f, 'utf8'), { filename: f }); } catch (e) { fail(`syntax error in ${path.relative(root, f)}: ${e.message}`); }
 }
 ok('JS syntax');
 

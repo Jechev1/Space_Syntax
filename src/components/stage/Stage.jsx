@@ -23,7 +23,7 @@ function starImage(points, color) {
 }
 
 export function Stage({ background = '', framed = false, objects = null, character = null, children }) {
-  const grainId = useId().replace(/:/g, '')
+  const grainId = useId().replaceAll(':', '')
   const overlay = useContext(StageOverlay)
   const frameRef = useRef(null)
   const photo = Boolean(background)

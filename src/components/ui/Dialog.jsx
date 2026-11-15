@@ -7,6 +7,7 @@ const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabi
 export function Dialog({ title, onClose, children }) {
   const titleId = useId()
   const ref = useRef(null)
+  const backdrop = useRef(null)
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
 
@@ -49,8 +50,17 @@ export function Dialog({ title, onClose, children }) {
     ref.current.focus()
   }, [title])
 
+  // A press on the dimmed backdrop (not inside the panel) closes the window.
+  useEffect(() => {
+    const onDown = (event) => {
+      if (event.target === backdrop.current) onCloseRef.current?.()
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [])
+
   return createPortal(
-    <div className={styles.backdrop} onMouseDown={() => onCloseRef.current?.()}>
+    <div ref={backdrop} className={styles.backdrop}>
       <div
         ref={ref}
         className={styles.panel}
@@ -58,7 +68,6 @@ export function Dialog({ title, onClose, children }) {
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        onMouseDown={(event) => event.stopPropagation()}
       >
         <button type="button" className={styles.close} aria-label="Close" onClick={() => onCloseRef.current?.()}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
