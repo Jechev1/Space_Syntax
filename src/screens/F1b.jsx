@@ -73,7 +73,7 @@ export function RunVerdict({ run }) {
       ) : null}
       {math ? (
         <Dialog title={res.math.title || 'The math'} onClose={() => setMath(false)}>
-          <MathBlock math={res.math} />
+          <MathBlock math={res.math} hideTitle />
         </Dialog>
       ) : null}
     </div>
