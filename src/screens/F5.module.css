@@ -18,32 +18,10 @@
   --fs-title: clamp(17px, 3.4cqh, 28px);
 }
 
-.hud {
-  position: absolute;
-  top: 18px;
-  left: 22px;
-  right: calc(22px + var(--tools-reserve));
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  align-items: center;
-  min-height: 46px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-panel);
-  background: var(--panel);
-  backdrop-filter: blur(var(--panel-blur));
-  color: var(--text);
-  font-size: var(--fs-chip);
-  font-weight: var(--fw);
-}
-
-.hud span {
-  padding: calc(var(--fs-chip) / 2) var(--fs-chip);
-  text-align: center;
-  border-left: 1px solid var(--line);
-}
-
-.hud span:first-child {
-  border-left: 0;
+/* The top bar is the shared scene bar (scene.module.css); Phase 5 only sets its four columns.
+   div. beats the shared .hud grid whatever order the CSS loads in. */
+div.hud {
+  grid-template-columns: 0.9fr 1.5fr 1fr 1.2fr;
 }
 
 .girl {

@@ -11,6 +11,7 @@ import { sampleMission } from '../engine/sampleMission.mjs'
 import { f5aSpeech } from './f5Speech.mjs'
 import { StageScene } from './frame.jsx'
 import styles from './F5.module.css'
+import scene from './scene.module.css'
 
 const RISK = { 1: 'low', 2: 'medium', 3: 'high' }
 const PINS = { tranquility: [39, 30], descartes: [47, 52], southPole: [39, 69] }
@@ -24,18 +25,23 @@ export function earlierGaps(state, model) {
     .flatMap((item) => item.issues.filter((issue) => issue.severity === 'block'))
 }
 
+/*
+ * Top bar for Phase 5, in the shared scene bar like Phases 2 to 4, with the four numbers that matter for a
+ * landing: where we are, delta-v left after the lunar orbit burn, hover time the fuel margin buys, and the
+ * lander's mass. Launch mass, days and data sent tell nothing at this point, so they stay out.
+ */
 export function F5Hud({ where }) {
   const { state, model } = useGame()
   const hud = model.hud(state, { flown: ['loi'] })
-  const dv = hud.dvRemaining ? `${model.fmt(hud.dvRemaining.planned)} m/s` : '—'
-  const days = hud.days == null ? '—' : model.fmt(hud.days)
+  const evaluated = Boolean(model.evaluate(state))
+  const lander = evaluated ? model.approachMass(state) : null
+  const dash = '—'
   return (
-    <div className={styles.hud} aria-label="Mission status">
+    <div className={`${scene.hud} ${styles.hud}`} aria-label="Mission status">
       <span>{where}</span>
-      <span>Delta-v left {dv}</span>
-      <span>Mass {model.fmt(hud.launchMass)} kg</span>
-      <span>Days {days}</span>
-      <span>Data {model.fmt(hud.dataSentGb)} Gb sent</span>
+      <span>Delta-v left {hud.dvRemaining ? `${model.fmt(hud.dvRemaining.planned)} m/s` : dash}</span>
+      <span>Hover {evaluated ? `${model.fmt(model.hoverAvailable(state))} s` : dash}</span>
+      <span>Lander {lander ? `${model.fmt(lander)} kg` : dash}</span>
     </div>
   )
 }
