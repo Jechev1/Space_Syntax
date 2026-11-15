@@ -1,5 +1,5 @@
 import { useContext, useId, useLayoutEffect, useRef, useState } from 'react'
-import { StageOverlay } from './overlay.js'
+import { StageOverlay } from './overlay.jsx'
 import styles from './Stage.module.css'
 
 const STAGE_W = 1280

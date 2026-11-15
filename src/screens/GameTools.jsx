@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useMusic } from '../audio/useMusic.js'
+import { useMusic } from '../audio/useMusic.jsx'
 import { Dialog } from '../components/ui/Dialog.jsx'
 import { continuePath, useGame } from '../engine/useGame.jsx'
 import { HowTo, SourceList } from './dialogs.jsx'

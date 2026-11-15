@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
-import { StageOverlay } from './components/stage/overlay.js'
+import { StageOverlay } from './components/stage/overlay.jsx'
 import { DevUi } from './dev/DevUi.jsx'
 import { GameProvider } from './engine/useGame.jsx'
 import { F0 } from './screens/F0.jsx'
