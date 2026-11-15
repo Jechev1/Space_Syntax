@@ -95,6 +95,36 @@ export const HELP_F2 = {
   ],
 }
 
+export const HELP_F3 = {
+  title: 'Phase 3: Navigation and Delta-v',
+  blocks: [
+    {
+      heading: 'Delta-v',
+      text: 'Delta-v (Δv) is a budget of speed change, in metres per second. Every manoeuvre — braking into orbit, landing, heading home — spends from it, and fuel is what buys it: more mass needs more fuel for the same delta-v.',
+    },
+    {
+      heading: 'The five burns',
+      text: 'Translunar injection (3,150 m/s), lunar orbit insertion (950 m/s, NASA range about 890–950), powered descent (2,074 m/s), lunar ascent (1,833 m/s) and trans-Earth injection (1,450 m/s). Robots fly only the orbit insertion and the descent; a sample-return capsule burns straight home (2,600 m/s).',
+      source: 'altair',
+    },
+    {
+      heading: 'TLI is paid by the rocket',
+      text: 'The 3,150 m/s push that sends you toward the Moon comes from the rocket\'s upper stage, not your spacecraft — so it shows in the plan but does not spend your fuel budget.',
+      source: 'cev',
+    },
+    {
+      heading: 'Margin',
+      text: 'The margin (0–20%) is extra delta-v you load for navigation errors, hovering to find a safe landing spot and the trip home. NASA budgets reserves too — 15 m/s of the 1,450 m/s home leg was reserve in one Constellation study — but the 0–20% slider is a game value.',
+      source: 'cev',
+    },
+    {
+      heading: 'What is Isp?',
+      text: 'Specific impulse measures how efficient an engine is: how much push each kilogram of fuel buys. Ours is 314 s, like Apollo\'s service engine. With it, the rocket equation turns delta-v into fuel kilograms.',
+      source: 'spsIsp',
+    },
+  ],
+}
+
 export const HELP_F1DONE = {
   title: 'Phase 1: Design Review',
   blocks: [

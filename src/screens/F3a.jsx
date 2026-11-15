@@ -1,20 +1,42 @@
-import { flushSync } from 'react-dom'
 import { useState } from 'react'
+import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
+import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
-import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
+import { Modal } from '../components/ui/Modal.jsx'
+import { HELP_F3 } from '../data/help.mjs'
 import { useGame } from '../engine/useGame.jsx'
+import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
+import { f3Speech } from './f3Speech.mjs'
 import { StageScene, usePhaseGuard } from './frame.jsx'
-import { usePlay } from './playContext.jsx'
-import styles from './F3a.module.css'
-import { SceneHud } from './scene.jsx'
-import scene from './scene.module.css'
+import { MissionHud } from './f1Hud.jsx'
+import styles from './F1.module.css'
+import f3 from './F3a.module.css'
 
 const BACKGROUND = '/bg/bg-control.png'
 const CHARACTER = '/char/nina-chaqueta-portapapeles.png'
+
+/* One plain-language line per manoeuvre, shown on hover under the list. */
+const BURN_HINT = {
+  tli: 'The rocket\'s upper stage pushes you toward the Moon — it does not spend your fuel.',
+  loi: 'Brake so the Moon\'s gravity can catch you.',
+  descent: 'The lander burns to slow down and touch the surface.',
+  ascent: 'Lift off the Moon and climb back to orbit.',
+  tei: 'Leave lunar orbit and head home to Earth.',
+  direct: 'Skip the orbit stop — burn and fly straight home.',
+}
+
+/* Short labels so each burn fits one line in the panel. */
+const BURN_LABEL = {
+  loi: 'Lunar orbit insertion',
+  descent: 'Powered descent',
+  ascent: 'Lunar ascent',
+  tei: 'Trans-Earth injection',
+  direct: 'Direct return burn',
+}
 
 export function F3a() {
   const ready = usePhaseGuard('/f3a')
@@ -22,7 +44,7 @@ export function F3a() {
   return (
     <StageScene
       background={BACKGROUND}
-      character={<img className={scene.girl} src={CHARACTER} alt="" />}
+      character={<img className={styles.girl} src={CHARACTER} alt="" />}
       title="How far is up? · Phase 3"
     >
       <F3aBody />
@@ -32,61 +54,79 @@ export function F3a() {
 
 function F3aBody() {
   const navigate = useNavigate()
-  const { setModal } = usePlay()
   const game = useGame()
   const { state, data, model } = game
+  const [help, setHelp] = useState(false)
   const plan = model.flightPlan(state)
-  const steps = [{ label: 'Translunar injection', dv: plan.tli.dv, chip: 'Rocket upper stage', leg: LEG.tli }].concat(
-    plan.burns.map((burn) => ({ label: shortLabel(burn.label), dv: burn.dv, chip: '', leg: LEG[burn.key] })),
+  const steps = [{ label: 'Translunar injection', dv: plan.tli.dv, chip: 'paid by the rocket', leg: LEG.tli, hint: BURN_HINT.tli, tli: true }].concat(
+    plan.burns.map((burn) => ({ label: BURN_LABEL[burn.key] || shortLabel(burn.label), dv: burn.dv, chip: '', leg: LEG[burn.key], hint: BURN_HINT[burn.key] })),
   )
   const play = usePlayRun(3, state)
   const { run, frame } = play
+  const [hover, setHover] = useState(null)
   // A burn is lit while it fires and stays lit once done. The Phase 3 run only flies these burns.
   const stepState = (step) => {
     if (!run || !frame || step.leg == null) return ''
     if (frame.leg === step.leg && run.status === 'running') return 'firing'
     return frame.leg >= step.leg ? 'done' : ''
   }
+  const speech = f3Speech(state.difficulty, { crewed: state.missionType === 'crewed', margin: plan.margin, run })
 
   return (
-    <div className={scene.screen}>
-      <SceneHud />
+    <div className={styles.screen}>
+      <MissionHud />
+      {speech ? (
+        <div className={styles.speech}>
+          <Bubble tone="speech">{speech}</Bubble>
+        </div>
+      ) : null}
       <Trajectory count={steps.length} distance={data.MOON.distanceKm} steps={steps} stepState={stepState} frame={frame} />
-      <div className={`${scene.speech} ${styles.speech}`}>
-        <Bubble tone="speech">
-          {state.missionType === 'crewed' ? 'I need fuel for the trip home.' : 'Every burn costs fuel.'}
-        </Bubble>
-      </div>
-      <div className={scene.panel}>
+      <div className={f3.panel}>
         <GlassPanel>
-          <p className={scene.kicker}>Phase 3 · Flight plan</p>
-          <h2 className={scene.title}>Flight plan</h2>
-          <ol className={styles.burns}>
+          <p className={styles.kicker}>Phase 3: Navigation and Delta-v · NASA Phases A, B, E</p>
+          <h2 className={styles.question}>Flight plan</h2>
+          <p className={f3.line}>Each burn changes your speed. Add them up: that is how much fuel the spacecraft needs.</p>
+          <ol className={f3.burns}>
             {steps.map((step, index) => (
-              <li key={step.label} className={`${styles.burn} ${styles[stepState(step)] || ''}`}>
-                <span className={styles.num}>{index + 1}</span>
-                <span className={styles.burnName}>
+              <li
+                key={step.label}
+                className={`${f3.burn} ${step.tli ? f3.tliStep : ''} ${f3[stepState(step)] || ''}`}
+                tabIndex={0}
+                onMouseEnter={() => setHover(index)}
+                onMouseLeave={() => setHover(null)}
+                onFocus={() => setHover(index)}
+                onBlur={() => setHover(null)}
+              >
+                <span className={f3.num}>{index + 1}</span>
+                <span className={f3.burnName}>
                   {step.label}
-                  {step.chip ? <span className={styles.chip}>{step.chip}</span> : null}
+                  {step.chip ? <span className={f3.chip}>{step.chip}</span> : null}
                 </span>
-                <span className={styles.dv}>{model.fmt(step.dv)} m/s</span>
+                <span className={f3.dv}>{model.fmt(step.dv)} m/s</span>
               </li>
             ))}
           </ol>
-          <p className={styles.total}>Spacecraft needs {model.fmt(plan.dvRequired)} m/s + margin</p>
+          <p className={f3.burnHint} aria-live="polite">{hover != null ? steps[hover].hint : 'Hover a burn to see what it does.'}</p>
+          <p className={f3.total}>Spacecraft needs {model.fmt(plan.dvRequired)} m/s + margin</p>
           <FlyPlan plan={plan} play={play} />
-          {run && run.status === 'done' ? null : <p className={scene.source}>Source: NASA Constellation studies · Isp: Game value</p>}
         </GlassPanel>
       </div>
-      <div className={scene.dock}>
-        <div className={scene.nav}>
+      <div className={styles.dock}>
+        <div className={styles.nav}>
           <Button variant="secondary" onClick={() => navigate('/f2')}>← Crew</Button>
-          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+          <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
         </div>
         <DeltaVDock game={game} plan={plan} />
-        <div className={scene.lock}>
+        <div className={`${styles.lock} ${f3.goLock}`}>
           <GoButton game={game} />
         </div>
+      </div>
+      <div className={styles.help}>
+        <Modal open={help} variant="info" title={HELP_F3.title} onClose={() => setHelp(false)}>
+          {HELP_F3.blocks.map((block) => (
+            <p key={block.heading}><b>{block.heading}:</b> {block.text}</p>
+          ))}
+        </Modal>
       </div>
     </div>
   )
@@ -110,19 +150,19 @@ function Trajectory({ count, distance, steps, stepState, frame }) {
   })
   const km = distance ? Number(distance).toLocaleString('en-US') : '384,400'
   return (
-    <div className={styles.wall} aria-hidden="true">
+    <div className={f3.wall} aria-hidden="true">
       <svg viewBox="0 0 100 40" preserveAspectRatio="none">
-        <path className={styles.arc} d="M 15 30 Q 50 2 85 30" />
+        <path className={f3.arc} d="M 15 30 Q 50 2 85 30" />
       </svg>
-      <span className={`${styles.body} ${styles.earth}`} />
-      <span className={`${styles.body} ${styles.moon}`} />
+      <span className={`${f3.body} ${f3.earth}`} />
+      <span className={`${f3.body} ${f3.moon}`} />
       {nodes.map((node) => (
-        <span key={node.n} className={`${styles.node} ${styles[`node_${stepState(steps[node.n - 1])}`] || ''}`} style={{ left: `${node.x}%`, top: `${(node.y / 40) * 100}%` }}>
+        <span key={node.n} className={`${f3.node} ${f3[`node_${stepState(steps[node.n - 1])}`] || ''}`} style={{ left: `${node.x}%`, top: `${(node.y / 40) * 100}%` }}>
           {node.n}
         </span>
       ))}
-      {frame ? <span className={styles.ship} style={{ left: `${markerAt(frame, distance).left}%`, top: `${markerAt(frame, distance).top}%` }} /> : null}
-      <span className={styles.distance}>{km} km (not to scale)</span>
+      {frame ? <span className={f3.ship} style={{ left: `${markerAt(frame, distance).left}%`, top: `${markerAt(frame, distance).top}%` }} /> : null}
+      <span className={f3.distance}>{km} km (not to scale)</span>
     </div>
   )
 }
@@ -138,40 +178,41 @@ function DeltaVDock({ game, plan }) {
   const marginOk = !check.issues.some((issue) => issue.code === 'lowDvMargin')
 
   return (
-    <div className={styles.dock}>
-      <span className={styles.dockLabel}>Delta-v</span>
-      <div className={styles.meter}>
-        <div className={styles.track}>
+    <div className={f3.dock} title="Delta-v: how much speed change your fuel buys">
+      <div className={f3.meter}>
+        <div className={f3.track}>
           <i style={{ width: `${fill}%` }} />
           <u style={{ left: `${need}%` }} />
         </div>
-        <span className={styles.meterText}>
-          {model.fmt(plan.dvPlanned)} m/s · need {model.fmt(plan.dvRequired)}
+        <span className={f3.meterText}>
+          {model.fmt(plan.dvPlanned)} / {model.fmt(plan.dvRequired)} m/s
         </span>
       </div>
-      <div className={styles.margins} role="group" aria-label="Delta-v margin">
-        {options.map((margin) => (
-          <button
-            key={margin}
-            type="button"
-            className={styles.margin}
-            aria-pressed={plan.margin === margin}
-            disabled={margin < minimum}
-            title={margin < minimum ? 'Too small for this difficulty' : 'Spare delta-v for mistakes'}
-            onClick={() => setMargin(margin)}
-          >
-            {Math.round(margin * 100)}%
-          </button>
-        ))}
+      <div className={f3.marginsWrap} role="group" aria-label="Delta-v margin">
+        <span className={f3.marginNote} title="Spare delta-v for navigation mistakes, hovering and the trip home — a little reserve is safer.">Margin (0–20%)</span>
+        <div className={f3.margins}>
+          {options.map((margin) => (
+            <button
+              key={margin}
+              type="button"
+              className={f3.margin}
+              aria-pressed={plan.margin === margin}
+              disabled={margin < minimum}
+              title={margin < minimum ? 'Too small for this difficulty' : 'Spare delta-v for mistakes'}
+              onClick={() => setMargin(margin)}
+            >
+              {Math.round(margin * 100)}%
+            </button>
+          ))}
+        </div>
+        <span className={`${f3.status} ${marginOk ? f3.ok : f3.bad}`}>
+          {marginOk ? 'Enough margin' : 'Not enough margin'}
+        </span>
       </div>
-      <span className={`${styles.status} ${marginOk ? styles.ok : styles.bad}`}>
-        {marginOk ? 'Enough margin' : 'Not enough margin'}
-      </span>
     </div>
   )
 }
 
-const VERDICT = { success: 'Passed', partial: 'Passed, barely', fail: 'Failed' }
 const fmtDv = (n) => Math.round(n).toLocaleString('en-US')
 
 function FlyPlan({ plan, play }) {
@@ -185,8 +226,8 @@ function FlyPlan({ plan, play }) {
   const last = events.length ? events[events.length - 1] : null
   const margin = done && res.summary ? res.summary.marginLeft : null
   return (
-    <div className={styles.play}>
-      <div className={styles.playRow}>
+    <div className={f3.play}>
+      <div className={f3.playRow}>
         <Button
           variant="outline"
           disabledReason={running ? 'Flying…' : ''}
@@ -194,44 +235,48 @@ function FlyPlan({ plan, play }) {
         >
           {run && run.status !== 'blocked' ? 'Fly again' : 'Fly the plan'}
         </Button>
-        <div className={styles.reserve}>
-          <span className={styles.reserveText}>Reserve {fmtDv(left)} m/s</span>
-          <span className={styles.reserveTrack} aria-hidden="true"><i style={{ width: `${pct}%` }} /></span>
+        <div className={f3.reserve}>
+          <span className={f3.reserveText}>Reserve {fmtDv(left)} m/s</span>
+          <span className={f3.reserveTrack} aria-hidden="true"><i style={{ width: `${pct}%` }} /></span>
         </div>
       </div>
-      {!run ? <p className={styles.note}>Press Play to fly it burn by burn. Navigation errors are paid from your reserve.</p> : null}
+      {!run ? <p className={f3.note}>Fly each burn and see if your fuel is enough.</p> : null}
       {run && run.status === 'blocked' ? (
-        <ul className={styles.log}>{res.blockers.map((b) => <li key={b.code}>{b.message}</li>)}</ul>
+        <ul className={f3.log}>{res.blockers.map((b) => <li key={b.code}>{b.message}</li>)}</ul>
       ) : null}
-      {running && last ? <p className={styles.note} aria-live="polite">{last.text}</p> : null}
+      {running && last ? <p className={f3.note} aria-live="polite">{last.text}</p> : null}
       {done ? (
-        <div className={`${styles.verdict} ${res.ok ? styles.okBox : styles.failBox}`}>
+        <div className={`${styles.verdictBox} ${f3.verdictTight} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
           <p className={styles.verdictLine}>
-            <b>{VERDICT[res.outcome] || res.outcome}</b>
-            {res.ok ? (
-              <span aria-label={`${res.stars} of 3 stars`}>
-                {[0, 1, 2].map((i) => <span key={i} className={i < res.stars ? styles.starOn : styles.starOff} aria-hidden="true">★</span>)}
-              </span>
-            ) : null}
+            <b>{res.ok ? 'Test passed' : 'Test failed'}</b>
+            <span className={f3.verdictAside}>
+              {res.ok ? (
+                <span aria-label={`${res.stars} of 3 stars`}>
+                  {[0, 1, 2].map((i) => <span key={i} className={i < res.stars ? styles.starOn : styles.starOff} aria-hidden="true">★</span>)}
+                </span>
+              ) : null}
+              {res.math ? (
+                <button type="button" className={f3.link} onClick={() => setShowMath(true)}>Show the math</button>
+              ) : null}
+            </span>
           </p>
-          {margin != null && !res.failure ? (
-            <p className={styles.note}>
-              Margin left: {fmtDv(margin)} m/s. It pays for hovering (Phase 5) and the trip home (Phase 7).
-            </p>
-          ) : null}
-          {res.failure ? (
-            <>
-              <p className={styles.note}>{res.failure.cause}</p>
-              <p className={styles.fix}>Try this: {res.failure.fix}</p>
-            </>
-          ) : null}
-          {res.math ? (
-            <button type="button" className={styles.link} aria-expanded={showMath} onClick={() => setShowMath((v) => !v)}>
-              {showMath ? 'Hide the math' : 'Show the math'}
-            </button>
-          ) : null}
-          {showMath ? <MathBlock math={res.math} /> : null}
+          <p className={res.failure ? styles.cause : styles.line}>
+            {res.failure
+              ? res.failure.cause
+              : margin != null
+                ? `Margin left: ${fmtDv(margin)} m/s — for hovering and the trip home.`
+                : `Reserve left: ${fmtDv(left)} m/s.`}
+          </p>
         </div>
+      ) : null}
+      {showMath && done && res.math ? (
+        <Dialog title={res.math.title || 'The math'} onClose={() => setShowMath(false)}>
+          <p className={f3.mathNote}>
+            Isp is the engine's efficiency rating; exhaust velocity is how fast the exhaust shoots out.
+            The rocket equation turns those and your total delta-v into the fuel you must load.
+          </p>
+          <MathBlock math={res.math} />
+        </Dialog>
       ) : null}
     </div>
   )

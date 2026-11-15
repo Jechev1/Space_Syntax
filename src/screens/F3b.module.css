@@ -1,8 +1,11 @@
-/* F3b-only pieces. Shared layout lives in scene.module.css. */
-
-.speech {
-  left: 14%;
-  bottom: 44%;
+/* F3b-only pieces. The screen chrome (HUD, bubble, dock) reuses F1.module.css
+   so the viewport anchoring matches Phases 1 and 2 exactly. */
+.panel {
+  position: absolute;
+  top: 8%;
+  right: 2.4%;
+  width: 30%;
+  pointer-events: auto;
 }
 
 /* The chosen rocket stands on the pad, same spot as in the F1 review. It rises with the speed gained. */
@@ -95,10 +98,10 @@
 .warning {
   position: absolute;
   right: 2.4%;
-  bottom: 12.5%;
+  bottom: 13.5%;
   margin: 0;
   color: var(--text-dim);
-  font-size: clamp(8px, 1.7cqh, 13px);
+  font-size: var(--fs-chip);
 }
 
 @media (prefers-reduced-motion: no-preference) {
