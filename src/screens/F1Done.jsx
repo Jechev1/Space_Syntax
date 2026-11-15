@@ -21,7 +21,7 @@ export function F1Done() {
       background="/bg/bg-plataforma.png"
       character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
       objects={state.rocket ? <img className={styles.reviewRocket} src={rocketArt(state.rocket)} alt="" /> : null}
-      title="How far is up? — Phase 1"
+      title="How far is up? · Phase 1"
     >
       <F1DoneBody />
     </StageScene>

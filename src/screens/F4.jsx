@@ -32,7 +32,7 @@ export function F4() {
     <StageScene
       background={BACKGROUND}
       character={<img className={styles.portrait} src={CHARACTER} alt="" />}
-      title="How far is up? — Phase 4"
+      title="How far is up? · Phase 4"
     >
       <F4Body />
     </StageScene>

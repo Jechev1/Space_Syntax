@@ -24,7 +24,7 @@ export function F2() {
     <StageScene
       background={BACKGROUND}
       character={<img className={scene.girl} src={CHARACTER} alt="" />}
-      title="How far is up? — Phase 2"
+      title="How far is up? · Phase 2"
     >
       <F2Body />
     </StageScene>
