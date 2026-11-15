@@ -1,7 +1,9 @@
 /* F4-only pieces. Shared layout lives in scene.module.css. */
 
 .left,
-.help {
+.help,
+.side,
+.strip {
   --fs-body: clamp(10px, 2.15cqh, 17px);
   --fs-chip: clamp(8px, 1.7cqh, 13px);
   --fs-sub: clamp(13px, 2.8cqh, 21px);
@@ -19,6 +21,17 @@
 .speech {
   left: 14%;
   bottom: 38%;
+}
+
+/* The bubble carries the hints, so it gets the same width as the Phase 0 one. */
+.speech p {
+  max-width: 220px;
+  text-align: left;
+}
+
+/* .screen lets clicks pass to the scene; the help window needs them back. */
+.helpLayer {
+  pointer-events: auto;
 }
 
 /* Left column: globe and ping */
@@ -78,6 +91,10 @@
   font-size: var(--fs-chip);
   white-space: nowrap;
   transform: translate(-0.4em, -50%);
+  /* Small backing so the names stay readable over the globe lines. */
+  padding: 0.05em 0.35em 0.05em 0.2em;
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
 }
 
 .station i,
@@ -191,10 +208,28 @@
   cursor: pointer;
 }
 
+/* Selected, per the visual rules: brighter border and a light filled number, no green. */
 .option[aria-pressed='true'],
 .dish[aria-pressed='true'] {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent);
+  border-color: var(--line-bright);
+  box-shadow: 0 0 0 1px var(--line-bright);
+  background: var(--panel-solid);
+}
+
+.option[aria-pressed='true'] .num {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg-deep);
+}
+
+.optionText {
+  display: grid;
+  gap: 0.1em;
+}
+
+.optionMeta {
+  color: var(--text-dim);
+  font-size: var(--fs-chip);
 }
 
 .num {
@@ -235,6 +270,11 @@
   color: var(--warn);
 }
 
+.broken {
+  display: grid;
+  gap: 0.4em;
+}
+
 .panelFoot {
   display: flex;
   justify-content: space-between;
@@ -252,12 +292,22 @@
   cursor: pointer;
 }
 
-.tag {
-  padding: 0.15em 0.7em;
-  border-radius: var(--radius-btn);
-  background: var(--accent);
-  color: var(--bg-deep);
-  font-size: var(--fs-chip);
+/* 44 px touch area around a compact chip. */
+.source {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-chip);
+  background: transparent;
+  font-family: var(--font-ui);
+  cursor: pointer;
+}
+
+.source > span {
+  min-height: 0;
+  padding: 0.25em 0.8em;
 }
 
 .help {
@@ -265,6 +315,10 @@
   left: 1.7%;
   bottom: 13%;
   width: 34%;
+  max-height: 58%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
   pointer-events: auto;
 }
 
@@ -274,8 +328,65 @@
   box-shadow: none;
 }
 
+/* Right column: the link panel on top, the Play panel under it. They share one box, so they can never
+   cover each other or the Confirm button; when both are tall the column scrolls. */
+.side {
+  position: absolute;
+  top: max(11%, 72px);
+  right: 2.4%;
+  bottom: max(13%, 84px);
+  width: 26%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.2cqh;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  pointer-events: auto;
+}
+
+.side > * {
+  flex: none;
+}
+
+/* RunPanel places itself on the stage; inside the column it just stacks. */
+.side > div:last-child {
+  position: static;
+  width: auto;
+}
+
+/* Buffer strip over the scene while the timeline plays. It stays right of the math panel. */
+.strip {
+  position: absolute;
+  left: 37%;
+  bottom: 13.5%;
+  width: 26em;
+  max-width: 33%;
+  display: grid;
+  gap: 0.3em;
+  padding: 0.5em 0.8em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+  pointer-events: auto;
+}
+
+.stripTitle {
+  margin: 0;
+  color: var(--text-dim);
+}
+
 .runMathLeft {
-  left: 27%;
+  left: 23%;
+  width: 36%;
+  max-height: 58%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
 /* Dish beam over the scene */
