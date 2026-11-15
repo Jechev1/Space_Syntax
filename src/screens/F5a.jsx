@@ -37,13 +37,15 @@ export function F5Hud({ where }) {
 }
 
 export function NeedsEarlier({ stage, gaps }) {
+  const navigate = useNavigate()
   const { state, update } = useGame()
   return (
     <GlassPanel tone="warn" eyebrow="Before you go" title="Missing steps">
-      <p className={styles.line}>This step needs Phases 2 to 4, which are not in this version yet.</p>
+      <p className={styles.line}>This step needs Phases 2 to 4. Finish them first, or load a sample mission to try it now.</p>
       <ul className={styles.warnList}>
         {gaps.slice(0, 3).map((gap) => <li key={gap.code}>{gap.message}</li>)}
       </ul>
+      <Button variant="outline" onClick={() => navigate('/f2')}>Go to Phase 2</Button>
       <Button
         variant="outline"
         onClick={() => update((next) => { Object.assign(next, sampleMission(state.missionType || 'robotic', stage)) })}

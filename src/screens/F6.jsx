@@ -20,25 +20,6 @@ const MARKS = [
   { x: 33, y: 54 },
 ]
 
-// The suit art has a flat gray background, so a small filter turns that gray transparent.
-const KEY = Array.from({ length: 32 }, (_, i) => (i >= 13 && i <= 17 ? 0 : 1)).join(' ')
-
-function GrayKey() {
-  return (
-    <svg className={styles.keyDefs} width="0" height="0" aria-hidden="true" focusable="false">
-      <filter id="f6-key" colorInterpolationFilters="sRGB">
-        <feComponentTransfer in="SourceGraphic" result="gate">
-          <feFuncR type="discrete" tableValues={KEY} />
-          <feFuncG type="discrete" tableValues={KEY} />
-          <feFuncB type="discrete" tableValues={KEY} />
-        </feComponentTransfer>
-        <feColorMatrix in="gate" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 1 1 0 0" result="cut" />
-        <feComposite in="SourceGraphic" in2="cut" operator="in" />
-      </filter>
-    </svg>
-  )
-}
-
 function openStep(state) {
   const actions = (state.surface && state.surface.actions) || []
   if (state.surface && state.surface.finished) return 'd'
@@ -57,7 +38,6 @@ export function F6() {
   const spot = walking && current ? MARKS[index % MARKS.length].x - 23 : 2.4
   const girl = (
     <>
-      <GrayKey />
       <img className={styles.girl} style={{ left: `${spot}%` }} src="/char/nina-traje-pie.png" alt="" />
     </>
   )

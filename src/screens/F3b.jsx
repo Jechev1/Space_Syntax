@@ -83,9 +83,10 @@ function F3bBody() {
 }
 
 function LaunchButton({ game, ready }) {
+  const navigate = useNavigate()
   const { state, launch, setNotice } = game
   if (state.launched) {
-    return <Button variant="outline" disabledReason="Phase 5 is being built">Launched ✓</Button>
+    return <Button variant="outline" onClick={() => navigate('/f5a')}>Fly to the Moon →</Button>
   }
   return (
     <Button

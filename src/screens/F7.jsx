@@ -12,7 +12,7 @@ import styles from './F7.module.css'
 
 const TITLE = 'How far is up? — Phase 7'
 // Phase 3 (flight plan) has no React screen yet. Point this at its route when it exists.
-const PHASE_ROUTES = { 3: '/f1a' }
+const PHASE_ROUTES = { 1: '/f1a', 2: '/f2', 3: '/f3a', 4: '/f4', 5: '/f5a', 6: '/f6' }
 
 const SCENES = {
   intro: { bg: '/bg/bg-orbita-lunar.png', girl: 'dish', place: 'Moon surface' },
