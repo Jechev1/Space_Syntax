@@ -95,11 +95,7 @@ function F4Body() {
       <div className={styles.side}>
         <GlassPanel>
           <p className={scene.kicker}>Phase 4: Communications</p>
-          <div className={styles.titleRow}>
-            <h2 className={scene.title}>{compact ? 'Your link' : 'Choose a link'}</h2>
-            {compact ? <button type="button" className={styles.textButton} onClick={() => setEditing(true)}>Change link</button> : null}
-            {editing ? <button type="button" className={styles.textButton} onClick={() => setEditing(false)}>Keep this link</button> : null}
-          </div>
+          <h2 className={scene.title}>{compact ? 'Your link' : 'Choose a link'}</h2>
           {compact ? <LinkSummary plan={plan} /> : (
             <>
               <LinkChoices game={game} />
@@ -112,7 +108,10 @@ function F4Body() {
             <button type="button" className={styles.mathLink} aria-pressed={math} onClick={toggleMath}>
               {math ? 'Hide the math' : 'Show the math'}
             </button>
-            <SourceTag plan={plan} />
+            {/* After a run this spot changes the link; before it, it shows where the numbers come from. */}
+            {compact ? <button type="button" className={styles.pill} onClick={() => setEditing(true)}><span>Change link</span></button> : null}
+            {editing ? <button type="button" className={styles.pill} onClick={() => setEditing(false)}><span>Keep this link</span></button> : null}
+            {play.run ? null : <SourceTag plan={plan} />}
           </div>
         </GlassPanel>
         {editing ? null : (

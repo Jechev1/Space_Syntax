@@ -229,24 +229,30 @@
   color: var(--bg-deep);
 }
 
-.titleRow {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.6em;
-}
-
-/* Small text action next to the title ("Change link", "Keep this link"). */
-.textButton {
-  flex: none;
+/* "Change link" / "Keep this link": a compact pill in the spot of the source chip, 44 px touch area. */
+.pill {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   padding: 0;
   border: 0;
   background: transparent;
   color: var(--text);
   font-family: var(--font-ui);
   font-size: var(--fs-chip);
-  text-decoration: underline;
   cursor: pointer;
+}
+
+.pill > span {
+  padding: 0.25em 0.9em;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.pill:hover > span {
+  border-color: var(--text);
 }
 
 .summary {
