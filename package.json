@@ -5,6 +5,7 @@
   "description": "Browser game for teens: design a real Moon mission with NASA data and real math (NASA Space Apps 2026).",
   "scripts": {
     "dev": "vite",
+    "build": "vite build",
     "test": "node --test",
     "check": "node tools/check.js",
     "balance": "node tools/balance.js",
