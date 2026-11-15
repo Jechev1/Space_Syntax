@@ -8,10 +8,10 @@ import { useGame } from '../engine/useGame.jsx'
 import { usePlayRun } from '../engine/usePlayRun.jsx'
 import { RunVerdict, rocketArt } from './F1b.jsx'
 import { StageScene, usePhaseGuard } from './frame.jsx'
+import { MissionHud } from './f1Hud.jsx'
 import { usePlay } from './playContext.jsx'
 import styles from './F3b.module.css'
-import { SceneHud } from './scene.jsx'
-import scene from './scene.module.css'
+import chrome from './F1.module.css'
 
 const BACKGROUND = '/bg/bg-plataforma.png'
 const CHARACTER = '/char/nina-traje-pie.png'
@@ -37,7 +37,7 @@ export function F3b() {
   return (
     <StageScene
       background={BACKGROUND}
-      character={<img className={scene.girl} src={CHARACTER} alt="" />}
+      character={<img className={chrome.girl} src={CHARACTER} alt="" />}
       objects={rocket}
       title="How far is up? · Launch pad"
     >
@@ -56,15 +56,17 @@ function F3bBody({ play }) {
   const blocker = summary.G.issues.find((issue) => issue.severity === 'block')
 
   return (
-    <div className={scene.screen}>
-      <SceneHud where="Earth → Ship" />
-      <div className={`${scene.speech} ${styles.speech}`}>
-        <Bubble tone="speech">{state.launched ? 'We are on our way!' : "Let's go to the Moon."}</Bubble>
-      </div>
-      <div className={scene.panel}>
+    <div className={chrome.screen}>
+      <MissionHud />
+      {state.difficulty === 'director' ? null : (
+        <div className={chrome.speech}>
+          <Bubble tone="speech">{state.launched ? 'We are on our way!' : "Let's go to the Moon."}</Bubble>
+        </div>
+      )}
+      <div className={styles.panel}>
         <GlassPanel>
-          <p className={scene.kicker}>Launch pad</p>
-          <h2 className={scene.title}>Mission summary</h2>
+          <p className={chrome.kicker}>Launch pad</p>
+          <h2 className={chrome.question}>Mission summary</h2>
           <div className={styles.rows}>
             {rows.map((row) => (
               <div key={row.key} className={styles.row}>
@@ -88,14 +90,14 @@ function F3bBody({ play }) {
         </GlassPanel>
       </div>
       <p className={styles.warning}>After launch you cannot change Phases 0 to 4.</p>
-      <div className={scene.dock}>
-        <div className={scene.nav}>
+      <div className={chrome.dock}>
+        <div className={chrome.nav}>
           {state.launched ? null : (
             <Button variant="secondary" onClick={() => navigate('/f4')}>← Comms</Button>
           )}
           <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
         </div>
-        <div className={scene.lock}>
+        <div className={chrome.lock}>
           <LaunchButton game={game} ready={summary.go} play={play} />
         </div>
       </div>

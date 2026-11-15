@@ -140,9 +140,14 @@ function revalidate(state) {
   }
   if (state.rocket) {
     const rocket = (D.ROCKETS[state.missionType] || []).find((item) => item.id === state.rocket)
-    if (!rocket || rocket.capacity < report.tli) {
+    if (!rocket) {
       state.rocket = null
       return 'Your spacecraft got too heavy for that rocket. Pick again.'
+    }
+    // Keep an overweight pick so phase validators can name the real problem
+    // (supplies or fuel margin made the craft too heavy) instead of "Pick a rocket".
+    if (rocket.capacity < report.tli) {
+      return 'Your spacecraft got too heavy for that rocket. Pick a bigger one or lighten the load.'
     }
   }
   if (state.phase1Done) {
