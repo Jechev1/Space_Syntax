@@ -213,13 +213,15 @@ function F5aBody() {
           <Button variant="secondary" onClick={() => navigate('/f3b')}>← Launch</Button>
           <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
         </div>
-        <Button
-          variant="outline"
-          disabledReason={!ready ? 'Load a sample mission first' : picked ? '' : 'Pick a landing site'}
-          onClick={() => navigate('/f5b')}
-        >
-          Choose this site
-        </Button>
+        <div className={styles.lock}>
+          <Button
+            variant="outline"
+            disabledReason={!ready ? 'Load a sample mission first' : picked ? '' : 'Pick a landing site'}
+            onClick={() => navigate('/f5b')}
+          >
+            Choose this site
+          </Button>
+        </div>
       </div>
       <HelpWindow help={HELP_F5A} open={help} onClose={() => setHelp(false)} />
     </div>

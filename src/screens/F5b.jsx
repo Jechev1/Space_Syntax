@@ -239,9 +239,11 @@ function F5bBody() {
             <Button variant="secondary" onClick={() => goBack(fixPhase(res.failure))}>Go back to Phase {fixPhase(res.failure)}</Button>
           ) : null}
         </div>
-        <Button variant="outline" disabledReason={landed ? '' : stepReason} onClick={() => navigate('/f6')}>
-          Step outside →
-        </Button>
+        <div className={styles.lock}>
+          <Button variant="outline" disabledReason={landed ? '' : stepReason} onClick={() => navigate('/f6')}>
+            Step outside →
+          </Button>
+        </div>
       </div>
       <HelpWindow help={HELP_F5B} open={help} onClose={() => setHelp(false)} />
     </div>
