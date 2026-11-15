@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Dialog } from '../components/ui/Dialog.jsx'
-import { useGame } from '../engine/useGame.jsx'
-import { DifficultyPicker, GameTools } from './GameTools.jsx'
+import { continuePath, missionInProgress, useGame } from '../engine/useGame.jsx'
+import { DifficultyPicker, GameTools, ResetConfirm } from './GameTools.jsx'
 import styles from './Start.module.css'
 
 const NAMES = ['Laura Angel', 'Jorge Flores', 'Kevin Luna', 'Violeta Jacobo']
@@ -17,6 +17,7 @@ export function Start() {
   const { state, data } = useGame()
   const [open, setOpen] = useState(null)
   const level = data.DIFFICULTIES.find((item) => item.id === state.difficulty)
+  const playing = missionInProgress(state)
 
   useEffect(() => {
     document.title = 'How far is up?'
@@ -31,9 +32,20 @@ export function Start() {
           <h1 className={styles.title}>How far is up?</h1>
           <p className={styles.subtitle}>A Space Mission Design Game</p>
           <div className={styles.menu}>
-            <button type="button" className={`${styles.action} ${styles.primary}`} onClick={() => navigate('/f0')}>
-              Start mission
-            </button>
+            {playing ? (
+              <button type="button" className={`${styles.action} ${styles.primary}`} onClick={() => navigate(continuePath(state))}>
+                Continue mission
+              </button>
+            ) : (
+              <button type="button" className={`${styles.action} ${styles.primary}`} onClick={() => navigate('/f0')}>
+                Start mission
+              </button>
+            )}
+            {playing ? (
+              <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={() => setOpen('reset')}>
+                New game
+              </button>
+            ) : null}
             <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={() => setOpen('difficulty')}>
               Difficulty{level ? `: ${level.title}` : ''}
             </button>
@@ -47,7 +59,8 @@ export function Start() {
           <p>v1.0</p>
         </footer>
       </div>
-      {open ? (
+      {open === 'reset' ? <ResetConfirm onClose={() => setOpen(null)} /> : null}
+      {open && open !== 'reset' ? (
         <Dialog title={TITLES[open]} onClose={() => setOpen(null)}>
           {open === 'credits' ? (
             <>
