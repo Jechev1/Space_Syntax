@@ -3,23 +3,23 @@ import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
+import { Dialog } from '../components/ui/Dialog.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
+import { Modal } from '../components/ui/Modal.jsx'
 import { useGame } from '../engine/useGame.jsx'
 import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
 import { RunPanel } from './F2.jsx'
-import runStyles from './F2.module.css'
 import { StageScene, usePhaseGuard } from './frame.jsx'
-import { usePlay } from './playContext.jsx'
+import { f4Speech } from './f4Speech.mjs'
 import styles from './F4.module.css'
-import { SceneHud } from './scene.jsx'
 import scene from './scene.module.css'
 
 const BACKGROUND = '/bg/bg-antena.png'
 const CHARACTER = '/char/nina-chaqueta-libreta.png'
 /* NASA Deep Space Network sites, one every 120 degrees so one always faces the Moon. Positions are on the drawn globe. */
 const STATIONS = [
-  { name: 'Goldstone', x: 22, y: 38 },
+  { name: 'Goldstone', x: 20, y: 48 },
   { name: 'Madrid', x: 66, y: 30 },
   { name: 'Canberra', x: 78, y: 78 },
 ]
@@ -32,7 +32,7 @@ export function F4() {
     <StageScene
       background={BACKGROUND}
       character={<img className={styles.portrait} src={CHARACTER} alt="" />}
-      title="How far is up? · Phase 4"
+      title="How far is up? · Phase 4: Communications"
     >
       <F4Body />
     </StageScene>
@@ -41,66 +41,139 @@ export function F4() {
 
 function F4Body() {
   const navigate = useNavigate()
-  const { setModal } = usePlay()
   const game = useGame()
   const { state, model } = game
   const plan = model.commsPlan(state)
-  const [math, setMath] = useState(false)
+  const [help, setHelp] = useState(false)
   const play = usePlayRun(4, state)
   const passed = usePassed(4, state)
-  const [runMath, setRunMath] = useState(false)
   const runRes = play.run && play.run.res
-  useEffect(() => { setRunMath(false) }, [runRes])
+  // The math opens in a popup, like Phase 1: 'link' for the comms math, 'run' for the timeline result.
+  const [mathOpen, setMathOpen] = useState(null)
+  useEffect(() => { setMathOpen((open) => (open === 'run' ? null : open)) }, [runRes])
+  const linkMath = model.commsMath(state)
+  const broken = designBroken(state, model)
+  /*
+   * After a run the link choices fold into a one-line summary, so the link panel and the run result fit the
+   * column without scrolling. "Change link" opens the choices again and hides the result until the player
+   * keeps the link or picks a new one (a new design clears the run, which ends the editing).
+   */
+  const [editing, setEditing] = useState(false)
+  useEffect(() => { if (!play.run) setEditing(false) }, [play.run])
+  const compact = Boolean(play.run) && !editing
+  const speech = f4Speech(state.difficulty, {
+    need: model.fmt(plan.needGbPerDay),
+    gb: model.fmt(plan.gbPerDay),
+    link: Boolean(plan.link),
+    dish: Boolean(plan.dish),
+    laser: Boolean(plan.link && plan.link.optical),
+    bottleneck: plan.bottleneck,
+    weather: plan.weatherRisk,
+    broken: Boolean(broken),
+    passed,
+    run: runView(play.run),
+  })
 
   return (
     <div className={scene.screen}>
-      <SceneHud limits />
+      <F4Hud />
       <div className={styles.left}>
         <Globe frame={play.frame} />
         <Ping seconds={plan.roundTrip} />
       </div>
       <Beam frame={play.frame} />
-      {play.run ? null : (
-        <div className={`${scene.speech} ${styles.speech}`}>
-          <Bubble tone="speech">How will anyone know what I found?</Bubble>
-        </div>
-      )}
-      <div className={scene.panel}>
+      <div className={`${scene.speech} ${styles.speech}`}>
+        <Bubble tone="speech">{speech}</Bubble>
+      </div>
+      <div className={styles.side}>
         <GlassPanel>
-          <p className={scene.kicker}>Phase 4 · Communications</p>
-          <h2 className={scene.title}>Choose a link</h2>
-          <p className={scene.note}>
-            Your science makes <b>{model.fmt(model.dataNeedPerDay(state))} Gb a day</b>. Pick a link that sends at least that much, then a ground antenna.
-          </p>
-          <LinkChoices game={game} />
-          <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
+          <p className={scene.kicker}>Phase 4: Communications</p>
+          <h2 className={scene.title}>{compact ? 'Your link' : 'Choose a link'}</h2>
+          {compact ? <LinkSummary plan={plan} /> : (
+            <>
+              {/* Once a link is picked, the verdict line under the list repeats this need next to what it sends. */}
+              {plan.link ? null : (
+                <p className={scene.note}>
+                  Your science makes <b>{model.fmt(model.dataNeedPerDay(state))} Gb a day</b>. Pick a link that sends at least that much.
+                </p>
+              )}
+              <LinkChoices game={game} />
+              <DishChoices game={game} laser={Boolean(plan.link && plan.link.optical)} />
+            </>
+          )}
           <LinkVerdict plan={plan} model={model} />
+          {broken ? <BrokenDesign reason={broken} /> : null}
           <div className={styles.panelFoot}>
-            <button type="button" className={styles.mathLink} aria-pressed={math} onClick={() => setMath(!math)}>
-              {math ? 'Hide the math' : 'Show the math'}
-            </button>
-            <span className={styles.tag}>Game value</span>
+            <Button variant="outline" onClick={() => setMathOpen('link')}>Show the math</Button>
+            {/* Shown only after a run: change the link, or keep it and go back to the result. */}
+            {compact ? <button type="button" className={styles.pill} onClick={() => setEditing(true)}><span>Change link</span></button> : null}
+            {editing ? <button type="button" className={styles.pill} onClick={() => setEditing(false)}><span>Keep this link</span></button> : null}
           </div>
         </GlassPanel>
+        {editing ? null : (
+          <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" unitName="Hour" play={play} showMath={false} onMath={() => setMathOpen('run')} />
+        )}
       </div>
-      {math ? <MathPanel game={game} /> : null}
-      <RunPanel eyebrow="Play · Mission timeline" label="Run the mission timeline" strip unitName="Hour" play={play} showMath={runMath} onMath={() => setRunMath((open) => !open)}>
-        <BufferMeter res={runRes} frame={play.frame} />
-      </RunPanel>
-      {runMath && runRes && runRes.math ? (
-        <div className={`${runStyles.runMath} ${styles.runMathLeft}`}><MathBlock math={runRes.math} /></div>
+      {runRes && runRes.ready ? (
+        <div className={styles.strip}>
+          <p className={styles.stripTitle}>Play · Mission timeline</p>
+          <BufferMeter res={runRes} frame={play.frame} />
+        </div>
+      ) : null}
+      {mathOpen === 'link' ? (
+        <Dialog title={linkMath.title || 'The math'} onClose={() => setMathOpen(null)}>
+          <MathBlock math={{ ...linkMath, title: null }}>
+            <p className={scene.source}>Source: NASA Deep Space Network</p>
+          </MathBlock>
+        </Dialog>
+      ) : null}
+      {mathOpen === 'run' && runRes && runRes.math ? (
+        <Dialog title="Mission timeline: real math" onClose={() => setMathOpen(null)}>
+          <MathBlock math={{ ...runRes.math, title: null }} />
+        </Dialog>
       ) : null}
       <div className={scene.dock}>
         <div className={scene.nav}>
           <Button variant="secondary" onClick={() => navigate('/f3a')}>← Flight plan</Button>
-          <Button variant="secondary" onClick={() => setModal('howto')}>? Help</Button>
+          <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
         </div>
         <div className={scene.lock}>
           <ConfirmButton game={game} passed={passed} />
         </div>
       </div>
+      <Modal open={help} variant="info" title="Phase 4: Communications" onClose={() => setHelp(false)}>
+        <p>Phase 4 picks how your spacecraft talks to Earth: a radio link on board and an antenna of NASA's Deep Space Network on the ground.</p>
+        <p>Your science makes data every day. The link has to send at least that much, or data piles up in the onboard buffer and is lost when it fills.</p>
+        <p>A faster link or a bigger dish sends more, but adds power, mass and cost. Run the mission timeline to test it, then confirm the link before the launch.</p>
+      </Modal>
     </div>
   )
+}
+
+/*
+ * Top bar for Phase 4: place, launch mass, budget and power. It is the shared HUD without the Data cell,
+ * which stays at 0 Gb until the spacecraft flies and tells nothing here.
+ */
+function F4Hud() {
+  const { state, model } = useGame()
+  const hud = model.hud(state)
+  const fmt = model.fmt
+  return (
+    <div className={`${scene.hud} ${styles.hud}`} aria-label="Mission status">
+      <span>Earth</span>
+      <span>Launch mass {fmt(hud.launchMass)} / {hud.capacity == null ? '—' : fmt(hud.capacity)} kg</span>
+      <span>Budget ${fmt(hud.cost)}M / ${fmt(hud.budget)}M</span>
+      <span>Power {fmt(hud.powerNeed)} / {fmt(hud.powerGen)} W</span>
+    </div>
+  )
+}
+
+/** Run state in the words f4Speech uses. */
+function runView(run) {
+  if (!run) return ''
+  if (run.status === 'running') return 'running'
+  if (run.status === 'done') return run.res.ok ? 'passed' : 'failed'
+  return ''
 }
 
 function Globe({ frame }) {
@@ -182,10 +255,15 @@ function LinkChoices({ game }) {
             onClick={() => setComms({ link: link.id })}
           >
             <span className={styles.num}>{index + 1}</span>
-            <span>
-              {LINK_NAMES[link.id] || link.title} · +{model.fmt(link[type].power)} W · {model.fmt(preview.gbPerDay)} Gb
+            <span className={styles.optionText}>
+              <span>{LINK_NAMES[link.id] || link.title} · {model.fmt(preview.gbPerDay)} Gb a day</span>
+              <span className={styles.optionRow}>
+                <span className={styles.optionMeta}>
+                  +{model.fmt(link[type].power)} W · +{model.fmt(link[type].mass)} kg · ${model.fmt(link[type].cost)}M
+                </span>
+                <span className={`${styles.fit} ${enough ? styles.fitOk : styles.fitShort}`}>{enough ? 'Enough' : 'Too slow'}</span>
+              </span>
             </span>
-            <span className={`${styles.fit} ${enough ? styles.fitOk : styles.fitShort}`}>{enough ? 'Enough' : 'Too slow'}</span>
           </button>
         )
       })}
@@ -198,7 +276,7 @@ function DishChoices({ game, laser }) {
   const current = state.comms || {}
   return (
     <div className={styles.dishes}>
-      <span className={styles.label}>Ground antenna</span>
+      <span className={styles.label}>Antenna</span>
       {data.COMMS.dishes.map((dish) => (
         <button
           key={dish.id}
@@ -216,8 +294,26 @@ function DishChoices({ game, laser }) {
   )
 }
 
+/* The chosen link and antenna on one row, shown after a run instead of the full lists. */
+function LinkSummary({ plan }) {
+  const { state, model } = useGame()
+  const type = state.missionType
+  const link = plan.link
+  if (!link) return null
+  const name = LINK_NAMES[link.id] || link.title
+  return (
+    <p className={styles.summary}>
+      <span className={styles.summaryName}>{name}{plan.dish ? ` · ${plan.dish.diameter} m antenna` : ''}</span>
+      <span className={styles.optionMeta}>
+        +{model.fmt(link[type].power)} W · +{model.fmt(link[type].mass)} kg · ${model.fmt(link[type].cost + (plan.dish ? plan.dish.cost[type] : 0))}M
+      </span>
+    </p>
+  )
+}
+
 function LinkVerdict({ plan, model }) {
-  if (!plan.link) return <p className={scene.note}>Gb = data you can send to Earth per day.</p>
+  // Before a pick, the note above the list already says how much data the science makes.
+  if (!plan.link) return null
   let text = `Sends ${model.fmt(plan.gbPerDay)} Gb a day · your science makes ${model.fmt(plan.needGbPerDay)} Gb`
   if (plan.bottleneck) text = `Bottleneck: you make ${model.fmt(plan.needGbPerDay)} Gb a day but send only ${model.fmt(plan.gbPerDay)} Gb`
   return (
@@ -228,18 +324,22 @@ function LinkVerdict({ plan, model }) {
   )
 }
 
-function MathPanel({ game }) {
-  const math = game.model.commsMath(game.state)
+/**
+ * A heavier or pricier link can break Phase 1 (the engine drops the rocket). The Phase 4 check alone does
+ * not see that, so the screen asks Phase 1 too and sends the player there instead of a silent jump.
+ */
+function designBroken(state, model) {
+  if (state.rocket && state.phase1Done) return null
+  const issue = model.validatePhase(state, 1).issues.find((item) => item.severity === 'block')
+  return issue ? issue.message : 'Your spacecraft needs a new check in Phase 1'
+}
+
+function BrokenDesign({ reason }) {
+  const navigate = useNavigate()
   return (
-    <div className={styles.help}>
-      <GlassPanel>
-        <p className={scene.kicker}>{math.title}</p>
-        {math.steps.map((step) => (
-          <p key={step.eq} className={scene.note}><b>{step.eq}</b> · {step.num}</p>
-        ))}
-        {math.check ? <p className={scene.note}>{math.check}</p> : null}
-        <p className={scene.source}>Source: NASA Deep Space Network</p>
-      </GlassPanel>
+    <div className={styles.broken} role="alert">
+      <p className={`${scene.note} ${styles.warn}`}>This link changed your spacecraft: {reason}.</p>
+      <Button variant="outline" onClick={() => navigate('/f1b')}>Fix it in Phase 1</Button>
     </div>
   )
 }
@@ -249,11 +349,16 @@ function ConfirmButton({ game, passed }) {
   const { state, model, lockComms, setNotice } = game
   const check = model.validatePhase(state, 4)
   const blocker = check.issues.find((issue) => issue.severity === 'block')
+  const broken = designBroken(state, model)
+  let reason = ''
+  if (blocker) reason = blocker.message
+  else if (broken) reason = 'Fix your spacecraft in Phase 1 first'
+  else if (!passed) reason = 'Pass the timeline test first'
   return (
     <Button
       variant="outline"
-      disabled={Boolean(blocker)}
-      disabledReason={blocker ? blocker.message : (passed ? '' : 'Pass the timeline test first')}
+      disabled={Boolean(blocker || broken)}
+      disabledReason={reason}
       onClick={() => {
         flushSync(() => {
           lockComms()
