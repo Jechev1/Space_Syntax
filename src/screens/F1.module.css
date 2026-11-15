@@ -203,13 +203,45 @@
 .reviewRocket {
   position: absolute;
   left: 42%;
-  bottom: 12%;
-  height: 68%;
+  bottom: 25%;
+  height: 56%;
+  pointer-events: none;
+}
+
+.reviewRocket img {
+  display: block;
+  height: 100%;
   width: auto;
   object-fit: contain;
   object-position: center bottom;
   filter: drop-shadow(0 10px 18px rgba(10, 12, 28, .5));
-  pointer-events: none;
+}
+
+.craftTag {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + var(--fs-body));
+  transform: translateX(-50%);
+  padding: calc(var(--fs-chip) / 4) calc(var(--fs-chip) / 2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text);
+  font-size: var(--fs-chip);
+  font-weight: var(--fw);
+  white-space: nowrap;
+}
+
+.craftTag::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1.5px;
+  height: var(--fs-body);
+  background: var(--line-bright);
+  transform: translateX(-50%);
 }
 
 .tag {
@@ -360,10 +392,55 @@
 }
 
 .workshop .panel {
-  top: 18%;
+  top: 10%;
   bottom: auto;
-  width: 28%;
+  width: 34%;
   overflow: visible;
+}
+
+.workshop .options button {
+  padding: 2px 0;
+  line-height: 1.2;
+}
+
+.panelFoot {
+  margin-top: calc(var(--fs-chip) / 3);
+  padding-top: calc(var(--fs-chip) / 2);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: calc(var(--fs-chip) / 2);
+}
+
+.panelFoot .stats {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.workshop .stats {
+  display: block;
+}
+
+.workshop .stats div {
+  display: inline;
+  white-space: nowrap;
+}
+
+.workshop .stats div + div::before {
+  content: ' · ';
+  color: var(--text-dim);
+}
+
+.workshop .stats dt,
+.workshop .stats dd {
+  display: inline;
+  font-size: var(--fs-chip);
+}
+
+.workshop .stats dd {
+  margin-left: calc(var(--fs-chip) / 3);
 }
 
 .pad .panel,
@@ -479,7 +556,7 @@
 }
 
 .workshop .question {
-  font-size: var(--fs-title);
+  font-size: var(--fs-sub);
 }
 
 .line {

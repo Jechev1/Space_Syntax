@@ -152,3 +152,7 @@
   color: var(--bg);
   border-color: var(--line-bright);
 }
+
+.line.selected .detail {
+  color: var(--text-dim);
+}

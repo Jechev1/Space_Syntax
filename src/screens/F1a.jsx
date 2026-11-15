@@ -71,7 +71,6 @@ function F1aBody() {
   const canNext = last ? !reason : answered
   const speech = f1aSpeech(state.difficulty, sub.id, answered)
   const helpSub = HELP_F1A.subsystems[sub.id]
-  const helpSource = helpSub && helpSub.source ? data.SOURCES[helpSub.source] : null
 
   return (
     <div className={`${styles.screen} ${styles.workshop}`}>
@@ -115,12 +114,13 @@ function F1aBody() {
               />
             ))}
           </div>
-          <dl className={styles.stats}>
-            <div><dt>Hardware</dt><dd>{kgText(model, report.dry)}</dd></div>
-            <div><dt>Fuel</dt><dd>{kgText(model, report.propellant)}</dd></div>
-            <div><dt>Launch mass</dt><dd>{kgText(model, report.tli)}</dd></div>
-          </dl>
-          <div className={styles.stepNav}>
+          <div className={styles.panelFoot}>
+            <dl className={styles.stats}>
+              <div><dt>Hardware</dt><dd>{kgText(model, report.dry)}</dd></div>
+              <div><dt>Fuel</dt><dd>{kgText(model, report.propellant)}</dd></div>
+              <div><dt>Launch mass</dt><dd>{kgText(model, report.tli)}</dd></div>
+            </dl>
+            <div className={styles.stepNav}>
             {index > 0 ? (
               <Button variant="secondary" onClick={() => setSubsystem(subs[index - 1].id)}>← Previous</Button>
             ) : null}
@@ -133,6 +133,7 @@ function F1aBody() {
                 {last ? 'Done' : 'Next →'}
               </Button>
             </span>
+            </div>
           </div>
         </GlassPanel>
       </div>
@@ -154,9 +155,6 @@ function F1aBody() {
               <p>{helpSub.hazard}</p>
               <p><b>Real missions:</b> {helpSub.example}</p>
             </>
-          ) : null}
-          {helpSource ? (
-            <p><a className={shell.link} href={helpSource.url} target="_blank" rel="noopener noreferrer">Source: {helpSource.title} ↗</a></p>
           ) : null}
         </Modal>
       </div>
@@ -182,8 +180,11 @@ function PartChoice({ index, sub, option, onPick, onLocked }) {
         variant="line"
         number={index + 1}
         text={option.title}
-        detail={option.blurb}
-        chips={showStats && unlocked ? <OptionStats sub={sub} option={option} /> : null}
+        detail={
+          showStats && unlocked
+            ? <>{option.blurb} · <OptionStats sub={sub} option={option} /></>
+            : option.blurb
+        }
         selected={selected}
         locked={!unlocked}
         lockedReason="Your Phase 0 measurement doesn't need this"

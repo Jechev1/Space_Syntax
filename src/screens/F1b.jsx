@@ -106,9 +106,6 @@ function F1bBody() {
   const suggestions = needDescope ? model.descopeSuggestions(state, mode).slice(0, 2) : []
   const reason = confirmReason(state, report, data, model, passed)
   const speech = f1bSpeech(state.difficulty, state.rocket, run, fitsAny)
-  const helpSources = [...new Set(HELP_F1B.blocks.map((b) => b.source).filter(Boolean))]
-    .map((key) => data.SOURCES[key])
-    .filter(Boolean)
 
   return (
     <div className={`${styles.screen} ${styles.pad}`}>
@@ -210,13 +207,6 @@ function F1bBody() {
           {HELP_F1B.blocks.map((block) => (
             <p key={block.heading}><b>{block.heading}:</b> {block.text}</p>
           ))}
-          {helpSources.length ? (
-            <p>
-              {helpSources.map((source) => (
-                <a key={source.url} className={shell.link} href={source.url} target="_blank" rel="noopener noreferrer">Source: {source.title} ↗</a>
-              ))}
-            </p>
-          ) : null}
         </Modal>
       </div>
     </div>

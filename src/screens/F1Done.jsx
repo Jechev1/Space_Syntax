@@ -10,7 +10,6 @@ import { kgText, usdText } from './bits.jsx'
 import { f1doneSpeech } from './f1Speech.mjs'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { MissionHud } from './f1Hud.jsx'
-import { usePlay } from './playContext.jsx'
 import { rocketArt } from './F1b.jsx'
 import styles from './F1.module.css'
 import shell from './shell.module.css'
@@ -23,7 +22,12 @@ export function F1Done() {
     <StageScene
       background="/bg/bg-plataforma.png"
       character={<img className={styles.girl} src="/char/nina-overol-llave.png" alt="" />}
-      objects={state.rocket ? <img className={styles.reviewRocket} src={rocketArt(state.rocket)} alt="" /> : null}
+      objects={state.rocket ? (
+        <div className={styles.reviewRocket}>
+          <img src={rocketArt(state.rocket)} alt="" />
+          <span className={styles.craftTag}>Your spacecraft</span>
+        </div>
+      ) : null}
       title="How far is up? — Phase 1"
     >
       <F1DoneBody />
@@ -33,8 +37,7 @@ export function F1Done() {
 
 function F1DoneBody() {
   const navigate = useNavigate()
-  const { state, data, model } = useGame()
-  const { setModal } = usePlay()
+  const { state, model } = useGame()
   const [help, setHelp] = useState(false)
   const report = model.evaluate(state)
   if (!report) return <p className={shell.note}>Pick a mission first.</p>
@@ -53,9 +56,6 @@ function F1DoneBody() {
   }
   const nextNote = crewed ? 'Next: crew and life support.' : 'Next: the flight plan.'
   const speech = f1doneSpeech(state.difficulty, nightNote, nextNote)
-  const helpSources = [...new Set(HELP_F1DONE.blocks.map((b) => b.source).filter(Boolean))]
-    .map((key) => data.SOURCES[key])
-    .filter(Boolean)
 
   return (
     <div className={`${styles.screen} ${styles.review}`}>
@@ -86,7 +86,6 @@ function F1DoneBody() {
         <div className={styles.nav}>
           <Button variant="secondary" onClick={() => navigate('/f1a')}>← Workshop</Button>
           <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
-          <Button variant="outline" onClick={() => setModal('sources')}>See all NASA sources</Button>
         </div>
       </div>
       <div className={styles.help}>
@@ -94,13 +93,6 @@ function F1DoneBody() {
           {HELP_F1DONE.blocks.map((block) => (
             <p key={block.heading}><b>{block.heading}:</b> {block.text}</p>
           ))}
-          {helpSources.length ? (
-            <p>
-              {helpSources.map((source) => (
-                <a key={source.url} className={shell.link} href={source.url} target="_blank" rel="noopener noreferrer">Source: {source.title} ↗</a>
-              ))}
-            </p>
-          ) : null}
         </Modal>
       </div>
     </div>
