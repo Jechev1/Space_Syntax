@@ -17,11 +17,12 @@
   const CHARACTER = CHARACTERS.find(c => c.lead);
   /* Which scene (background art) each screen uses. The story starts on Earth at the launch site. */
   const SCENES = {
-    start: 'space', intro: 'launch', f0: 'launch', f1a: 'launch', f1b: 'launch', f1done: 'launch',
+    start: 'space', intro: 'launch', f0: 'launch', f1a: 'launch', f1b: 'launch', f1done: 'launch', f2: 'fase2', f2done: 'crew', f3a: 'fase3A', f4: 'fase4', f3b: 'fase3B', f5a: 'fase5A', f5b: 'fase5B', f5done: 'space',
     // f2: 'ship' — spacecraft interior with oxygen, food and water (Phase 2)
     // f3: 'trajectory' — Earth-to-Moon path with maneuver nodes (Phase 3)
   };
-  const SCENE_ART = { space: 'assets/bg-space.jpg', launch: 'assets/bg-launch.jpg', ship: 'assets/bg-ship.jpg', trajectory: 'assets/bg-trajectory.jpg' };
+  const SCENE_ART = { space: 'assets/bg-space.jpg', launch: 'assets/bg-launch.jpg', ship: 'assets/bg-ship.jpg', trajectory: 'assets/bg-trajectory.jpg', crew: 'assets/bg-crew.jpg',
+    fase2: 'assets/fase2.jpeg', fase3A: 'assets/fase3A.jpeg', fase4: 'assets/fase4.jpeg', fase3B: 'assets/fase3B.jpeg', fase5A: 'assets/fase5A.jpeg', fase5B: 'assets/fase5B.jpeg' };
 
   const SOURCES = {
     nssdc: { title: 'NASA NSSDC — Moon Fact Sheet', url: 'https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html' },
