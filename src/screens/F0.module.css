@@ -8,7 +8,7 @@
   position: absolute;
   top: 18px;
   left: 22px;
-  right: 22px;
+  right: calc(22px + var(--tools-reserve));
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
@@ -85,11 +85,19 @@ button.kicker {
   font-size: var(--fs-chip);
 }
 
+.home,
 .lock {
   position: absolute;
-  right: 2.4%;
   bottom: 3.2%;
   pointer-events: auto;
+}
+
+.home {
+  left: 2.4%;
+}
+
+.lock {
+  right: 2.4%;
 }
 
 .lock button {

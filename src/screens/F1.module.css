@@ -8,7 +8,7 @@
   position: absolute;
   top: 18px;
   left: 22px;
-  right: 22px;
+  right: calc(22px + var(--tools-reserve));
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;

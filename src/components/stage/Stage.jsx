@@ -1,4 +1,5 @@
-import { useId, useLayoutEffect, useRef, useState } from 'react'
+import { useContext, useId, useLayoutEffect, useRef, useState } from 'react'
+import { StageOverlay } from './overlay.js'
 import styles from './Stage.module.css'
 
 const STAGE_W = 1280
@@ -23,6 +24,7 @@ function starImage(points, color) {
 
 export function Stage({ background = '', framed = false, objects = null, character = null, children }) {
   const grainId = useId().replace(/:/g, '')
+  const overlay = useContext(StageOverlay)
   const frameRef = useRef(null)
   const photo = Boolean(background)
   const scale = useStageScale(frameRef)
@@ -54,7 +56,7 @@ export function Stage({ background = '', framed = false, objects = null, charact
           {grain}
           <div className={styles.objects}>{objects}</div>
           <div className={styles.character}>{portrait}</div>
-          <div className={styles.ui}>{children}</div>
+          <div className={styles.ui}>{children}{overlay}</div>
         </div>
       </div>
     )
@@ -71,7 +73,7 @@ export function Stage({ background = '', framed = false, objects = null, charact
           {grain}
           <div className={styles.objects}>{objects}</div>
           <div className={styles.character}>{portrait}</div>
-          <div className={styles.ui}>{children}</div>
+          <div className={styles.ui}>{children}{overlay}</div>
         </div>
       </div>
     </div>
