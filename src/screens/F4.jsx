@@ -13,7 +13,6 @@ import { RunPanel } from './F2.jsx'
 import { StageScene, usePhaseGuard } from './frame.jsx'
 import { f4Speech } from './f4Speech.mjs'
 import styles from './F4.module.css'
-import { SceneHud } from './scene.jsx'
 import scene from './scene.module.css'
 
 const BACKGROUND = '/bg/bg-antena.png'
@@ -77,7 +76,7 @@ function F4Body() {
 
   return (
     <div className={scene.screen}>
-      <SceneHud limits />
+      <F4Hud />
       <div className={styles.left}>
         <Globe frame={play.frame} />
         <Ping seconds={plan.roundTrip} />
@@ -147,6 +146,24 @@ function F4Body() {
         <p>Your science makes data every day. The link has to send at least that much, or data piles up in the onboard buffer and is lost when it fills.</p>
         <p>A faster link or a bigger dish sends more, but adds power, mass and cost. Run the mission timeline to test it, then confirm the link before the launch.</p>
       </Modal>
+    </div>
+  )
+}
+
+/*
+ * Top bar for Phase 4: place, launch mass, budget and power. It is the shared HUD without the Data cell,
+ * which stays at 0 Gb until the spacecraft flies and tells nothing here.
+ */
+function F4Hud() {
+  const { state, model } = useGame()
+  const hud = model.hud(state)
+  const fmt = model.fmt
+  return (
+    <div className={`${scene.hud} ${styles.hud}`} aria-label="Mission status">
+      <span>Earth</span>
+      <span>Launch mass {fmt(hud.launchMass)} / {hud.capacity == null ? '—' : fmt(hud.capacity)} kg</span>
+      <span>Budget ${fmt(hud.cost)}M / ${fmt(hud.budget)}M</span>
+      <span>Power {fmt(hud.powerNeed)} / {fmt(hud.powerGen)} W</span>
     </div>
   )
 }

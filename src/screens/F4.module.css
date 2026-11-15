@@ -8,6 +8,11 @@
   --fs-sub: clamp(13px, 2.8cqh, 21px);
 }
 
+/* Four cells in the top bar (no Data cell in Phase 4). div. beats the shared .hud grid whatever the CSS order. */
+div.hud {
+  grid-template-columns: 0.8fr 1.6fr 1.4fr 1.2fr;
+}
+
 .portrait {
   position: absolute;
   left: 5%;
