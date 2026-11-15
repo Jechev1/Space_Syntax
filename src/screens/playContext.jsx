@@ -8,6 +8,6 @@ export function PlayProvider({ value, children }) {
 
 export function usePlay() {
   const play = useContext(PlayContext)
-  if (!play) throw new Error('usePlay must be used inside MissionFrame')
+  if (!play) throw new Error('usePlay must be used inside StageScene')
   return play
 }

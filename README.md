@@ -21,7 +21,7 @@ Made for NASA Space Apps 2026, Space Mission Design Game challenge.
 
 ## Real science
 
-Every number comes from NASA or is marked as a game value. The rocket equation, NASA life support data, the Deep Space Network, Apollo landing sites, Artemis reentry. All sources are linked inside the game.
+Every number comes from NASA or is marked as a game value. The rocket equation, NASA life support data, the Deep Space Network, Apollo landing sites, Artemis reentry. All sources are linked inside the game and listed in [docs/sources.md](docs/sources.md).
 
 ## Run it
 
