@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { Bubble } from '../components/ui/Bubble.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { GlassPanel } from '../components/ui/GlassPanel.jsx'
+import { Modal } from '../components/ui/Modal.jsx'
 import { OptionRow } from '../components/ui/OptionRow.jsx'
 import { Stage } from '../components/stage/Stage.jsx'
 import { missionConfig } from '../data/mission.config.mjs'
 import { useGame } from '../engine/useGame.jsx'
+import { lessonFor, speechFor } from './f0Facts.mjs'
 import styles from './F0.module.css'
 
 const MASS = missionConfig.fase1.cohetes.medio.capacidad
@@ -19,17 +21,23 @@ export function F0() {
   const game = useGame()
   const { state, data, lockGoal, setNotice } = game
   const [step, setStep] = useState(() => openStep(state))
+  const [help, setHelp] = useState(false)
   const view = clampStep(step, state)
   const missing = !state.question ? 'Pick a question' : !state.measure ? 'Pick a measurement' : !state.missionType ? 'Pick a mission type' : ''
+  const answered = Boolean(answerId(view, state))
+  const lesson = lessonFor(view, state)
 
   useEffect(() => {
-    document.title = 'Space Syntax — Phase 0: Mission goal'
+    document.title = 'Space Syntax — Phase 0: Mission Goal'
   }, [])
 
-  const choices = choicesFor(view, state, data, game, setStep)
+  const choices = choicesFor(view, state, data, game)
 
   return (
-    <Stage background="/bg/bg-observatorio.png" character="/char/nina-chaqueta-libreta.png">
+    <Stage
+      background="/bg/bg-observatorio.png"
+      character={<img className={styles.girl} src="/char/nina-chaqueta-libreta.png" alt="" />}
+    >
       <div className={styles.screen}>
         <div className={styles.hud} aria-label="Mission status">
           <span>Earth</span>
@@ -38,66 +46,97 @@ export function F0() {
           <span>Power 0 / {amount(POWER)}</span>
         </div>
         <div className={styles.speech}>
-          <Bubble tone="speech">A scientist needs proof.</Bubble>
+          <Bubble tone="speech">{speechFor(state.difficulty, view, answered)}</Bubble>
         </div>
-        <div className={styles.panel}>
-          <GlassPanel>
-            {view > 0 ? (
-              <button type="button" className={styles.kicker} onClick={() => setStep(view - 1)}>Phase 0 · Mission goal</button>
-            ) : (
-              <p className={styles.kicker}>Phase 0 · Mission goal</p>
-            )}
-            <h2 className={styles.question}>{stepTitle(view)}</h2>
-            <div className={styles.options}>
-              {choices.map((item) => (
-                <OptionRow
-                  key={item.id}
-                  variant="line"
-                  number={item.number}
-                  text={item.text}
-                  selected={item.selected}
-                  onSelect={item.onSelect}
-                />
-              ))}
+        <div className={styles.column}>
+          <div className={styles.panel}>
+            <GlassPanel>
+              <p className={styles.kicker}>Phase 0: Mission Goal · NASA Pre-Phase A · Step {view + 1} of 3</p>
+              <h2 className={styles.question}>{stepTitle(view)}</h2>
+              <div className={styles.options}>
+                {choices.map((item) => (
+                  <OptionRow
+                    key={item.id}
+                    variant="line"
+                    number={item.number}
+                    text={item.text}
+                    selected={item.selected}
+                    onSelect={item.onSelect}
+                  />
+                ))}
+              </div>
+              <p className={styles.hypothesis}>Hypothesis: The Moon is made of cheese.</p>
+              <div className={styles.stepNav}>
+                {view > 0 ? (
+                  <Button variant="secondary" onClick={() => setStep(view - 1)}>← Previous</Button>
+                ) : null}
+                {view < 2 ? (
+                  <span className={answered ? styles.nextOn : undefined}>
+                    <Button variant="secondary" disabled={!answered} onClick={() => setStep(view + 1)}>Next →</Button>
+                  </span>
+                ) : null}
+              </div>
+            </GlassPanel>
+          </div>
+          {lesson ? (
+            <div key={`${view}-${answerId(view, state)}`} className={styles.learn}>
+              <GlassPanel>
+                <div className={styles.facts}>
+                  {lesson.facts.map((fact) => (
+                    <p key={fact.label}>
+                      <span className={styles.factLabel}>{fact.label}:</span>{' '}
+                      {fact.bits.map((item, index) => (
+                        <span key={item.text}>{index > 0 ? ', ' : ''}{item.text}</span>
+                      ))}
+                    </p>
+                  ))}
+                </div>
+                <p className={styles.why}><span className={styles.factLabel}>Why it matters:</span> {lesson.why}</p>
+              </GlassPanel>
             </div>
-            <p className={styles.hypothesis}>Hypothesis: The Moon is made of cheese.</p>
-          </GlassPanel>
+          ) : null}
         </div>
-        <div className={styles.home}>
-          <Button variant="outline" onClick={() => navigate('/inicio')}>Back to start</Button>
+        <div className={styles.dock}>
+          <div className={styles.nav}>
+            <Button variant="secondary" onClick={() => navigate('/inicio')}>← Back to start</Button>
+            <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
+          </div>
+          <div className={styles.lock}>
+            <Button
+              variant="outline"
+              disabledReason={missing}
+              onClick={() => {
+                flushSync(() => {
+                  lockGoal()
+                  setNotice('Mission goal locked in ✓')
+                })
+                navigate('/f1a')
+              }}
+            >
+              Lock in goal
+            </Button>
+          </div>
         </div>
-        <div className={styles.lock}>
-          <Button
-            variant="outline"
-            disabled={Boolean(missing)}
-            disabledReason={missing}
-            onClick={() => {
-              flushSync(() => {
-                lockGoal()
-                setNotice('Mission goal locked in ✓')
-              })
-              navigate('/f1a')
-            }}
-          >
-            Lock in goal
-          </Button>
+        <div className={styles.help}>
+          <Modal open={help} variant="info" title="Phase 0: Mission Goal" onClose={() => setHelp(false)}>
+            <p>Phase 0 locks the mission goal: what you want to learn, how you will measure it, and whether robots or people go.</p>
+            <p>The question and the measurement decide which instruments Phase 1 lets you fly.</p>
+            <p>Robotic or crewed sets the budget and the lander, and decides whether later phases must keep a crew alive and bring them home.</p>
+          </Modal>
         </div>
       </div>
     </Stage>
   )
 }
 
-function choicesFor(view, state, data, game, setStep) {
+function choicesFor(view, state, data, game) {
   if (view === 0) {
     return data.QUESTIONS.map((item, index) => ({
       id: item.id,
       number: index + 1,
       text: item.title,
       selected: state.question === item.id,
-      onSelect: () => {
-        game.pickQuestion(item.id)
-        setStep(1)
-      },
+      onSelect: () => game.pickQuestion(item.id),
     }))
   }
   if (view === 1) {
@@ -106,10 +145,7 @@ function choicesFor(view, state, data, game, setStep) {
       number: index + 1,
       text: item.title,
       selected: state.measure === item.id,
-      onSelect: () => {
-        game.pickMeasure(item.id)
-        setStep(2)
-      },
+      onSelect: () => game.pickMeasure(item.id),
     }))
   }
   return data.MISSION_TYPES.map((item, index) => ({
@@ -119,6 +155,12 @@ function choicesFor(view, state, data, game, setStep) {
     selected: state.missionType === item.id,
     onSelect: () => game.pickMission(item.id),
   }))
+}
+
+function answerId(view, state) {
+  if (view === 0) return state.question || ''
+  if (view === 1) return state.measure || ''
+  return state.missionType || ''
 }
 
 function openStep(state) {
