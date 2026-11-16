@@ -116,7 +116,7 @@ function SuppliesTest({ play }) {
     <div className={f2.testPanel}>
       <GlassPanel eyebrow="Optional test" title="Test your supplies">
         <p className={f2.testLine}>Simulate the mission days and see if oxygen, food and water last.</p>
-        <Button variant="outline" disabledReason={running ? 'Running…' : ''} onClick={() => play.play()}>
+        <Button variant="outline" data-tutorial="f2-test" disabledReason={running ? 'Running…' : ''} onClick={() => play.play()}>
           {run && run.status !== 'blocked' ? 'Test again' : 'Run test'}
         </Button>
         {run && run.status === 'blocked' ? (
@@ -129,7 +129,7 @@ function SuppliesTest({ play }) {
           </>
         ) : null}
         {done ? (
-          <div className={`${styles.verdictBox} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
+          <div data-tut-verdict={res.ok ? 'ok' : 'fail'} className={`${styles.verdictBox} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
             <p className={styles.verdictLine}>
               <b>{res.ok ? 'Test passed' : 'Test failed'}</b>
               {res.ok ? (
@@ -142,7 +142,7 @@ function SuppliesTest({ play }) {
               {res.failure ? dropTrailingNote(res.failure.cause) : leftText(res)}
             </p>
             {res.math ? (
-              <Button variant="outline" onClick={() => setMath(true)}>Show the math</Button>
+              <Button variant="outline" data-tutorial="f2-math" onClick={() => setMath(true)}>Show the math</Button>
             ) : null}
           </div>
         ) : null}
@@ -177,7 +177,7 @@ function CrewPlan({ game, life }) {
       <h2 className={styles.question}>Plan the crew</h2>
       <div className={f2.row}>
         <span>Crew size</span>
-        <span className={f2.stepper}>
+        <span className={f2.stepper} data-tutorial="f2-size">
           <button
             type="button"
             aria-label="Fewer astronauts"
@@ -221,6 +221,7 @@ function CrewPlan({ game, life }) {
       <button
         type="button"
         className={f2.toggle}
+        data-tutorial="f2-reserve"
         aria-pressed={reserveOn}
         onClick={() => setCrew({ reserve: reserveOn ? 0 : 0.2 })}
       >
@@ -247,7 +248,7 @@ function CrewPlan({ game, life }) {
       </div>
 
       <p className={f2.label}>Moonwalk suit · {life.landingCrew} needed</p>
-      <div className={f2.suits}>
+      <div className={f2.suits} data-tutorial="f2-suits">
         {L.suits.map((suit) => (
           <button
             key={suit.id}
@@ -292,6 +293,7 @@ function ConfirmButton({ game, crewed }) {
   return (
     <Button
       variant="outline"
+      data-tutorial="f2-confirm"
       disabledReason={blocker ? blocker.message : ''}
       onClick={() => {
         flushSync(() => {

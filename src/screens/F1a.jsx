@@ -75,7 +75,7 @@ function F1aBody() {
   return (
     <div className={`${styles.screen} ${styles.workshop}`}>
       <MissionHud />
-      <div className={styles.tabs} role="group" aria-label="Spacecraft parts">
+      <div className={styles.tabs} role="group" aria-label="Spacecraft parts" data-tutorial="f1a-tabs">
         {subs.map((item) => {
           const done = !missing.includes(item.id)
           const selected = item.id === sub.id
@@ -102,7 +102,7 @@ function F1aBody() {
         <GlassPanel>
           <p className={styles.kicker}>Phase 1: Build the Spacecraft · NASA Phases A–C · Step {index + 1} of {subs.length}</p>
           <h2 className={styles.question}>{SUB_QUESTION[sub.id] || sub.title}</h2>
-          <div className={styles.options}>
+          <div className={styles.options} data-tutorial="f1a-options">
             {model.optionsFor(sub.id, type).map((option, optionIndex) => (
               <PartChoice
                 key={option.id}
@@ -140,10 +140,10 @@ function F1aBody() {
       <div className={styles.dock}>
         <div className={styles.nav}>
           <Button variant="secondary" onClick={() => navigate('/f0')}>← Mission goal</Button>
-          <Button variant="secondary" onClick={() => setHelp(true)}>? Help</Button>
+          <Button variant="secondary" data-tutorial="f1a-help" onClick={() => setHelp(true)}>? Help</Button>
         </div>
         <div className={styles.lock}>
-          <Button variant="outline" disabledReason={reason} onClick={() => navigate('/f1b')}>Choose rocket</Button>
+          <Button variant="outline" data-tutorial="f1a-next" disabledReason={reason} onClick={() => navigate('/f1b')}>Choose rocket</Button>
         </div>
       </div>
       <div className={styles.help}>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Dialog } from '../components/ui/Dialog.jsx'
 import { continuePath, missionInProgress, useGame } from '../engine/useGame.jsx'
 import { DifficultyPicker, GameTools, ResetConfirm } from './GameTools.jsx'
+import { startTutorial } from '../data/tutorialSteps.mjs'
 import { Credits } from './dialogs.jsx'
 import styles from './Start.module.css'
 
@@ -31,6 +32,9 @@ export function Start() {
           <h1 className={styles.title}>How far is up?</h1>
           <p className={styles.subtitle}>A Space Mission Design Game</p>
           <div className={styles.menu}>
+            <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={startTutorial}>
+              Tutorial
+            </button>
             {playing ? (
               <button type="button" className={`${styles.action} ${styles.primary}`} onClick={() => navigate(continuePath(state))}>
                 Continue mission
@@ -48,13 +52,11 @@ export function Start() {
             <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={() => setOpen('difficulty')}>
               Difficulty{level ? `: ${level.title}` : ''}
             </button>
-            <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={() => setOpen('credits')}>
-              Credits
-            </button>
           </div>
         </main>
         <footer className={styles.footer}>
           <p>NASA Space Apps 2026 · Space Syntax</p>
+          <button type="button" className={styles.footLink} onClick={() => setOpen('credits')}>Credits</button>
           <p>v1.0</p>
         </footer>
       </div>

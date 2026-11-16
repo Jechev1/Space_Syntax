@@ -125,6 +125,28 @@
   text-shadow: 0 1px 8px rgb(14 10 28 / 85%);
 }
 
+.footLink {
+  margin-left: auto;
+  padding: 2px 8px;
+  font-family: var(--font-ui);
+  font-size: clamp(11px, 1.35cqi, 13px);
+  line-height: 1.3;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-chip);
+  cursor: pointer;
+  opacity: .7;
+  text-shadow: 0 1px 8px rgb(14 10 28 / 85%);
+}
+
+.footLink:hover,
+.footLink:focus-visible {
+  opacity: 1;
+  color: var(--text);
+  border-color: var(--line);
+}
+
 .love,
 .team,
 .challenge {

@@ -79,7 +79,7 @@ function F1DoneBody() {
           <p className={styles.kicker}>Phase 1: Build the Spacecraft · NASA Phase D · Design review</p>
           <h2 className={styles.question}>Ready on the launch pad</h2>
           <p className={styles.line}>{missionProfile(state)} on {report.rocket ? report.rocket.title : ''}.</p>
-          <Button variant="primary" onClick={() => navigate('/f2')}>Next phase →</Button>
+          <Button variant="primary" data-tutorial="f1done-go" onClick={() => navigate('/f2')}>Next phase →</Button>
         </GlassPanel>
       </div>
       <div className={styles.dock}>

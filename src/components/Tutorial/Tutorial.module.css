@@ -1,0 +1,172 @@
+/* Tutorial coach marks: dim the scene, keep one element lit, bubble beside it.
+   z-index 6 stays under Modal (8), GameTools (7) and Dialog (50) so popups still work. */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.dim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .6);
+  pointer-events: none;
+}
+
+.spot {
+  position: fixed;
+  pointer-events: none;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-btn);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, .6), var(--accent-glow);
+  animation: tutPulse 1.6s var(--ease) infinite;
+}
+
+@keyframes tutPulse {
+  0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, .6), 0 0 8px rgba(166, 224, 95, .35); }
+  50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, .6), 0 0 20px rgba(166, 224, 95, .6); }
+}
+
+.block {
+  position: fixed;
+  pointer-events: auto;
+  background: transparent;
+}
+
+/* Shield raised above Dialog (z-index 50) only while the target is inside one. */
+.shieldTop {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+}
+
+.bubble {
+  position: fixed;
+  z-index: 55;
+  pointer-events: auto;
+  width: 272px;
+  padding: calc(var(--fs-body) / 2) calc(var(--fs-body) * .75);
+  background: var(--panel-solid);
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-panel);
+  backdrop-filter: blur(var(--panel-blur));
+}
+
+.bubbleText {
+  margin: 0 0 6px;
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.bubbleFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepTag {
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  color: var(--text-dim);
+}
+
+.next {
+  min-height: 28px;
+  padding: 0 calc(var(--fs-chip) / 2);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  color: var(--accent-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  cursor: pointer;
+}
+
+.next:hover,
+.next:focus-visible {
+  border-color: var(--line-bright);
+  color: var(--text);
+}
+
+.bar {
+  position: fixed;
+  left: 2.4%;
+  bottom: 3.2%;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.count {
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  color: var(--text-dim);
+}
+
+.skip {
+  min-height: 28px;
+  padding: 0 calc(var(--fs-chip) / 2);
+  font-family: var(--font-ui);
+  font-size: var(--fs-chip);
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  cursor: pointer;
+  opacity: .8;
+}
+
+.skip:hover,
+.skip:focus-visible {
+  opacity: 1;
+  color: var(--text);
+  border-color: var(--line-bright);
+}
+
+.doneRoot {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+}
+
+.doneCard {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: min(420px, 90vw);
+  pointer-events: auto;
+}
+
+.doneLine {
+  margin: 0 0 var(--fs-body);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.doneActions {
+  display: flex;
+  gap: 8px;
+}
+
+.doneActions button {
+  flex: 1;
+}
+
+/* The girl's own hint bubble stays hidden while the tutorial talks. */
+:global(body[data-tutorial-active] [class*="speech"]) {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot { animation: none; }
+}

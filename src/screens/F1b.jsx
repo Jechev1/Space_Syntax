@@ -53,7 +53,7 @@ export function RunVerdict({ run }) {
   if (!run || run.status !== 'done') return null
   const { res } = run
   return (
-    <div ref={box} className={`${styles.verdictBox} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
+    <div ref={box} data-tut-verdict={res.ok ? 'ok' : 'fail'} className={`${styles.verdictBox} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
       <p className={styles.verdictLine}>
         <b>{res.ok ? 'Test passed' : 'Test failed'}</b>
         {res.ok ? (
@@ -116,7 +116,7 @@ function F1bBody() {
           <Bubble tone="speech">{speech}</Bubble>
         </div>
       ) : null}
-      <div className={styles.pads} role="group" aria-label="Rockets">
+      <div className={styles.pads} role="group" aria-label="Rockets" data-tutorial="f1b-rockets">
         {rockets.map((rocket) => (
           <RocketStation
             key={rocket.id}
@@ -152,6 +152,7 @@ function F1bBody() {
             <p className={styles.line}>Launch test: the upper stage must add <b>3,150 m/s</b>.</p>
             <Button
               variant="outline"
+              data-tutorial="f1b-test"
               disabledReason={running ? 'Running…' : (state.rocket ? '' : 'Pick a rocket first')}
               onClick={() => play.play()}
             >
@@ -190,6 +191,7 @@ function F1bBody() {
         <div className={styles.lock}>
           <Button
             variant="outline"
+            data-tutorial="f1b-next"
             disabledReason={reason}
             onClick={() => {
               flushSync(() => {
