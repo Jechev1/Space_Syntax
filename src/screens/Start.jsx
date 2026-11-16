@@ -52,11 +52,11 @@ export function Start() {
             <button type="button" className={`${styles.action} ${styles.quiet}`} onClick={() => setOpen('difficulty')}>
               Difficulty{level ? `: ${level.title}` : ''}
             </button>
+            <button type="button" className={styles.creditLink} onClick={() => setOpen('credits')}>Credits</button>
           </div>
         </main>
         <footer className={styles.footer}>
           <p>NASA Space Apps 2026 · Space Syntax</p>
-          <button type="button" className={styles.footLink} onClick={() => setOpen('credits')}>Credits</button>
           <p>v1.0</p>
         </footer>
       </div>
