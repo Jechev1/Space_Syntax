@@ -65,6 +65,11 @@ export const TUTORIAL_STEPS = [
     text: 'Stuck on a choice? Help explains every option with real numbers.',
   },
   {
+    id: 'f1a-close', route: '/f1a', target: 'modal-close', kind: 'wait',
+    done: () => !document.querySelector('[data-tutorial="modal-close"]'),
+    text: 'Read what matters, then close the help to keep going.',
+  },
+  {
     id: 'f1a-next', route: '/f1a', target: 'f1a-next', kind: 'click',
     text: 'All five picked. Choose rocket takes you to the launch pad.',
   },

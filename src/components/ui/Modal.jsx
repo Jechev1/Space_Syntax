@@ -78,7 +78,7 @@ export function Modal({ open = false, variant = 'info', title, children, onClose
         <div className={styles.body}>{children}</div>
         {hideClose ? null : (
           <div className={styles.actions}>
-            <Button variant="secondary" onClick={() => onCloseRef.current?.()}>Close</Button>
+            <Button variant="secondary" data-tutorial="modal-close" onClick={() => onCloseRef.current?.()}>Close</Button>
           </div>
         )}
       </div>
