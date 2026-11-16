@@ -171,12 +171,12 @@ function Coach({ step, index, total, game, onAdvance }) {
       <div className={styles.root} aria-live="polite">
         {rect ? (
           <span
-            className={styles.spot}
+            className={free ? styles.spotFree : styles.spot}
             style={{ left: rect.left - 6, top: rect.top - 6, width: rect.width + 12, height: rect.height + 12 }}
             aria-hidden="true"
           />
         ) : (
-          <span className={styles.dim} aria-hidden="true" />
+          free ? null : <span className={styles.dim} aria-hidden="true" />
         )}
         {blocks && !inDialog ? <Shield rects={blocks} /> : null}
       </div>
@@ -191,7 +191,7 @@ function Coach({ step, index, total, game, onAdvance }) {
         <div className={styles.bubbleFoot}>
           <span className={styles.stepTag}>{index + 1} / {total}</span>
           {showNext ? (
-            <button type="button" className={styles.next} onClick={step.kind === 'next' ? onAdvance : act}>Next →</button>
+            <button type="button" className={styles.next} onClick={step.kind === 'next' ? onAdvance : (step.act || act)}>Next →</button>
           ) : null}
         </div>
       </div>

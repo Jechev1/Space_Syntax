@@ -24,6 +24,22 @@
   animation: tutPulse 1.6s var(--ease) infinite;
 }
 
+/* Free steps never block the screen, so the mark is only a lit outline:
+   dimming the rest would make working controls look disabled. */
+.spotFree {
+  position: fixed;
+  pointer-events: none;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-btn);
+  box-shadow: var(--accent-glow);
+  animation: tutPulseFree 1.6s var(--ease) infinite;
+}
+
+@keyframes tutPulseFree {
+  0%, 100% { box-shadow: 0 0 8px rgba(166, 224, 95, .35); }
+  50% { box-shadow: 0 0 20px rgba(166, 224, 95, .6); }
+}
+
 @keyframes tutPulse {
   0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, .6), 0 0 8px rgba(166, 224, 95, .35); }
   50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, .6), 0 0 20px rgba(166, 224, 95, .6); }

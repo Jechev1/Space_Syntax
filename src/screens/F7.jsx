@@ -422,7 +422,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             <Button variant="secondary" onClick={() => goto(burnSteps[burnSteps.length - 1])}>← Back</Button>
             {helpBtn}
           </>,
-          <Button variant="outline" disabledReason={rt.entry ? '' : 'Pick a reentry path'} onClick={() => goto('shield')}>
+          <Button variant="outline" data-tutorial="f7-entrygo" disabledReason={rt.entry ? '' : 'Pick a reentry path'} onClick={() => goto('shield')}>
             Choose heat shield →
           </Button>,
         )}
@@ -486,6 +486,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
           </>,
           <Button
             variant="outline"
+            data-tutorial="f7-reenter"
             disabledReason={!chosen ? 'Pick a shield thickness' : blocked ? 'Thermal margin too low' : ''}
             onClick={() => { goto('reentry'); setRunning(true) }}
           >

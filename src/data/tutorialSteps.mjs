@@ -212,11 +212,22 @@ export const TUTORIAL_STEPS = [
   {
     id: 'f7-entry', route: '/f7', target: 'f7-entry', kind: 'free',
     done: () => Boolean(document.querySelector('[data-tutorial="f7-shield"]')),
+    // Two real actions: pick a path, then the forward button (it locks until a path is picked).
+    act: () => {
+      document.querySelector('[data-tutorial="f7-entry"] [role="radio"]')?.click()
+      setTimeout(() => document.querySelector('[data-tutorial="f7-entrygo"]')?.click(), 250)
+    },
     text: 'Pick a reentry path, then Choose heat shield.',
   },
   {
     id: 'f7-shield', route: '/f7', target: 'f7-shield', kind: 'free',
     done: () => Boolean(document.querySelector('[data-tutorial="f7-guide"]')),
+    // Pick the thickest shield (never under the thermal minimum), then Reenter.
+    act: () => {
+      const segs = document.querySelectorAll('[data-tutorial="f7-shield"] [role="radio"]')
+      segs[segs.length - 1]?.click()
+      setTimeout(() => document.querySelector('[data-tutorial="f7-reenter"]')?.click(), 250)
+    },
     text: 'Thicker shield means more margin. Pick one and Reenter.',
   },
   {
