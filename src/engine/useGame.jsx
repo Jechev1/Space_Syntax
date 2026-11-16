@@ -133,6 +133,17 @@ export function missionInProgress(state) {
   return false
 }
 
+/*
+ * Too heavy and over budget are fixed from any screen with the quick fix window (QuickFix.jsx), so they do
+ * not undo the phases already confirmed: undoing them made the route guards push the player back to the
+ * workshop. They still block each phase's confirm button and the launch.
+ */
+const RESOURCE_CODES = ['tooHeavy', 'overBudget']
+
+function blocksBesidesResources(M, state, phase) {
+  return M.validatePhase(state, phase).issues.some((issue) => issue.severity === 'block' && !RESOURCE_CODES.includes(issue.code))
+}
+
 function revalidate(state) {
   const { D, M } = engine()
   const report = M.evaluate(state)
@@ -158,26 +169,26 @@ function revalidate(state) {
   }
   if (state.phase1Done) {
     const again = M.evaluate(state)
-    const ok = state.rocket && !M.missingSubsystems(state).length && M.payloadAnswers(state) && again.totalCost <= again.budget
+    const ok = again && state.rocket && !M.missingSubsystems(state).length && M.payloadAnswers(state)
     if (!ok) {
       state.phase1Done = false
       return 'Design changed: your spacecraft needs a new check.'
     }
   }
   if (!state.phase1Done) state.phase2Done = false
-  if (state.phase2Done && !M.validatePhase(state, 2).ok) {
+  if (state.phase2Done && blocksBesidesResources(M, state, 2)) {
     state.phase2Done = false
     state.phase3Done = false
     return 'Crew plan changed: confirm it again.'
   }
   if (!state.phase2Done) state.phase3Done = false
-  if (state.phase3Done && !M.validatePhase(state, 3).ok) {
+  if (state.phase3Done && blocksBesidesResources(M, state, 3)) {
     state.phase3Done = false
     state.phase4Done = false
     return 'Flight plan changed: check it again.'
   }
   if (!state.phase3Done) state.phase4Done = false
-  if (state.phase4Done && !M.validatePhase(state, 4).ok) {
+  if (state.phase4Done && blocksBesidesResources(M, state, 4)) {
     state.phase4Done = false
     return 'Radio plan changed: check it again.'
   }
@@ -339,7 +350,7 @@ export function continuePath(state) {
     const returns = state.missionType === 'crewed' || state.measure === 'sample'
     if (landed && finished && returns) {
       const sim = engine().M.returnSim(state)
-      return sim && sim.outcome === 'success' ? '/f8' : '/f7'
+      return sim && sim.outcome === 'success' ? '/lab' : '/f7'
     }
     if (landed) return '/f6'
     if (state.site) return '/f5b'

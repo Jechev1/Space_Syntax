@@ -564,7 +564,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             {helpBtn}
           </>,
           ok
-            ? <Button variant="outline" data-tutorial="f7-finish" onClick={() => navigate('/f8')}>Finish the mission →</Button>
+            ? <Button variant="outline" data-tutorial="f7-finish" onClick={() => navigate('/lab')}>Go to lab →</Button>
             : <Button variant="outline" data-tutorial="f7-finish" onClick={fail}>See what happened →</Button>,
         )}
       </div>

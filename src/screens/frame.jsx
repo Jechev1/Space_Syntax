@@ -7,6 +7,7 @@ import { continuePath, useGame } from '../engine/useGame.jsx'
 import { HowTo, SourceList } from './dialogs.jsx'
 import { PlayProvider } from './playContext.jsx'
 import shell from './shell.module.css'
+import { QuickFix } from './QuickFix.jsx'
 
 const NOTICE_MS = 8000
 
@@ -92,6 +93,7 @@ export function StageScene({ background = '', character, objects = null, title, 
     <PlayProvider value={play}>
       <Stage background={background} framed character={character} objects={objects}>
         {children}
+        <QuickFix />
         <div className={shell.toast} role="status">
           {game.notice ? (
             <>

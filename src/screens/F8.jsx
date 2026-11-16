@@ -11,6 +11,12 @@ import styles from './F8.module.css'
 
 const TITLE = 'How far is up? · Mission complete'
 
+/** Restart: drop the saved mission and reload back to the start screen. */
+function playAgain() {
+  try { localStorage.removeItem('ss-save-v1') } catch { /* private mode */ }
+  window.location.assign('/inicio')
+}
+
 export function F8() {
   const ready = usePhaseGuard('/f8')
   const navigate = useNavigate()
@@ -54,12 +60,12 @@ export function F8() {
         </div>
         <div className={f1.dock}>
           <div className={f1.nav}>
-            <Button variant="secondary" onClick={() => navigate('/f7')}>← Phase 7</Button>
+            <Button variant="secondary" onClick={() => navigate('/lab')}>← Lab</Button>
             <Button variant="secondary" onClick={() => setCredits(true)}>Credits</Button>
           </div>
           <div className={f1.lock}>
-            {/* The lab comes last: it analyses what the mission brought home. */}
-            <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
+            {/* Phase 8 is the very end, after the lab has analysed what came home. */}
+            <Button variant="outline" onClick={playAgain}>Play again</Button>
           </div>
         </div>
         {credits ? (
