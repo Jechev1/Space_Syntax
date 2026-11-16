@@ -22,8 +22,12 @@ export function TutorialProvider({ children }) {
   const navigate = useNavigate()
   const [index, setIndex] = useState(0)
   const active = tutorialOn()
-  const step = active ? TUTORIAL_STEPS[index] : null
-  const finished = active && !step
+  /* The completion card belongs on /f8 only. If a fallback Next pushes the index
+     past the end while still on /f7, keep coaching the last step instead of
+     covering the screen with a card the player cannot dismiss into the mission. */
+  const pastEnd = index >= TUTORIAL_STEPS.length
+  const step = active ? TUTORIAL_STEPS[Math.min(index, TUTORIAL_STEPS.length - 1)] : null
+  const finished = active && pastEnd && location.pathname === '/f8'
 
   useEffect(() => {
     if (active) document.body.dataset.tutorialActive = '1'
@@ -60,7 +64,7 @@ export function TutorialProvider({ children }) {
         <Coach
           key={step.id}
           step={step}
-          index={index}
+          index={Math.min(index, TUTORIAL_STEPS.length - 1)}
           total={TUTORIAL_STEPS.length}
           game={game}
           onAdvance={() => setIndex(index + 1)}
@@ -68,7 +72,7 @@ export function TutorialProvider({ children }) {
       ) : null}
       {!finished ? (
         <div className={styles.bar}>
-          <span className={styles.count}>Step {index + 1} of {TUTORIAL_STEPS.length}</span>
+          <span className={styles.count}>Step {Math.min(index + 1, TUTORIAL_STEPS.length)} of {TUTORIAL_STEPS.length}</span>
           <button type="button" className={styles.skip} onClick={() => endTutorial()}>Skip tutorial</button>
         </div>
       ) : (
