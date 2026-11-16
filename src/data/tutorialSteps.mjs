@@ -79,7 +79,7 @@ export const TUTORIAL_STEPS = [
   {
     id: 'f1a-rest', route: '/f1a', target: 'f1a-tabs', kind: 'free',
     done: (s, model) => model.missingSubsystems(s).length === 0 && model.payloadAnswers(s),
-    text: 'Do the same on every tab. Suggested picks fit the rocket and answer your question.',
+    text: 'Same on every tab. Fuel makes the total look big — the Suggested rocket still fits.',
   },
   {
     id: 'f1a-help', route: '/f1a', target: 'f1a-help', kind: 'click',
