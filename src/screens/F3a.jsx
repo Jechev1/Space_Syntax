@@ -86,7 +86,7 @@ function F3aBody() {
           <p className={styles.kicker}>Phase 3: Navigation and Delta-v · NASA Phases A, B, E</p>
           <h2 className={styles.question}>Flight plan</h2>
           <p className={f3.line}>Each burn changes your speed. Add them up: that is how much fuel the spacecraft needs.</p>
-          <ol className={f3.burns}>
+          <ol className={f3.burns} data-tutorial="f3a-burns">
             {steps.map((step, index) => (
               <li key={step.label}>
                 <button
@@ -189,7 +189,7 @@ function DeltaVDock({ game, plan }) {
           {model.fmt(plan.dvPlanned)} / {model.fmt(plan.dvRequired)} m/s
         </span>
       </div>
-      <div className={f3.marginsWrap} role="group" aria-label="Delta-v margin">
+      <div className={f3.marginsWrap} role="group" aria-label="Delta-v margin" data-tutorial="f3a-margin">
         <span className={f3.marginNote} title="Spare delta-v for navigation mistakes, hovering and the trip home — a little reserve is safer.">Margin (0–20%)</span>
         <div className={f3.margins}>
           {options.map((margin) => (
@@ -231,6 +231,7 @@ function FlyPlan({ plan, play }) {
       <div className={f3.playRow}>
         <Button
           variant="outline"
+          data-tutorial="f3a-fly"
           disabledReason={running ? 'Flying…' : ''}
           onClick={() => { setShowMath(false); play.play() }}
         >
@@ -247,7 +248,7 @@ function FlyPlan({ plan, play }) {
       ) : null}
       {running && last ? <p className={f3.note} aria-live="polite">{last.text}</p> : null}
       {done ? (
-        <div className={`${styles.verdictBox} ${f3.verdictTight} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
+        <div data-tut-verdict={res.ok ? 'ok' : 'fail'} className={`${styles.verdictBox} ${f3.verdictTight} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
           <p className={styles.verdictLine}>
             <b>{res.ok ? 'Test passed' : 'Test failed'}</b>
             <span className={f3.verdictAside}>

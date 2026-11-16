@@ -1,7 +1,13 @@
 import { createContext, useCallback, useContext, useState } from 'react'
+import { TUTORIAL_SAVE, tutorialOn } from '../data/tutorialSteps.mjs'
 
 const SAVE_KEY = 'ss-save-v1'
 const DIFF_KEY = 'ss-difficulty'
+
+/** Tutorial runs write to their own slot; the real save is never touched. */
+function saveKey() {
+  return tutorialOn() ? TUTORIAL_SAVE : SAVE_KEY
+}
 const UI_DEFAULTS = {
   activeSub: 'structure',
   introStep: 0,
@@ -80,13 +86,13 @@ function fresh() {
 
 function loadSaved() {
   try {
-    const raw = localStorage.getItem(SAVE_KEY)
+    const raw = localStorage.getItem(saveKey())
     if (!raw || raw.length > 20000) return null
     const parsed = JSON.parse(raw)
     const { M } = engine()
     const state = Object.assign(M.sanitizeState(parsed), sanitizeUi(parsed))
     M.evaluate(state)
-    writeDifficulty(state.difficulty)
+    if (!tutorialOn()) writeDifficulty(state.difficulty)
     if (!missionInProgress(state)) {
       clearSave()
       return null
@@ -98,15 +104,15 @@ function loadSaved() {
 }
 
 function save(state) {
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)) } catch { /* private mode */ }
+  try { localStorage.setItem(saveKey(), JSON.stringify(state)) } catch { /* private mode */ }
 }
 
 function clearSave() {
-  try { localStorage.removeItem(SAVE_KEY) } catch { /* private mode */ }
+  try { localStorage.removeItem(saveKey()) } catch { /* private mode */ }
 }
 
 function saveExists() {
-  try { return localStorage.getItem(SAVE_KEY) != null } catch { return false }
+  try { return localStorage.getItem(saveKey()) != null } catch { return false }
 }
 
 export function missionInProgress(state) {

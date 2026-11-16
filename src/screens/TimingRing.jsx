@@ -100,7 +100,7 @@ export function TimingRing({ difficulty, onDone }) {
   const near = Math.abs(view.r - TARGET) <= GOOD
 
   return (
-    <div className={styles.field}>
+    <div className={styles.field} data-tutorial="f7-rings">
       <div className={styles.head} role="status">
         <p className={styles.count}>{finished ? 'Lift off!' : `T-minus ${left}`}</p>
         <p className={styles.note}>

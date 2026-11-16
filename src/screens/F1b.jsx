@@ -8,6 +8,7 @@ import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { MathBlock } from '../components/ui/MathBlock.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { HELP_F1B } from '../data/help.mjs'
+import { tutorialSuggests } from '../data/tutorialSteps.mjs'
 import { descopeMode, useGame } from '../engine/useGame.jsx'
 import { usePassed, usePlayRun } from '../engine/usePlayRun.jsx'
 import { kgText, usdText } from './bits.jsx'
@@ -53,7 +54,7 @@ export function RunVerdict({ run }) {
   if (!run || run.status !== 'done') return null
   const { res } = run
   return (
-    <div ref={box} className={`${styles.verdictBox} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
+    <div ref={box} data-tut-verdict={res.ok ? 'ok' : 'fail'} className={`${styles.verdictBox} ${res.ok ? styles.verdictOk : styles.verdictFail}`}>
       <p className={styles.verdictLine}>
         <b>{res.ok ? 'Test passed' : 'Test failed'}</b>
         {res.ok ? (
@@ -116,7 +117,7 @@ function F1bBody() {
           <Bubble tone="speech">{speech}</Bubble>
         </div>
       ) : null}
-      <div className={styles.pads} role="group" aria-label="Rockets">
+      <div className={styles.pads} role="group" aria-label="Rockets" data-tutorial="f1b-rockets">
         {rockets.map((rocket) => (
           <RocketStation
             key={rocket.id}
@@ -126,6 +127,7 @@ function F1bBody() {
             onPick={() => pickRocket(rocket.id)}
             frame={state.rocket === rocket.id ? frame : null}
             burning={state.rocket === rocket.id && running}
+            suggested={tutorialSuggests('rocket', rocket.id)}
             onLocked={() => setNotice('Too heavy for this rocket. Make your spacecraft lighter or pick a bigger one.')}
           />
         ))}
@@ -152,6 +154,7 @@ function F1bBody() {
             <p className={styles.line}>Launch test: the upper stage must add <b>3,150 m/s</b>.</p>
             <Button
               variant="outline"
+              data-tutorial="f1b-test"
               disabledReason={running ? 'Running…' : (state.rocket ? '' : 'Pick a rocket first')}
               onClick={() => play.play()}
             >
@@ -190,6 +193,7 @@ function F1bBody() {
         <div className={styles.lock}>
           <Button
             variant="outline"
+            data-tutorial="f1b-next"
             disabledReason={reason}
             onClick={() => {
               flushSync(() => {
@@ -214,7 +218,7 @@ function F1bBody() {
   )
 }
 
-function RocketStation({ rocket, report, selected, onPick, onLocked, frame, burning }) {
+function RocketStation({ rocket, report, selected, onPick, onLocked, frame, burning, suggested }) {
   const { model } = useGame()
   const fits = rocket.capacity >= report.tli
   const fill = report.tli / rocket.capacity
@@ -234,7 +238,7 @@ function RocketStation({ rocket, report, selected, onPick, onLocked, frame, burn
     tone = styles.tight
   }
   const lift = frame ? Math.min(1, frame.dv / 3150) : 0
-  const cls = [styles.station, tone, selected ? styles.stationOn : ''].filter(Boolean).join(' ')
+  const cls = [styles.station, tone, selected ? styles.stationOn : '', suggested ? styles.tutPick : ''].filter(Boolean).join(' ')
 
   return (
     <button
@@ -253,6 +257,7 @@ function RocketStation({ rocket, report, selected, onPick, onLocked, frame, burn
         <span>{rocket.title} · {tons} t</span>
         <span>{usdText(model, rocket.cost)} · <b>{verdict}</b></span>
         <span className={styles.tagNote}>{rocket.blurb}</span>
+        {suggested ? <span className={styles.suggestChip}>Suggested</span> : null}
       </span>
     </button>
   )

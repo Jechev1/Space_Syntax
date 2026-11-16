@@ -568,3 +568,7 @@ Datos que la fase 1 querría y no están en el config:
 - Un cohete real comparable para los tres lanzadores genéricos de la misión robótica (pequeño, medio y pesado). Solo los SLS tripulados tienen equivalente documentado (Artemis I/II), así que las tarjetas robóticas muestran solo su línea de uso.
 - Horas de noche que aguanta cada opción de potencia tripulada. El motor solo guarda `nightHours` en la rama robótica; en tripulada la pantalla dice "power sized in later phases" y no inventa una cifra.
 - Costo real de los lanzadores robóticos (60/120/250 millones USD son `src: 'game'`). Las tarjetas los muestran como precio de juego.
+
+## Tutorial (rama feat/tutorial)
+
+El tutorial no introduce datos nuevos: las cifras de los pasos salen de `js/data.js` (3 150 m/s de TLI; 0.895 / 0.800 / 3.217 kg por astronauta-día; margen delta-v 0–20% y reserva de suministros +20%, ambos valores de juego ya marcados en la interfaz). Nada pendiente de revisión.

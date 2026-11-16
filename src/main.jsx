@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { StageOverlay } from './components/stage/overlay.jsx'
+import { TutorialProvider } from './components/Tutorial/TutorialOverlay.jsx'
 import { DevUi } from './dev/DevUi.jsx'
 import { GameProvider } from './engine/useGame.jsx'
 import { F0 } from './screens/F0.jsx'
@@ -30,7 +31,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         {/* The UI kit page is for building screens, not for players. */}
         {import.meta.env.DEV ? <Route path="/dev/ui" element={<DevUi />} /> : null}
-        <Route element={<GameProvider><StageOverlay.Provider value={<GameTools />}><Outlet /></StageOverlay.Provider></GameProvider>}>
+        <Route element={<GameProvider><StageOverlay.Provider value={<GameTools />}><TutorialProvider><Outlet /></TutorialProvider></StageOverlay.Provider></GameProvider>}>
           <Route path="/" element={<Navigate to="/inicio" replace />} />
           <Route path="/inicio" element={<Start />} />
           <Route path="/intro" element={<Intro />} />

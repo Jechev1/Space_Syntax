@@ -308,7 +308,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             <Button variant="secondary" onClick={() => navigate('/f6')}>← Moon surface</Button>
             {helpBtn}
           </>,
-          <Button variant="outline" onClick={() => goto('burn0')}>Start the return</Button>,
+          <Button variant="outline" data-tutorial="f7-start" onClick={() => goto('burn0')}>Start the return</Button>,
         )}
       </div>
     )
@@ -359,6 +359,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
           </>,
           <Button
             variant="outline"
+            data-tutorial={first ? 'f7-liftoff' : 'f7-burn2'}
             disabled={running || timing}
             disabledReason={reason}
             onClick={() => {
@@ -381,7 +382,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
       <div className={styles.screen}>
         {hud}
         {speech('How should we come in?')}
-        <div className={styles.cards} role="radiogroup" aria-label="Reentry path">
+        <div className={styles.cards} role="radiogroup" aria-label="Reentry path" data-tutorial="f7-entry">
           {entries.map((entry) => {
             const on = rt.entry === entry.id
             return (
@@ -421,7 +422,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             <Button variant="secondary" onClick={() => goto(burnSteps[burnSteps.length - 1])}>← Back</Button>
             {helpBtn}
           </>,
-          <Button variant="outline" disabledReason={rt.entry ? '' : 'Pick a reentry path'} onClick={() => goto('shield')}>
+          <Button variant="outline" data-tutorial="f7-entrygo" disabledReason={rt.entry ? '' : 'Pick a reentry path'} onClick={() => goto('shield')}>
             Choose heat shield →
           </Button>,
         )}
@@ -440,7 +441,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
       <div className={styles.screen}>
         {hud}
         {speech('Every kilogram we add here is taken from somewhere else.')}
-        <div className={styles.slider} role="radiogroup" aria-label="Heat shield thickness">
+        <div className={styles.slider} role="radiogroup" aria-label="Heat shield thickness" data-tutorial="f7-shield">
           {shields.map((shield) => {
             const on = chosen === shield.id
             return (
@@ -485,6 +486,7 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
           </>,
           <Button
             variant="outline"
+            data-tutorial="f7-reenter"
             disabledReason={!chosen ? 'Pick a shield thickness' : blocked ? 'Thermal margin too low' : ''}
             onClick={() => { goto('reentry'); setRunning(true) }}
           >
@@ -562,8 +564,8 @@ function F7Body({ step, failFrom, running, setRunning, goto, fail, sim, scene, t
             {helpBtn}
           </>,
           ok
-            ? <Button variant="outline" onClick={() => navigate('/lab')}>Go to lab →</Button>
-            : <Button variant="outline" onClick={fail}>See what happened →</Button>,
+            ? <Button variant="outline" data-tutorial="f7-finish" onClick={() => navigate('/lab')}>Go to lab →</Button>
+            : <Button variant="outline" data-tutorial="f7-finish" onClick={fail}>See what happened →</Button>,
         )}
       </div>
     )

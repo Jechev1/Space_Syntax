@@ -69,7 +69,7 @@ export function Dialog({ title, onClose, children }) {
         aria-labelledby={titleId}
         tabIndex={-1}
       >
-        <button type="button" className={styles.close} aria-label="Close" onClick={() => onCloseRef.current?.()}>
+        <button type="button" className={styles.close} data-tutorial="dialog-close" aria-label="Close" onClick={() => onCloseRef.current?.()}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M7 7l10 10M17 7 7 17" />
           </svg>

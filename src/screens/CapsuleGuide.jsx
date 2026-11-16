@@ -123,7 +123,7 @@ export function CapsuleGuide({ difficulty, seed, glow, onDone }) {
     : null
 
   return (
-    <div className={styles.field}>
+    <div className={styles.field} data-tutorial="f7-guide">
       <svg
         className={styles.zone}
         style={{ left: `${plan.target}%` }}
