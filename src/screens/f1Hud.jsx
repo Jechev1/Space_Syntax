@@ -9,7 +9,7 @@ export function MissionHud() {
   const mass = report ? `${model.fmt(report.tli)} kg` : '0 kg'
   const massText = picked ? `${mass} / ${model.fmt(picked.capacity)} kg` : mass
   const budget = report ? `$${model.fmt(report.totalCost)}M / $${model.fmt(report.budget)}M` : '$0M'
-  const power = report ? `${model.fmt(report.powerNeed)} / ${model.fmt(report.powerGen)} W` : '0 / 0 W'
+  const power = report ? `${model.fmt(report.powerGen)} / ${model.fmt(report.powerNeed)} W` : '0 / 0 W'
 
   return (
     <div className={styles.hud} aria-label="Mission status">
