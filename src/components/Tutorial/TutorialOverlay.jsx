@@ -112,12 +112,26 @@ function Coach({ step, index, total, game, onAdvance }) {
     return () => { clearInterval(timer); window.removeEventListener('resize', find) }
   }, [step])
 
-  // A step should never deadlock: if the target never shows or nothing happens, offer Next.
+  // A step should never deadlock: if nothing happens after a while, offer the
+  // fallback button. It never skips the real action — it clicks the actual
+  // target (a Suggested option first, when present) so the screen and the
+  // step stay in sync. Pure 'next' steps keep the plain advance.
   useEffect(() => {
     setFallback(false)
     const timer = setTimeout(() => setFallback(true), 6000)
     return () => clearTimeout(timer)
   }, [step])
+
+  const act = () => {
+    const el = document.querySelector(`[data-tutorial="${step.target}"]`)
+    // No target while the shield covers the screen: advancing is the only exit.
+    if (!el) { onAdvance(); return }
+    const clickable = 'button,a,input,select,[role="radio"],[role="checkbox"],[role="switch"],[role="button"],[role="option"]'
+    const cand = el.matches(clickable)
+      ? el
+      : el.querySelector(`[class*="tutPick"] ${clickable}`) || el.querySelector(clickable) || el
+    cand.click()
+  }
 
   // "click" steps advance when the real control gets used.
   useEffect(() => {
@@ -147,7 +161,9 @@ function Coach({ step, index, total, game, onAdvance }) {
   }, [step, state, model, onAdvance])
 
   const bubble = rect ? bubblePos(rect, window.innerWidth, window.innerHeight) : null
-  const showNext = step.kind === 'next' || fallback
+  // 'next' explains; free steps never block so a missing target needs no escape;
+  // click/wait steps block the whole screen when the target is absent.
+  const showNext = step.kind === 'next' || (fallback && (rect || !free))
   const blocks = !free ? shieldRects(rect) : null
 
   return (
@@ -175,7 +191,7 @@ function Coach({ step, index, total, game, onAdvance }) {
         <div className={styles.bubbleFoot}>
           <span className={styles.stepTag}>{index + 1} / {total}</span>
           {showNext ? (
-            <button type="button" className={styles.next} onClick={onAdvance}>Next →</button>
+            <button type="button" className={styles.next} onClick={step.kind === 'next' ? onAdvance : act}>Next →</button>
           ) : null}
         </div>
       </div>
