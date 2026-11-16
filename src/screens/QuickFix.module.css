@@ -1,0 +1,97 @@
+/* Reopens the quick fix window: centred under the top bar, in the warning colour. */
+.pill {
+  position: absolute;
+  top: max(12%, 72px);
+  left: 50%;
+  z-index: 4;
+  min-height: 36px;
+  padding: 0.3em 1em;
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
+  color: var(--warn);
+  font-family: var(--font-ui);
+  font-size: clamp(10px, 1.9cqh, 14px);
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.pill:hover {
+  border-color: var(--text);
+}
+
+.line,
+.note {
+  margin: 0 0 6px;
+}
+
+.line b {
+  color: var(--warn);
+}
+
+.note {
+  color: var(--text-dim);
+}
+
+.list {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.option {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+}
+
+.option:hover {
+  border-color: var(--line-bright);
+}
+
+.label {
+  grid-column: 1;
+}
+
+.meta {
+  grid-column: 1;
+  color: var(--text-dim);
+  font-size: 0.9em;
+}
+
+.solved,
+.helps {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  padding: 2px 10px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-chip);
+  font-size: 0.85em;
+}
+
+.solved {
+  color: var(--accent);
+}
+
+.helps {
+  color: var(--warn);
+}
+
+.foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
