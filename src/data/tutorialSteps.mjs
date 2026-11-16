@@ -20,6 +20,24 @@
 export const TUTORIAL_FLAG = 'ss-tutorial-on'
 export const TUTORIAL_SAVE = 'ss-tutorial-v1'
 
+/* A known-good Cadet build: light enough for SLS Block 2 (≈39.9t under 46t) and
+   answered by the spectrometer. Screens mark these with a "Suggested" chip. */
+export const TUTORIAL_PICKS = {
+  structure: 'composite',
+  shield: 'whipple',
+  thermal: 'passive',
+  power: 'crewSolar',
+  science: ['spectrometer'],
+  rocket: 'sls2',
+}
+
+/** Is this option the tutorial's suggested pick? Used to mark rows while the tutorial runs. */
+export function tutorialSuggests(subId, optId) {
+  if (!tutorialOn()) return false
+  const pick = TUTORIAL_PICKS[subId]
+  return Array.isArray(pick) ? pick.includes(optId) : pick === optId
+}
+
 export function tutorialOn() {
   try { return localStorage.getItem(TUTORIAL_FLAG) === '1' } catch { return false }
 }
@@ -56,12 +74,12 @@ export const TUTORIAL_STEPS = [
   {
     id: 'f1a-options', route: '/f1a', target: 'f1a-options', kind: 'wait',
     done: (s) => Boolean(s.design && s.design.structure),
-    text: 'Pick a structure. Every part adds mass, cost and power.',
+    text: 'Pick a structure — the Suggested one keeps the spacecraft light.',
   },
   {
     id: 'f1a-rest', route: '/f1a', target: 'f1a-tabs', kind: 'free',
     done: (s, model) => model.missingSubsystems(s).length === 0 && model.payloadAnswers(s),
-    text: 'Same for the rest — science needs an instrument that answers your question.',
+    text: 'Do the same on every tab. Suggested picks fit the rocket and answer your question.',
   },
   {
     id: 'f1a-help', route: '/f1a', target: 'f1a-help', kind: 'click',
@@ -79,7 +97,7 @@ export const TUTORIAL_STEPS = [
   {
     id: 'f1b-rocket', route: '/f1b', target: 'f1b-rockets', kind: 'wait',
     done: (s) => Boolean(s.rocket),
-    text: 'Pick a rocket. Its capacity must cover your launch mass.',
+    text: 'Pick a rocket. Its capacity must cover your launch mass — the Suggested one fits.',
   },
   {
     id: 'f1b-test', route: '/f1b', target: 'f1b-test', kind: 'free',

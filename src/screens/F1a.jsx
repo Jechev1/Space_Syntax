@@ -6,6 +6,7 @@ import { GlassPanel } from '../components/ui/GlassPanel.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { OptionRow } from '../components/ui/OptionRow.jsx'
 import { HELP_F1A } from '../data/help.mjs'
+import { tutorialSuggests } from '../data/tutorialSteps.mjs'
 import { useGame } from '../engine/useGame.jsx'
 import { kgText, usdText } from './bits.jsx'
 import { f1aSpeech } from './f1Speech.mjs'
@@ -168,9 +169,11 @@ function PartChoice({ index, sub, option, onPick, onLocked }) {
   const selected = sub.multi ? (state.design.science || []).includes(option.id) : state.design[sub.id] === option.id
   const unlocked = sub.id !== 'science' || model.unlockedInstruments(state).includes(option.id)
   const showStats = hover || selected
+  const suggested = tutorialSuggests(sub.id, option.id)
 
   return (
     <div
+      className={suggested ? styles.tutPick : undefined}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onFocus={() => setHover(true)}
@@ -185,6 +188,7 @@ function PartChoice({ index, sub, option, onPick, onLocked }) {
             ? <>{option.blurb} · <OptionStats sub={sub} option={option} /></>
             : option.blurb
         }
+        chips={suggested ? <span className={styles.suggestChip}>Suggested</span> : null}
         selected={selected}
         locked={!unlocked}
         lockedReason="Your Phase 0 measurement doesn't need this"

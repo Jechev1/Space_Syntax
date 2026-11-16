@@ -721,3 +721,20 @@
   padding: 4px 12px;
   font-size: var(--fs-chip);
 }
+
+/* Tutorial: marks the suggested pick (TUTORIAL_PICKS) so the guided build always fits. */
+.tutPick > button,
+button.tutPick {
+  box-shadow: 0 0 0 1.5px var(--accent), var(--accent-glow);
+}
+
+.suggestChip {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 1px 8px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-chip);
+  color: var(--accent);
+  font-size: .72em;
+  letter-spacing: .04em;
+}
