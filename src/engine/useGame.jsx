@@ -333,7 +333,7 @@ export function continuePath(state) {
     const returns = state.missionType === 'crewed' || state.measure === 'sample'
     if (landed && finished && returns) {
       const sim = engine().M.returnSim(state)
-      return sim && sim.outcome === 'success' ? '/f8' : '/f7'
+      return sim && sim.outcome === 'success' ? '/lab' : '/f7'
     }
     if (landed) return '/f6'
     if (state.site) return '/f5b'
