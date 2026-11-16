@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useGame } from '../../engine/useGame.jsx'
 import { TUTORIAL_STEPS, endTutorial, tutorialOn } from '../../data/tutorialSteps.mjs'
 import { Button } from '../ui/Button.jsx'
@@ -19,6 +19,7 @@ export function useTutorial() {
 export function TutorialProvider({ children }) {
   const game = useGame()
   const location = useLocation()
+  const navigate = useNavigate()
   const [index, setIndex] = useState(0)
   const active = tutorialOn()
   const step = active ? TUTORIAL_STEPS[index] : null
@@ -44,6 +45,12 @@ export function TutorialProvider({ children }) {
     const lastRoute = TUTORIAL_STEPS[TUTORIAL_STEPS.length - 1].route
     if (ROUTE_ORDER.indexOf(path) > ROUTE_ORDER.indexOf(lastRoute)) setIndex(TUTORIAL_STEPS.length)
   }, [active, step, index, location.pathname])
+
+  /* Steps may patch the tutorial save and warp ahead (the Phase 7 games).
+     Only fires while off-route: an enter() that reloads the page must not loop. */
+  useEffect(() => {
+    if (active && step && step.enter && location.pathname !== step.route) step.enter(game, navigate)
+  }, [active, step, index]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const api = useMemo(() => ({ active, stepIndex: index, total: TUTORIAL_STEPS.length }), [active, index])
 
@@ -85,11 +92,13 @@ function Coach({ step, index, total, game, onAdvance }) {
   const [rect, setRect] = useState(null)
   const [inDialog, setInDialog] = useState(false)
   const [fallback, setFallback] = useState(false)
+  const seenTarget = useRef(false)
   const free = step.kind === 'free'
 
   useEffect(() => {
     const find = () => {
       const el = document.querySelector(`[data-tutorial="${step.target}"]`)
+      if (el) seenTarget.current = true
       setRect(el ? el.getBoundingClientRect() : null)
       setInDialog(Boolean(el && el.closest('[role="dialog"]')))
     }
@@ -123,6 +132,9 @@ function Coach({ step, index, total, game, onAdvance }) {
     if ((step.kind !== 'wait' && step.kind !== 'free') || !step.done) return undefined
     let timer
     const check = () => {
+      // requireTarget: the element must appear at least once before done() counts,
+      // so "disappeared" predicates do not fire while the target is still unmounted.
+      if (step.requireTarget && !seenTarget.current) return
       if (!timer && step.done(state, model)) timer = setTimeout(onAdvance, step.delay || 350)
     }
     check()
@@ -205,7 +217,7 @@ function TutorialComplete() {
       <span className={styles.dim} aria-hidden="true" />
       <div className={styles.doneCard}>
         <GlassPanel eyebrow="Tutorial" title="Tutorial complete">
-          <p className={styles.doneLine}>You built a spacecraft, fed a crew and flew a flight plan. Ready for the real one.</p>
+          <p className={styles.doneLine}>You built a spacecraft, fed a crew, flew the plan and brought everyone home. Ready for the real one.</p>
           <div className={styles.doneActions}>
             <Button variant="outline" onClick={() => endTutorial()}>Start the mission</Button>
             <Button variant="secondary" onClick={() => endTutorial()}>Back to menu</Button>

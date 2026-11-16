@@ -6,9 +6,9 @@ import { fileURLToPath } from 'node:url'
 import { TUTORIAL_STEPS, TUTORIAL_FLAG, TUTORIAL_SAVE } from '../src/data/tutorialSteps.mjs'
 
 const KINDS = new Set(['click', 'wait', 'next', 'free'])
-const ROUTES = new Set(['/f1a', '/f1b', '/f1done', '/f2', '/f3a'])
+const ROUTES = new Set(['/f1a', '/f1b', '/f1done', '/f2', '/f3a', '/f7'])
 
-/* Every data-tutorial="id" declared in the React screens. */
+/* Every data-tutorial="id" declared in the React screens, including {cond ? 'a' : 'b'} ids. */
 function declaredTargets(dir, found = new Set()) {
   for (const name of readdirSync(dir, { withFileTypes: true })) {
     const path = join(dir, name.name)
@@ -17,6 +17,9 @@ function declaredTargets(dir, found = new Set()) {
     } else if (name.name.endsWith('.jsx')) {
       const text = readFileSync(path, 'utf8')
       for (const match of text.matchAll(/data-tutorial="([^"]+)"/g)) found.add(match[1])
+      for (const expr of text.matchAll(/data-tutorial=\{([^}]+)\}/g)) {
+        for (const id of expr[1].matchAll(/'([^']+)'/g)) found.add(id[1])
+      }
     }
   }
   return found
@@ -61,16 +64,29 @@ test('interactive steps advance on a real target; every target exists in the scr
   }
 })
 
-test('the walkthrough visits Phase 1, 2 and 3 in order and teaches a test in each', () => {
+test('the walkthrough visits Phases 1, 2, 3 and the Phase 7 games in order', () => {
   const routes = TUTORIAL_STEPS.map((s) => s.route)
   const first = (r) => routes.indexOf(r)
   assert.ok(first('/f1a') === 0, 'the tutorial starts on the spacecraft screen')
   assert.ok(first('/f1b') > first('/f1a'))
   assert.ok(first('/f2') > first('/f1done') && first('/f1done') > first('/f1b'))
   assert.ok(first('/f3a') > first('/f2'))
+  assert.ok(first('/f7') > first('/f3a'), 'the return-trip games come after the flight plan')
   for (const id of ['f1b-test', 'f2-test', 'f3-fly']) {
     const step = TUTORIAL_STEPS.find((s) => s.id === id)
     assert.ok(step, `${id} step missing`)
     assert.equal(step.kind, 'free', `${id}: test steps must not block retries`)
   }
+})
+
+test('the playable mini-games are free steps that wait for their target to mount', () => {
+  for (const id of ['f7-rings', 'f7-guide']) {
+    const step = TUTORIAL_STEPS.find((s) => s.id === id)
+    assert.ok(step, `${id} step missing`)
+    assert.equal(step.kind, 'free', `${id}: the player must be able to play`)
+    assert.ok(step.requireTarget, `${id}: done() must not fire before the game mounts`)
+    assert.equal(typeof step.done, 'function')
+  }
+  const warp = TUTORIAL_STEPS.find((s) => s.id === 'f7-start')
+  assert.ok(warp && typeof warp.enter === 'function', 'the /f7 warp must seed a return-ready state')
 })

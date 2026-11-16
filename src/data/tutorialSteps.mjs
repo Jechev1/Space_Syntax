@@ -12,6 +12,9 @@
  *   free  — no click blocking; user plays freely until done(state, model).
  * Test steps stay 'free' so a failed run never traps the player behind the shield.
  * delay (ms) — wait this long after the trigger before advancing.
+ * enter(game, navigate) — runs once when the step activates (state patch, warp).
+ * requireTarget — for wait/free steps: only start checking done() once the target
+ * element has been seen at least once (covers targets that mount after a click).
  */
 
 export const TUTORIAL_FLAG = 'ss-tutorial-on'
@@ -135,5 +138,77 @@ export const TUTORIAL_STEPS = [
     id: 'f3-fly', route: '/f3a', target: 'f3a-fly', kind: 'free',
     done: () => Boolean(document.querySelector('[data-tut-verdict="ok"]')),
     text: 'Fly each burn and see if your fuel is enough.',
+  },
+  /* Phase 7 — the fun part: liftoff timing and steering the splashdown.
+     f7-start's enter() fast-forwards the tutorial save to a return-ready state
+     (launched, landed, surface finished) so /f7 is playable; that route has no guard. */
+  {
+    id: 'f7-lead', route: '/f3a', target: 'f3a-fly', kind: 'next',
+    text: 'Plan approved. Now the fun part: fly the ship home yourself.',
+  },
+  {
+    id: 'f7-start', route: '/f7', target: 'f7-start', kind: 'click',
+    // The warp writes the tutorial save directly and reloads into /f7: patching
+    // launched via update() would make the F3a guard redirect to /f3b and win the race.
+    // The overlay only runs enter() while off-route, so the reload lands exactly once.
+    // sanitizeState replays surface.actions through the real rules, so the patch
+    // must be a state the engine itself accepts: site + landing seed + one real
+    // measurement (checked with canMeasure) or surface.finished would be dropped.
+    enter: () => {
+      const M = window.SS_MODEL, D = window.SS_DATA
+      const next = JSON.parse(localStorage.getItem(TUTORIAL_SAVE) || '{}')
+      next.launched = true
+      next.phase3Done = true
+      next.phase4Done = true
+      if (!next.site) next.site = ((D.SITES.find((s) => (D.SURFACE.pois[s.id] || []).length)) || {}).id || null
+      next.landing = { seed: 42, outcome: 'clean' }
+      const margin = (next.flight && next.flight.margin) || 0
+      // 0.05 covers the worst Cadet dispersion (0.02) without pushing launch mass over the rocket.
+      next.flight = Object.assign({}, next.flight, { margin: Math.max(0.05, margin) })
+      next.surface = { actions: [], finished: false }
+      let action = null
+      const pois = (D.SURFACE.pois[next.site] || []).map((p) => p.id)
+      const aboard = ((next.design && next.design.science) || []).filter((id) => M.unlockedInstruments(next).includes(id))
+      for (const poi of pois) for (const ins of aboard) {
+        if (!action && M.canMeasure(next, poi, ins).ok) action = { type: 'measure', poi, instrument: ins }
+      }
+      next.surface = { actions: action ? [action] : [], finished: true }
+      localStorage.setItem(TUTORIAL_SAVE, JSON.stringify(next))
+      window.location.assign('/f7')
+    },
+    text: 'Skip ahead: the Moon work is done. Start the return trip.',
+  },
+  {
+    id: 'f7-liftoff', route: '/f7', target: 'f7-liftoff', kind: 'click',
+    text: 'Ignition is a timing game: Lift off starts the countdown.',
+  },
+  {
+    id: 'f7-rings', route: '/f7', target: 'f7-rings', kind: 'free', requireTarget: true,
+    done: () => !document.querySelector('[data-tutorial="f7-rings"]'),
+    text: 'Tap the ring — or press any key — when the circles meet.',
+  },
+  {
+    id: 'f7-burn2', route: '/f7', target: 'f7-burn2', kind: 'click',
+    text: 'One more burn aims the ship at Earth.',
+  },
+  {
+    id: 'f7-entry', route: '/f7', target: 'f7-entry', kind: 'free',
+    done: () => Boolean(document.querySelector('[data-tutorial="f7-shield"]')),
+    text: 'Pick a reentry path, then Choose heat shield.',
+  },
+  {
+    id: 'f7-shield', route: '/f7', target: 'f7-shield', kind: 'free',
+    done: () => Boolean(document.querySelector('[data-tutorial="f7-guide"]')),
+    text: 'Thicker shield means more margin. Pick one and Reenter.',
+  },
+  {
+    id: 'f7-guide', route: '/f7', target: 'f7-guide', kind: 'free', requireTarget: true,
+    done: () => !document.querySelector('[data-tutorial="f7-guide"]'),
+    text: 'Steer with the arrow keys or A / D and land on the recovery ships.',
+  },
+  {
+    id: 'f7-splash', route: '/f7', target: 'f7-finish', kind: 'free',
+    done: () => window.location.pathname === '/f8',
+    text: 'Inside the zone means a clean splashdown. Finish the mission.',
   },
 ]
